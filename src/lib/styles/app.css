@@ -1,0 +1,23 @@
+@import url('/src/lib/styles/fonts.css');
+
+h1 {
+  font-family: 'BW Gradual Regular', Arial, Helvetica, sans-serif;
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+h2 {
+  font-family: 'BW Gradual Bold', Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+}
+
+h3 {
+  font-family: 'FK Grotesk Bold', Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+p {
+  font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+}
