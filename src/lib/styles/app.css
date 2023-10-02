@@ -1,5 +1,13 @@
 @import url('/src/lib/styles/fonts.css');
 
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
 h1 {
   font-family: 'BW Gradual Regular', Arial, Helvetica, sans-serif;
   font-size: 2rem;
@@ -16,8 +24,4 @@ h3 {
   font-family: 'FK Grotesk Bold', Arial, Helvetica, sans-serif;
   font-size: 1rem;
   text-transform: uppercase;
-}
-
-p {
-  font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 }
