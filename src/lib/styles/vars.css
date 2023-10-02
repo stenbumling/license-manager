@@ -1,0 +1,13 @@
+:root {
+	--filter-blue: #b6e0ff;
+	--filter-green: #a1e0ba;
+	--filter-yellow: #fff6a9;
+	--filter-orange: #ffc267;
+	--filter-red: #f98686;
+
+	--deep-purple: #5a1ea0;
+	--light-purple: #aa4bf5;
+	--warning: #ffc267;
+	--alert: #f98686;
+	--filtered: #b6e0ff;
+}
