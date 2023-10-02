@@ -2,6 +2,8 @@
 <h2>Subheader</h2>
 <h3>Button text</h3>
 <p>Some regular body text <br /> and some more on a new line</p>
+<a href="/add-new-license">Add new license</a>
+<a href="/edit-license">Edit license</a>
 
 <style>
 	h3 {

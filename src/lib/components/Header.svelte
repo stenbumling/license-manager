@@ -8,7 +8,7 @@
 	header {
 		background-color: black;
 		display: flex;
-    justify-content: center;
+		justify-content: center;
 		padding: 1.4rem 3rem 1.4rem 3.2rem;
 	}
 
@@ -18,7 +18,7 @@
 
 	.header-container {
 		display: flex;
-    width: 100%;
+		width: 100%;
 		max-width: 120rem;
 	}
 </style>

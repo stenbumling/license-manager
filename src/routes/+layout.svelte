@@ -13,15 +13,15 @@
 
 <style>
 	main {
-    display: flex;
-    justify-content: center;
+		display: flex;
+		justify-content: center;
 		padding: 5rem 3rem 1.4rem 3rem;
 	}
 
-  .main-container {
-    width: 100%;
-    max-width: 120rem;
-    display: flex;
-    flex-direction: column;
-  }
+	.main-container {
+		width: 100%;
+		max-width: 120rem;
+		display: flex;
+		flex-direction: column;
+	}
 </style>
