@@ -6,10 +6,10 @@
 
 <style>
 	header {
+		background-color: black;
 		display: flex;
     justify-content: center;
-		padding: 1.4rem 3rem;
-		background-color: black;
+		padding: 1.4rem 3rem 1.4rem 3.2rem;
 	}
 
 	img {
@@ -17,8 +17,8 @@
 	}
 
 	.header-container {
+		display: flex;
     width: 100%;
 		max-width: 120rem;
-		display: flex;
 	}
 </style>
