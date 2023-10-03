@@ -1,12 +1,16 @@
 <script>
-	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
-	import FilterList from '$lib/components/dashboard/FilterList.svelte';
+	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
+	import ButtonLarge from '../ButtonLarge.svelte';
 </script>
 
 <div class="dashboard">
 	<h1>License <br /> manager</h1>
 	<h2>Filter</h2>
-	<FilterList />
+	<FilterButton />
+	<FilterButton />
+	<FilterButton />
+	<FilterButton />
+	<FilterButton />
 	<ButtonLarge />
 </div>
 
