@@ -1,12 +1,16 @@
-<h1>License manager</h1>
-<h2>Subheader</h2>
-<h3>Button text</h3>
-<p>Some regular body text <br /> and some more on a new line</p>
-<a href="/add-new-license">Add new license</a>
-<a href="/edit-license">Edit license</a>
+<script>
+	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
+	import Table from '$lib/components/table/Table.svelte';
+</script>
+
+<div class="main-container">
+	<Dashboard />
+	<Table />
+</div>
 
 <style>
-	h3 {
-		color: var(--alert);
+	.main-container {
+		display: flex;
+		flex-direction: row;
 	}
 </style>
