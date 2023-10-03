@@ -1,9 +1,9 @@
-<div class="filter-container">
+<div class="button-container">
 	<h3>title</h3>
 </div>
 
 <style>
-	.filter-container {
+	.button-container {
 		display: flex;
 		border: 1px solid black;
 		height: 2.4rem;

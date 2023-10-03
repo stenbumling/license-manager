@@ -1,4 +1,5 @@
 <script>
+	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import FilterList from '$lib/components/dashboard/FilterList.svelte';
 </script>
 
@@ -6,6 +7,7 @@
 	<h1>License <br /> manager</h1>
 	<h2>Filter</h2>
 	<FilterList />
+	<ButtonLarge />
 </div>
 
 <style>
@@ -15,7 +17,7 @@
 		padding: 2rem;
 		border: 1px solid black;
 		width: 20rem;
-		height: 40rem;
+		height: 37rem;
 		margin-right: 3rem;
 	}
 </style>
