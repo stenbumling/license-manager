@@ -1,4 +1,12 @@
-<button class="button-container">
+<script>
+	import { goto } from '$app/navigation';
+
+	function addNewLicense() {
+		goto('/add-new-license');
+	}
+</script>
+
+<button class="button-container" on:click={addNewLicense}>
 	<h3>button</h3>
 </button>
 
@@ -13,5 +21,9 @@
 		width: 100%;
 		margin-top: 2rem;
 		padding: 0.5rem 1.3rem;
+	}
+
+	h3 {
+		margin-top: 2px;
 	}
 </style>
