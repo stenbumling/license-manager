@@ -1,6 +1,6 @@
 <script>
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
-	import Table from '$lib/components/table/Table.svelte';
+	import Table from '$lib/components/table/TableContainer.svelte';
 </script>
 
 <div class="main-container">

@@ -1,6 +1,6 @@
 <script>
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
-	import ButtonLarge from '../ButtonLarge.svelte';
+	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 </script>
 
 <div class="dashboard">
@@ -23,5 +23,6 @@
 		width: 20rem;
 		height: 37rem;
 		margin-right: 3rem;
+		margin-top: 3.6rem;
 	}
 </style>
