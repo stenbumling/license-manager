@@ -13,12 +13,12 @@
 		background-color: black;
 		display: flex;
 		justify-content: center;
-		padding: 1.4rem 3rem 1.4rem 3.2rem;
+		padding: 1.4rem 4.9rem 1.4rem 5.1rem;
 	}
 
 	.header-content {
 		display: flex;
 		width: 100%;
-		max-width: 120rem;
+		max-width: 116rem;
 	}
 </style>
