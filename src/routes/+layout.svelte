@@ -1,10 +1,12 @@
 <script>
-	import Header from '$lib/components/Header.svelte';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
+	import Header from '../components/Header.svelte';
 </script>
 
-<Header />
+<header>
+	<Header />
+</header>
 <main>
 	<div class="main-container">
 		<slot />
