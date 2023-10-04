@@ -14,6 +14,12 @@
 		flex-direction: row;
 		width: 100%;
 		max-width: 120rem;
-		padding: 2rem 3rem;
+		padding: 3rem 3rem;
+	}
+
+	@media (max-height: 820px) {
+		.main-container {
+			padding: 1rem 3rem;
+		}
 	}
 </style>
