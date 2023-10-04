@@ -18,7 +18,7 @@
 		min-height: calc(100vh - 4.65rem);
 	}
 
-	@media (max-height: 800px) {
+	@media (max-height: 820px) {
 		main {
 			min-height: calc(100vh - 3.3rem);
 		}

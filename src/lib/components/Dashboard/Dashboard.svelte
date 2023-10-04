@@ -36,7 +36,7 @@
 		grid-gap: 0.3rem;
 	}
 
-	@media (max-height: 800px) {
+	@media (max-height: 820px) {
 		.dashboard {
 			height: 30.4rem;
 		}

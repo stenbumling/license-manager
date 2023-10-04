@@ -13,6 +13,9 @@
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		min-height: 100%;
+		border-bottom: 2px solid black;
+		min-height: 34.8rem;
+		max-height: calc(100vh - 8.7rem);
 	}
+	
 </style>
