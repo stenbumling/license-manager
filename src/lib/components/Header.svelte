@@ -6,14 +6,14 @@
 
 <style>
 	img {
-		height: 2rem;
+		height: 1rem;
 	}
 
 	.header-container {
 		background-color: black;
 		display: flex;
 		justify-content: center;
-		padding: 1.4rem 4.9rem 1.4rem 5.1rem;
+		padding: 1.2rem 4.9rem 1.2rem 5.1rem;
 	}
 
 	.header-content {

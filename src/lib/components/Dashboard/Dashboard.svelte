@@ -20,10 +20,10 @@
 	.dashboard {
 		display: flex;
 		flex-direction: column;
-		padding: 2rem;
+		padding: 1rem 2rem;
 		border: 1px solid black;
 		width: 20rem;
-		height: 42rem;
+		height: 40.5rem;
 		margin-right: 3rem;
 		margin-top: 3.6rem;
 	}

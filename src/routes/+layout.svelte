@@ -17,7 +17,7 @@
 	main {
 		display: flex;
 		justify-content: center;
-		padding: 5rem 3rem 1.4rem 3rem;
+		padding: 1.5rem 3rem 1.4rem 3rem;
 	}
 
 	.main-container {
