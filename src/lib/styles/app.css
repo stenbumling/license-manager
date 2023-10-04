@@ -31,6 +31,14 @@ h3 {
 	padding: 0;
 }
 
+h4 {
+	font-family: 'FK Grotesk Bold', Arial, Helvetica, sans-serif;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	margin: 0;
+	padding: 0;
+}
+
 button {
 	border: none;
 	margin: 0;

@@ -8,23 +8,19 @@
 	<Header />
 </header>
 <main>
-	<div class="main-container">
-		<slot />
-	</div>
+	<slot />
 </main>
 
 <style>
 	main {
 		display: flex;
 		justify-content: center;
-		padding: 1.5rem 3rem 1.4rem 3rem;
+		min-height: calc(100vh - 4.65rem);
 	}
 
-	.main-container {
-		width: 100%;
-		max-width: 120rem;
-		height: 90vh;
-		display: flex;
-		flex-direction: column;
+	@media (max-height: 800px) {
+		main {
+			min-height: calc(100vh - 3.3rem);
+		}
 	}
 </style>

@@ -7,7 +7,7 @@
 </script>
 
 <button class="button-container" on:click={addNewLicense}>
-	<h3>button</h3>
+	<h3>Add new license</h3>
 </button>
 
 <style>

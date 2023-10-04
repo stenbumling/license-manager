@@ -7,8 +7,8 @@
 		display: flex;
 		flex-direction: column;
 		padding: 0.4rem 2rem;
+		min-height: 30.4rem;
 		border: 1px solid black;
-		flex-grow: 0;
 		height: 100%;
 	}
 </style>

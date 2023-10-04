@@ -1,5 +1,5 @@
 <button class="button-container">
-	<h3>Search</h3>
+	<h4>Search</h4>
 </button>
 
 <style>
@@ -14,9 +14,5 @@
 		width: 100%;
 		margin-bottom: 1rem;
 		padding: 0.5rem 1.3rem;
-	}
-
-	h3 {
-		margin-top: 1px;
 	}
 </style>

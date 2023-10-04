@@ -12,6 +12,8 @@
 	.main-container {
 		display: flex;
 		flex-direction: row;
-		height: 100%;
+		width: 100%;
+		max-width: 120rem;
+		padding: 2rem 3rem;
 	}
 </style>
