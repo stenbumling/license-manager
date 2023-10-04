@@ -1,27 +1,50 @@
-@import url('/src/lib/styles/fonts.css');
+@import url('$lib/styles/fonts.css');
 
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+body,
+html {
+	margin: 0;
+	padding: 0;
+	font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 1.5;
 }
 
 h1 {
-  font-family: 'BW Gradual Regular', Arial, Helvetica, sans-serif;
-  font-size: 2rem;
-  text-transform: uppercase;
+	font-family: 'BW Gradual Regular', Arial, Helvetica, sans-serif;
+	font-size: 2rem;
+	text-transform: uppercase;
+	line-height: 1.2;
 }
 
 h2 {
-  font-family: 'BW Gradual Bold', Arial, Helvetica, sans-serif;
-  font-size: 1.2rem;
-  text-transform: uppercase;
+	font-family: 'BW Gradual Bold', Arial, Helvetica, sans-serif;
+	font-size: 1.2rem;
+	text-transform: uppercase;
+	margin: 0.4rem 0;
 }
 
 h3 {
-  font-family: 'FK Grotesk Bold', Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  text-transform: uppercase;
+	font-family: 'FK Grotesk Bold', Arial, Helvetica, sans-serif;
+	font-size: 1rem;
+	text-transform: uppercase;
+	margin: 0;
+	padding: 0;
 }
+
+h4 {
+	font-family: 'FK Grotesk Bold', Arial, Helvetica, sans-serif;
+	font-size: 0.7rem;
+	text-transform: uppercase;
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	border: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* ::-webkit-scrollbar {
+	display: none;
+} */

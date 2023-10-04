@@ -2,14 +2,14 @@
 
 @font-face {
 	font-family: 'BW Gradual Regular';
-	src: url('/src/lib/fonts/bw-gradual-regular.otf') format('opentype');
+	src: url('$lib/fonts/bw-gradual-regular.otf') format('opentype');
 	font-weight: 900;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'BW Gradual Bold';
-	src: url('/src/lib/fonts/bw-gradual-bold.otf') format('opentype');
+	src: url('$lib/fonts/bw-gradual-bold.otf') format('opentype');
 	font-weight: bold;
 	font-style: normal;
 }
@@ -18,27 +18,27 @@
 
 @font-face {
 	font-family: 'FK Grotesk Regular';
-	src: url('/src/lib/fonts/FKGrotesk-Regular.woff2') format('woff2');
-	src: url('/src/lib/fonts/FKGrotesk-Regular.ttf') format('truetype');
-	src: url('/src/lib/fonts/FKGrotesk-Regular.otf') format('opentype');
+	src: url('$lib/fonts/FKGrotesk-Regular.woff2') format('woff2');
+	src: url('$lib/fonts/FKGrotesk-Regular.ttf') format('truetype');
+	src: url('$lib/fonts/FKGrotesk-Regular.otf') format('opentype');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'FK Grotesk Bold';
-	src: url('/src/lib/fonts/FKGrotesk-Bold.woff2') format('woff2');
-	src: url('/src/lib/fonts/FKGrotesk-Bold.ttf') format('truetype');
-	src: url('/src/lib/fonts/FKGrotesk-Bold.otf') format('opentype');
+	src: url('$lib/fonts/FKGrotesk-Bold.woff2') format('woff2');
+	src: url('$lib/fonts/FKGrotesk-Bold.ttf') format('truetype');
+	src: url('$lib/fonts/FKGrotesk-Bold.otf') format('opentype');
 	font-weight: bold;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'FK Grotesk Italic';
-	src: url('/src/lib/fonts/FKGrotesk-Italic.woff2') format('woff2');
-	src: url('/src/lib/fonts/FKGrotesk-Italic.ttf') format('truetype');
-	src: url('/src/lib/fonts/FKGrotesk-Italic.otf') format('opentype');
+	src: url('$lib/fonts/FKGrotesk-Italic.woff2') format('woff2');
+	src: url('$lib/fonts/FKGrotesk-Italic.ttf') format('truetype');
+	src: url('$lib/fonts/FKGrotesk-Italic.otf') format('opentype');
 	font-weight: normal;
 	font-style: italic;
 }
