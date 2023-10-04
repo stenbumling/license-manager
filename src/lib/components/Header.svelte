@@ -24,7 +24,7 @@
 		max-width: 116rem;
 	}
 
-	@media (max-height: 820px) {
+	@media (max-height: 850px) {
 		.header-container {
 			height: 3.2rem;
 		}

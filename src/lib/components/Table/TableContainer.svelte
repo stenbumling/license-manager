@@ -15,6 +15,12 @@
 		flex-grow: 1;
 		border-bottom: 2px solid black;
 		min-height: 34.8rem;
-		max-height: calc(100vh - 8.7rem);
+		max-height: calc(100vh - 10.7rem);
+	}
+
+	@media (max-height: 850px) {
+		.table-container {
+			max-height: calc(100vh - 7.2rem);
+		}
 	}
 </style>

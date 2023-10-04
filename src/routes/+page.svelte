@@ -17,7 +17,7 @@
 		padding: 3rem 3rem;
 	}
 
-	@media (max-height: 820px) {
+	@media (max-height: 850px) {
 		.main-container {
 			padding: 1rem 3rem;
 		}
