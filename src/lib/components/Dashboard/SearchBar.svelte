@@ -12,8 +12,7 @@
 		border: 1px solid black;
 		height: 2.6rem;
 		width: 100%;
-		margin-bottom: 1.6rem;
-		margin-top: 0.6rem;
+		margin-bottom: 1rem;
 		padding: 0.5rem 1.3rem;
 	}
 

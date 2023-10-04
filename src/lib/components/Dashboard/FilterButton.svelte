@@ -9,7 +9,7 @@
 		border: 1px solid black;
 		height: 3.3rem;
 		width: 100%;
-		margin-bottom: 0.4rem;
+		margin-bottom: 0.3rem;
 		padding: 0.5rem;
 	}
 </style>

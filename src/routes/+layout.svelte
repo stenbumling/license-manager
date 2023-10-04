@@ -23,6 +23,7 @@
 	.main-container {
 		width: 100%;
 		max-width: 120rem;
+		height: 90vh;
 		display: flex;
 		flex-direction: column;
 	}

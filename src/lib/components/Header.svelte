@@ -13,7 +13,9 @@
 		background-color: black;
 		display: flex;
 		justify-content: center;
-		padding: 1.2rem 4.9rem 1.2rem 5.1rem;
+		align-items: center;
+		padding: 0 4.9rem 0 5.1rem;
+		height: 5vh;
 	}
 
 	.header-content {
