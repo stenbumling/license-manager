@@ -17,5 +17,4 @@
 		min-height: 34.8rem;
 		max-height: calc(100vh - 8.7rem);
 	}
-	
 </style>
