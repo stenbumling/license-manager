@@ -25,9 +25,16 @@
 		border: none;
 		display: flex;
 		align-self: center;
-		width: 70vw;
+		width: 80vw;
+		max-width: 120rem;
 		height: 75vh;
 		background-color: white;
-		padding: 20px;
+		padding: 2rem 4rem;
+	}
+
+	@media (max-width: 1000px) {
+		.modal-window {
+			width: 50vh;
+		}
 	}
 </style>
