@@ -1,9 +1,10 @@
 <script>
+	import { goto } from '$app/navigation';
 	import Modal from '$lib/components/modal/Modal.svelte';
 	import { showModal } from '$lib/stores/modal.js';
 
 	function addNewLicense() {
-		// goto('/add-new-license');
+		goto('/?add-new-license');
 		showModal.set(true);
 	}
 </script>
@@ -12,12 +13,12 @@
 	<Modal />
 {/if}
 
-<button class="button-container" on:click={addNewLicense}>
+<a href="/add-new-license" class="button" on:click|preventDefault={addNewLicense}>
 	<h3>Add new license</h3>
-</button>
+</a>
 
 <style>
-	.button-container {
+	.button {
 		cursor: pointer;
 		display: flex;
 		align-items: center;
@@ -25,8 +26,14 @@
 		color: white;
 		height: 3rem;
 		width: 100%;
+		box-sizing: border-box;
 		margin-top: 1.5rem;
-		padding: 0.5rem 1.3rem;
+		padding: 1rem 1.3rem;
+		text-decoration: none;
+	}
+
+	a:hover {
+		background-color: var(--deep-purple);
 	}
 
 	h3 {

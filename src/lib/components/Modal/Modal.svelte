@@ -1,15 +1,18 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { showModal } from '$lib/stores/modal.js';
 	import { fade } from 'svelte/transition';
 
 	function goBack() {
+		goto('/');
 		showModal.set(false);
 	}
 </script>
 
-<div class="modal-container" transition:fade={{ duration: 80 }}>
+<div class="modal-container" transition:fade={{ duration:120 }}>
 	<dialog open class="modal-window">
 		<h1>Add new license</h1>
+		<!--TODO: Remove link when replaced by a close button-->
 		<a href="/" on:click|preventDefault={goBack}>Go back</a>
 	</dialog>
 </div>
