@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import LicensRow from '$lib/components/table/LicenseRow.svelte';
 </script>
 

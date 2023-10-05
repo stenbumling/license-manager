@@ -1,6 +1,6 @@
-<script>
-	import { fade } from 'svelte/transition';
+<script lang="ts">
 	import LicenseView from '$lib/components/modal/LicenseView.svelte';
+	import { fade } from 'svelte/transition';
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>

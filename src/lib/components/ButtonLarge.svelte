@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	import ModalContainer from '$lib/components/modal/ModalContainer.svelte';
-	import { showModal } from '$lib/stores/modal.js';
+	import { showModal } from '$lib/stores/modal.ts';
 
-	function addNewLicense() {
+	function handleClick() {
 		goto('/?add-new-license');
 		showModal.set(true);
 	}
@@ -13,7 +13,7 @@
 	<ModalContainer />
 {/if}
 
-<a href="/add-new-license" class="button" on:click|preventDefault={addNewLicense}>
+<a href="/add-new-license" class="button" on:click|preventDefault={handleClick}>
 	<h3>Add new license</h3>
 </a>
 

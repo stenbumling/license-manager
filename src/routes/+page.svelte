@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
 </script>

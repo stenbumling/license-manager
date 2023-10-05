@@ -1,6 +1,6 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
-	import { showModal } from '$lib/stores/modal.js';
+	import { showModal } from '$lib/stores/modal.ts';
 
 	function goBack() {
 		goto('/');
@@ -9,5 +9,4 @@
 </script>
 
 <h1>Add new license</h1>
-<!--TODO: Remove link when replaced by a close button-->
 <a href="/" on:click|preventDefault={goBack}>Go back</a>
