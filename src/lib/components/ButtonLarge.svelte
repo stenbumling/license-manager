@@ -3,8 +3,13 @@
 	import ModalContainer from '$lib/components/modal/ModalContainer.svelte';
 	import { showModal } from '$lib/stores/modal.ts';
 
-	function handleClick() {
-		goto('/?add-new-license');
+	function handleClick(e: MouseEvent | KeyboardEvent) {
+		if (e.metaKey || e.ctrlKey) {
+			return;
+		}
+
+		e.preventDefault();
+		goto('/?modal=add-new');
 		showModal.set(true);
 	}
 </script>
@@ -13,7 +18,7 @@
 	<ModalContainer />
 {/if}
 
-<a href="/add-new-license" class="button" on:click|preventDefault={handleClick}>
+<a href="/add-new" class="button" on:click={handleClick}>
 	<h3>Add new license</h3>
 </a>
 
