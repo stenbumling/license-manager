@@ -1,10 +1,16 @@
 <script>
-	import { goto } from '$app/navigation';
+	import Modal from '$lib/components/modal/Modal.svelte';
+	import { showModal } from '$lib/stores/modal.js';
 
 	function addNewLicense() {
-		goto('/add-new-license');
+		// goto('/add-new-license');
+		showModal.set(true);
 	}
 </script>
+
+{#if $showModal}
+	<Modal />
+{/if}
 
 <button class="button-container" on:click={addNewLicense}>
 	<h3>Add new license</h3>

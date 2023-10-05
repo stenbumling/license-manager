@@ -1,2 +1,5 @@
-<h1>Add new license</h1>
-<a href="/">Go back</a>
+<script>
+	import Modal from '$lib/components/modal/Modal.svelte';
+</script>
+
+<Modal />
