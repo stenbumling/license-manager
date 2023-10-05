@@ -1,5 +1,5 @@
 <script>
-	import Modal from '$lib/components/modal/Modal.svelte';
+	import LicenseView from '$lib/components/modal/LicenseView.svelte';
 </script>
 
-<Modal />
+<LicenseView />
