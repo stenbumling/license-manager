@@ -1,28 +1,37 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { showModal } from '$lib/stores/modal.ts';
-
-	function goBack() {
-		goto('/');
-		showModal.set(false);
-	}
+	import ModalTitle from '$lib/components/modal/ModalTitle.svelte';
+	import FieldComponent from '$lib/components/modal/FieldComponent.svelte';
 </script>
 
 <div class="view-container">
-	<div>
-		<h1>Add new license</h1>
-		<a href="/" on:click|preventDefault={goBack}>Go back</a>
-	</div>
+	<ModalTitle />
+	<FieldComponent />
+	<FieldComponent />
+	<FieldComponent />
+	<FieldComponent />
+	<FieldComponent />
+	<FieldComponent />
+	<FieldComponent />
+	<FieldComponent />
+	<FieldComponent />
+	<FieldComponent />
 </div>
 
 <style>
-	/* .view-container {
-		border: 1px solid black;
-		height: 3rem;
-		display: flex;
-		justify-content: space-between;
+	.view-container {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		gap: 1rem;
+		justify-content: flex-end;
 		width: 100%;
 		max-width: 120rem;
 		height: 100%;
-	} */
+		overflow-y: auto;
+	}
+
+	@media (max-width: 1600px) {
+		.view-container {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
 </style>
