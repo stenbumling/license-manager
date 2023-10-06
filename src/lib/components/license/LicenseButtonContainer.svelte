@@ -8,21 +8,21 @@
 	}
 </script>
 
-<div class="title-container">
+<div class="button-container">
 	<a href="/" class="button" on:click={goBack}>
-    <h3>Add new license</h3>
-  </a>
+		<h3>Add new license</h3>
+	</a>
 </div>
 
 <style>
-	.title-container {
+	.button-container {
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
 		grid-column: 1 / -1;
 	}
 
-  .button {
+	.button {
 		cursor: pointer;
 		display: flex;
 		align-items: center;

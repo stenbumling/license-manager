@@ -1,11 +1,11 @@
 <script lang="ts">
-	import LicenseView from '$lib/components/modal/LicenseView.svelte';
+	import LicenseContainer from '$lib/components/license/LicenseContainer.svelte';
 	import { fade } from 'svelte/transition';
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
-		<LicenseView />
+		<LicenseContainer />
 	</dialog>
 </div>
 

@@ -15,9 +15,9 @@
 
 <style>
 	.title-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 		grid-column: 1 / -1;
 	}
 </style>

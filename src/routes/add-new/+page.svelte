@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LicenseView from '$lib/components/modal/LicenseView.svelte';
+	import LicenseView from '$lib/components/license/LicenseContainer.svelte';
 </script>
 
 <div class="main-container">

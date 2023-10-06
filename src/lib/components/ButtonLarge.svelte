@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import ModalContainer from '$lib/components/modal/ModalContainer.svelte';
+	import Modal from '$lib/components/license/Modal.svelte';
 	import { showModal } from '$lib/stores/modal.ts';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
@@ -15,7 +15,7 @@
 </script>
 
 {#if $showModal}
-	<ModalContainer />
+	<Modal />
 {/if}
 
 <a href="/add-new" class="button" on:click={handleClick}>
