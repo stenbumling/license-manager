@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';

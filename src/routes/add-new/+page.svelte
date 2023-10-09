@@ -1,11 +1,9 @@
 <script lang="ts">
-	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
-	import TableContainer from '$lib/components/table/TableContainer.svelte';
+	import LicenseView from '$lib/components/license/LicenseContainer.svelte';
 </script>
 
 <div class="main-container">
-	<Dashboard />
-	<TableContainer />
+	<LicenseView />
 </div>
 
 <style>
@@ -13,8 +11,8 @@
 		display: flex;
 		flex-direction: row;
 		width: 100%;
-		max-width: 120rem;
-		padding: 3rem 3rem;
+		max-width: 116rem;
+		padding: 3rem 4.9rem 0 5.1rem;
 	}
 
 	@media (max-height: 850px) {

@@ -1,28 +1,27 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import Modal from '$lib/components/license/Modal.svelte';
 	import { showModal } from '$lib/stores/modal.ts';
 
-	function handleClick(e: MouseEvent | KeyboardEvent) {
-		if (e.metaKey || e.ctrlKey) {
-			return;
-		}
-
-		e.preventDefault();
-		goto('/?modal=add-new');
-		showModal.set(true);
+	function goBack() {
+		goto('/');
+		showModal.set(false);
 	}
 </script>
 
-{#if $showModal}
-	<Modal />
-{/if}
-
-<a href="/add-new" class="button" on:click={handleClick}>
-	<h3>Add new license</h3>
-</a>
+<div class="button-container">
+	<a href="/" class="button" on:click={goBack}>
+		<h3>Add new license</h3>
+	</a>
+</div>
 
 <style>
+	.button-container {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		grid-column: 1 / -1;
+	}
+
 	.button {
 		cursor: pointer;
 		display: flex;
@@ -30,7 +29,7 @@
 		background-color: black;
 		color: white;
 		height: 3rem;
-		width: 100%;
+		width: 16rem;
 		box-sizing: border-box;
 		margin-top: 1.5rem;
 		padding: 1rem 1.3rem;
