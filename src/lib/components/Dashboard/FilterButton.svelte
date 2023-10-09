@@ -63,10 +63,10 @@
 	.filter-title {
 		margin: 0.5rem 0 0 0.8rem;
 		align-self: flex-start;
-		word-wrap: break-word;
 		word-break: break-word;
 		overflow-wrap: break-word;
 		max-width: 100%;
+		text-align: left;
 	}
 
 	.filter-amount {
@@ -75,5 +75,9 @@
 		font-size: 1.5rem;
 		margin-top: 2.5rem;
 		margin: 0 0.8rem 0.1rem 0;
+	}
+
+	button:active {
+		transform: scale(0.96);
 	}
 </style>
