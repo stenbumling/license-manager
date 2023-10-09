@@ -47,4 +47,8 @@
 		margin-top: 2px;
 		margin-right: 1rem;
 	}
+
+	.button-container:active {
+		transform: scale(0.96);
+	}
 </style>
