@@ -4,6 +4,7 @@
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
 	import { goto } from '$app/navigation';
 	import { showModal } from '$lib/stores/modal.ts';
+	import { activeFilter } from '$lib/stores/filter.ts';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
@@ -21,11 +22,41 @@
 	<SearchBar />
 	<h2>Filter</h2>
 	<div class="filter-list">
-		<FilterButton title="All" amount={0} hoverColor="var(--filter-blue)"/>
-		<FilterButton title="In use" amount={23} hoverColor="var(--filter-green)"/>
-		<FilterButton title="Unassigned" amount={32} hoverColor="var(--filter-yellow)"/>
-		<FilterButton title="Near expiration" amount={99} hoverColor="var(--warning)"/>
-		<FilterButton title="Expired" amount={31} hoverColor="var(--alert)"/>
+		<FilterButton
+			title="All"
+			amount={0}
+			color="var(--filter-blue)"
+			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
+			isActive={$activeFilter === 'All'}
+		/>
+		<FilterButton
+			title="In use"
+			amount={23}
+			color="var(--filter-green)"
+			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
+			isActive={$activeFilter === 'In use'}
+		/>
+		<FilterButton
+			title="Unassigned"
+			amount={32}
+			color="var(--filter-yellow)"
+			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
+			isActive={$activeFilter === 'Unassigned'}
+		/>
+		<FilterButton
+			title="Near expiration"
+			amount={99}
+			color="var(--warning)"
+			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
+			isActive={$activeFilter === 'Near expiration'}
+		/>
+		<FilterButton
+			title="Expired"
+			amount={31}
+			color="var(--alert)"
+			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
+			isActive={$activeFilter === 'Expired'}
+		/>
 	</div>
 	<a href="/add-new" on:click={handleClick}>
 		<ButtonLarge title="Add new license" />

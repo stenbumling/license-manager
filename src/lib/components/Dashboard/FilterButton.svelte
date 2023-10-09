@@ -1,19 +1,31 @@
 <script lang="ts">
-	export let title: string = "Filter";
+	import { createEventDispatcher } from 'svelte';
+	export let title: string = 'Filter';
 	export let amount: number = 0;
-	export let hoverColor: string = "var(--filter-blue)";
+	export let color: string = 'var(--filter-blue)';
+	export let isActive: boolean = false;
+
+	const dispatch = createEventDispatcher();
+
+	function handleClick() {
+		dispatch('filterclicked', { title });
+	}
 </script>
 
-<div class="filter-container">
+<button
+	style={isActive ? `background-color: ${color};` : ''}
+	class="filter-container {isActive ? 'active' : ''}"
+	on:click={handleClick}
+>
 	<div class="filter-content">
 		<h4 class="filter-title">{title}</h4>
 		<h4 class="filter-amount">{amount}</h4>
 	</div>
 	<div
 		class="filter-animated-hover"
-		style="background: linear-gradient(to right, {hoverColor} 50%, transparent 50%);"
+		style="background: linear-gradient(to right, {color} 50%, transparent 50%);"
 	/>
-</div>
+</button>
 
 <style>
 	.filter-container {
@@ -42,6 +54,7 @@
 	.filter-content {
 		display: flex;
 		width: 100%;
+		height: 100%;
 		align-content: space-between;
 		justify-content: space-between;
 		z-index: 2;
