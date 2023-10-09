@@ -15,7 +15,7 @@
 		<FilterButton />
 		<FilterButton />
 	</div>
-	<ButtonLarge />
+	<ButtonLarge title="Add new license"/>
 </div>
 
 <style>

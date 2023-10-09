@@ -3,6 +3,8 @@
 	import Modal from '$lib/components/license/Modal.svelte';
 	import { showModal } from '$lib/stores/modal.ts';
 
+	export let title: string;
+
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
 			return;
@@ -19,7 +21,8 @@
 {/if}
 
 <a href="/add-new" class="button" on:click={handleClick}>
-	<h3>Add new license</h3>
+	<div class="button-animated-hover" />
+	<h3 class="button-text">{title}</h3>
 </a>
 
 <style>
@@ -35,13 +38,24 @@
 		margin-top: 1.5rem;
 		padding: 1rem 1.3rem;
 		text-decoration: none;
+		position: relative;
 	}
 
-	a:hover {
-		background-color: var(--deep-purple);
+	.button .button-animated-hover {
+		position: absolute;
+		left: 0;
+		width: 0;
+		height: 100%;
+		background: linear-gradient(to right,var(--deep-purple) 50%,transparent 50%);
+		transition: width 0.25s ease;
 	}
 
-	h3 {
+	.button:hover .button-animated-hover {
+		width: 200%;
+	}
+
+	.button-text {
+		z-index: 1;
 		margin-top: 2px;
 	}
 </style>
