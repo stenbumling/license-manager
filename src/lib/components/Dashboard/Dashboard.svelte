@@ -20,12 +20,12 @@
 	<h1>License <br /> manager</h1>
 	<SearchBar />
 	<h2>Filter</h2>
-	<div class="filter-buttons">
-		<FilterButton />
-		<FilterButton />
-		<FilterButton />
-		<FilterButton />
-		<FilterButton />
+	<div class="filter-list">
+		<FilterButton title="All" amount={0}/>
+		<FilterButton title="In use" amount={23}/>
+		<FilterButton title="Unassigned" amount={32}/>
+		<FilterButton title="Near expiration" amount={99}/>
+		<FilterButton title="Expired" amount={31}/>
 	</div>
 	<a href="/add-new" on:click={handleClick}>
 		<ButtonLarge title="Add new license" />
@@ -44,22 +44,22 @@
 		margin-top: 3.6rem;
 	}
 
-	.filter-buttons {
+	.filter-list {
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;
-		margin-bottom: 1.5rem;
+		margin-bottom: 2rem;
 	}
 
 	@media (max-height: 850px) {
 		.dashboard {
 			height: 30.4rem;
 		}
-		.filter-buttons {
+		.filter-list {
 			grid-template-columns: 1fr 1fr;
 		}
 
-		.filter-buttons > :global(:nth-child(1)) {
+		.filter-list > :global(:nth-child(1)) {
 			grid-column: 1 / 3;
 		}
 	}

@@ -20,7 +20,8 @@ h2 {
 	font-family: 'BW Gradual Bold', Arial, Helvetica, sans-serif;
 	font-size: 1.2rem;
 	text-transform: uppercase;
-	margin: 0.4rem 0;
+	margin: 0;
+	padding: 0;
 }
 
 h3 {
