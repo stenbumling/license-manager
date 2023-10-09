@@ -20,16 +20,18 @@
 	<Modal />
 {/if}
 
-<a href="/add-new" class="button" on:click={handleClick}>
+<a href="/add-new" class="button-container" on:click={handleClick}>
+	<div class="button-content">
+		<h3 style="margin-top: 2px">{title}</h3>
+		<img src={'./button-arrow.svg'} alt="arrow" />
+	</div>
 	<div class="button-animated-hover" />
-	<h3 class="button-text">{title}</h3>
 </a>
 
 <style>
-	.button {
+	.button-container {
 		cursor: pointer;
 		display: flex;
-		align-items: center;
 		background-color: black;
 		color: white;
 		height: 3rem;
@@ -41,21 +43,25 @@
 		position: relative;
 	}
 
-	.button .button-animated-hover {
+	.button-container .button-animated-hover {
 		position: absolute;
+		top: 0;
 		left: 0;
 		width: 0;
 		height: 100%;
-		background: linear-gradient(to right,var(--deep-purple) 50%,transparent 50%);
+		background: linear-gradient(to right, var(--deep-purple) 50%, transparent 50%);
 		transition: width 0.25s ease;
 	}
 
-	.button:hover .button-animated-hover {
+	.button-container:hover .button-animated-hover {
 		width: 200%;
 	}
 
-	.button-text {
+	.button-content {
 		z-index: 1;
-		margin-top: 2px;
+		display: flex;
+		width: 100%;
+		align-items: center;
+		justify-content: space-between;
 	}
 </style>
