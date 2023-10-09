@@ -19,6 +19,7 @@
 		box-sizing: border-box;
 		padding: 1rem 1.3rem;
 		position: relative;
+		user-select: none;
 	}
 
 	.button-container .button-animated-hover {

@@ -36,6 +36,7 @@
 		height: 3.3rem;
 		width: 100%;
 		position: relative;
+		user-select: none;
 	}
 
 	.filter-container .filter-animated-hover {
