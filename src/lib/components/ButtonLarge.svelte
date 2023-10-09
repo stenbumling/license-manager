@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let title: string;
+	export let title: string = "Button title";
 </script>
 
 <div class="button-container">

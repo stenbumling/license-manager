@@ -1,7 +1,7 @@
 <script lang="ts">
-	export let title: string;
-	export let amount: number;
-	export let hoverColor: string;
+	export let title: string = "Filter";
+	export let amount: number = 0;
+	export let hoverColor: string = "var(--filter-blue)";
 </script>
 
 <div class="filter-container">
