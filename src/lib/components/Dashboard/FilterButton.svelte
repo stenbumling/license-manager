@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let title: string;
-	export let amount: number
+	export let amount: number;
+	export let hoverColor: string;
 </script>
 
 <div class="filter-container">
@@ -8,6 +9,10 @@
 		<h4 class="filter-title">{title}</h4>
 		<h4 class="filter-amount">{amount}</h4>
 	</div>
+	<div
+		class="filter-animated-hover"
+		style="background: linear-gradient(to right, {hoverColor} 50%, transparent 50%);"
+	/>
 </div>
 
 <style>
@@ -18,6 +23,20 @@
 		box-sizing: border-box;
 		height: 3.3rem;
 		width: 100%;
+		position: relative;
+	}
+
+	.filter-container .filter-animated-hover {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 0;
+		height: 100%;
+		transition: width 0.15s ease;
+	}
+
+	.filter-container:hover .filter-animated-hover {
+		width: 200%;
 	}
 
 	.filter-content {
@@ -25,16 +44,17 @@
 		width: 100%;
 		align-content: space-between;
 		justify-content: space-between;
+		z-index: 2;
 	}
 
 	.filter-title {
-    margin: 0.5rem 0 0 0.8rem;
-    align-self: flex-start;
-    word-wrap: break-word;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    max-width: 100%;
-}
+		margin: 0.5rem 0 0 0.8rem;
+		align-self: flex-start;
+		word-wrap: break-word;
+		word-break: break-word;
+		overflow-wrap: break-word;
+		max-width: 100%;
+	}
 
 	.filter-amount {
 		display: flex;

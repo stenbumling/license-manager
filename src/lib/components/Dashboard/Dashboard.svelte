@@ -21,11 +21,11 @@
 	<SearchBar />
 	<h2>Filter</h2>
 	<div class="filter-list">
-		<FilterButton title="All" amount={0}/>
-		<FilterButton title="In use" amount={23}/>
-		<FilterButton title="Unassigned" amount={32}/>
-		<FilterButton title="Near expiration" amount={99}/>
-		<FilterButton title="Expired" amount={31}/>
+		<FilterButton title="All" amount={0} hoverColor="var(--filter-blue)"/>
+		<FilterButton title="In use" amount={23} hoverColor="var(--filter-green)"/>
+		<FilterButton title="Unassigned" amount={32} hoverColor="var(--filter-yellow)"/>
+		<FilterButton title="Near expiration" amount={99} hoverColor="var(--warning)"/>
+		<FilterButton title="Expired" amount={31} hoverColor="var(--alert)"/>
 	</div>
 	<a href="/add-new" on:click={handleClick}>
 		<ButtonLarge title="Add new license" />
