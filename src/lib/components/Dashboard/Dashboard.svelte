@@ -2,6 +2,18 @@
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
+	import { goto } from '$app/navigation';
+	import { showModal } from '$lib/stores/modal.ts';
+
+	function handleClick(e: MouseEvent | KeyboardEvent) {
+		if (e.metaKey || e.ctrlKey) {
+			return;
+		}
+
+		e.preventDefault();
+		goto('/?modal=add-new');
+		showModal.set(true);
+	}
 </script>
 
 <div class="dashboard">
@@ -15,7 +27,9 @@
 		<FilterButton />
 		<FilterButton />
 	</div>
-	<ButtonLarge title="Add new license"/>
+	<a href="/add-new" on:click={handleClick}>
+		<ButtonLarge title="Add new license" />
+	</a>
 </div>
 
 <style>
@@ -34,6 +48,7 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;
+		margin-bottom: 1.5rem;
 	}
 
 	@media (max-height: 850px) {

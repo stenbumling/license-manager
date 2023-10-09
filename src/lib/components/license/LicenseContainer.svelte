@@ -1,7 +1,14 @@
 <script lang="ts">
 	import LicenseTitle from '$lib/components/license/LicenseTitle.svelte';
 	import LicenseField from '$lib/components/license/LicenseField.svelte';
-	import LicenseButtonContainer from '$lib/components/license/LicenseButtonContainer.svelte';
+	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
+	import { goto } from '$app/navigation';
+	import { showModal } from '$lib/stores/modal.ts';
+
+	function handleClick() {
+		goto('/');
+		showModal.set(false);
+	}
 </script>
 
 <div class="license-container">
@@ -18,7 +25,11 @@
 		<LicenseField />
 		<LicenseField />
 	</div>
-	<LicenseButtonContainer />
+	<div class="buttons-container">
+		<a href="/" class="link-container" on:click={handleClick}>
+			<ButtonLarge title="Save license" />
+		</a>
+	</div>
 </div>
 
 <style>
@@ -39,7 +50,16 @@
 		max-width: 120rem;
 		height: calc(100% - 12rem);
 		overflow-y: auto;
-		/* border: 1px solid red; */
+	}
+
+	.buttons-container {
+		display: flex;
+		width: 100%;
+		align-items: center;
+		justify-content: flex-end;
+	}
+	.link-container {
+		width: 16rem;
 	}
 
 	@media (max-width: 1600px) {
