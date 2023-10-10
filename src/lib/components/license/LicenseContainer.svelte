@@ -1,6 +1,6 @@
 <script lang="ts">
-	import LicenseTitle from '$lib/components/license/LicenseTitle.svelte';
-	import LicenseField from '$lib/components/license/LicenseField.svelte';
+	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
+	import LicenseField from '$lib/components/license/fields/LicenseField.svelte';
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import { goto } from '$app/navigation';
 	import { showModal } from '$lib/stores/modal.ts';
@@ -14,16 +14,16 @@
 <div class="license-container">
 	<LicenseTitle />
 	<div class="fields-grid">
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
+		<LicenseField content="aaaaa"/>
+		<LicenseField content="aaaaa"/>
+		<LicenseField content="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
+		<LicenseField content="aaaaa"/>
+		<LicenseField content="aaaaa"/>
+		<LicenseField content="aaaaa"/>
+		<LicenseField content="aaaaa"/>
+		<LicenseField content="aaaaa"/>
+		<LicenseField content="aaaaa"/>
+		<LicenseField content="aaaaa"/>
 	</div>
 	<div class="buttons-container">
 		<a href="/" class="link-container" on:click={handleClick}>
@@ -44,8 +44,7 @@
 	.fields-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
-		gap: 1rem;
-		justify-content: flex-end;
+		gap: 2rem 5rem;
 		width: 100%;
 		max-width: 120rem;
 		height: calc(100% - 12rem);
@@ -65,6 +64,7 @@
 	@media (max-width: 1600px) {
 		.fields-grid {
 			grid-template-columns: 1fr 1fr;
+			gap: 2rem 2rem;
 		}
 	}
 </style>
