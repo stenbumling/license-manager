@@ -14,16 +14,16 @@
 <div class="license-container">
 	<LicenseTitle />
 	<div class="fields-grid">
-		<LicenseField content="aaaaa"/>
-		<LicenseField content="aaaaa"/>
-		<LicenseField content="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"/>
-		<LicenseField content="aaaaa"/>
-		<LicenseField content="aaaaa"/>
-		<LicenseField content="aaaaa"/>
-		<LicenseField content="aaaaa"/>
-		<LicenseField content="aaaaa"/>
-		<LicenseField content="aaaaa"/>
-		<LicenseField content="aaaaa"/>
+		<LicenseField />
+		<LicenseField />
+		<LicenseField />
+		<LicenseField />
+		<LicenseField />
+		<LicenseField />
+		<LicenseField />
+		<LicenseField />
+		<LicenseField />
+		<LicenseField />
 	</div>
 	<div class="buttons-container">
 		<a href="/" class="link-container" on:click={handleClick}>
