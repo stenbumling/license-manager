@@ -79,6 +79,8 @@
 	}
 
 	button:active {
-		transform: scale(0.96);
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 </style>

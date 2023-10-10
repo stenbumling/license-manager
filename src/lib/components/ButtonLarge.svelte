@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let title: string = "Button title";
+	export let title: string = 'Button title';
 </script>
 
 <div class="button-container">
@@ -50,6 +50,8 @@
 	}
 
 	.button-container:active {
-		transform: scale(0.96);
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 </style>
