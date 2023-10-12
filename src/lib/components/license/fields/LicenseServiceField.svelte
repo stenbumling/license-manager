@@ -2,6 +2,7 @@
 </script>
 
 <div class="field-container">
+	<h3 class="field-label">Service</h3>
 	<select required name="services">
 		<option disabled selected hidden value="">Select a service</option>
 		<option value="office-365">Office 365</option>
@@ -14,22 +15,26 @@
 <style>
 	.field-container {
 		display: flex;
+		flex-direction: column;
 		align-items: flex-start;
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;
 	}
 
+	.field-label {
+		margin-bottom: 0.4rem;
+	}
+
 	select {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		border: none;
 		width: 100%;
-		height: 3.2rem;
+		height: 3rem;
 		background-color: transparent;
 		border-bottom: 1px solid black;
 		appearance: none;
 		box-sizing: border-box;
-		padding: 0rem;
 	}
 
 	select:hover {

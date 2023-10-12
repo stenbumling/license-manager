@@ -2,16 +2,22 @@
 </script>
 
 <div class="field-container">
+	<h3 class="field-label">Text field</h3>
 	<input type="text" placeholder="Enter some text" required />
 </div>
 
 <style>
 	.field-container {
 		display: flex;
+		flex-direction: column;
 		align-items: flex-start;
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;
+	}
+
+	.field-label {
+		margin-bottom: 0.4rem;
 	}
 
 	input {
@@ -21,17 +27,17 @@
 		height: 3rem;
 		background-color: transparent;
 		border-bottom: 1px solid black;
-    box-sizing: border-box;
+		box-sizing: border-box;
 	}
 
 	input:hover {
 		border: 1px dashed black;
-    padding-left: 0.3rem;
+		padding-left: 0.3rem;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
-    outline: none;
-    padding-left: 0.3rem;
+		outline: none;
+		padding-left: 0.3rem;
 	}
 </style>
