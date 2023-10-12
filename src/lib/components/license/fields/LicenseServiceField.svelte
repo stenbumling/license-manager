@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
+	import { showServiceModal } from '$lib/stores/modal.ts';
 
 	function handleClick() {
-		console.log('clicked');
+		showServiceModal.set(true);
 	}
 </script>
 
@@ -16,7 +17,9 @@
 			<option value="docker-enterprise">Docker Enterprise</option>
 			<option value="visual-studio-enterprise">Visual Studio Enterprise</option>
 		</select>
-		<Button class="p-2 ml-5 w-12 h-11 cursor-pointer bg-[var(--deep-purple)]" on:click={handleClick}>O</Button>
+		<Button class="p-2 ml-5 w-12 h-11 cursor-pointer bg-[var(--deep-purple)]" on:click={handleClick}
+			>O</Button
+		>
 	</div>
 </div>
 

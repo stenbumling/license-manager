@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { showModal } from '$lib/stores/modal.ts';
 
-	function goBack() {
+	function handleClick() {
 		goto('/');
 		showModal.set(false);
 	}
@@ -10,7 +10,7 @@
 
 <div class="title-container">
 	<h1>AutoCAD</h1>
-	<a href="/" on:click|preventDefault={goBack}>Go back</a>
+	<a href="/" on:click|preventDefault={handleClick}>Go back</a>
 </div>
 
 <style>
