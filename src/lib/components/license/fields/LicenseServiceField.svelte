@@ -24,10 +24,11 @@
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		border: none;
 		width: 100%;
-		height: 2.8rem;
+		height: 3.2rem;
 		background-color: transparent;
 		border-bottom: 1px solid black;
 		appearance: none;
+		box-sizing: border-box;
 		padding: 0rem;
 	}
 

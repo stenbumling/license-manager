@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
-	import LicenseField from '$lib/components/license/fields/LicenseServiceField.svelte';
+	import LicenseServiceField from '$lib/components/license/fields/LicenseServiceField.svelte';
+	import LicenseTextField from '$lib/components/license/fields/LicenseTextField.svelte';
 	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
 	import { showModal } from '$lib/stores/modal.ts';
 
@@ -14,16 +15,16 @@
 <div class="license-container">
 	<LicenseTitle />
 	<div class="fields-grid">
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
-		<LicenseField />
+		<LicenseServiceField />
+		<LicenseTextField />
+		<LicenseTextField />
+		<LicenseTextField />
+		<LicenseTextField />
+		<LicenseTextField />
+		<LicenseTextField />
+		<LicenseTextField />
+		<LicenseTextField />
+		<LicenseTextField />
 	</div>
 	<div class="buttons-container">
 		<a href="/" class="link-container" on:click={handleClick}>

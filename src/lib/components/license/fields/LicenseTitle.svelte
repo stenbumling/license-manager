@@ -9,7 +9,7 @@
 </script>
 
 <div class="title-container">
-	<h1>Title</h1>
+	<h1>AutoCAD</h1>
 	<a href="/" on:click|preventDefault={goBack}>Go back</a>
 </div>
 
