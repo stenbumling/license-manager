@@ -1,15 +1,23 @@
 <script lang="ts">
+	import { Button } from 'flowbite-svelte';
+
+	function handleClick() {
+		console.log('clicked');
+	}
 </script>
 
 <div class="field-container">
 	<h3 class="field-label">Service</h3>
-	<select required name="services">
-		<option disabled selected hidden value="">Select a service</option>
-		<option value="office-365">Office 365</option>
-		<option value="autocad">AutoCAD</option>
-		<option value="docker-enterprise">Docker Enterprise</option>
-		<option value="visual-studio-enterprise">Visual Studio Enterprise</option>
-	</select>
+	<div class="field-row">
+		<select required name="services">
+			<option disabled selected hidden value="">Select a service</option>
+			<option value="office-365">Office 365</option>
+			<option value="autocad">AutoCAD</option>
+			<option value="docker-enterprise">Docker Enterprise</option>
+			<option value="visual-studio-enterprise">Visual Studio Enterprise</option>
+		</select>
+		<Button class="p-2 ml-5 w-12 h-11 cursor-pointer bg-[var(--deep-purple)]" on:click={handleClick}>O</Button>
+	</div>
 </div>
 
 <style>
@@ -24,6 +32,12 @@
 
 	.field-label {
 		margin-bottom: 0.4rem;
+	}
+
+	.field-row {
+		width: 100%;
+		display: flex;
+		align-items: flex-end;
 	}
 
 	select {
