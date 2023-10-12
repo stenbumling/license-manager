@@ -1,8 +1,8 @@
 <script lang="ts">
-	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
-	import LicenseField from '$lib/components/license/fields/LicenseField.svelte';
-	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import { goto } from '$app/navigation';
+	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
+	import LicenseField from '$lib/components/license/fields/LicenseServiceField.svelte';
+	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
 	import { showModal } from '$lib/stores/modal.ts';
 
 	function handleClick() {
@@ -35,7 +35,7 @@
 <style>
 	.license-container {
 		width: 100%;
-		max-width: 120rem;
+		max-width: 100rem;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
@@ -46,7 +46,7 @@
 		grid-template-columns: 1fr 1fr 1fr;
 		gap: 2rem 5rem;
 		width: 100%;
-		max-width: 120rem;
+		max-width: 100rem;
 		height: calc(100% - 12rem);
 		overflow-y: auto;
 	}
@@ -61,10 +61,9 @@
 		width: 16rem;
 	}
 
-	@media (max-width: 1600px) {
+	@media (max-width: 1400px) {
 		.fields-grid {
 			grid-template-columns: 1fr 1fr;
-			gap: 2rem 2rem;
 		}
 	}
 </style>

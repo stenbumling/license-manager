@@ -26,7 +26,7 @@
 		display: flex;
 		align-self: center;
 		width: 80vw;
-		max-width: 120rem;
+		max-width: 100rem;
 		height: 78vh;
 		background-color: white;
 		padding: 2rem 4rem;
