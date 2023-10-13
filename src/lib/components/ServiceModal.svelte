@@ -1,15 +1,18 @@
 <script lang="ts">
+	import { showServiceModal } from '$lib/stores/modal.ts';
+	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
-  import { showServiceModal } from '$lib/stores/modal.ts';
 
-  function handleClick() {
+	function handleClick() {
 		showServiceModal.set(false);
 	}
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
-		<a href="/" on:click|preventDefault={handleClick}>Go back</a>
+		<a href="/" class="back-link" on:click|preventDefault={handleClick}>
+			<CloseLarge size={24} aria-label="CloseLarge" />
+		</a>
 	</dialog>
 </div>
 
@@ -29,10 +32,32 @@
 		border: none;
 		display: flex;
 		align-self: center;
+		justify-content: flex-end;
 		width: 40vw;
 		max-width: 100rem;
 		height: 60vh;
 		background-color: white;
 		padding: 2rem 4rem;
+	}
+
+	.back-link {
+		font-size: 1rem;
+		text-decoration: none;
+		color: black;
+		transition: color 0.25s ease;
+		display: flex;
+		align-self: flex-start;
+		padding: 0.2rem;
+		border-radius: 6px;
+
+		&:hover {
+			background-color: #eeeeee;
+		}
+
+		&:active {
+			position: relative;
+			top: 1px;
+			left: 1px;
+		}
 	}
 </style>
