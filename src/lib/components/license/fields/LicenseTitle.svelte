@@ -27,6 +27,7 @@
 		grid-column: 1 / -1;
 		border-bottom: 2px solid black;
 		margin-bottom: 3rem;
+		cursor: default;
 	}
 
 	.top-container {

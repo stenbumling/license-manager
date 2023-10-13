@@ -19,6 +19,7 @@
 
 	.field-label {
 		margin-bottom: 0.4rem;
+		cursor: default;
 	}
 
 	input {
