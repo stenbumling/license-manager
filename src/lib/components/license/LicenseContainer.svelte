@@ -4,7 +4,7 @@
 	import LicenseServiceField from '$lib/components/license/fields/LicenseServiceField.svelte';
 	import LicenseTextField from '$lib/components/license/fields/LicenseTextField.svelte';
 	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
-	import ServiceModal from '$lib/components/ServiceModal.svelte';
+	import ServiceModal from '$lib/components/license/service-admin/ServiceModal.svelte';
 	import { showModal, showServiceModal } from '$lib/stores/modal.ts';
 
 	function handleClick() {

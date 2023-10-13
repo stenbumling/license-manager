@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { showServiceModal } from '$lib/stores/modal.ts';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
-	import Search from 'carbon-icons-svelte/lib/Search.svelte';
 	import { fade } from 'svelte/transition';
+	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 
 	function handleClick() {
 		showServiceModal.set(false);
@@ -12,16 +12,16 @@
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
 		<div class="modal-header">
-			<h1 class="modal-title">Service list</h1>
+			<h1 class="modal-title">Service admin</h1>
 			<a href="/" class="back-link" on:click|preventDefault={handleClick}>
 				<CloseLarge size={24} aria-label="CloseLarge" />
 			</a>
 		</div>
-		<div class="search-container">
-			<div class="search-icon">
-				<Search size={20} fill="black" aria-label="Search" />
-			</div>
-			<input class="search-field" type="text" placeholder="Search" />
+		<div class="input-container">
+			<input type="text" placeholder="Enter some text" required />
+			<button class="settings-button" on:click={handleClick}>
+				<Add size={32} fill="white" aria-label="SettingsAdjust" />
+			</button>
 		</div>
 		<div>List</div>
 		<div>Confirmation buttons</div>
@@ -84,17 +84,39 @@
 		}
 	}
 
-	.search-container {
+	.input-container {
 		margin-bottom: 2rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-direction: row;
+		width: 100%;
 	}
 
-	.search-icon {
-		position: absolute;
-		top: 117px;
-		left: 76px;
+	.settings-button {
+		height: 2.2rem;
+		aspect-ratio: 1/1;
+		border-radius: 6px;
+		background-color: black;
+		margin-left: 1.6rem;
+		cursor: pointer;
+		display: flex;
+		/* align-self: flex-end; */
+		justify-content: center;
+		align-items: center;
+
+		&:hover {
+			background-color: var(--deep-purple);
+		}
+
+		&:active {
+			position: relative;
+			top: 1px;
+			left: 1px;
+		}
 	}
 
-	.search-field {
+	input {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		border: none;
 		width: 100%;
@@ -102,19 +124,16 @@
 		background-color: transparent;
 		border-bottom: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
-		padding-left: 50px;
 	}
 
 	input:hover {
 		border: 1px dashed black;
-		padding-left: 49px;
-		padding-bottom: 2px;
+		padding-left: 0.3rem;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 48px;
-		padding-bottom: 2px;
+		padding-left: 0.3rem;
 	}
 </style>
