@@ -12,7 +12,7 @@
 		}
 
 		e.preventDefault();
-		goto('/?modal=license/add-new');
+		goto('/?modal=add-new');
 		showModal.set(true);
 	}
 </script>
