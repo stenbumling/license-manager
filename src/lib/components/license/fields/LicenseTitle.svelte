@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { showModal } from '$lib/stores/modal.ts';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte'
+	import { serviceTitle } from '$lib/stores/license.ts';
 
 	function handleClick() {
 		goto('/');
@@ -16,7 +17,7 @@
 		<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
 	</div>
-	<h1 class="title-label">AutoCAD</h1>
+	<h1 class="title-label">{$serviceTitle}</h1>
 </div>
 
 <style>
@@ -24,7 +25,7 @@
 		display: flex;
 		flex-direction: column;
 		grid-column: 1 / -1;
-		border-bottom: 1px solid black;
+		border-bottom: 2px solid black;
 		margin-bottom: 3rem;
 	}
 

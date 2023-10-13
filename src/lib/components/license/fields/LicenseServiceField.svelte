@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { showServiceModal } from '$lib/stores/modal.ts';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
+	import { serviceTitle } from '$lib/stores/license.ts';
 
 	function handleClick() {
 		showServiceModal.set(true);
@@ -10,12 +11,12 @@
 <div class="field-container">
 	<h3 class="field-label">Service</h3>
 	<div class="field-row">
-		<select required name="services">
+		<select required name="services" bind:value={$serviceTitle}>
 			<option disabled selected hidden value="">Select a service</option>
-			<option value="office-365">Office 365</option>
-			<option value="autocad">AutoCAD</option>
-			<option value="docker-enterprise">Docker Enterprise</option>
-			<option value="visual-studio-enterprise">Visual Studio Enterprise</option>
+			<option value="Office 365">Office 365</option>
+			<option value="AutoCAD">AutoCAD</option>
+			<option value="Docker Enterprise">Docker Enterprise</option>
+			<option value="Visual Studio Enterprise">Visual Studio Enterprise</option>
 		</select>
 		<button class="settings-button" on:click={handleClick}>
 			<SettingsAdjust size={20} fill="white" aria-label="SettingsAdjust" />

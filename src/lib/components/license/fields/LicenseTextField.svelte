@@ -1,8 +1,9 @@
 <script lang="ts">
+	export let label: string;
 </script>
 
 <div class="field-container">
-	<h3 class="field-label">Text field</h3>
+	<h3 class="field-label">{label}</h3>
 	<input type="text" placeholder="Enter some text" required />
 </div>
 

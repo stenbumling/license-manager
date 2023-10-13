@@ -18,18 +18,18 @@
 {/if}
 
 <div class="license-container">
-	<LicenseTitle />
+	<LicenseTitle/>
 	<div class="fields-grid">
-		<LicenseServiceField />
-		<LicenseTextField />
-		<LicenseTextField />
-		<LicenseTextField />
-		<LicenseTextField />
-		<LicenseTextField />
-		<LicenseTextField />
-		<LicenseTextField />
-		<LicenseTextField />
-		<LicenseTextField />
+		<LicenseServiceField/>
+		<LicenseTextField label="Assigned users" />
+		<LicenseTextField label="Status"/>
+		<LicenseTextField label="License category"/>
+		<LicenseTextField label="Contact person"/>
+		<LicenseTextField label="Renewal date"/>
+		<LicenseTextField label="Link to license site"/>
+		<LicenseTextField label="Comment"/>
+		<LicenseTextField label="Renewal interval"/>
+		<LicenseTextField label="Something else"/>
 	</div>
 	<div class="buttons-container">
 		<a href="/" class="link-container" on:click={handleClick}>
