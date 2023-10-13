@@ -55,6 +55,7 @@
 		max-width: 100rem;
 		height: calc(100% - 12rem);
 		overflow-y: auto;
+		margin-bottom: 3rem;
 	}
 
 	.buttons-container {
