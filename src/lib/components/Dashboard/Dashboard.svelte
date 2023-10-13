@@ -1,10 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
-	import { goto } from '$app/navigation';
-	import { showModal } from '$lib/stores/modal.ts';
 	import { activeFilter } from '$lib/stores/filter.ts';
+	import { showModal } from '$lib/stores/modal.ts';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
@@ -12,7 +12,7 @@
 		}
 
 		e.preventDefault();
-		goto('/?modal=add-new');
+		goto('/?modal=license/add-new');
 		showModal.set(true);
 	}
 </script>
@@ -58,7 +58,7 @@
 			isActive={$activeFilter === 'Expired'}
 		/>
 	</div>
-	<a href="/add-new" on:click={handleClick}>
+	<a href="/license/add-new" on:click={handleClick}>
 		<ButtonLarge title="Add new license" />
 	</a>
 </div>

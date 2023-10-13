@@ -5,7 +5,7 @@
 <div class="button-container">
 	<div class="button-content">
 		<h3 class="button-title">{title}</h3>
-		<img src={'./button-arrow.svg'} alt="arrow" />
+		<img src={'/button-arrow.svg'} alt="arrow" />
 	</div>
 	<div class="button-animated-hover" />
 </div>
