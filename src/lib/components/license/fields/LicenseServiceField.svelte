@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Button } from 'flowbite-svelte';
 	import { showServiceModal } from '$lib/stores/modal.ts';
+	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 
 	function handleClick() {
 		showServiceModal.set(true);
@@ -17,9 +17,9 @@
 			<option value="docker-enterprise">Docker Enterprise</option>
 			<option value="visual-studio-enterprise">Visual Studio Enterprise</option>
 		</select>
-		<Button class="p-2 ml-5 w-12 h-11 cursor-pointer bg-[var(--deep-purple)]" on:click={handleClick}
-			>O</Button
-		>
+		<button class="settings-button" on:click={handleClick}>
+			<SettingsAdjust size={20} fill="white" aria-label="SettingsAdjust" />
+		</button>
 	</div>
 </div>
 
@@ -40,7 +40,29 @@
 	.field-row {
 		width: 100%;
 		display: flex;
-		align-items: flex-end;
+		align-items: center;
+	}
+
+	.settings-button {
+		height: 75%;
+		aspect-ratio: 1/1;
+		border-radius: 6px;
+		background-color: black;
+		margin-left: 1.6rem;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&:hover {
+			background-color: var(--deep-purple);
+		}
+
+		&:active {
+			position: relative;
+			top: 1px;
+			left: 1px;
+		}
 	}
 
 	select {
