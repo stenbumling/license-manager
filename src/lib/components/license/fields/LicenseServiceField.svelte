@@ -104,4 +104,10 @@
 		color: black;
 		font-style: normal;
 	}
+
+	@media (max-width: 1000px) {
+		.settings-button {
+			margin-left: 0.6rem;
+		}
+	}
 </style>
