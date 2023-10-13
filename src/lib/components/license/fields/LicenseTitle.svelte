@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { showModal } from '$lib/stores/modal.ts';
+	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte'
 
 	function handleClick() {
 		goto('/');
@@ -11,7 +12,9 @@
 <div class="title-container">
 	<div class="top-container">
 		<h3 class="id-label">#838</h3>
-		<a href="/" on:click|preventDefault={handleClick}>Go back</a>
+		<a href="/" class="back-link" on:click|preventDefault={handleClick}>
+		<CloseLarge size={24} aria-label="CloseLarge" />
+		</a>
 	</div>
 	<h1 class="title-label">AutoCAD</h1>
 </div>
@@ -28,6 +31,8 @@
 	.top-container {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+		margin: 0 0 0.8rem 0;
 	}
 
 	.title-label {
@@ -38,6 +43,26 @@
 
 	.id-label {
 		font-size: 1rem;
-		margin: 0 0 0.8rem 0;
+	}
+
+	.back-link {
+		font-size: 1rem;
+		text-decoration: none;
+		color: black;
+		transition: color 0.25s ease;
+		display: flex;
+		align-self: center;
+		padding: 0.2rem;
+		border-radius: 6px;
+		
+		&:hover {
+			background-color: #EEEEEE;
+		}
+
+		&:active {
+			position: relative;
+			top: 1px;
+			left: 1px;
+		}
 	}
 </style>
