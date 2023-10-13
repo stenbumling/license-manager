@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { showServiceModal } from '$lib/stores/modal.ts';
+	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
-	import Add from 'carbon-icons-svelte/lib/Add.svelte';
+	import ServiceItem from '$lib/components/license/service-admin/ServiceItem.svelte'
 
 	function handleClick() {
 		showServiceModal.set(false);
@@ -23,8 +24,10 @@
 				<Add size={32} fill="white" aria-label="SettingsAdjust" />
 			</button>
 		</div>
-		<div>List</div>
-		<div>Confirmation buttons</div>
+		<ServiceItem label="Office 365"/>
+		<ServiceItem label="AutoCAD"/>
+		<ServiceItem label="Docker Enterprise"/>
+		<ServiceItem label="Visual Studio Enterprise"/>
 	</dialog>
 </div>
 
