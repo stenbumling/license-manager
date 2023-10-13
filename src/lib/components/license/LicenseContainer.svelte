@@ -48,15 +48,16 @@
 	}
 
 	.fields-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		gap: 2rem 5rem;
-		width: 100%;
-		max-width: 100rem;
-		height: calc(100% - 12rem);
-		overflow-y: auto;
-		margin-bottom: 3rem;
-	}
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: minmax(130px, auto);
+    gap: 2rem 5rem;
+    width: 100%;
+    max-width: 100rem;
+    height: calc(100% - 12rem);
+    overflow-y: auto;
+    margin-bottom: 3rem;
+}
 
 	.buttons-container {
 		display: flex;
