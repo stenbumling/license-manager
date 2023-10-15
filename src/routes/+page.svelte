@@ -1,11 +1,17 @@
 <script lang="ts">
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
+	import Modal from '$lib/components/license/Modal.svelte';
+	import { showModal } from '$lib/stores/modal.ts';
 </script>
 
 <div class="main-container">
 	<Dashboard />
 	<TableContainer />
+
+	{#if $showModal}
+		<Modal />
+	{/if}
 </div>
 
 <style>

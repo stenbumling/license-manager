@@ -1,18 +1,42 @@
-<button class="button-container">
-	<h4>Search</h4>
-</button>
+<script lang="ts">
+	import Search from 'carbon-icons-svelte/lib/Search.svelte';
+</script>
+
+	<input class="search-field" type="text" placeholder="Search" />
+	<div class="search-icon">
+		<Search size={20} fill="black" aria-label="Search" />
+	</div>
 
 <style>
-	.button-container {
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		background-color: white;
-		color: rgb(183, 181, 181);
-		border: 1px solid black;
-		height: 2.6rem;
+
+	.search-icon {
+		position: relative;
+		top: -35px;
+		left: 14px;
+		width: 20px;
+	}
+
+	.search-field {
+		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+		border: none;
 		width: 100%;
-		margin-bottom: 1rem;
-		padding: 0.5rem 1.3rem;
+		height: 3rem;
+		background-color: transparent;
+		border-bottom: 1px solid var(--text-placeholder);
+		box-sizing: border-box;
+		padding-left: 50px;
+	}
+
+	input:hover {
+		border: 1px dashed black;
+		padding-left: 49px;
+		padding-bottom: 2px;
+	}
+
+	input:focus {
+		border: 2px solid var(--light-purple);
+		outline: none;
+		padding-left: 48px;
+		padding-bottom: 2px;
 	}
 </style>

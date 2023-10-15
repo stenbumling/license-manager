@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.postcss';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
 	import Header from '$lib/components/Header.svelte';

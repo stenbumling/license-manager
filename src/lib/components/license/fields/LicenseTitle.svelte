@@ -1,0 +1,70 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import { showModal } from '$lib/stores/modal.ts';
+	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte'
+	import { serviceTitle } from '$lib/stores/license.ts';
+
+	function handleClick() {
+		goto('/');
+		showModal.set(false);
+	}
+</script>
+
+<div class="title-container">
+	<div class="top-container">
+		<h3 class="id-label">#838</h3>
+		<a href="/" class="back-link" on:click|preventDefault={handleClick}>
+		<CloseLarge size={24} aria-label="CloseLarge" />
+		</a>
+	</div>
+	<h1 class="title-label">{$serviceTitle}</h1>
+</div>
+
+<style>
+	.title-container {
+		display: flex;
+		flex-direction: column;
+		grid-column: 1 / -1;
+		border-bottom: 2px solid black;
+		margin-bottom: 3rem;
+		cursor: default;
+	}
+
+	.top-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0 0 0.8rem 0;
+	}
+
+	.title-label {
+		font-size: 2.4rem;
+		font-weight: 500;
+		margin: 0 0 1rem 0;
+	}
+
+	.id-label {
+		font-size: 1rem;
+	}
+
+	.back-link {
+		font-size: 1rem;
+		text-decoration: none;
+		color: black;
+		transition: color 0.25s ease;
+		display: flex;
+		align-self: center;
+		padding: 0.2rem;
+		border-radius: 6px;
+		
+		&:hover {
+			background-color: #EEEEEE;
+		}
+
+		&:active {
+			position: relative;
+			top: 1px;
+			left: 1px;
+		}
+	}
+</style>

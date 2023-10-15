@@ -6,13 +6,17 @@ html {
 	padding: 0;
 	font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 	font-size: 16px;
+	cursor: default;
 	line-height: 1.5;
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: none;
 }
 
 h1 {
 	font-family: 'BW Gradual Regular', Arial, Helvetica, sans-serif;
 	font-size: 2rem;
 	text-transform: uppercase;
+	cursor: default;
 	line-height: 1.2;
 }
 
@@ -20,13 +24,16 @@ h2 {
 	font-family: 'BW Gradual Bold', Arial, Helvetica, sans-serif;
 	font-size: 1.2rem;
 	text-transform: uppercase;
-	margin: 0.4rem 0;
+	cursor: default;
+	margin: 0;
+	padding: 0;
 }
 
 h3 {
 	font-family: 'FK Grotesk Bold', Arial, Helvetica, sans-serif;
 	font-size: 1rem;
 	text-transform: uppercase;
+	cursor: default;
 	margin: 0;
 	padding: 0;
 }
@@ -43,6 +50,12 @@ button {
 	border: none;
 	margin: 0;
 	padding: 0;
+	background: transparent;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
 }
 
 /* ::-webkit-scrollbar {
