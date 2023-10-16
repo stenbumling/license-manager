@@ -54,6 +54,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		transition: background-color 0.2s ease;
 
 		&:hover {
 			background-color: var(--deep-purple);

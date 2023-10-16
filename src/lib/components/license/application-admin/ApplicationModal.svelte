@@ -87,7 +87,7 @@
 		display: flex;
 		padding: 0.2rem;
 		border-radius: 6px;
-
+		transition: background-color 0.2s ease;
 		&:hover {
 			background-color: #eeeeee;
 		}
@@ -119,6 +119,7 @@
 		/* align-self: flex-end; */
 		justify-content: center;
 		align-items: center;
+		transition: background-color 0.3s ease;
 
 		&:hover {
 			background-color: var(--deep-purple);

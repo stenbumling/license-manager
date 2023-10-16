@@ -33,6 +33,7 @@
 		cursor: pointer;
 		position: relative;
 		top: -1px;
+		transition: background-color 0.2s ease;
 
 		&:hover {
 			background-color: #ffefef;
