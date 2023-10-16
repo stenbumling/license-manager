@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { showServiceModal } from '$lib/stores/modal.ts';
+	import ApplicationItem from '$lib/components/license/application-admin/ApplicationItem.svelte';
+	import { showApplicationModal } from '$lib/stores/modal.ts';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
-	import ServiceItem from '$lib/components/license/service-admin/ServiceItem.svelte'
 
 	function handleClick() {
-		showServiceModal.set(false);
+		showApplicationModal.set(false);
 	}
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
 		<div class="modal-header">
-			<h1 class="modal-title">Service admin</h1>
+			<h1 class="modal-title">Application admin</h1>
 			<a href="/" class="back-link" on:click|preventDefault={handleClick}>
 				<CloseLarge size={24} aria-label="CloseLarge" />
 			</a>
@@ -24,10 +24,10 @@
 				<Add size={32} fill="white" aria-label="SettingsAdjust" />
 			</button>
 		</div>
-		<ServiceItem label="Office 365"/>
-		<ServiceItem label="AutoCAD"/>
-		<ServiceItem label="Docker Enterprise"/>
-		<ServiceItem label="Visual Studio Enterprise"/>
+		<ApplicationItem label="Office 365" />
+		<ApplicationItem label="AutoCAD" />
+		<ApplicationItem label="Docker Enterprise" />
+		<ApplicationItem label="Visual Studio Enterprise" />
 	</dialog>
 </div>
 

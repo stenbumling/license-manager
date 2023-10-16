@@ -1,6 +1,6 @@
 <div class="table-header-container">
 	<h3>#</h3>
-	<h3>SERVICE</h3>
+	<h3>APPLICATION</h3>
 	<h3>ASSIGNED TO</h3>
 	<h3>EXPIRES IN</h3>
 </div>

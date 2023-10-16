@@ -1,6 +1,6 @@
 <div class="license-row-container">
 	<p>#</p>
-	<p>Service</p>
+	<p>Application</p>
 	<p>Assigned to</p>
 	<p>Expires in</p>
 </div>

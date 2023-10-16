@@ -1,18 +1,18 @@
 <script lang="ts">
-	import { showServiceModal } from '$lib/stores/modal.ts';
+	import { applicationTitle } from '$lib/stores/license.ts';
+	import { showApplicationModal } from '$lib/stores/modal.ts';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
-	import { serviceTitle } from '$lib/stores/license.ts';
 
 	function handleClick() {
-		showServiceModal.set(true);
+		showApplicationModal.set(true);
 	}
 </script>
 
 <div class="field-container">
-	<h3 class="field-label">Service</h3>
+	<h3 class="field-label">Application</h3>
 	<div class="field-row">
-		<select required name="services" bind:value={$serviceTitle}>
-			<option disabled selected hidden value="">Select a service</option>
+		<select required name="applications" bind:value={$applicationTitle}>
+			<option disabled selected hidden value="">Select a application</option>
 			<option value="Office 365">Office 365</option>
 			<option value="AutoCAD">AutoCAD</option>
 			<option value="Docker Enterprise">Docker Enterprise</option>
