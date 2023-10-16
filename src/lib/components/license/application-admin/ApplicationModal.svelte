@@ -24,10 +24,20 @@
 				<Add size={32} fill="white" aria-label="SettingsAdjust" />
 			</button>
 		</div>
-		<ApplicationItem label="Office 365" />
-		<ApplicationItem label="AutoCAD" />
-		<ApplicationItem label="Docker Enterprise" />
-		<ApplicationItem label="Visual Studio Enterprise" />
+		<div class="application-list">
+			<ApplicationItem label="Office 365" />
+			<ApplicationItem label="AutoCAD" />
+			<ApplicationItem label="Docker Enterprise" />
+			<ApplicationItem label="Visual Studio Enterprise" />
+			<ApplicationItem label="Office 365" />
+			<ApplicationItem label="AutoCAD" />
+			<ApplicationItem label="Docker Enterprise" />
+			<ApplicationItem label="Visual Studio Enterprise" />
+			<ApplicationItem label="Office 365" />
+			<ApplicationItem label="AutoCAD" />
+			<ApplicationItem label="Docker Enterprise" />
+			<ApplicationItem label="Visual Studio Enterprise" />
+		</div>
 	</dialog>
 </div>
 
@@ -49,7 +59,7 @@
 		flex-direction: column;
 		align-self: center;
 		width: 40vw;
-		max-width: 100rem;
+		max-width: 40rem;
 		height: 60vh;
 		background-color: white;
 		padding: 2rem 4rem;
@@ -117,6 +127,11 @@
 			top: 1px;
 			left: 1px;
 		}
+	}
+
+	.application-list {
+		overflow-y: auto;
+		height: calc(100% - 15rem);
 	}
 
 	input {
