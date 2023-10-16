@@ -18,12 +18,14 @@
 				<CloseLarge size={24} aria-label="CloseLarge" />
 			</a>
 		</div>
+		<h3>Add new application</h3>
 		<div class="input-container">
-			<input type="text" placeholder="Enter some text" required />
-			<button class="settings-button" on:click={handleClick}>
-				<Add size={32} fill="white" aria-label="SettingsAdjust" />
+			<input type="text" placeholder="Application name" required />
+			<button class="add-button" on:click={handleClick}>
+				<Add size={32} fill="white" aria-label="Add" />
 			</button>
 		</div>
+		<h3>List of applications</h3>
 		<div class="application-list">
 			<ApplicationItem label="Office 365" />
 			<ApplicationItem label="AutoCAD" />
@@ -59,17 +61,17 @@
 		flex-direction: column;
 		align-self: center;
 		width: 40vw;
-		max-width: 40rem;
-		height: 60vh;
+		max-width: 30rem;
+		max-height: 60vh;
 		background-color: white;
-		padding: 2rem 4rem;
+		padding: 3rem 4rem;
 	}
 
 	.modal-header {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		margin: 0 0 2rem 0;
+		align-items: flex-start;
+		margin: 0 0 3rem 0;
 	}
 
 	.modal-title {
@@ -98,7 +100,7 @@
 	}
 
 	.input-container {
-		margin-bottom: 2rem;
+		margin-bottom: 3rem;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -106,7 +108,7 @@
 		width: 100%;
 	}
 
-	.settings-button {
+	.add-button {
 		height: 2.2rem;
 		aspect-ratio: 1/1;
 		border-radius: 6px;
@@ -131,7 +133,6 @@
 
 	.application-list {
 		overflow-y: auto;
-		height: calc(100% - 15rem);
 	}
 
 	input {
@@ -144,14 +145,18 @@
 		box-sizing: border-box;
 	}
 
+	h3 {
+		margin-bottom: 0.4rem;
+	}
+
 	input:hover {
 		border: 1px dashed black;
-		padding-left: 0.3rem;
+		padding-left: 0.6rem;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 0.3rem;
+		padding-left: 0.6rem;
 	}
 </style>

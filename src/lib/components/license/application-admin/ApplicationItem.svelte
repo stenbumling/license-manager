@@ -19,6 +19,7 @@
 		justify-content: space-between;
 		align-items: center;
 		margin: 0.2rem 0;
+		border-bottom: 1px solid #E6E6E6;
 	}
 
 	.icon {
