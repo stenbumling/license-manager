@@ -25,8 +25,8 @@
 		display: flex;
 		flex-direction: column;
 		grid-column: 1 / -1;
-		border-bottom: 2px solid black;
-		margin-bottom: 3rem;
+		border-bottom: 1px solid var(--text-placeholder);
+		margin-bottom: 4rem;
 		cursor: default;
 	}
 
@@ -34,11 +34,11 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin: 0 0 0.8rem 0;
+		margin: 0 0 0.4rem 0;
 	}
 
 	.title-label {
-		font-size: 2.4rem;
+		font-size: 2.8rem;
 		font-weight: 500;
 		margin: 0 0 1rem 0;
 	}
