@@ -20,6 +20,7 @@
 		padding: 1rem 1.3rem;
 		position: relative;
 		user-select: none;
+		cursor: pointer;
 	}
 
 	.button-container .button-animated-hover {
@@ -53,5 +54,9 @@
 		position: relative;
 		top: 1px;
 		left: 1px;
+	}
+
+	h3 {
+		cursor: pointer;
 	}
 </style>

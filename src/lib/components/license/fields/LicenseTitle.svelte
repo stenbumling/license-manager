@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { applicationTitle } from '$lib/stores/license.ts';
 	import { showModal } from '$lib/stores/modal.ts';
-	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte'
-	import { serviceTitle } from '$lib/stores/license.ts';
+	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	function handleClick() {
 		goto('/');
@@ -14,10 +14,10 @@
 	<div class="top-container">
 		<h3 class="id-label">#838</h3>
 		<a href="/" class="back-link" on:click|preventDefault={handleClick}>
-		<CloseLarge size={24} aria-label="CloseLarge" />
+			<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
 	</div>
-	<h1 class="title-label">{$serviceTitle}</h1>
+	<h1 class="title-label">{$applicationTitle}</h1>
 </div>
 
 <style>
@@ -25,8 +25,8 @@
 		display: flex;
 		flex-direction: column;
 		grid-column: 1 / -1;
-		border-bottom: 2px solid black;
-		margin-bottom: 3rem;
+		border-bottom: 1px solid var(--text-placeholder);
+		margin-bottom: 4rem;
 		cursor: default;
 	}
 
@@ -34,11 +34,11 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin: 0 0 0.8rem 0;
+		margin: 0 0 0.4rem 0;
 	}
 
 	.title-label {
-		font-size: 2.4rem;
+		font-size: 2.8rem;
 		font-weight: 500;
 		margin: 0 0 1rem 0;
 	}
@@ -56,9 +56,10 @@
 		align-self: center;
 		padding: 0.2rem;
 		border-radius: 6px;
+		transition: background-color 0.2s ease;
 		
 		&:hover {
-			background-color: #EEEEEE;
+			background-color: #eeeeee;
 		}
 
 		&:active {

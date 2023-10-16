@@ -1,33 +1,45 @@
 <script lang="ts">
-	import { showServiceModal } from '$lib/stores/modal.ts';
+	import ApplicationItem from '$lib/components/license/application-admin/ApplicationItem.svelte';
+	import { showApplicationModal } from '$lib/stores/modal.ts';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
-	import ServiceItem from '$lib/components/license/service-admin/ServiceItem.svelte'
 
 	function handleClick() {
-		showServiceModal.set(false);
+		showApplicationModal.set(false);
 	}
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
 		<div class="modal-header">
-			<h1 class="modal-title">Service admin</h1>
+			<h1 class="modal-title">Application admin</h1>
 			<a href="/" class="back-link" on:click|preventDefault={handleClick}>
 				<CloseLarge size={24} aria-label="CloseLarge" />
 			</a>
 		</div>
+		<h3>Add new application</h3>
 		<div class="input-container">
-			<input type="text" placeholder="Enter some text" required />
-			<button class="settings-button" on:click={handleClick}>
-				<Add size={32} fill="white" aria-label="SettingsAdjust" />
+			<input type="text" placeholder="Application name" required />
+			<button class="add-button" on:click={handleClick}>
+				<Add size={32} fill="white" aria-label="Add" />
 			</button>
 		</div>
-		<ServiceItem label="Office 365"/>
-		<ServiceItem label="AutoCAD"/>
-		<ServiceItem label="Docker Enterprise"/>
-		<ServiceItem label="Visual Studio Enterprise"/>
+		<h3>List of applications</h3>
+		<div class="application-list">
+			<ApplicationItem label="Office 365" />
+			<ApplicationItem label="AutoCAD" />
+			<ApplicationItem label="Docker Enterprise" />
+			<ApplicationItem label="Visual Studio Enterprise" />
+			<ApplicationItem label="Office 365" />
+			<ApplicationItem label="AutoCAD" />
+			<ApplicationItem label="Docker Enterprise" />
+			<ApplicationItem label="Visual Studio Enterprise" />
+			<ApplicationItem label="Office 365" />
+			<ApplicationItem label="AutoCAD" />
+			<ApplicationItem label="Docker Enterprise" />
+			<ApplicationItem label="Visual Studio Enterprise" />
+		</div>
 	</dialog>
 </div>
 
@@ -49,17 +61,17 @@
 		flex-direction: column;
 		align-self: center;
 		width: 40vw;
-		max-width: 100rem;
-		height: 60vh;
+		max-width: 30rem;
+		max-height: 60vh;
 		background-color: white;
-		padding: 2rem 4rem;
+		padding: 3rem 4rem;
 	}
 
 	.modal-header {
 		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		margin: 0 0 2rem 0;
+		align-items: flex-start;
+		margin: 0 0 3rem 0;
 	}
 
 	.modal-title {
@@ -75,7 +87,7 @@
 		display: flex;
 		padding: 0.2rem;
 		border-radius: 6px;
-
+		transition: background-color 0.2s ease;
 		&:hover {
 			background-color: #eeeeee;
 		}
@@ -88,7 +100,7 @@
 	}
 
 	.input-container {
-		margin-bottom: 2rem;
+		margin-bottom: 3rem;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -96,7 +108,7 @@
 		width: 100%;
 	}
 
-	.settings-button {
+	.add-button {
 		height: 2.2rem;
 		aspect-ratio: 1/1;
 		border-radius: 6px;
@@ -107,6 +119,7 @@
 		/* align-self: flex-end; */
 		justify-content: center;
 		align-items: center;
+		transition: background-color 0.3s ease;
 
 		&:hover {
 			background-color: var(--deep-purple);
@@ -119,6 +132,10 @@
 		}
 	}
 
+	.application-list {
+		overflow-y: auto;
+	}
+
 	input {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		border: none;
@@ -129,14 +146,18 @@
 		box-sizing: border-box;
 	}
 
+	h3 {
+		margin-bottom: 0.4rem;
+	}
+
 	input:hover {
 		border: 1px dashed black;
-		padding-left: 0.3rem;
+		padding-left: 0.6rem;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 0.3rem;
+		padding-left: 0.6rem;
 	}
 </style>
