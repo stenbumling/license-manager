@@ -16,7 +16,7 @@ const config = {
       server: {
         proxy: {
           '/api': {
-            target: 'http://81.232.97.112',
+            target: 'http://81.232.97.112:1433',
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
           },
