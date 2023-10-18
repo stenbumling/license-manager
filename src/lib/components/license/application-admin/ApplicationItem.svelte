@@ -1,13 +1,19 @@
 <script lang="ts">
+	import type { Application } from '$lib/stores/application-store';
+	import { applicationStore } from '$lib/stores/application-store';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
-	export let label: string;
+	export let application: Application;
+
+	function handleDelete() {
+		applicationStore.delete(application.id);
+	}
 </script>
 
 <div class="application-item">
-	<div class="icon">
+	<button class="icon" on:click={handleDelete}>
 		<TrashCan size={24} fill="red" />
-	</div>
-	<p>{label}</p>
+	</button>
+	<p>{application.name}</p>
 </div>
 
 <style>

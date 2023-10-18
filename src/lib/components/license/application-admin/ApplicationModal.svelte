@@ -35,7 +35,7 @@
 		<h3>List of applications</h3>
 		<div class="application-list">
 			{#each $applicationStore as application}
-				<ApplicationItem label={application.name} />
+				<ApplicationItem {application} />
 			{/each}
 		</div>
 	</dialog>
