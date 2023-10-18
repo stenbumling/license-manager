@@ -7,7 +7,7 @@
 
 <style>
 	.license-row-container {
-		border-bottom: 1px solid #E6E6E6;
+		border-bottom: 1px solid #e6e6e6;
 		height: 3rem;
 		display: flex;
 		align-items: center;

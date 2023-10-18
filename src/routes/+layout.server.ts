@@ -3,5 +3,7 @@ export const load = async ({ fetch }) => {
 		const res = await fetch('/api/application/');
 		const applicationList = await res.json();
 		return { applicationList };
-	} catch (error) {}
+	} catch (error) {
+		return { error };
+	}
 };

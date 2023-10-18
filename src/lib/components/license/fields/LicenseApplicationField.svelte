@@ -1,7 +1,10 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { applicationTitle } from '$lib/stores/license.ts';
 	import { showApplicationModal } from '$lib/stores/modal.ts';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
+
+	const { applicationList } = $page.data;
 
 	function handleClick() {
 		showApplicationModal.set(true);
@@ -13,10 +16,9 @@
 	<div class="field-row">
 		<select required name="applications" bind:value={$applicationTitle}>
 			<option disabled selected hidden value="">Select a application</option>
-			<option value="Office 365">Office 365</option>
-			<option value="AutoCAD">AutoCAD</option>
-			<option value="Docker Enterprise">Docker Enterprise</option>
-			<option value="Visual Studio Enterprise">Visual Studio Enterprise</option>
+			{#each applicationList as application}
+				<option value={application.name}>{application.name}</option>
+			{/each}
 		</select>
 		<button class="settings-button" on:click={handleClick}>
 			<SettingsAdjust size={20} fill="white" aria-label="SettingsAdjust" />

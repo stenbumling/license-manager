@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import ApplicationItem from '$lib/components/license/application-admin/ApplicationItem.svelte';
 	import { showApplicationModal } from '$lib/stores/modal.ts';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
+
+	const { applicationList } = $page.data;
 
 	function handleClick() {
 		showApplicationModal.set(false);
@@ -27,18 +30,9 @@
 		</div>
 		<h3>List of applications</h3>
 		<div class="application-list">
-			<ApplicationItem label="Office 365" />
-			<ApplicationItem label="AutoCAD" />
-			<ApplicationItem label="Docker Enterprise" />
-			<ApplicationItem label="Visual Studio Enterprise" />
-			<ApplicationItem label="Office 365" />
-			<ApplicationItem label="AutoCAD" />
-			<ApplicationItem label="Docker Enterprise" />
-			<ApplicationItem label="Visual Studio Enterprise" />
-			<ApplicationItem label="Office 365" />
-			<ApplicationItem label="AutoCAD" />
-			<ApplicationItem label="Docker Enterprise" />
-			<ApplicationItem label="Visual Studio Enterprise" />
+			{#each applicationList as application}
+				<ApplicationItem label={application.name} />
+			{/each}
 		</div>
 	</dialog>
 </div>

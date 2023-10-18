@@ -57,7 +57,7 @@
 		padding: 0.2rem;
 		border-radius: 6px;
 		transition: background-color 0.2s ease;
-		
+
 		&:hover {
 			background-color: #eeeeee;
 		}

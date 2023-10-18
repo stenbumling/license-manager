@@ -2,13 +2,12 @@
 	import Search from 'carbon-icons-svelte/lib/Search.svelte';
 </script>
 
-	<input class="search-field" type="text" placeholder="Search" />
-	<div class="search-icon">
-		<Search size={20} fill="black" aria-label="Search" />
-	</div>
+<input class="search-field" type="text" placeholder="Search" />
+<div class="search-icon">
+	<Search size={20} fill="black" aria-label="Search" />
+</div>
 
 <style>
-
 	.search-icon {
 		position: relative;
 		top: -35px;
