@@ -30,7 +30,6 @@ function createApplicationStore() {
 			const response = await fetch(`/api/application/delete/${id}`, {
 				method: 'DELETE',
 			});
-			console.log(response);
 			if (!response.ok) throw new Error('Failed to delete application');
 			update((applications) => applications.filter((application) => application.id !== id));
 		} catch (error) {
