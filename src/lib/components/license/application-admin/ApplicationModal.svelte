@@ -1,14 +1,18 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import ApplicationItem from '$lib/components/license/application-admin/ApplicationItem.svelte';
-	import { showApplicationModal } from '$lib/stores/modal.ts';
+	import { applicationStore } from '$lib/stores/application-store';
+	import { showApplicationModal } from '$lib/stores/modal';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
 
-	const { applicationList } = $page.data;
+	let inputValue: string = '';
 
-	function handleClick() {
+	function handleAdd() {
+		applicationStore.add(inputValue);
+	}
+
+	function handleClose() {
 		showApplicationModal.set(false);
 	}
 </script>
@@ -17,20 +21,20 @@
 	<dialog open class="modal-window">
 		<div class="modal-header">
 			<h1 class="modal-title">Application admin</h1>
-			<a href="/" class="back-link" on:click|preventDefault={handleClick}>
+			<a href="/" class="back-link" on:click|preventDefault={handleClose}>
 				<CloseLarge size={24} aria-label="CloseLarge" />
 			</a>
 		</div>
 		<h3>Add new application</h3>
 		<div class="input-container">
-			<input type="text" placeholder="Application name" required />
-			<button class="add-button" on:click={handleClick}>
+			<input bind:value={inputValue} type="text" placeholder="Application name" required />
+			<button class="add-button" on:click={handleAdd}>
 				<Add size={32} fill="white" aria-label="Add" />
 			</button>
 		</div>
 		<h3>List of applications</h3>
 		<div class="application-list">
-			{#each applicationList as application}
+			{#each $applicationStore as application}
 				<ApplicationItem label={application.name} />
 			{/each}
 		</div>
