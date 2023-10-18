@@ -1,8 +1,12 @@
 <script lang="ts">
-	import '../app.postcss';
+	import { page } from '$app/stores';
+	import Header from '$lib/components/Header.svelte';
+	import { applicationStore } from '$lib/stores/application-store';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
-	import Header from '$lib/components/Header.svelte';
+	import '../app.postcss';
+
+	applicationStore.set($page.data.applicationList);
 </script>
 
 <header>

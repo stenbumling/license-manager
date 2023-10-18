@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { applicationStore } from '$lib/stores/application-store';
 	import { applicationTitle } from '$lib/stores/license.ts';
 	import { showApplicationModal } from '$lib/stores/modal.ts';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
-
-	const { applicationList } = $page.data;
 
 	function handleClick() {
 		showApplicationModal.set(true);
@@ -16,7 +14,7 @@
 	<div class="field-row">
 		<select required name="applications" bind:value={$applicationTitle}>
 			<option disabled selected hidden value="">Select a application</option>
-			{#each applicationList as application}
+			{#each $applicationStore as application}
 				<option value={application.name}>{application.name}</option>
 			{/each}
 		</select>
