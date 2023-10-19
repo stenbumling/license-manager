@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
+	import ApplicationModal from '$lib/components/license/application-admin/ApplicationModal.svelte';
 	import LicenseApplicationField from '$lib/components/license/fields/LicenseApplicationField.svelte';
 	import LicenseTextField from '$lib/components/license/fields/LicenseTextField.svelte';
 	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
-	import ApplicationModal from '$lib/components/license/application-admin/ApplicationModal.svelte';
 	import { showApplicationModal, showModal } from '$lib/stores/modal.ts';
 
 	function handleClick() {
@@ -33,11 +33,16 @@
 	<LicenseTitle />
 	<div class="fields-grid">
 		<LicenseApplicationField />
-		<LicenseTextField bind:value={license.assignedUsers} label="Assigned users" />
+		<LicenseTextField bind:value={license.assignedUsers} label="Assigned users" required />
 		<LicenseTextField bind:value={license.status} label="Status" />
 		<LicenseTextField bind:value={license.category} label="License category" />
 		<LicenseTextField bind:value={license.contactInformation} label="Contact person" />
-		<LicenseTextField bind:value={license.renewalDate} label="Renewal date" />
+		<LicenseTextField
+			bind:value={license.renewalDate}
+			label="Renewal date"
+			placeholder="Custom placeholder text"
+			secondaryText="Test text"
+		/>
 		<LicenseTextField bind:value={license.link} label="Link to license site" />
 		<LicenseTextField bind:value={license.comment} label="Comment" />
 	</div>

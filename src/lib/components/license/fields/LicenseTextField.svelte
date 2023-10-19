@@ -1,11 +1,23 @@
 <script lang="ts">
 	export let label: string = '';
 	export let value: string = '';
+	export let secondaryText: string = '';
+	export let placeholder: string = 'Enter some text';
+	export let required: boolean = false;
+	export let autoComplete: string = 'off';
 </script>
 
 <div class="field-container">
-	<h3 class="field-label">{label}</h3>
-	<input type="text" bind:value placeholder="Enter some text" required />
+	<h3 class="field-label">
+		{label}
+		{#if required}
+			<span class="required-asterisk">*</span>
+		{/if}
+	</h3>
+	<input type="text" bind:value {placeholder} {required} autocomplete={autoComplete} />
+	{#if secondaryText}
+		<p class="secondary-text">{secondaryText}</p>
+	{/if}
 </div>
 
 <style>
@@ -20,6 +32,17 @@
 
 	.field-label {
 		margin-bottom: 0.4rem;
+	}
+
+	.secondary-text {
+		font-size: 0.75rem;
+		color: var(--text-placeholder);
+		margin-top: 0.5rem;
+		margin-left: 1px;
+	}
+
+	.required-asterisk {
+		color: red;
 	}
 
 	input {
