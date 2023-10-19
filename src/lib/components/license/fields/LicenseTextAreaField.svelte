@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { v4 as uuidv4 } from 'uuid';
+
 	export let label: string = '';
 	export let value: string = '';
 	export let secondaryText: string = '';
@@ -6,29 +8,38 @@
 	export let required: boolean = false;
 	export let autoComplete: string = 'off';
 
+	const id = uuidv4();
+
+	let textarea: HTMLTextAreaElement;
+
 	function scrollToTop() {
-		const textarea = document.querySelector('textarea');
-		if (textarea) {
-			textarea.scrollTop = 0;
-		}
+		textarea.scrollTop = 0;
 	}
 </script>
 
-<div class="field-container">
-	<h3 class="field-label">
+<div class="textarea-container">
+	<h3 class="textarea-label" {id}>
 		{label}
 		{#if required}
 			<span class="required-asterisk">*</span>
 		{/if}
 	</h3>
-	<textarea bind:value {placeholder} {required} autocomplete={autoComplete} on:blur={scrollToTop} />
+	<textarea
+		aria-labelledby={id}
+		{placeholder}
+		{required}
+		autocomplete={autoComplete}
+		on:blur={scrollToTop}
+		bind:this={textarea}
+		bind:value
+	/>
 	{#if secondaryText}
 		<p class="secondary-text">{secondaryText}</p>
 	{/if}
 </div>
 
 <style>
-	.field-container {
+	.textarea-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -36,10 +47,9 @@
 		word-break: break-word;
 		overflow-wrap: break-word;
 		margin-bottom: 2.6rem;
-		/* border: 1px solid red; */
 	}
 
-	.field-label {
+	.textarea-label {
 		margin-bottom: 0.4rem;
 	}
 

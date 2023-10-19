@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { v4 as uuidv4 } from 'uuid';
+
 	export let label: string = '';
 	export let value: string = '';
 	export let secondaryText: string = '';
@@ -7,6 +9,8 @@
 	export let defaultOption: string = '';
 	export let placeholder: string = 'Select an option';
 
+	const id = uuidv4();
+
 	$: {
 		if (defaultOption && options.includes(defaultOption) && !value) {
 			value = defaultOption;
@@ -14,14 +18,14 @@
 	}
 </script>
 
-<div class="field-container">
-	<h3 class="field-label">
+<div class="select-field-container">
+	<h3 class="select-field-label" {id}>
 		{label}
 		{#if required}
 			<span class="required-asterisk">*</span>
 		{/if}
 	</h3>
-	<select {required} name={label} bind:value>
+	<select aria-labelledby={id} {required} name={label} bind:value>
 		<option disabled selected hidden value="">{placeholder}</option>
 		{#each options as option}
 			<option value={option}>{option}</option>
@@ -33,7 +37,7 @@
 </div>
 
 <style>
-	.field-container {
+	.select-field-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -42,7 +46,7 @@
 		overflow-wrap: break-word;
 	}
 
-	.field-label {
+	.select-field-label {
 		margin-bottom: 0.4rem;
 	}
 

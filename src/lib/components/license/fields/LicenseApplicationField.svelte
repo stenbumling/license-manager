@@ -9,9 +9,9 @@
 	}
 </script>
 
-<div class="field-container">
-	<h3 class="field-label">Application</h3>
-	<div class="field-row">
+<div class="application-selection-container">
+	<h3 class="application-selection-label">Application</h3>
+	<div class="application-selection-row">
 		<select required name="applications" bind:value={$applicationTitle}>
 			<option disabled selected hidden value="">Select a application</option>
 			{#each $applicationStore as application}
@@ -25,7 +25,7 @@
 </div>
 
 <style>
-	.field-container {
+	.application-selection-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -34,11 +34,11 @@
 		overflow-wrap: break-word;
 	}
 
-	.field-label {
+	.application-selection-label {
 		margin-bottom: 0.4rem;
 	}
 
-	.field-row {
+	.application-selection-row {
 		width: 100%;
 		display: flex;
 		align-items: center;

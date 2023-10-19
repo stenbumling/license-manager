@@ -1,27 +1,38 @@
 <script lang="ts">
+	import { v4 as uuidv4 } from 'uuid';
+
 	export let label: string = '';
 	export let value: string = '';
 	export let secondaryText: string = '';
 	export let placeholder: string = 'Enter some text';
 	export let required: boolean = false;
 	export let autoComplete: string = 'off';
+
+	const id = uuidv4();
 </script>
 
-<div class="field-container">
-	<h3 class="field-label">
+<div class="text-field-container">
+	<h3 class="text-field-label" {id}>
 		{label}
 		{#if required}
 			<span class="required-asterisk">*</span>
 		{/if}
 	</h3>
-	<input type="text" bind:value {placeholder} {required} autocomplete={autoComplete} />
+	<input
+		type="text"
+		aria-labelledby={id}
+		{placeholder}
+		{required}
+		autocomplete={autoComplete}
+		bind:value
+	/>
 	{#if secondaryText}
 		<p class="secondary-text">{secondaryText}</p>
 	{/if}
 </div>
 
 <style>
-	.field-container {
+	.text-field-container {
 		display: flex;
 		flex-direction: column;
 		min-height: 10rem;
@@ -29,16 +40,9 @@
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;
-		/* border: 1px solid red; */
 	}
 
-	@media (max-height: 1080px) {
-		.field-container {
-			min-height: 7rem;
-		}
-	}
-
-	.field-label {
+	.text-field-label {
 		margin-bottom: 0.4rem;
 	}
 
@@ -73,5 +77,11 @@
 		border: 2px solid var(--light-purple);
 		outline: none;
 		padding-left: 0.3rem;
+	}
+
+	@media (max-height: 1080px) {
+		.text-field-container {
+			min-height: 7rem;
+		}
 	}
 </style>
