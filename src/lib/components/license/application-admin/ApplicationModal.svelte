@@ -132,6 +132,7 @@
 
 	.application-list {
 		overflow-y: auto;
+		padding-right: 2.8rem;
 	}
 
 	input {

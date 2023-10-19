@@ -25,12 +25,17 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 10rem;
-		height: 8rem;
 		align-items: flex-start;
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;
 		/* border: 1px solid red; */
+	}
+
+	@media (max-height: 1080px) {
+		.field-container {
+			min-height: 7rem;
+		}
 	}
 
 	.field-label {

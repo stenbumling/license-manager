@@ -27,7 +27,7 @@
 		align-self: center;
 		width: 80vw;
 		max-width: 100rem;
-		height: 78vh;
+		height: 76vh;
 		background-color: white;
 		padding: 2rem 4rem;
 	}

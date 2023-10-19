@@ -60,7 +60,6 @@
 		max-width: 100rem;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-between;
 	}
 
 	.fields-grid {
@@ -70,15 +69,17 @@
 		gap: 2rem 5rem;
 		width: 100%;
 		max-width: 100rem;
-		height: calc(100% - 12rem);
+		height: auto;
 		overflow-y: auto;
 		margin-bottom: 3rem;
+		padding: 0 1rem 0 0;
 	}
 
 	.buttons-container {
 		display: flex;
 		width: 100%;
 		align-items: center;
+		margin-top: auto;
 		justify-content: flex-end;
 	}
 	.link-container {
