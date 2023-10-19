@@ -94,7 +94,6 @@
 
 	select:required:invalid {
 		color: gray;
-		font-style: italic;
 		appearance: auto;
 	}
 
