@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LicenseView from '$lib/components/license/LicenseContainer.svelte';
+	import LicenseView from '$lib/components/license/NewLicenseContainer.svelte';
 </script>
 
 <div class="main-container">

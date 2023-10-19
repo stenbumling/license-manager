@@ -11,6 +11,18 @@
 		goto('/');
 		showModal.set(false);
 	}
+
+	// Initial license values
+	let license = {
+		application: '',
+		assignedUsers: '',
+		status: '',
+		category: '',
+		contactInformation: '',
+		renewalDate: '',
+		link: '',
+		comment: '',
+	};
 </script>
 
 {#if $showApplicationModal}
@@ -21,15 +33,13 @@
 	<LicenseTitle />
 	<div class="fields-grid">
 		<LicenseApplicationField />
-		<LicenseTextField label="Assigned users" />
-		<LicenseTextField label="Status" />
-		<LicenseTextField label="License category" />
-		<LicenseTextField label="Contact person" />
-		<LicenseTextField label="Renewal date" />
-		<LicenseTextField label="Link to license site" />
-		<LicenseTextField label="Comment" />
-		<LicenseTextField label="Renewal interval" />
-		<LicenseTextField label="Something else" />
+		<LicenseTextField bind:value={license.assignedUsers} label="Assigned users" />
+		<LicenseTextField bind:value={license.status} label="Status" />
+		<LicenseTextField bind:value={license.category} label="License category" />
+		<LicenseTextField bind:value={license.contactInformation} label="Contact person" />
+		<LicenseTextField bind:value={license.renewalDate} label="Renewal date" />
+		<LicenseTextField bind:value={license.link} label="Link to license site" />
+		<LicenseTextField bind:value={license.comment} label="Comment" />
 	</div>
 	<div class="buttons-container">
 		<a href="/" class="link-container" on:click={handleClick}>

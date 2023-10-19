@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LicenseContainer from '$lib/components/license/LicenseContainer.svelte';
+	import LicenseContainer from '$lib/components/license/NewLicenseContainer.svelte';
 	import { fade } from 'svelte/transition';
 </script>
 
