@@ -75,6 +75,7 @@
 
 	textarea {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+		font-size: 0.83rem;
 		border: none;
 		width: 100%;
 		min-height: 6rem;
@@ -82,7 +83,7 @@
 		background-color: transparent;
 		border: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
-		padding-top: 0.8rem;
+		padding-top: 0.9rem;
 		resize: vertical;
 		padding-left: 0.6rem;
 		overflow: hidden;

@@ -68,6 +68,7 @@
 
 	input {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+		font-size: 0.83rem;
 		border: none;
 		width: 100%;
 		min-height: 3rem;
