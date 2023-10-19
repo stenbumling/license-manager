@@ -1,8 +1,21 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
-	import TableContainer from '$lib/components/table/TableContainer.svelte';
 	import Modal from '$lib/components/license/Modal.svelte';
+	import TableContainer from '$lib/components/table/TableContainer.svelte';
 	import { showModal } from '$lib/stores/modal.ts';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		goto('/');
+	});
+
+	$: if ($page.url.search === '') {
+		showModal.set(false);
+	} else {
+		showModal.set(true);
+	}
 </script>
 
 <div class="main-container">
