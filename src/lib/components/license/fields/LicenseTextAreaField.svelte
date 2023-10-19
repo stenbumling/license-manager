@@ -35,6 +35,8 @@
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;
+		/* border: 1px solid red; */
+		min-height: 10rem;
 	}
 
 	.field-label {
@@ -56,8 +58,8 @@
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		border: none;
 		width: 100%;
-		min-height: 3rem;
-		height: 7rem;
+		min-height: 6rem;
+		max-height: 18rem;
 		background-color: transparent;
 		border: 1px solid var(--text-placeholder);
 		box-sizing: border-box;

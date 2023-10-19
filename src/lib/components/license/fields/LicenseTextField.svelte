@@ -24,10 +24,13 @@
 	.field-container {
 		display: flex;
 		flex-direction: column;
+		min-height: 10rem;
+		height: 8rem;
 		align-items: flex-start;
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;
+		/* border: 1px solid red; */
 	}
 
 	.field-label {
