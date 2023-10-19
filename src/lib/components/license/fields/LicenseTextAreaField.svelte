@@ -35,8 +35,8 @@
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;
+		margin-bottom: 2.6rem;
 		/* border: 1px solid red; */
-		min-height: 10rem;
 	}
 
 	.field-label {
