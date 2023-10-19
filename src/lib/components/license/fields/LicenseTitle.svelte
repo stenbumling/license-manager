@@ -17,7 +17,11 @@
 			<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
 	</div>
+	{#if $applicationTitle}
 	<h1 class="title-label">{$applicationTitle}</h1>
+	{:else}
+	<h1 class="new-license-label">New license</h1>
+	{/if}
 </div>
 
 <style>
@@ -41,6 +45,13 @@
 		font-size: 2.8rem;
 		font-weight: 500;
 		margin: 0 0 1rem 0;
+	}
+
+	.new-license-label {
+		font-size: 2.8rem;
+		font-weight: 500;
+		margin: 0 0 1rem 0;
+		color: var(--text-placeholder);
 	}
 
 	.id-label {

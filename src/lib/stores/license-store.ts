@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-export const applicationTitle = writable('New license');
+export const applicationTitle = writable('');
 
 export interface License {
 	id: number;
