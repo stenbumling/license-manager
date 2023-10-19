@@ -40,9 +40,14 @@
 			bind:value={license.status}
 			label="Status"
 			options={['Active', 'Inactive', 'Expired']}
+			defaultOption="Active"
 			required
 		/>
-		<LicenseTextField bind:value={license.category} label="License category" />
+		<LicenseSelectField
+			bind:value={license.category}
+			label="Category"
+			options={['Development', 'Media', 'Project Management', 'Educational', 'Other']}
+		/>
 		<LicenseTextField bind:value={license.contactInformation} label="Contact person" />
 		<LicenseTextField
 			bind:value={license.renewalDate}
