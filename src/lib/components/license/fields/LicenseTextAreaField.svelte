@@ -5,6 +5,13 @@
 	export let placeholder: string = 'Enter some text';
 	export let required: boolean = false;
 	export let autoComplete: string = 'off';
+
+	function scrollToTop() {
+		const textarea = document.querySelector('textarea');
+		if (textarea) {
+			textarea.scrollTop = 0;
+		}
+	}
 </script>
 
 <div class="field-container">
@@ -14,7 +21,7 @@
 			<span class="required-asterisk">*</span>
 		{/if}
 	</h3>
-	<input type="text" bind:value {placeholder} {required} autocomplete={autoComplete} />
+	<textarea bind:value {placeholder} {required} autocomplete={autoComplete} on:blur={scrollToTop} />
 	{#if secondaryText}
 		<p class="secondary-text">{secondaryText}</p>
 	{/if}
@@ -45,25 +52,29 @@
 		color: red;
 	}
 
-	input {
+	textarea {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		border: none;
 		width: 100%;
 		min-height: 3rem;
-		height: 3rem;
+		height: 7rem;
 		background-color: transparent;
-		border-bottom: 1px solid var(--text-placeholder);
+		border: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
+		padding-top: 0.8rem;
+		resize: vertical;
+		padding-left: 0.6rem;
+		overflow: hidden;
 	}
 
-	input:hover {
+	textarea:hover {
 		border: 1px dashed black;
-		padding-left: 0.3rem;
+		overflow: auto;
 	}
 
-	input:focus {
+	textarea:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 0.3rem;
+		overflow: auto;
 	}
 </style>

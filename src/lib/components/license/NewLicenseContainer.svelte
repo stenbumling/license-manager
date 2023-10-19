@@ -3,6 +3,7 @@
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import ApplicationModal from '$lib/components/license/application-admin/ApplicationModal.svelte';
 	import LicenseApplicationField from '$lib/components/license/fields/LicenseApplicationField.svelte';
+	import LicenseTextAreaField from '$lib/components/license/fields/LicenseTextAreaField.svelte';
 	import LicenseTextField from '$lib/components/license/fields/LicenseTextField.svelte';
 	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
 	import { showApplicationModal, showModal } from '$lib/stores/modal.ts';
@@ -44,7 +45,7 @@
 			secondaryText="Test text"
 		/>
 		<LicenseTextField bind:value={license.link} label="Link to license site" />
-		<LicenseTextField bind:value={license.comment} label="Comment" />
+		<LicenseTextAreaField bind:value={license.comment} label="Comment" />
 	</div>
 	<div class="buttons-container">
 		<a href="/" class="link-container" on:click={handleClick}>
