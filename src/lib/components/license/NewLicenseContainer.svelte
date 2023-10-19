@@ -40,13 +40,14 @@
 			bind:value={license.status}
 			label="Status"
 			options={['Active', 'Inactive', 'Expired']}
-			defaultOption="Active"
 			required
+			defaultOption="Active"
 		/>
 		<SelectField
 			bind:value={license.category}
 			label="Category"
-			options={['Development', 'Media', 'Project Management', 'Educational', 'Other']}
+			options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
+			defaultOption="Uncategorized"
 		/>
 		<TextField bind:value={license.contactInformation} label="Contact person" />
 		<TextField

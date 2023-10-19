@@ -19,6 +19,7 @@
 			value = defaultOption;
 		}
 	}
+	$: unselectedStyle = value ? '' : 'unselected';
 </script>
 
 <div class="select-field-container">
@@ -28,8 +29,8 @@
 			<span class="required-asterisk">*</span>
 		{/if}
 	</h3>
-	<select aria-labelledby={id} {required} name={label} bind:value>
-		<option disabled selected hidden value="">{placeholder}</option>
+	<select aria-labelledby={id} {required} name={label} bind:value class={unselectedStyle}>
+		<option hidden value="">{placeholder}</option>
 		{#each options as option}
 			<option value={option}>{option}</option>
 		{/each}
@@ -63,6 +64,11 @@
 		color: red;
 	}
 
+	.unselected {
+		appearance: auto;
+		color: gray;
+	}
+
 	.secondary-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
@@ -79,6 +85,7 @@
 		border-bottom: 1px solid var(--text-placeholder);
 		appearance: none;
 		box-sizing: border-box;
+		padding: 0;
 	}
 
 	select:hover {
@@ -93,15 +100,6 @@
 		outline: none;
 		appearance: auto;
 		padding: 0.3rem;
-	}
-
-	select:required:invalid {
-		color: gray;
-		appearance: auto;
-	}
-
-	option[value=''][disabled] {
-		display: none;
 	}
 
 	option {
