@@ -2,10 +2,10 @@
 	import { goto } from '$app/navigation';
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import ApplicationModal from '$lib/components/license/application-admin/ApplicationModal.svelte';
-	import LicenseApplicationField from '$lib/components/license/fields/LicenseApplicationField.svelte';
-	import LicenseSelectField from '$lib/components/license/fields/LicenseSelectField.svelte';
-	import LicenseTextAreaField from '$lib/components/license/fields/LicenseTextAreaField.svelte';
-	import LicenseTextField from '$lib/components/license/fields/LicenseTextField.svelte';
+	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
+	import SelectField from '$lib/components/license/fields/SelectField.svelte';
+	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
+	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
 	import { showApplicationModal, showModal } from '$lib/stores/modal.ts';
 
@@ -34,29 +34,29 @@
 <div class="license-container">
 	<LicenseTitle />
 	<div class="fields-grid">
-		<LicenseApplicationField />
-		<LicenseTextField bind:value={license.assignedUsers} label="Assigned users" required />
-		<LicenseSelectField
+		<ApplicationSelection />
+		<TextField bind:value={license.assignedUsers} label="Assigned users" required />
+		<SelectField
 			bind:value={license.status}
 			label="Status"
 			options={['Active', 'Inactive', 'Expired']}
 			defaultOption="Active"
 			required
 		/>
-		<LicenseSelectField
+		<SelectField
 			bind:value={license.category}
 			label="Category"
 			options={['Development', 'Media', 'Project Management', 'Educational', 'Other']}
 		/>
-		<LicenseTextField bind:value={license.contactInformation} label="Contact person" />
-		<LicenseTextField
+		<TextField bind:value={license.contactInformation} label="Contact person" />
+		<TextField
 			bind:value={license.renewalDate}
 			label="Renewal date"
 			placeholder="Custom placeholder text"
 			secondaryText="Test text"
 		/>
-		<LicenseTextField bind:value={license.link} label="Link to license site" />
-		<LicenseTextAreaField bind:value={license.comment} label="Comment" />
+		<TextField bind:value={license.link} label="Link to license site" />
+		<TextAreaField bind:value={license.comment} label="Comment" />
 	</div>
 	<div class="buttons-container">
 		<a href="/" class="link-container" on:click={handleClick}>
