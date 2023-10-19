@@ -3,6 +3,7 @@
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import ApplicationModal from '$lib/components/license/application-admin/ApplicationModal.svelte';
 	import LicenseApplicationField from '$lib/components/license/fields/LicenseApplicationField.svelte';
+	import LicenseSelectField from '$lib/components/license/fields/LicenseSelectField.svelte';
 	import LicenseTextAreaField from '$lib/components/license/fields/LicenseTextAreaField.svelte';
 	import LicenseTextField from '$lib/components/license/fields/LicenseTextField.svelte';
 	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
@@ -35,7 +36,12 @@
 	<div class="fields-grid">
 		<LicenseApplicationField />
 		<LicenseTextField bind:value={license.assignedUsers} label="Assigned users" required />
-		<LicenseTextField bind:value={license.status} label="Status" />
+		<LicenseSelectField
+			bind:value={license.status}
+			label="Status"
+			options={['Active', 'Inactive', 'Expired']}
+			required
+		/>
 		<LicenseTextField bind:value={license.category} label="License category" />
 		<LicenseTextField bind:value={license.contactInformation} label="Contact person" />
 		<LicenseTextField
