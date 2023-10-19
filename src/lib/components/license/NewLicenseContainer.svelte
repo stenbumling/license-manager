@@ -3,10 +3,10 @@
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import ApplicationModal from '$lib/components/license/application-admin/ApplicationModal.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
+	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
 	import { showApplicationModal, showModal } from '$lib/stores/modal.ts';
 
 	function handleClick() {

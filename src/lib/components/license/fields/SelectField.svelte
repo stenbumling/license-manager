@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
+	type FieldType = 'primary' | 'secondary';
+
 	export let label: string = '';
 	export let value: string = '';
 	export let secondaryText: string = '';
@@ -8,6 +10,7 @@
 	export let options: string[];
 	export let defaultOption: string = '';
 	export let placeholder: string = 'Select an option';
+	export let type: FieldType = 'primary';
 
 	const id = uuidv4();
 
@@ -19,7 +22,7 @@
 </script>
 
 <div class="select-field-container">
-	<h3 class="select-field-label" {id}>
+	<h3 class={type === 'primary' ? 'primary-select-label' : 'secondary-select-label'} {id}>
 		{label}
 		{#if required}
 			<span class="required-asterisk">*</span>
@@ -46,8 +49,14 @@
 		overflow-wrap: break-word;
 	}
 
-	.select-field-label {
+	.primary-select-label {
 		margin-bottom: 0.4rem;
+	}
+
+	.secondary-select-label {
+		margin-bottom: 0.4rem;
+		font-size: 0.75rem;
+		color: #888888;
 	}
 
 	.required-asterisk {

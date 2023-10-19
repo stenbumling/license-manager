@@ -1,18 +1,21 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
+	type FieldType = 'primary' | 'secondary';
+
 	export let label: string = '';
 	export let value: string = '';
 	export let secondaryText: string = '';
 	export let placeholder: string = 'Enter some text';
 	export let required: boolean = false;
 	export let autoComplete: string = 'off';
+	export let type: FieldType = 'primary';
 
 	const id = uuidv4();
 </script>
 
 <div class="text-field-container">
-	<h3 class="text-field-label" {id}>
+	<h3 class={type === 'primary' ? 'primary-text-label' : 'secondary-text-label'} {id}>
 		{label}
 		{#if required}
 			<span class="required-asterisk">*</span>
@@ -42,8 +45,14 @@
 		overflow-wrap: break-word;
 	}
 
-	.text-field-label {
+	.primary-text-label {
 		margin-bottom: 0.4rem;
+	}
+
+	.secondary-text-label {
+		margin-bottom: 0.4rem;
+		font-size: 0.75rem;
+		color: #888888;
 	}
 
 	.secondary-text {
