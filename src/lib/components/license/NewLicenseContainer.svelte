@@ -66,7 +66,7 @@
 	.fields-grid {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
-		grid-auto-rows: minmax(130px, auto);
+		grid-auto-rows: min-content;
 		gap: 2rem 5rem;
 		width: 100%;
 		max-width: 100rem;
