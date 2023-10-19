@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { applicationStore } from '$lib/stores/application-store';
-	import { applicationTitle } from '$lib/stores/license.ts';
+	import { applicationTitle } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal.ts';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 

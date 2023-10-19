@@ -1,4 +1,3 @@
-// src/stores/licenseStore.js
 import { writable } from 'svelte/store';
 
 export interface Application {
