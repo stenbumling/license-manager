@@ -3,6 +3,7 @@
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import ApplicationModal from '$lib/components/license/application-admin/ApplicationModal.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
+	import ExpirationField from '$lib/components/license/fields/ExpirationField.svelte';
 	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
@@ -50,12 +51,7 @@
 			defaultOption="Uncategorized"
 		/>
 		<TextField bind:value={license.contactInformation} label="Contact person" />
-		<TextField
-			bind:value={license.renewalDate}
-			label="Renewal date"
-			placeholder="Custom placeholder text"
-			secondaryText="Test text"
-		/>
+		<ExpirationField bind:value={license.renewalDate}/>
 		<TextField bind:value={license.link} label="Link to license site" />
 		<TextAreaField bind:value={license.comment} label="Comment" />
 	</div>
