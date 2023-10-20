@@ -15,7 +15,8 @@
 	let containerClass: string = 'text-field-container';
 
 	$: {
-		containerClass = type === 'secondary' ? 'text-field-secondary-container' : 'text-field-container';
+		containerClass =
+			type === 'secondary' ? 'text-field-secondary-container' : 'text-field-container';
 	}
 </script>
 

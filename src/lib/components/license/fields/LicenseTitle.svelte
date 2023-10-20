@@ -18,9 +18,9 @@
 		</a>
 	</div>
 	{#if $applicationTitle}
-	<h1 class="title-label">{$applicationTitle}</h1>
+		<h1 class="title-label">{$applicationTitle}</h1>
 	{:else}
-	<h1 class="new-license-label">New license</h1>
+		<h1 class="new-license-label">New license</h1>
 	{/if}
 </div>
 

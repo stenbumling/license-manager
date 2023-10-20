@@ -51,7 +51,7 @@
 			defaultOption="Uncategorized"
 		/>
 		<TextField bind:value={license.contactInformation} label="Contact person" />
-		<ExpirationField bind:value={license.renewalDate}/>
+		<ExpirationField bind:value={license.renewalDate} />
 		<TextField bind:value={license.link} label="Link to license site" />
 		<TextAreaField bind:value={license.comment} label="Comment" />
 	</div>

@@ -21,7 +21,7 @@
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
 		<div class="modal-header">
-			<h1 class="modal-title">Application<br>management</h1>
+			<h1 class="modal-title">Application<br />management</h1>
 			<a href="/" class="back-link" on:click|preventDefault={handleClose}>
 				<CloseLarge size={24} aria-label="CloseLarge" />
 			</a>

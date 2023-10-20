@@ -5,7 +5,7 @@
 	let autoRenewal = false;
 	let label: string = '';
 
-  $: {
+	$: {
 		label = autoRenewal ? 'Renewal date' : 'Expiration date';
 	}
 </script>
