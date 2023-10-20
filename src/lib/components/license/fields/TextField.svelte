@@ -12,9 +12,14 @@
 	export let type: FieldType = 'primary';
 
 	const id = uuidv4();
+	let containerClass: string = 'text-field-container';
+
+	$: {
+		containerClass = type === 'secondary' ? 'text-field-secondary-container' : 'text-field-container';
+	}
 </script>
 
-<div class="text-field-container">
+<div class={containerClass}>
 	<h3 class={type === 'primary' ? 'primary-text-label' : 'secondary-text-label'} {id}>
 		{label}
 		{#if required}
@@ -39,6 +44,16 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 10rem;
+		align-items: flex-start;
+		box-sizing: border-box;
+		word-break: break-word;
+		overflow-wrap: break-word;
+	}
+
+	.text-field-secondary-container {
+		display: flex;
+		flex-direction: column;
+		min-height: 6rem;
 		align-items: flex-start;
 		box-sizing: border-box;
 		word-break: break-word;
