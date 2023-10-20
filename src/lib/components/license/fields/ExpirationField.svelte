@@ -3,10 +3,15 @@
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	export let value: string = '';
 	let autoRenewal = false;
+	let label: string = '';
+
+  $: {
+		label = autoRenewal ? 'Renewal date' : 'Expiration date';
+	}
 </script>
 
 <div class="application-selection-container">
-	<h3 class="application-selection-label">Expiration date</h3>
+	<h3 class="application-selection-label">{label}</h3>
 	<div class="application-selection-row">
 		<input class="date-picker" type="date" required name="applications" bind:value />
 		<div class="renewal-checkbox">
