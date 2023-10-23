@@ -3,8 +3,8 @@
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
-	import { activeFilter } from '$lib/stores/filter.ts';
-	import { showModal } from '$lib/stores/modal.ts';
+	import { activeFilter } from '$lib/stores/filter-state';
+	import { showLicenseModal } from '$lib/stores/modal-state';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
@@ -13,7 +13,7 @@
 
 		e.preventDefault();
 		goto('/?modal=add-new');
-		showModal.set(true);
+		showLicenseModal.set(true);
 	}
 </script>
 

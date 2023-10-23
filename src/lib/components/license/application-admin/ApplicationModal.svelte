@@ -1,16 +1,14 @@
 <script lang="ts">
 	import ApplicationItem from '$lib/components/license/application-admin/ApplicationItem.svelte';
-	import { applicationStore } from '$lib/stores/application-store';
-	import { showApplicationModal } from '$lib/stores/modal';
+	import { applicationStore, application } from '$lib/stores/application-store';
+	import { showApplicationModal } from '$lib/stores/modal-state';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
 
-	let inputValue: string = '';
-
 	function handleAdd() {
-		applicationStore.add(inputValue);
-		inputValue = '';
+		applicationStore.add($application);
+		applicationStore.reset();
 	}
 
 	function handleClose() {
@@ -28,7 +26,7 @@
 		</div>
 		<h3>Add new application</h3>
 		<div class="input-container">
-			<input bind:value={inputValue} type="text" placeholder="Application name" required />
+			<input bind:value={$application.name} type="text" placeholder="Application name" required />
 			<button class="add-button" on:click={handleAdd}>
 				<Add size={32} fill="white" aria-label="Add" />
 			</button>

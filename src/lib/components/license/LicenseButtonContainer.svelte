@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { showModal } from '$lib/stores/modal.ts';
+	import { showLicenseModal } from '$lib/stores/modal-state';
 
 	function goBack() {
 		goto('/');
-		showModal.set(false);
+		showLicenseModal.set(false);
 	}
 </script>
 

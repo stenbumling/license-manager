@@ -4,7 +4,7 @@
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import Modal from '$lib/components/license/Modal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
-	import { showModal } from '$lib/stores/modal.ts';
+	import { showLicenseModal } from '$lib/stores/modal-state';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
@@ -12,9 +12,9 @@
 	});
 
 	$: if ($page.url.search === '') {
-		showModal.set(false);
+		showLicenseModal.set(false);
 	} else {
-		showModal.set(true);
+		showLicenseModal.set(true);
 	}
 </script>
 
@@ -22,7 +22,7 @@
 	<Dashboard />
 	<TableContainer />
 
-	{#if $showModal}
+	{#if $showLicenseModal}
 		<Modal />
 	{/if}
 </div>

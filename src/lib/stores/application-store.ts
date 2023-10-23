@@ -1,19 +1,28 @@
 import { writable } from 'svelte/store';
 
+export function getInitialValues() {
+	return {
+		id: null,
+		name: '',
+	};
+}
+
 export interface Application {
-	id: number;
+	id: number | null;
 	name: string;
 }
+
+export const application = writable<Application>(getInitialValues());
 
 function createApplicationStore() {
 	const { subscribe, set, update } = writable<Application[]>([]);
 
-	async function addApplication(applicationName: string) {
+	async function addApplication(application: Application) {
 		try {
 			const response = await fetch('/api/application/add', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ name: applicationName }),
+				body: JSON.stringify(application),
 			});
 			const newApplication = await response.json();
 			update((applications) => [...applications, newApplication]);
@@ -40,6 +49,7 @@ function createApplicationStore() {
 		update,
 		add: addApplication,
 		delete: deleteApplication,
+		reset: () => application.set(getInitialValues()),
 	};
 }
 

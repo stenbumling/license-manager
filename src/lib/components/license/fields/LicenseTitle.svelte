@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { license } from '$lib/stores/license-store';
-	import { showModal } from '$lib/stores/modal.ts';
+	import { showLicenseModal } from '$lib/stores/modal-state';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	function handleClick() {
 		goto('/');
-		showModal.set(false);
+		showLicenseModal.set(false);
 	}
 </script>
 

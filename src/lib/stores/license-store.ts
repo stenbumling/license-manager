@@ -1,8 +1,8 @@
-import { get, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 
-export function getInitialLicenseState() {
+export function getInitialValues() {
 	return {
-		id: 0,
+		id: null,
 		application: '',
 		assignedUsers: '',
 		renewalDate: '',
@@ -17,7 +17,7 @@ export function getInitialLicenseState() {
 }
 
 export interface License {
-	id: number;
+	id: number | null;
 	application: string;
 	assignedUsers: string;
 	renewalDate: string;
@@ -30,14 +30,14 @@ export interface License {
 	comment: string;
 }
 
-export const license = writable<License>(getInitialLicenseState());
+export const license = writable<License>(getInitialValues());
 
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
 	async function addLicense(license: License) {
 		try {
-			const response = await fetch('/api/licenses/add', {
+			const response = await fetch('/api/license/add', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
@@ -67,7 +67,7 @@ function createLicenseStore() {
 		update,
 		add: addLicense,
 		delete: deleteLicense,
-		reset: () => license.set(getInitialLicenseState()),
+		reset: () => license.set(getInitialValues()),
 	};
 }
 

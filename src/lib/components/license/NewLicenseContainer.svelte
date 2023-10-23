@@ -9,12 +9,12 @@
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import { license, licenseStore } from '$lib/stores/license-store.ts';
-	import { showApplicationModal, showModal } from '$lib/stores/modal.ts';
+	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
 
 	function handleClick() {
-		showModal.set(false);
+		showLicenseModal.set(false);
 		goto('/');
-		console.log($license);
+		// licenseStore.add($license)
 		licenseStore.reset();
 	}
 </script>
