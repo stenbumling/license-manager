@@ -67,7 +67,7 @@
 	.secondary-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
-		height: 2.36rem;
+		height: 2.8rem;
 		margin-left: 1px;
 	}
 

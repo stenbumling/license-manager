@@ -28,6 +28,14 @@
 	<div class="secondary-text">
 		<p>ok</p>
 	</div>
+	<div class="interval-field-2">
+		<TextField
+			label="Cost"
+			secondaryText="hehe"
+			type="secondary"
+			placeholder="Enter cost of license"
+		/>
+	</div>
 	{#if autoRenewal}
 		<div class="interval-field">
 			<SelectField
@@ -40,9 +48,6 @@
 			/>
 		</div>
 	{/if}
-	<div class="interval-field">
-		<TextField label="Cost" type="secondary" placeholder="Enter cost of license" />
-	</div>
 </div>
 
 <style>
@@ -56,6 +61,10 @@
 	}
 
 	.interval-field {
+		/* margin-top: 1.4rem; */
+		width: 100%;
+	}
+	.interval-field-2 {
 		margin-top: 1.4rem;
 		width: 100%;
 	}
@@ -84,7 +93,7 @@
 	.secondary-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
-		height: 2.36rem;
+		height: 2.8rem;
 		margin-left: 1px;
 	}
 
