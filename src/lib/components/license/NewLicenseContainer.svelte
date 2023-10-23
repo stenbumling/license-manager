@@ -37,6 +37,13 @@
 	<div class="fields-grid">
 		<ApplicationSelection />
 		<TextField bind:value={license.assignedUsers} label="Assigned users" required />
+		<ExpirationField bind:value={license.renewalDate} />
+		<SelectField
+			bind:value={license.category}
+			label="Category"
+			options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
+			defaultOption="Uncategorized"
+		/>
 		<SelectField
 			bind:value={license.status}
 			label="Status"
@@ -44,17 +51,9 @@
 			required
 			defaultOption="Active"
 		/>
-		<SelectField
-			bind:value={license.category}
-			label="Category"
-			options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
-			defaultOption="Uncategorized"
-		/>
 		<TextField bind:value={license.contactInformation} label="Contact person">
 			<TextField slot="secondary" label="Additional contact information" type="secondary" />
 		</TextField>
-		<ExpirationField bind:value={license.renewalDate} />
-		<TextField bind:value={license.link} label="Link to license site" />
 		<TextAreaField bind:value={license.comment} label="Comment" />
 	</div>
 	<div class="buttons-container">
@@ -76,7 +75,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-auto-rows: min-content;
-		gap: 2rem 5rem;
+		gap: 2rem 8rem;
 		width: 100%;
 		max-width: 100rem;
 		height: auto;

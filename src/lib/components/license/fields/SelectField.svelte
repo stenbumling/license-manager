@@ -40,9 +40,11 @@
 			<p>{secondaryText}</p>
 		{/if}
 	</div>
+	{#if $$slots.secondary}
 	<div class="interval-field">
 		<slot name="secondary" />
 	</div>
+	{/if}
 </div>
 
 <style>
@@ -50,6 +52,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+		min-height: 7rem;
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;

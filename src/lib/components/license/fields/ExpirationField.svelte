@@ -61,7 +61,7 @@
 	}
 
 	.interval-field {
-		/* margin-top: 1.4rem; */
+		margin-top: 1.4rem;
 		width: 100%;
 	}
 	.interval-field-2 {
