@@ -26,12 +26,12 @@
 		</div>
 	</div>
 	<div class="secondary-text">
-		<p>ok</p>
+		<p>In x days</p>
 	</div>
 	<div class="interval-field-2">
 		<TextField
 			label="Cost"
-			secondaryText="hehe"
+			secondaryText="x kr/year"
 			type="secondary"
 			placeholder="Enter cost of license"
 		/>
@@ -64,6 +64,7 @@
 		margin-top: 1.4rem;
 		width: 100%;
 	}
+
 	.interval-field-2 {
 		margin-top: 1.4rem;
 		width: 100%;
@@ -77,7 +78,6 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 	}
 
 	.renewal-checkbox {
@@ -88,6 +88,7 @@
 		width: 7rem;
 		font-size: 0.8rem;
 		margin-bottom: 0.2rem;
+		flex-shrink: 0;
 	}
 
 	.secondary-text {
@@ -112,12 +113,12 @@
 	.date-picker {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		border: none;
-		width: 70%;
 		height: 3rem;
 		background-color: transparent;
 		border-bottom: 1px solid var(--text-placeholder);
 		appearance: none;
 		box-sizing: border-box;
+		flex-grow: 1;
 	}
 
 	.date-picker:hover {

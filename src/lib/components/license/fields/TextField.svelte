@@ -41,9 +41,9 @@
 		{/if}
 	</div>
 	{#if $$slots.secondary}
-	<div class="interval-field">
-		<slot name="secondary" />
-	</div>
+		<div class="interval-field">
+			<slot name="secondary" />
+		</div>
 	{/if}
 </div>
 
