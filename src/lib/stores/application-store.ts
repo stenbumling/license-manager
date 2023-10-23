@@ -31,7 +31,7 @@ function createApplicationStore() {
 		}
 	}
 
-	async function deleteApplication(id: number) {
+	async function deleteApplication(id: number | null) {
 		try {
 			const response = await fetch(`/api/application/delete/${id}`, {
 				method: 'DELETE',

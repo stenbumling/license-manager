@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ApplicationItem from '$lib/components/license/application-admin/ApplicationItem.svelte';
-	import { applicationStore, application } from '$lib/stores/application-store';
+	import { application, applicationStore } from '$lib/stores/application-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
@@ -20,7 +20,7 @@
 	<dialog open class="modal-window">
 		<div class="modal-header">
 			<h1 class="modal-title">Application<br />management</h1>
-			<a href="/" class="back-link" on:click|preventDefault={handleClose}>
+			<a href="/" class="close-button" on:click|preventDefault={handleClose}>
 				<CloseLarge size={24} aria-label="CloseLarge" />
 			</a>
 		</div>
@@ -53,38 +53,38 @@
 	}
 
 	.modal-window {
+		width: 40vw;
+		max-width: 30rem;
+		max-height: 60vh;
+		padding: 3rem 4rem;
 		border: none;
 		display: flex;
 		flex-direction: column;
 		align-self: center;
-		width: 40vw;
-		max-width: 30rem;
-		max-height: 60vh;
 		background-color: white;
-		padding: 3rem 4rem;
 	}
 
 	.modal-header {
+		margin: 0 0 3rem 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		margin: 0 0 3rem 0;
 	}
 
 	.modal-title {
-		font-size: 2rem;
 		margin: 0;
+		font-size: 2rem;
 	}
 
-	.back-link {
-		font-size: 1rem;
-		text-decoration: none;
+	.close-button {
+		padding: 0.2rem;
+		display: flex;
+		border-radius: 6px;
 		color: black;
 		transition: color 0.25s ease;
-		display: flex;
-		padding: 0.2rem;
-		border-radius: 6px;
 		transition: background-color 0.2s ease;
+		text-decoration: none;
+		font-size: 1rem;
 		&:hover {
 			background-color: #eeeeee;
 		}
@@ -97,25 +97,24 @@
 	}
 
 	.input-container {
+		width: 100%;
 		margin-bottom: 3rem;
 		display: flex;
+		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		flex-direction: row;
-		width: 100%;
 	}
 
 	.add-button {
 		height: 2.2rem;
 		aspect-ratio: 1/1;
-		border-radius: 6px;
-		background-color: black;
 		margin-left: 1.6rem;
-		cursor: pointer;
+		border-radius: 6px;
 		display: flex;
-		/* align-self: flex-end; */
 		justify-content: center;
 		align-items: center;
+		background-color: black;
+		cursor: pointer;
 		transition: background-color 0.3s ease;
 
 		&:hover {
@@ -134,28 +133,28 @@
 		padding-right: 2.8rem;
 	}
 
-	input {
-		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
-		border: none;
-		width: 100%;
-		height: 3rem;
-		background-color: transparent;
-		border-bottom: 1px solid var(--text-placeholder);
-		box-sizing: border-box;
-	}
-
 	h3 {
 		margin-bottom: 0.4rem;
 	}
 
+	input {
+		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+		width: 100%;
+		height: 3rem;
+		border: none;
+		border-bottom: 1px solid var(--text-placeholder);
+		box-sizing: border-box;
+		background-color: transparent;
+	}
+
 	input:hover {
-		border: 1px dashed black;
 		padding-left: 0.6rem;
+		border: 1px dashed black;
 	}
 
 	input:focus {
+		padding-left: 0.6rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 0.6rem;
 	}
 </style>
