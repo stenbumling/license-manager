@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
+	import { slide } from 'svelte/transition';
 	export let value: string = '';
 	let autoRenewal = false;
 	let label: string = '';
@@ -37,7 +38,7 @@
 		/>
 	</div>
 	{#if autoRenewal}
-		<div class="interval-field">
+		<div transition:slide={{ duration: 80 }} class="interval-field">
 			<SelectField
 				bind:value
 				label="Renewal interval"
