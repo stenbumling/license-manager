@@ -25,7 +25,7 @@
 			<label for="renewal">Autorenewal</label>
 		</div>
 	</div>
-	<p class="secondary-text">In 277 days</p>
+	<p class="secondary-text" />
 	{#if autoRenewal}
 		<div class="interval-field">
 			<SelectField

@@ -38,6 +38,9 @@
 	{#if secondaryText}
 		<p class="secondary-text">{secondaryText}</p>
 	{/if}
+	<div class="interval-field">
+		<slot name="hehe" />
+	</div>
 </div>
 
 <style>
@@ -52,6 +55,11 @@
 
 	.primary-select-label {
 		margin-bottom: 0.4rem;
+	}
+
+	.interval-field {
+		margin-top: 1.4rem;
+		width: 100%;
 	}
 
 	.secondary-select-label {
