@@ -1,15 +1,38 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
-export const applicationTitle = writable('');
+export function getInitialLicenseState() {
+	return {
+		id: 0,
+		application: '',
+		assignedUsers: '',
+		renewalDate: '',
+		cost: '',
+		renewalInterval: '',
+		category: '',
+		status: '',
+		contactPerson: '',
+		additionalContactInfo: '',
+		comment: '',
+	};
+}
 
 export interface License {
 	id: number;
-	name: string;
-	createdAt: string;
-	updatedAt: string;
+	application: string;
+	assignedUsers: string;
+	renewalDate: string;
+	cost: string;
+	renewalInterval: string;
+	category: string;
+	status: string;
+	contactPerson: string;
+	additionalContactInfo: string;
+	comment: string;
 }
 
-function createApplicationStore() {
+export const license = writable<License>(getInitialLicenseState());
+
+function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
 	async function addLicense(license: License) {
@@ -44,7 +67,8 @@ function createApplicationStore() {
 		update,
 		add: addLicense,
 		delete: deleteLicense,
+		reset: () => license.set(getInitialLicenseState()),
 	};
 }
 
-export const applicationStore = createApplicationStore();
+export const licenseStore = createLicenseStore();

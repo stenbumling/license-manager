@@ -3,8 +3,6 @@ import { writable } from 'svelte/store';
 export interface Application {
 	id: number;
 	name: string;
-	createdAt: string;
-	updatedAt: string;
 }
 
 function createApplicationStore() {

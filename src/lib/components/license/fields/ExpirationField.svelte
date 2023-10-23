@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
+	import { license } from '$lib/stores/license-store.ts';
 	import { slide } from 'svelte/transition';
 	export let value: string = '';
 	let autoRenewal = false;
@@ -31,6 +32,7 @@
 	</div>
 	<div class="interval-field-2">
 		<TextField
+			bind:value={$license.cost}
 			label="Cost"
 			secondaryText="x kr/year"
 			type="secondary"
@@ -40,7 +42,7 @@
 	{#if autoRenewal}
 		<div transition:slide={{ duration: 80 }} class="interval-field">
 			<SelectField
-				bind:value
+				bind:value={$license.renewalInterval}
 				label="Renewal interval"
 				options={['Monthly', 'Yearly']}
 				defaultOption="Monthly"

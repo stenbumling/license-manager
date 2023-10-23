@@ -8,24 +8,15 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
+	import { license, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showModal } from '$lib/stores/modal.ts';
 
 	function handleClick() {
-		goto('/');
 		showModal.set(false);
+		goto('/');
+		console.log($license);
+		licenseStore.reset();
 	}
-
-	// Initial license values
-	let license = {
-		application: '',
-		assignedUsers: '',
-		status: '',
-		category: '',
-		contactInformation: '',
-		renewalDate: '',
-		link: '',
-		comment: '',
-	};
 </script>
 
 {#if $showApplicationModal}
@@ -35,31 +26,36 @@
 <div class="license-container">
 	<LicenseTitle />
 	<div class="fields-grid">
-		<ApplicationSelection />
-		<TextField bind:value={license.assignedUsers} label="Assigned users" required />
-		<ExpirationField bind:value={license.renewalDate} />
+		<ApplicationSelection bind:value={$license.application} />
+		<TextField bind:value={$license.assignedUsers} label="Assigned users" required />
+		<ExpirationField bind:value={$license.renewalDate} />
 		<SelectField
-			bind:value={license.category}
+			bind:value={$license.category}
 			label="Category"
 			options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 			defaultOption="Uncategorized"
 		/>
 		<SelectField
-			bind:value={license.status}
+			bind:value={$license.status}
 			label="Status"
 			options={['Active', 'Inactive', 'Expired']}
 			required
 			defaultOption="Active"
 		/>
-		<TextField bind:value={license.contactInformation} label="Contact person">
-			<TextField slot="secondary" label="Additional contact information" type="secondary" />
+		<TextField bind:value={$license.contactPerson} label="Contact person">
+			<TextField
+				bind:value={$license.additionalContactInfo}
+				slot="secondary"
+				label="Additional contact information"
+				type="secondary"
+			/>
 		</TextField>
-		<TextAreaField bind:value={license.comment} label="Comment" />
+		<TextAreaField bind:value={$license.comment} label="Comment" />
 	</div>
 	<div class="buttons-container">
-		<a href="/" class="link-container" on:click={handleClick}>
+		<button class="link-container" on:click|preventDefault={handleClick}>
 			<ButtonLarge title="Save license" />
-		</a>
+		</button>
 	</div>
 </div>
 

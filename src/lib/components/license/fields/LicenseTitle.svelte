@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { applicationTitle } from '$lib/stores/license-store';
+	import { license } from '$lib/stores/license-store';
 	import { showModal } from '$lib/stores/modal.ts';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
@@ -17,8 +17,8 @@
 			<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
 	</div>
-	{#if $applicationTitle}
-		<h1 class="title-label">{$applicationTitle}</h1>
+	{#if $license.application}
+		<h1 class="title-label">{$license.application}</h1>
 	{:else}
 		<h1 class="new-license-label">New license</h1>
 	{/if}
