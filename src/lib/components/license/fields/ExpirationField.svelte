@@ -25,7 +25,9 @@
 			<label for="renewal">Autorenewal</label>
 		</div>
 	</div>
-	<p class="secondary-text" />
+	<div class="secondary-text">
+		<p>ok</p>
+	</div>
 	{#if autoRenewal}
 		<div class="interval-field">
 			<SelectField
@@ -82,7 +84,7 @@
 	.secondary-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
-		margin-top: 0.5rem;
+		height: 2.36rem;
 		margin-left: 1px;
 	}
 

@@ -35,11 +35,13 @@
 			<option value={option}>{option}</option>
 		{/each}
 	</select>
-	{#if secondaryText}
-		<p class="secondary-text">{secondaryText}</p>
-	{/if}
+	<div class="secondary-text">
+		{#if secondaryText}
+			<p>{secondaryText}</p>
+		{/if}
+	</div>
 	<div class="interval-field">
-		<slot name="hehe" />
+		<slot name="secondary" />
 	</div>
 </div>
 
@@ -80,7 +82,7 @@
 	.secondary-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
-		margin-top: 0.5rem;
+		height: 2.36rem;
 		margin-left: 1px;
 	}
 

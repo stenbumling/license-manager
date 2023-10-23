@@ -49,9 +49,9 @@
 			label="Category"
 			options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 			defaultOption="Uncategorized"
-		><TextField slot="hehe" label="Other information" type="secondary"/></SelectField>
+		/>
 		<TextField bind:value={license.contactInformation} label="Contact person">
-			<TextField slot="hehe" label="Other information" type="secondary"/>
+			<TextField slot="secondary" label="Additional contact information" type="secondary" />
 		</TextField>
 		<ExpirationField bind:value={license.renewalDate} />
 		<TextField bind:value={license.link} label="Link to license site" />

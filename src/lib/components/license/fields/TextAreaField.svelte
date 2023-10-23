@@ -36,9 +36,11 @@
 		bind:this={textarea}
 		bind:value
 	/>
-	{#if secondaryText}
-		<p class="secondary-text">{secondaryText}</p>
-	{/if}
+	<div class="secondary-text">
+		{#if secondaryText}
+			<p>{secondaryText}</p>
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -65,7 +67,7 @@
 	.secondary-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
-		margin-top: 0.5rem;
+		height: 2.36rem;
 		margin-left: 1px;
 	}
 
