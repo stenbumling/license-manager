@@ -7,6 +7,9 @@
 	import { showLicenseModal } from '$lib/stores/modal-state';
 	import { onMount } from 'svelte';
 
+	export let data;
+	console.log(data)
+
 	onMount(() => {
 		goto('/');
 	});
