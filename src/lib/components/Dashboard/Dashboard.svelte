@@ -3,8 +3,8 @@
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
-	import { activeFilter } from '$lib/stores/filter.ts';
-	import { showModal } from '$lib/stores/modal.ts';
+	import { activeFilter } from '$lib/stores/filter-state';
+	import { showLicenseModal } from '$lib/stores/modal-state';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
@@ -13,7 +13,7 @@
 
 		e.preventDefault();
 		goto('/?modal=add-new');
-		showModal.set(true);
+		showLicenseModal.set(true);
 	}
 </script>
 
@@ -65,21 +65,21 @@
 
 <style>
 	.dashboard {
-		display: flex;
-		flex-direction: column;
-		padding: 0.4rem 2rem;
-		border: 1px solid black;
 		width: 20rem;
 		height: 37.7rem;
 		margin-right: 3rem;
 		margin-top: 3.6rem;
+		padding: 0.4rem 2rem;
+		border: 1px solid black;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.filter-list {
+		margin-bottom: 2rem;
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;
-		margin-bottom: 2rem;
 	}
 
 	@media (max-height: 850px) {

@@ -1,11 +1,17 @@
 <script lang="ts">
-	import ApplicationItem from '$lib/components/license/application-admin/ApplicationItem.svelte';
-	import { showApplicationModal } from '$lib/stores/modal.ts';
+	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
+	import { application, applicationStore } from '$lib/stores/application-store';
+	import { showApplicationModal } from '$lib/stores/modal-state';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
 
-	function handleClick() {
+	function handleAdd() {
+		applicationStore.add($application);
+		applicationStore.reset();
+	}
+
+	function handleClose() {
 		showApplicationModal.set(false);
 	}
 </script>
@@ -13,32 +19,23 @@
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
 		<div class="modal-header">
-			<h1 class="modal-title">Application admin</h1>
-			<a href="/" class="back-link" on:click|preventDefault={handleClick}>
+			<h1 class="modal-title">Application<br />management</h1>
+			<a href="/" class="close-button" on:click|preventDefault={handleClose}>
 				<CloseLarge size={24} aria-label="CloseLarge" />
 			</a>
 		</div>
 		<h3>Add new application</h3>
 		<div class="input-container">
-			<input type="text" placeholder="Application name" required />
-			<button class="add-button" on:click={handleClick}>
+			<input bind:value={$application.name} type="text" placeholder="Application name" required />
+			<button class="add-button" on:click={handleAdd}>
 				<Add size={32} fill="white" aria-label="Add" />
 			</button>
 		</div>
 		<h3>List of applications</h3>
 		<div class="application-list">
-			<ApplicationItem label="Office 365" />
-			<ApplicationItem label="AutoCAD" />
-			<ApplicationItem label="Docker Enterprise" />
-			<ApplicationItem label="Visual Studio Enterprise" />
-			<ApplicationItem label="Office 365" />
-			<ApplicationItem label="AutoCAD" />
-			<ApplicationItem label="Docker Enterprise" />
-			<ApplicationItem label="Visual Studio Enterprise" />
-			<ApplicationItem label="Office 365" />
-			<ApplicationItem label="AutoCAD" />
-			<ApplicationItem label="Docker Enterprise" />
-			<ApplicationItem label="Visual Studio Enterprise" />
+			{#each $applicationStore as application}
+				<ApplicationItem {application} />
+			{/each}
 		</div>
 	</dialog>
 </div>
@@ -56,38 +53,38 @@
 	}
 
 	.modal-window {
+		width: 40vw;
+		max-width: 30rem;
+		max-height: 60vh;
+		padding: 3rem 4rem;
 		border: none;
 		display: flex;
 		flex-direction: column;
 		align-self: center;
-		width: 40vw;
-		max-width: 30rem;
-		max-height: 60vh;
 		background-color: white;
-		padding: 3rem 4rem;
 	}
 
 	.modal-header {
+		margin: 0 0 3rem 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		margin: 0 0 3rem 0;
 	}
 
 	.modal-title {
-		font-size: 2rem;
 		margin: 0;
+		font-size: 2rem;
 	}
 
-	.back-link {
-		font-size: 1rem;
-		text-decoration: none;
+	.close-button {
+		padding: 0.2rem;
+		display: flex;
+		border-radius: 6px;
 		color: black;
 		transition: color 0.25s ease;
-		display: flex;
-		padding: 0.2rem;
-		border-radius: 6px;
 		transition: background-color 0.2s ease;
+		text-decoration: none;
+		font-size: 1rem;
 		&:hover {
 			background-color: #eeeeee;
 		}
@@ -100,25 +97,24 @@
 	}
 
 	.input-container {
+		width: 100%;
 		margin-bottom: 3rem;
 		display: flex;
+		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		flex-direction: row;
-		width: 100%;
 	}
 
 	.add-button {
 		height: 2.2rem;
 		aspect-ratio: 1/1;
-		border-radius: 6px;
-		background-color: black;
 		margin-left: 1.6rem;
-		cursor: pointer;
+		border-radius: 6px;
 		display: flex;
-		/* align-self: flex-end; */
 		justify-content: center;
 		align-items: center;
+		background-color: black;
+		cursor: pointer;
 		transition: background-color 0.3s ease;
 
 		&:hover {
@@ -134,30 +130,31 @@
 
 	.application-list {
 		overflow-y: auto;
-	}
-
-	input {
-		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
-		border: none;
-		width: 100%;
-		height: 3rem;
-		background-color: transparent;
-		border-bottom: 1px solid var(--text-placeholder);
-		box-sizing: border-box;
+		padding-right: 2.8rem;
 	}
 
 	h3 {
 		margin-bottom: 0.4rem;
 	}
 
+	input {
+		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+		width: 100%;
+		height: 3rem;
+		border: none;
+		border-bottom: 1px solid var(--text-placeholder);
+		box-sizing: border-box;
+		background-color: transparent;
+	}
+
 	input:hover {
-		border: 1px dashed black;
 		padding-left: 0.6rem;
+		border: 1px dashed black;
 	}
 
 	input:focus {
+		padding-left: 0.6rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 0.6rem;
 	}
 </style>

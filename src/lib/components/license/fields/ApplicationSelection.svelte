@@ -1,22 +1,22 @@
 <script lang="ts">
-	import { applicationTitle } from '$lib/stores/license.ts';
-	import { showApplicationModal } from '$lib/stores/modal.ts';
+	import { applicationStore } from '$lib/stores/application-store';
+	import { showApplicationModal } from '$lib/stores/modal-state';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
+	export let value = '';
 
 	function handleClick() {
 		showApplicationModal.set(true);
 	}
 </script>
 
-<div class="field-container">
-	<h3 class="field-label">Application</h3>
-	<div class="field-row">
-		<select required name="applications" bind:value={$applicationTitle}>
+<div class="application-selection-container">
+	<h3 class="application-selection-label">Application</h3>
+	<div class="application-selection-row">
+		<select required name="applications" bind:value>
 			<option disabled selected hidden value="">Select a application</option>
-			<option value="Office 365">Office 365</option>
-			<option value="AutoCAD">AutoCAD</option>
-			<option value="Docker Enterprise">Docker Enterprise</option>
-			<option value="Visual Studio Enterprise">Visual Studio Enterprise</option>
+			{#each $applicationStore as application}
+				<option value={application.name}>{application.name}</option>
+			{/each}
 		</select>
 		<button class="settings-button" on:click={handleClick}>
 			<SettingsAdjust size={20} fill="white" aria-label="SettingsAdjust" />
@@ -25,7 +25,7 @@
 </div>
 
 <style>
-	.field-container {
+	.application-selection-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -34,11 +34,11 @@
 		overflow-wrap: break-word;
 	}
 
-	.field-label {
+	.application-selection-label {
 		margin-bottom: 0.4rem;
 	}
 
-	.field-row {
+	.application-selection-row {
 		width: 100%;
 		display: flex;
 		align-items: center;
@@ -47,13 +47,13 @@
 	.settings-button {
 		height: 75%;
 		aspect-ratio: 1/1;
-		border-radius: 6px;
-		background-color: black;
 		margin-left: 1.6rem;
-		cursor: pointer;
+		border-radius: 6px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background-color: black;
+		cursor: pointer;
 		transition: background-color 0.2s ease;
 
 		&:hover {
@@ -68,33 +68,32 @@
 	}
 
 	select {
-		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
-		border: none;
 		width: 100%;
 		height: 3rem;
-		background-color: transparent;
+		border: none;
 		border-bottom: 1px solid var(--text-placeholder);
-		appearance: none;
 		box-sizing: border-box;
+		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+		background-color: transparent;
+		appearance: none;
 	}
 
 	select:hover {
+		padding: 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
 		appearance: auto;
-		padding: 0.3rem;
 	}
 
 	select:focus {
+		padding: 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
 		appearance: auto;
-		padding: 0.3rem;
 	}
 
 	select:required:invalid {
 		color: gray;
-		font-style: italic;
 		appearance: auto;
 	}
 
@@ -103,8 +102,8 @@
 	}
 
 	option {
-		color: black;
 		font-style: normal;
+		color: black;
 	}
 
 	@media (max-width: 1000px) {

@@ -1,16 +1,29 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
+	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
-	import Modal from '$lib/components/license/Modal.svelte';
-	import { showModal } from '$lib/stores/modal.ts';
+	import { showLicenseModal } from '$lib/stores/modal-state';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		goto('/');
+	});
+
+	$: if ($page.url.search === '') {
+		showLicenseModal.set(false);
+	} else {
+		showLicenseModal.set(true);
+	}
 </script>
 
 <div class="main-container">
 	<Dashboard />
 	<TableContainer />
 
-	{#if $showModal}
-		<Modal />
+	{#if $showLicenseModal}
+		<LicenseModal />
 	{/if}
 </div>
 

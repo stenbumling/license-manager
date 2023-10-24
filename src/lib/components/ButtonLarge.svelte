@@ -12,13 +12,13 @@
 
 <style>
 	.button-container {
-		display: flex;
-		background-color: black;
-		color: white;
-		height: 3rem;
-		box-sizing: border-box;
-		padding: 1rem 1.3rem;
 		position: relative;
+		height: 3rem;
+		padding: 1rem 1.3rem;
+		display: flex;
+		box-sizing: border-box;
+		color: white;
+		background-color: black;
 		user-select: none;
 		cursor: pointer;
 	}
@@ -39,8 +39,8 @@
 
 	.button-content {
 		z-index: 1;
-		display: flex;
 		width: 100%;
+		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}

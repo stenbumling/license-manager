@@ -18,27 +18,27 @@
 
 @font-face {
 	font-family: 'FK Grotesk Regular';
-	src: url('$lib/fonts/FKGrotesk-Regular.woff2') format('woff2');
-	src: url('$lib/fonts/FKGrotesk-Regular.ttf') format('truetype');
-	src: url('$lib/fonts/FKGrotesk-Regular.otf') format('opentype');
+	src: url('$lib/fonts/fk-grotesk-regular.woff2') format('woff2');
+	src: url('$lib/fonts/fk-grotesk-regular.ttf') format('truetype');
+	src: url('$lib/fonts/fk-grotesk-regular.otf') format('opentype');
 	font-weight: normal;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'FK Grotesk Bold';
-	src: url('$lib/fonts/FKGrotesk-Bold.woff2') format('woff2');
-	src: url('$lib/fonts/FKGrotesk-Bold.ttf') format('truetype');
-	src: url('$lib/fonts/FKGrotesk-Bold.otf') format('opentype');
+	src: url('$lib/fonts/fk-grotesk-bold.woff2') format('woff2');
+	src: url('$lib/fonts/fk-grotesk-bold.ttf') format('truetype');
+	src: url('$lib/fonts/fk-grotesk-bold.otf') format('opentype');
 	font-weight: bold;
 	font-style: normal;
 }
 
 @font-face {
 	font-family: 'FK Grotesk Italic';
-	src: url('$lib/fonts/FKGrotesk-Italic.woff2') format('woff2');
-	src: url('$lib/fonts/FKGrotesk-Italic.ttf') format('truetype');
-	src: url('$lib/fonts/FKGrotesk-Italic.otf') format('opentype');
+	src: url('$lib/fonts/fk-grotesk-italic.woff2') format('woff2');
+	src: url('$lib/fonts/fk-grotesk-italic.ttf') format('truetype');
+	src: url('$lib/fonts/fk-grotesk-italic.otf') format('opentype');
 	font-weight: normal;
 	font-style: italic;
 }

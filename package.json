@@ -14,6 +14,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/kit": "^1.20.4",
+		"@types/uuid": "^9.0.6",
 		"@typescript-eslint/eslint-plugin": "^6.0.0",
 		"@typescript-eslint/parser": "^6.0.0",
 		"autoprefixer": "^10.4.14",
@@ -36,6 +37,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@tailwindcss/nesting": "^0.0.0-insiders.565cd3e"
+		"@tailwindcss/nesting": "^0.0.0-insiders.565cd3e",
+		"uuid": "^9.0.1"
 	}
 }

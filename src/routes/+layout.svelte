@@ -1,22 +1,23 @@
 <script lang="ts">
-	import '../app.postcss';
+	import Header from '$lib/components/Header.svelte';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
-	import Header from '$lib/components/Header.svelte';
+	import '../app.postcss';
 </script>
 
 <header>
 	<Header />
 </header>
+
 <main>
 	<slot />
 </main>
 
 <style>
 	main {
+		min-height: calc(100vh - 4.65rem);
 		display: flex;
 		justify-content: center;
-		min-height: calc(100vh - 4.65rem);
 	}
 
 	@media (max-height: 850px) {

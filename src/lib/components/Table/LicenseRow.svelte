@@ -7,11 +7,11 @@
 
 <style>
 	.license-row-container {
-		border-bottom: 1px solid #E6E6E6;
 		height: 3rem;
+		padding: 0 2rem;
+		border-bottom: 1px solid #e6e6e6;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: 0 2rem;
 	}
 </style>

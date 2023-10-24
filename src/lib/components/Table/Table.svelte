@@ -43,10 +43,10 @@
 
 <style>
 	.table {
-		display: flex;
-		flex-direction: column;
 		min-height: 30.4rem;
 		max-height: 100%;
+		display: flex;
+		flex-direction: column;
 		flex-grow: 1;
 		overflow-y: auto;
 	}
