@@ -1,6 +1,10 @@
+<script lang="ts">
+		import logo from '$lib/images/nexer-logo-white.png';
+</script>
+
 <div class="header-container">
 	<div class="header-content">
-		<img src="$lib/images/nexer-logo-white.png" alt="Nexer Logo" />
+		<img src={logo} alt="Nexer Logo" />
 	</div>
 </div>
 
