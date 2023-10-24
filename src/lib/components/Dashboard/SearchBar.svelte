@@ -16,26 +16,24 @@
 	}
 
 	.search-field {
-		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
-		border: none;
 		width: 100%;
 		height: 3rem;
-		background-color: transparent;
+		padding-left: 50px;
+		border: none;
 		border-bottom: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
-		padding-left: 50px;
+		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+		background-color: transparent;
 	}
 
 	input:hover {
+		padding: 0 0 1px 49px;
 		border: 1px dashed black;
-		padding-left: 49px;
-		padding-bottom: 2px;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 48px;
-		padding-bottom: 2px;
+		padding: 0 0 1px 48px;
 	}
 </style>

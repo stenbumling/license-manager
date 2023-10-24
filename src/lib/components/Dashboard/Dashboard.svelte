@@ -65,21 +65,22 @@
 
 <style>
 	.dashboard {
-		display: flex;
-		flex-direction: column;
-		padding: 0.4rem 2rem;
-		border: 1px solid black;
 		width: 20rem;
 		height: 37.7rem;
 		margin-right: 3rem;
 		margin-top: 3.6rem;
+		padding: 0.4rem 2rem;
+		border: 1px solid black;
+		display: flex;
+		flex-direction: column;
 	}
 
 	.filter-list {
+		margin-bottom: 2rem;
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;
-		margin-bottom: 2rem;
+		
 	}
 
 	@media (max-height: 850px) {

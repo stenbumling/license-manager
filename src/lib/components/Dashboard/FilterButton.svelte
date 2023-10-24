@@ -29,13 +29,13 @@
 
 <style>
 	.filter-container {
-		cursor: pointer;
-		display: flex;
-		border: 1px solid black;
-		box-sizing: border-box;
+		position: relative;
 		height: 3.3rem;
 		width: 100%;
-		position: relative;
+		border: 1px solid black;
+		display: flex;
+		box-sizing: border-box;
+		cursor: pointer;
 		user-select: none;
 	}
 
@@ -53,29 +53,28 @@
 	}
 
 	.filter-content {
-		display: flex;
+		z-index: 2;
 		width: 100%;
 		height: 100%;
+		display: flex;
 		align-content: space-between;
 		justify-content: space-between;
-		z-index: 2;
 	}
 
 	.filter-title {
+		max-width: 100%;
 		margin: 0.5rem 0 0 0.8rem;
 		align-self: flex-start;
-		word-break: break-word;
 		overflow-wrap: break-word;
-		max-width: 100%;
+		word-break: break-word;
 		text-align: left;
 	}
 
 	.filter-amount {
+		margin: 2.5rem 0.8rem 0.1rem 0;
 		display: flex;
 		align-self: flex-end;
 		font-size: 1.5rem;
-		margin-top: 2.5rem;
-		margin: 0 0.8rem 0.1rem 0;
 	}
 
 	button:active {
