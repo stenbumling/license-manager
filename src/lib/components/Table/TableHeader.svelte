@@ -7,10 +7,10 @@
 
 <style>
 	.table-header-container {
+		padding: 1.05rem 2rem;
+		border-bottom: 2px solid black;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		border-bottom: 2px solid black;
-		padding: 1.05rem 2rem;
 	}
 </style>
