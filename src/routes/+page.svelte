@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
-	import Modal from '$lib/components/license/Modal.svelte';
+	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
 	import { showLicenseModal } from '$lib/stores/modal-state';
 	import { onMount } from 'svelte';
@@ -23,7 +23,7 @@
 	<TableContainer />
 
 	{#if $showLicenseModal}
-		<Modal />
+		<LicenseModal />
 	{/if}
 </div>
 

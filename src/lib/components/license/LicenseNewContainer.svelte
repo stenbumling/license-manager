@@ -1,17 +1,17 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
-	import ApplicationModal from '$lib/components/license/application-admin/ApplicationModal.svelte';
+	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
+	import LicenseTitle from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
 	import ExpirationField from '$lib/components/license/fields/ExpirationField.svelte';
-	import LicenseTitle from '$lib/components/license/fields/LicenseTitle.svelte';
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import { license, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
 
-	function handleClick() {
+	function handleAdd() {
 		showLicenseModal.set(false);
 		goto('/');
 		// licenseStore.add($license)
@@ -39,22 +39,22 @@
 			bind:value={$license.status}
 			label="Status"
 			options={['Active', 'Inactive', 'Expired']}
-			required
 			defaultOption="Active"
+			required
 		/>
 		<TextField bind:value={$license.contactPerson} label="Contact person">
 			<TextField
-				bind:value={$license.additionalContactInfo}
 				slot="secondary"
+				bind:value={$license.additionalContactInfo}
 				label="Additional contact information"
 				type="secondary"
 			/>
 		</TextField>
 		<TextAreaField bind:value={$license.comment} label="Comment" />
 	</div>
-	<div class="buttons-container">
-		<button class="link-container" on:click|preventDefault={handleClick}>
-			<ButtonLarge title="Save license" />
+	<div class="bottom-container">
+		<button class="add-button" on:click|preventDefault={handleAdd}>
+			<ButtonLarge title="Add new license" />
 		</button>
 	</div>
 </div>
@@ -68,26 +68,26 @@
 	}
 
 	.fields-grid {
+		width: 100%;
+		max-width: 100rem;
+		height: auto;
+		margin: 0 0 3rem 0;
+		padding: 0 1rem 0 0;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-auto-rows: min-content;
 		gap: 2rem 8rem;
-		width: 100%;
-		max-width: 100rem;
-		height: auto;
 		overflow-y: auto;
-		margin-bottom: 3rem;
-		padding: 0 1rem 0 0;
 	}
 
-	.buttons-container {
-		display: flex;
+	.bottom-container {
 		width: 100%;
+		margin: auto 0 0 0;
+		display: flex;
 		align-items: center;
-		margin-top: auto;
 		justify-content: flex-end;
 	}
-	.link-container {
+	.add-button {
 		width: 16rem;
 	}
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-		import logo from '$lib/images/nexer-logo-white.png';
+	import logo from '$lib/images/nexer-logo-white.png';
 </script>
 
 <div class="header-container">

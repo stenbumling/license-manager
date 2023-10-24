@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ApplicationItem from '$lib/components/license/application-admin/ApplicationItem.svelte';
+	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
 	import { application, applicationStore } from '$lib/stores/application-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';

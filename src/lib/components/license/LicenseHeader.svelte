@@ -4,16 +4,16 @@
 	import { showLicenseModal } from '$lib/stores/modal-state';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
-	function handleClick() {
+	function handleClose() {
 		goto('/');
 		showLicenseModal.set(false);
 	}
 </script>
 
-<div class="title-container">
+<div class="header-container">
 	<div class="top-container">
 		<h3 class="id-label">#838</h3>
-		<a href="/" class="back-link" on:click|preventDefault={handleClick}>
+		<a href="/" class="close-button" on:click|preventDefault={handleClose}>
 			<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
 	</div>
@@ -25,48 +25,35 @@
 </div>
 
 <style>
-	.title-container {
+	.header-container {
+		margin-bottom: 4rem;
+		border-bottom: 1px solid var(--text-placeholder);
 		display: flex;
 		flex-direction: column;
 		grid-column: 1 / -1;
-		border-bottom: 1px solid var(--text-placeholder);
-		margin-bottom: 4rem;
 		cursor: default;
 	}
 
 	.top-container {
+		margin: 0 0 0.4rem 0;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin: 0 0 0.4rem 0;
-	}
-
-	.title-label {
-		font-size: 2.8rem;
-		font-weight: 500;
-		margin: 0 0 1rem 0;
-	}
-
-	.new-license-label {
-		font-size: 2.8rem;
-		font-weight: 500;
-		margin: 0 0 1rem 0;
-		color: var(--text-placeholder);
 	}
 
 	.id-label {
 		font-size: 1rem;
 	}
 
-	.back-link {
+	.close-button {
+		padding: 0.2rem;
+		border-radius: 6px;
+		display: flex;
+		align-self: center;
 		font-size: 1rem;
 		text-decoration: none;
 		color: black;
 		transition: color 0.25s ease;
-		display: flex;
-		align-self: center;
-		padding: 0.2rem;
-		border-radius: 6px;
 		transition: background-color 0.2s ease;
 
 		&:hover {
@@ -78,5 +65,18 @@
 			top: 1px;
 			left: 1px;
 		}
+	}
+
+	.title-label {
+		margin: 0 0 1rem 0;
+		font-size: 2.8rem;
+		font-weight: 500;
+	}
+
+	.new-license-label {
+		margin: 0 0 1rem 0;
+		font-size: 2.8rem;
+		font-weight: 500;
+		color: var(--text-placeholder);
 	}
 </style>
