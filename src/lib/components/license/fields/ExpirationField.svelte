@@ -12,9 +12,12 @@
 	}
 </script>
 
-<div class="application-selection-container">
-	<h3 class="application-selection-label">{label}</h3>
-	<div class="application-selection-row">
+<div class="expiration-container">
+	<h3 class="expiration-label">
+		{label}
+		<span class="required">*</span>
+	</h3>
+	<div class="expiration-row">
 		<input class="date-picker" type="date" required name="applications" bind:value />
 		<div class="renewal-checkbox">
 			<input
@@ -30,7 +33,7 @@
 	<div class="secondary-text">
 		<p>In x days</p>
 	</div>
-	<div class="interval-field-2">
+	<div class="cost-field">
 		<TextField
 			bind:value={$license.cost}
 			label="Cost"
@@ -54,7 +57,7 @@
 </div>
 
 <style>
-	.application-selection-container {
+	.expiration-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -63,54 +66,18 @@
 		overflow-wrap: break-word;
 	}
 
-	.interval-field {
-		margin-top: 1.4rem;
-		width: 100%;
-	}
-
-	.interval-field-2 {
-		margin-top: 1.4rem;
-		width: 100%;
-	}
-
-	.application-selection-label {
+	.expiration-label {
 		margin-bottom: 0.4rem;
 	}
 
-	.application-selection-row {
+	.required {
+		color: red;
+	}
+
+	.expiration-row {
 		width: 100%;
 		display: flex;
 		align-items: center;
-	}
-
-	.renewal-checkbox {
-		margin-left: 1rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 7rem;
-		font-size: 0.8rem;
-		margin-bottom: 0.2rem;
-		flex-shrink: 0;
-	}
-
-	.secondary-text {
-		font-size: 0.75rem;
-		color: var(--text-placeholder);
-		height: 2.8rem;
-		margin-left: 1px;
-	}
-
-	input[type='checkbox'] {
-		width: 1.1rem;
-		height: 1.1rem;
-		cursor: pointer;
-		outline: none;
-		transition: background-color 0.2s ease;
-	}
-
-	input[type='checkbox']:checked {
-		background-color: var(--light-purple);
 	}
 
 	.date-picker {
@@ -141,6 +108,46 @@
 	.date-picker:required:invalid {
 		color: gray;
 		appearance: auto;
+	}
+
+	.renewal-checkbox {
+		margin-left: 1rem;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 7rem;
+		font-size: 0.8rem;
+		margin-bottom: 0.2rem;
+		flex-shrink: 0;
+	}
+
+	.secondary-text {
+		font-size: 0.75rem;
+		color: var(--text-placeholder);
+		height: 2.8rem;
+		margin-left: 1px;
+	}
+
+	.cost-field {
+		margin-top: 1.4rem;
+		width: 100%;
+	}
+
+	.interval-field {
+		margin-top: 1.4rem;
+		width: 100%;
+	}
+
+	input[type='checkbox'] {
+		width: 1.1rem;
+		height: 1.1rem;
+		cursor: pointer;
+		outline: none;
+		transition: background-color 0.2s ease;
+	}
+
+	input[type='checkbox']:checked {
+		background-color: var(--light-purple);
 	}
 
 	@media (max-width: 1000px) {

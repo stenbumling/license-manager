@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
-	type FieldType = 'primary' | 'secondary';
-
 	export let label: string = '';
 	export let value: string = '';
 	export let secondaryText: string = '';
@@ -10,26 +8,22 @@
 	export let options: string[];
 	export let defaultOption: string = '';
 	export let placeholder: string = 'Select an option';
-	export let type: FieldType = 'primary';
+	export let type: 'primary' | 'secondary' = 'primary';
 
 	const id = uuidv4();
 
-	$: {
-		if (defaultOption && options.includes(defaultOption) && !value) {
-			value = defaultOption;
-		}
-	}
-	$: unselectedStyle = value ? '' : 'unselected';
+	$: value = !value && defaultOption && options.includes(defaultOption) ? defaultOption : value;
+	$: selectStyle = value ? '' : 'unselected';
 </script>
 
 <div class="select-field-container">
 	<h3 class={type === 'primary' ? 'primary-select-label' : 'secondary-select-label'} {id}>
 		{label}
 		{#if required}
-			<span class="required-asterisk">*</span>
+			<span class="required">*</span>
 		{/if}
 	</h3>
-	<select aria-labelledby={id} {required} name={label} bind:value class={unselectedStyle}>
+	<select class={selectStyle} bind:value name={label} {required} aria-labelledby={id}>
 		<option hidden value="">{placeholder}</option>
 		{#each options as option}
 			<option value={option}>{option}</option>
@@ -41,7 +35,7 @@
 		{/if}
 	</div>
 	{#if $$slots.secondary}
-		<div class="interval-field">
+		<div class="slotted-field">
 			<slot name="secondary" />
 		</div>
 	{/if}
@@ -62,18 +56,13 @@
 		margin-bottom: 0.4rem;
 	}
 
-	.interval-field {
-		margin-top: 1.4rem;
-		width: 100%;
-	}
-
 	.secondary-select-label {
 		margin-bottom: 0.4rem;
 		font-size: 0.75rem;
 		color: #888888;
 	}
 
-	.required-asterisk {
+	.required {
 		color: red;
 	}
 
@@ -87,6 +76,11 @@
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
+	}
+
+	.slotted-field {
+		margin-top: 1.4rem;
+		width: 100%;
 	}
 
 	select {

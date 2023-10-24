@@ -1,47 +1,35 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
-	type FieldType = 'primary' | 'secondary';
-
 	export let label: string = '';
 	export let value: string = '';
 	export let secondaryText: string = '';
 	export let placeholder: string = 'Enter some text';
 	export let required: boolean = false;
-	export let autoComplete: string = 'off';
-	export let type: FieldType = 'primary';
+	export let autocomplete: string = 'off';
+	export let type: 'primary' | 'secondary' = 'primary';
 
 	const id = uuidv4();
-	let containerClass: string = 'text-field-container';
 
-	$: {
-		containerClass =
-			type === 'secondary' ? 'text-field-secondary-container' : 'text-field-container';
-	}
+	let textContainer: string =
+		type === 'secondary' ? 'text-field-secondary-container' : 'text-field-container';
 </script>
 
-<div class={containerClass}>
+<div class={textContainer}>
 	<h3 class={type === 'primary' ? 'primary-text-label' : 'secondary-text-label'} {id}>
 		{label}
 		{#if required}
-			<span class="required-asterisk">*</span>
+			<span class="required">*</span>
 		{/if}
 	</h3>
-	<input
-		type="text"
-		aria-labelledby={id}
-		{placeholder}
-		{required}
-		autocomplete={autoComplete}
-		bind:value
-	/>
+	<input bind:value type="text" aria-labelledby={id} {required} {placeholder} {autocomplete} />
 	<div class="secondary-text">
 		{#if secondaryText}
 			<p>{secondaryText}</p>
 		{/if}
 	</div>
 	{#if $$slots.secondary}
-		<div class="interval-field">
+		<div class="slotted-field">
 			<slot name="secondary" />
 		</div>
 	{/if}
@@ -72,15 +60,14 @@
 		margin-bottom: 0.4rem;
 	}
 
-	.interval-field {
-		margin-top: 1.4rem;
-		width: 100%;
-	}
-
 	.secondary-text-label {
 		margin-bottom: 0.4rem;
 		font-size: 0.75rem;
 		color: #888888;
+	}
+
+	.required {
+		color: red;
 	}
 
 	.secondary-text {
@@ -90,8 +77,9 @@
 		margin-left: 1px;
 	}
 
-	.required-asterisk {
-		color: red;
+	.slotted-field {
+		margin-top: 1.4rem;
+		width: 100%;
 	}
 
 	input {

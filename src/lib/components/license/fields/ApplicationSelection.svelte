@@ -47,13 +47,13 @@
 	.settings-button {
 		height: 75%;
 		aspect-ratio: 1/1;
-		border-radius: 6px;
-		background-color: black;
 		margin-left: 1.6rem;
-		cursor: pointer;
+		border-radius: 6px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		background-color: black;
+		cursor: pointer;
 		transition: background-color 0.2s ease;
 
 		&:hover {
@@ -68,28 +68,28 @@
 	}
 
 	select {
-		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
-		border: none;
 		width: 100%;
 		height: 3rem;
-		background-color: transparent;
+		border: none;
 		border-bottom: 1px solid var(--text-placeholder);
-		appearance: none;
 		box-sizing: border-box;
+		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
+		background-color: transparent;
+		appearance: none;
 	}
 
 	select:hover {
+		padding: 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
 		appearance: auto;
-		padding: 0.3rem;
 	}
 
 	select:focus {
+		padding: 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
 		appearance: auto;
-		padding: 0.3rem;
 	}
 
 	select:required:invalid {
@@ -102,8 +102,8 @@
 	}
 
 	option {
-		color: black;
 		font-style: normal;
+		color: black;
 	}
 
 	@media (max-width: 1000px) {

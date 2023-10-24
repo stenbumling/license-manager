@@ -80,7 +80,6 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;
-		
 	}
 
 	@media (max-height: 850px) {

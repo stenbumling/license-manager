@@ -1,18 +1,15 @@
 <script lang="ts">
 	import { v4 as uuidv4 } from 'uuid';
 
-	type FieldType = 'primary' | 'secondary';
-
 	export let label: string = '';
 	export let value: string = '';
 	export let secondaryText: string = '';
 	export let placeholder: string = 'Enter some text';
 	export let required: boolean = false;
-	export let autoComplete: string = 'off';
-	export let type: FieldType = 'primary';
+	export let autocomplete: string = 'off';
+	export let type: 'primary' | 'secondary' = 'primary';
 
 	const id = uuidv4();
-
 	let textarea: HTMLTextAreaElement;
 
 	function scrollToTop() {
@@ -24,17 +21,17 @@
 	<h3 class={type === 'primary' ? 'primary-textarea-label' : 'secondary-textarea-label'} {id}>
 		{label}
 		{#if required}
-			<span class="required-asterisk">*</span>
+			<span class="required">*</span>
 		{/if}
 	</h3>
 	<textarea
-		aria-labelledby={id}
-		{placeholder}
-		{required}
-		autocomplete={autoComplete}
-		on:blur={scrollToTop}
-		bind:this={textarea}
 		bind:value
+		bind:this={textarea}
+		{required}
+		{placeholder}
+		{autocomplete}
+		on:blur={scrollToTop}
+		aria-labelledby={id}
 	/>
 	<div class="secondary-text">
 		{#if secondaryText}
@@ -71,7 +68,7 @@
 		margin-left: 1px;
 	}
 
-	.required-asterisk {
+	.required {
 		color: red;
 	}
 
