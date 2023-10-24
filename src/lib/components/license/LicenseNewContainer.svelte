@@ -14,7 +14,7 @@
 	function handleAdd() {
 		showLicenseModal.set(false);
 		goto('/');
-		licenseStore.add($license)
+		licenseStore.add($license);
 		licenseStore.reset();
 	}
 </script>
