@@ -1,9 +1,9 @@
 <script lang="ts">
-	import LicenseViewContainer from '$lib/components/license/LicenseViewContainer.svelte';
+	import LicenseContainer from '$lib/components/license/LicenseContainer.svelte';
 </script>
 
 <div class="main-container">
-	<LicenseViewContainer />
+	<LicenseContainer />
 </div>
 
 <style>
@@ -13,6 +13,7 @@
 		padding: 3rem 4.9rem 0 5.1rem;
 		display: flex;
 		flex-direction: row;
+		justify-content: center;
 	}
 
 	@media (max-height: 850px) {
