@@ -12,7 +12,6 @@
 
 <div class="header-container">
 	<div class="top-container">
-		<h3 class="id-label">#838</h3>
 		<a href="/" class="close-button" on:click|preventDefault={handleClose}>
 			<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
@@ -37,12 +36,8 @@
 	.top-container {
 		margin: 0 0 0.4rem 0;
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		align-items: center;
-	}
-
-	.id-label {
-		font-size: 1rem;
 	}
 
 	.close-button {
