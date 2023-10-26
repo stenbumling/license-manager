@@ -1,19 +1,17 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
 	import { activeFilter } from '$lib/stores/filter-state';
-	import { showLicenseModal } from '$lib/stores/modal-state';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
 			return;
 		}
-
 		e.preventDefault();
 		goto('/?modal=add-new');
-		showLicenseModal.set(true);
 	}
 </script>
 

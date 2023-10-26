@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import LicenseContainer from '$lib/components/license/LicenseContainer.svelte';
 </script>
 

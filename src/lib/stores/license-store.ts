@@ -29,10 +29,11 @@ export interface NewLicense {
 }
 
 export interface License extends NewLicense {
-	id: number;
+	id: string;
 }
 
-export const license = writable<NewLicense>(getInitialValues());
+export const licenseMode = writable<'add' | 'edit'>('add');
+export const license = writable<NewLicense | License>(getInitialValues());
 
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
@@ -51,7 +52,17 @@ function createLicenseStore() {
 		}
 	}
 
-	async function deleteLicense(id: number) {
+	async function getLicense(id: string) {
+		try {
+			const response = await fetch(`/api/license/${id}`);
+			const fetchedLicense = await response.json();
+			license.set(fetchedLicense);
+		} catch (error) {
+			console.error('Failed to get license:', error);
+		}
+	}
+
+	async function deleteLicense(id: string) {
 		try {
 			const response = await fetch(`/api/license/delete/${id}`, {
 				method: 'DELETE',
@@ -69,6 +80,7 @@ function createLicenseStore() {
 		update,
 		add: addLicense,
 		delete: deleteLicense,
+		fetch: getLicense,
 		reset: () => license.set(getInitialValues()),
 	};
 }
