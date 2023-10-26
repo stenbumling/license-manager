@@ -3,10 +3,10 @@
 	import TableHeader from '$lib/components/table/TableHeader.svelte';
 </script>
 
-<div class="table-container">
+<table class="table-container">
 	<TableHeader />
 	<Table />
-</div>
+</table>
 
 <style>
 	.table-container {

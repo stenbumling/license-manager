@@ -2,7 +2,7 @@
 	import LicensRow from '$lib/components/table/LicenseRow.svelte';
 </script>
 
-<div class="table">
+<tbody class="table">
 	<LicensRow />
 	<LicensRow />
 	<LicensRow />
@@ -39,7 +39,7 @@
 	<LicensRow />
 	<LicensRow />
 	<LicensRow />
-</div>
+</tbody>
 
 <style>
 	.table {
@@ -49,6 +49,7 @@
 		flex-direction: column;
 		flex-grow: 1;
 		overflow-y: auto;
+		scrollbar-gutter: stable both-edges;
 	}
 
 	.table > :global(:last-child) {
