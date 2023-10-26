@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 export function getInitialValues() {
 	return {
@@ -52,13 +52,14 @@ function createLicenseStore() {
 		}
 	}
 
-	async function getLicense(id: string) {
-		try {
-			const response = await fetch(`/api/license/${id}`);
-			const fetchedLicense = await response.json();
+	function getLicenseById(id: string) {
+		const licenses = get(licenseStore);
+		const fetchedLicense = licenses.find((license) => license.id === id);
+
+		if (fetchedLicense) {
 			license.set(fetchedLicense);
-		} catch (error) {
-			console.error('Failed to get license:', error);
+		} else {
+			console.error('Failed to get license from store');
 		}
 	}
 
@@ -80,7 +81,7 @@ function createLicenseStore() {
 		update,
 		add: addLicense,
 		delete: deleteLicense,
-		fetch: getLicense,
+		fetch: getLicenseById,
 		reset: () => license.set(getInitialValues()),
 	};
 }

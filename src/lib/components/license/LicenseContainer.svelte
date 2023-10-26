@@ -19,7 +19,7 @@
 		const id = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
 		if (id) {
-			await licenseStore.fetch(id);
+			licenseStore.fetch(id);
 		}
 		loaded = true;
 	});
