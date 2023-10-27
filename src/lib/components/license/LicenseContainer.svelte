@@ -9,7 +9,8 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import { license, licenseStore } from '$lib/stores/license-store.ts';
+	import type { License } from '$lib/stores/license-store';
+	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
 	import { onMount } from 'svelte';
 
@@ -19,7 +20,11 @@
 		const id = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
 		if (id) {
+			licenseMode.set('edit');
 			licenseStore.fetch(id);
+		} else {
+			licenseMode.set('add');
+			licenseStore.resetFields();
 		}
 		loaded = true;
 	});
@@ -28,7 +33,14 @@
 		showLicenseModal.set(false);
 		goto('/');
 		licenseStore.add($license);
-		licenseStore.reset();
+		licenseStore.resetFields();
+	}
+
+	function handleSave() {
+		showLicenseModal.set(false);
+		goto('/');
+		licenseStore.update($license as License);
+		licenseStore.resetFields();
 	}
 </script>
 
@@ -67,9 +79,15 @@
 			<TextAreaField bind:value={$license.comment} label="Comment" />
 		</div>
 		<div class="bottom-container">
-			<button class="add-button" on:click|preventDefault={handleAdd}>
-				<ButtonLarge title="Add new license" />
-			</button>
+			{#if $licenseMode === 'edit'}
+				<button class="main-button" on:click|preventDefault={handleSave}>
+					<ButtonLarge title="Save changes" />
+				</button>
+			{:else}
+				<button class="main-button" on:click|preventDefault={handleAdd}>
+					<ButtonLarge title="Add new license" />
+				</button>
+			{/if}
 		</div>
 	{:else}
 		<p>Loading...</p>
@@ -104,7 +122,7 @@
 		align-items: center;
 		justify-content: flex-end;
 	}
-	.add-button {
+	.main-button {
 		width: 16rem;
 	}
 

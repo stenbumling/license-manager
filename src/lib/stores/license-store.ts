@@ -52,6 +52,22 @@ function createLicenseStore() {
 		}
 	}
 
+	async function updateLicense(license: License) {
+		try {
+			const response = await fetch(`/api/license/update/${license.id}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(license),
+			});
+			if (!response.ok) throw new Error('Failed to update license');
+			update((licenses) =>
+				licenses.map((license) => (license.id === license.id ? license : license)),
+			);
+		} catch (error) {
+			console.error('Failed to update license:', error);
+		}
+	}
+
 	function getLicenseById(id: string) {
 		const licenses = get(licenseStore);
 		const fetchedLicense = licenses.find((license) => license.id === id);
@@ -78,11 +94,11 @@ function createLicenseStore() {
 	return {
 		subscribe,
 		set,
-		update,
+		update: updateLicense,
 		add: addLicense,
 		delete: deleteLicense,
 		fetch: getLicenseById,
-		reset: () => license.set(getInitialValues()),
+		resetFields: () => license.set(getInitialValues()),
 	};
 }
 
