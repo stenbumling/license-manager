@@ -1,17 +1,21 @@
 <thead class="table-header-container">
 	<tr>
 		<th>
-			<h3>#</h3>
+			<h3>?</h3>
 		</th>
 		<th>
 			<h3>APPLICATION</h3>
 		</th>
 		<th>
-			<h3>ASSIGNED TO</h3>
+			<h3>CONTACT PERSON</h3>
+		</th>
+		<th>
+			<h3>Assigned Users</h3>
 		</th>
 		<th>
 			<h3>EXPIRES IN</h3>
 		</th>
+		<th />
 	</tr>
 </thead>
 
@@ -23,16 +27,17 @@
 		border-bottom: 2px solid black;
 		display: flex;
 		flex-direction: row;
+		align-items: flex-end;
 	}
 
 	thead th:nth-child(1) {
-		width: 10%;
+		width: 5%;
 		display: flex;
 		justify-content: flex-start;
 	}
 
 	thead th:nth-child(2) {
-		width: 40%;
+		width: 35%;
 		display: flex;
 		justify-content: flex-start;
 	}
@@ -44,8 +49,20 @@
 	}
 
 	thead th:nth-child(4) {
-		width: 25%;
+		width: 10%;
+		display: flex;
+		justify-content: center;
+	}
+
+	thead th:nth-child(5) {
+		width: 20%;
 		display: flex;
 		justify-content: flex-end;
+	}
+
+	thead th:nth-child(6) {
+		width: 5%;
+		display: flex;
+		justify-content: center;
 	}
 </style>

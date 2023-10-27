@@ -12,7 +12,9 @@
 	.table-container {
 		min-height: 34.8rem;
 		max-height: calc(100vh - 10.7rem);
+		max-width: 100%;
 		border-bottom: 2px solid black;
+		width: 70%;
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;

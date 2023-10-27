@@ -1,44 +1,12 @@
 <script lang="ts">
 	import LicensRow from '$lib/components/table/LicenseRow.svelte';
+	import { licenseStore } from '$lib/stores/license-store';
 </script>
 
 <tbody class="table">
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
-	<LicensRow />
+	{#each $licenseStore as license}
+		<LicensRow {license} />
+	{/each}
 </tbody>
 
 <style>
