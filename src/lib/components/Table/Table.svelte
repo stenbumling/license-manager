@@ -1,11 +1,23 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import LicensRow from '$lib/components/table/LicenseRow.svelte';
+	import type { License } from '$lib/stores/license-store';
 	import { licenseStore } from '$lib/stores/license-store';
+
+	function handleClick(license: License, e: MouseEvent | KeyboardEvent) {
+		if (e.metaKey || e.ctrlKey) {
+			return;
+		}
+		e.preventDefault();
+		goto(`/?modal=edit&id=${license.id}`);
+	}
 </script>
 
 <tbody class="table">
 	{#each $licenseStore as license}
-		<LicensRow {license} />
+		<a href={`/license/view/${license.id}`} on:click={(e) => handleClick(license, e)}>
+			<LicensRow {license} />
+		</a>
 	{/each}
 </tbody>
 
