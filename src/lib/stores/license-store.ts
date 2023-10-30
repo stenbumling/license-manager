@@ -61,7 +61,9 @@ function createLicenseStore() {
 			});
 			if (!response.ok) throw new Error('Failed to update license');
 			update((licenses) =>
-				licenses.map((license) => (license.id === license.id ? license : license)),
+				licenses.map((existingLicense) =>
+					existingLicense.id === license.id ? license : existingLicense,
+				),
 			);
 		} catch (error) {
 			console.error('Failed to update license:', error);
@@ -71,7 +73,7 @@ function createLicenseStore() {
 	function getLicenseById(id: string) {
 		const licenses = get(licenseStore);
 		const fetchedLicense = licenses.find((license) => license.id === id);
-
+		console.log('fetchedLicense: ', fetchedLicense);
 		if (fetchedLicense) {
 			license.set(fetchedLicense);
 		} else {

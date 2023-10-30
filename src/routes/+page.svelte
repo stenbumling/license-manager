@@ -4,8 +4,14 @@
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
+	import { license, licenseStore } from '$lib/stores/license-store.ts';
 	import { showLicenseModal } from '$lib/stores/modal-state';
 	import { onMount } from 'svelte';
+
+	$: {
+		console.log('Store: ', $licenseStore);
+		console.log('License: ', $license);
+	}
 
 	onMount(() => {
 		goto('/');
