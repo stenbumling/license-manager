@@ -12,11 +12,11 @@ export function daysUntil(date: string): number {
 
 export function getRelativeDate(date: string): { text: string; warning: boolean } {
 	const diffDays = daysUntil(date);
-	let text = 'Invalid date';
+	let text = 'No date selected';
 	let warning = false;
 
 	if (Number.isNaN(diffDays)) {
-		text = 'Invalid date';
+		text = 'No date selected';
 	} else if (diffDays === 0) {
 		text = 'today';
 	} else if (diffDays === 1) {
@@ -25,7 +25,6 @@ export function getRelativeDate(date: string): { text: string; warning: boolean 
 		text = 'yesterday';
 	} else if (diffDays > 0) {
 		text = `In ${diffDays} days`;
-		console.log(diffDays);
 	} else {
 		text = `${Math.abs(diffDays)} days ago`;
 		warning = true;
