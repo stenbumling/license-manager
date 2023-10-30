@@ -8,25 +8,21 @@
 </script>
 
 <tr class="license-row-container">
-	<td
-		><div
-			class="status-icon {license.status === 'Inactive'
-				? 'inactive'
-				: license.status === 'Expired'
-				? 'expired'
-				: ''}"
-		/></td
-	>
+	<td>
+		<div
+			class="status-icon"
+			class:inactive={license.status === 'Inactive'}
+			class:expired={license.status === 'Expired'}
+		/>
+	</td>
 	<td><p class="table-text">{license.application}</p></td>
 	<td><p class="table-text">{license.contactPerson}</p></td>
 	<td><p class="table-text">5</p></td>
 	<td
 		><p
-			class="table-text {renewalDate.status === 'warning'
-				? 'warning-text'
-				: renewalDate.status === 'alert'
-				? 'alert-text'
-				: ''}"
+			class="table-text"
+			class:warning-text={renewalDate.status === 'warning'}
+			class:alert-text={renewalDate.status === 'alert'}
 		>
 			{renewalDate.text}
 		</p></td
