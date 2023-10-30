@@ -1,3 +1,8 @@
+export function getTodaysDate(): string {
+	const currentDate = new Date().toISOString().split('T')[0];
+	return currentDate;
+}
+
 export function daysUntil(date: string): number {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);

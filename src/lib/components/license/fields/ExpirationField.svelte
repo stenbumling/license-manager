@@ -2,7 +2,7 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import { license } from '$lib/stores/license-store.ts';
-	import { getRelativeDate } from '$lib/utils/date-utils';
+	import { getRelativeDate, getTodaysDate } from '$lib/utils/date-utils';
 	import { slide } from 'svelte/transition';
 	export let value: string = '';
 	let autoRenewal = false;
@@ -20,7 +20,7 @@
 		<span class="required">*</span>
 	</h3>
 	<div class="expiration-row">
-		<input class="date-picker" type="date" required name="applications" bind:value />
+		<input class="date-picker" type="date" min={getTodaysDate()} required name="applications" bind:value />
 		<div class="renewal-checkbox">
 			<input
 				type="checkbox"
