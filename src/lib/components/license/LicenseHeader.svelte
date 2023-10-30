@@ -1,18 +1,18 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { license } from '$lib/stores/license-store';
+	import { license, licenseStore } from '$lib/stores/license-store';
 	import { showLicenseModal } from '$lib/stores/modal-state';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	function handleClose() {
-		goto('/');
 		showLicenseModal.set(false);
+		licenseStore.resetFields();
+		goto('/');
 	}
 </script>
 
 <div class="header-container">
 	<div class="top-container">
-		<h3 class="id-label">#838</h3>
 		<a href="/" class="close-button" on:click|preventDefault={handleClose}>
 			<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
@@ -37,12 +37,8 @@
 	.top-container {
 		margin: 0 0 0.4rem 0;
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-end;
 		align-items: center;
-	}
-
-	.id-label {
-		font-size: 1rem;
 	}
 
 	.close-button {

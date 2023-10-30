@@ -11,10 +11,10 @@
 		goto('/');
 	});
 
-	$: if ($page.url.search === '') {
-		showLicenseModal.set(false);
-	} else {
+	$: if ($page.url.search.startsWith('?modal')) {
 		showLicenseModal.set(true);
+	} else {
+		showLicenseModal.set(false);
 	}
 </script>
 

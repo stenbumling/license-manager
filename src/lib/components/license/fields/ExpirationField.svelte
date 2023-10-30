@@ -2,13 +2,17 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import { license } from '$lib/stores/license-store.ts';
+	import { getRelativeDate, getTodaysDate } from '$lib/utils/date-utils';
 	import { slide } from 'svelte/transition';
 	export let value: string = '';
-	let autoRenewal = false;
 	let label: string = '';
 
 	$: {
-		label = autoRenewal ? 'Renewal date' : 'Expiration date';
+		label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
+	}
+	$: renewalDate = getRelativeDate($license.renewalDate);
+	$: if (!$license.autoRenewal) {
+		$license.renewalInterval = '';
 	}
 </script>
 
@@ -18,20 +22,27 @@
 		<span class="required">*</span>
 	</h3>
 	<div class="expiration-row">
-		<input class="date-picker" type="date" required name="applications" bind:value />
+		<input
+			class="date-picker"
+			type="date"
+			min={getTodaysDate()}
+			required
+			name="applications"
+			bind:value
+		/>
 		<div class="renewal-checkbox">
 			<input
 				type="checkbox"
 				id="renewal"
 				name="renewal"
 				value="renewal"
-				bind:checked={autoRenewal}
+				bind:checked={$license.autoRenewal}
 			/>
 			<label for="renewal">Autorenewal</label>
 		</div>
 	</div>
 	<div class="secondary-text">
-		<p>In x days</p>
+		<p>{renewalDate.text}</p>
 	</div>
 	<div class="cost-field">
 		<TextField
@@ -42,12 +53,12 @@
 			placeholder="Enter cost of license"
 		/>
 	</div>
-	{#if autoRenewal}
+	{#if $license.autoRenewal}
 		<div transition:slide={{ duration: 80 }} class="interval-field">
 			<SelectField
 				bind:value={$license.renewalInterval}
 				label="Renewal interval"
-				options={['Monthly', 'Yearly']}
+				options={['Monthly', 'Anually']}
 				defaultOption="Monthly"
 				required
 				type="secondary"

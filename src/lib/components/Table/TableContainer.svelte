@@ -3,16 +3,18 @@
 	import TableHeader from '$lib/components/table/TableHeader.svelte';
 </script>
 
-<div class="table-container">
+<table class="table-container">
 	<TableHeader />
 	<Table />
-</div>
+</table>
 
 <style>
 	.table-container {
-		min-height: 34.8rem;
-		max-height: calc(100vh - 10.7rem);
+		min-height: 35.3rem;
+		max-height: calc(100vh - 10.6rem);
+		max-width: 100%;
 		border-bottom: 2px solid black;
+		width: 70%;
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;

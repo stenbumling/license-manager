@@ -1,16 +1,86 @@
-<div class="table-header-container">
-	<h3>#</h3>
-	<h3>APPLICATION</h3>
-	<h3>ASSIGNED TO</h3>
-	<h3>EXPIRES IN</h3>
-</div>
+<script lang="ts">
+	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
+</script>
+
+<thead>
+	<tr>
+		<th class="icon-col">
+			<CircleDash size={20} />
+		</th>
+		<th class="application-col">
+			<h3>Application</h3>
+		</th>
+		<th class="contact-col">
+			<h3>Contact person</h3>
+		</th>
+		<th class="assigned-col">
+			<h3>Assigned</h3>
+		</th>
+		<th class="expiration-col">
+			<h3>Expires in</h3>
+		</th>
+		<th class="renewal-col" />
+		<th class="menu-col" />
+	</tr>
+</thead>
 
 <style>
-	.table-header-container {
-		padding: 1.05rem 2rem;
+	* {
+		box-sizing: border-box;
+	}
+
+	tr {
+		overflow-y: scroll;
 		border-bottom: 2px solid black;
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		align-items: flex-end;
+		padding: 0 0rem 1rem 0;
+	}
+
+	tr::-webkit-scrollbar {
+		background-color: transparent;
+	}
+
+	th {
+		display: flex;
+		height: 3rem;
+		align-items: flex-end;
+	}
+
+	.icon-col {
+		width: 7%;
+		justify-content: center;
+		padding: 0 0 0.15rem 0;
+	}
+
+	.application-col {
+		width: 30%;
+		justify-content: flex-start;
+	}
+
+	.contact-col {
+		width: 25%;
+		justify-content: flex-start;
+	}
+
+	.assigned-col {
+		width: 10%;
+		justify-content: center;
+	}
+
+	.expiration-col {
+		width: 14%;
+		justify-content: flex-end;
+	}
+
+	.renewal-col {
+		width: 5%;
+		justify-content: center;
+	}
+
+	.menu-col {
+		width: 7%;
+		justify-content: center;
 	}
 </style>

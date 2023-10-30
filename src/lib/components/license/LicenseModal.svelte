@@ -1,12 +1,11 @@
 <script lang="ts">
-	import LicenseNewContainer from '$lib/components/license/LicenseNewContainer.svelte';
+	import LicenseContainer from '$lib/components/license/LicenseContainer.svelte';
 	import { fade } from 'svelte/transition';
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
-		<LicenseNewContainer />
-		<!-- <LicenseViewContainer /> // Add conditional later -->
+		<LicenseContainer />
 	</dialog>
 </div>
 

@@ -1,11 +1,11 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 export function getInitialValues() {
 	return {
-		id: null,
 		application: '',
 		assignedUsers: '',
 		renewalDate: '',
+		autoRenewal: false,
 		cost: '',
 		renewalInterval: '',
 		category: '',
@@ -16,11 +16,11 @@ export function getInitialValues() {
 	};
 }
 
-export interface License {
-	id: number | null;
+export interface NewLicense {
 	application: string;
 	assignedUsers: string;
 	renewalDate: string;
+	autoRenewal: boolean;
 	cost: string;
 	renewalInterval: string;
 	category: string;
@@ -30,12 +30,17 @@ export interface License {
 	comment: string;
 }
 
-export const license = writable<License>(getInitialValues());
+export interface License extends NewLicense {
+	id: string;
+}
+
+export const licenseMode = writable<'add' | 'edit'>('add');
+export const license = writable<NewLicense | License>(getInitialValues());
 
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
-	async function addLicense(license: License) {
+	async function addLicense(license: NewLicense) {
 		try {
 			const response = await fetch('/api/license/add', {
 				method: 'POST',
@@ -43,13 +48,41 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			const newLicense = await response.json();
-			update((licenses) => [...licenses, newLicense]);
+			update((licenses) => [newLicense, ...licenses]);
 		} catch (error) {
 			console.error('Failed to add license:', error);
 		}
 	}
 
-	async function deleteLicense(id: number) {
+	async function updateLicense(license: License) {
+		try {
+			const response = await fetch(`/api/license/update/${license.id}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(license),
+			});
+			if (!response.ok) throw new Error('Failed to update license');
+			update((licenses) =>
+				licenses.map((existingLicense) =>
+					existingLicense.id === license.id ? license : existingLicense,
+				),
+			);
+		} catch (error) {
+			console.error('Failed to update license:', error);
+		}
+	}
+
+	function getLicenseById(id: string) {
+		const fetchedLicense = get(licenseStore).find((license) => license.id === id);
+
+		if (fetchedLicense) {
+			license.set(structuredClone(fetchedLicense));
+		} else {
+			console.error('Failed to get license from store');
+		}
+	}
+
+	async function deleteLicense(id: string) {
 		try {
 			const response = await fetch(`/api/license/delete/${id}`, {
 				method: 'DELETE',
@@ -67,7 +100,9 @@ function createLicenseStore() {
 		update,
 		add: addLicense,
 		delete: deleteLicense,
-		reset: () => license.set(getInitialValues()),
+		fetch: getLicenseById,
+		updateLicense: updateLicense,
+		resetFields: () => license.set(getInitialValues()),
 	};
 }
 
