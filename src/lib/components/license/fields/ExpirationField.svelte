@@ -5,13 +5,15 @@
 	import { getRelativeDate, getTodaysDate } from '$lib/utils/date-utils';
 	import { slide } from 'svelte/transition';
 	export let value: string = '';
-	let autoRenewal = false;
 	let label: string = '';
 
 	$: {
-		label = autoRenewal ? 'Renewal date' : 'Expiration date';
+		label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
 	}
 	$: renewalDate = getRelativeDate($license.renewalDate);
+	$: if (!$license.autoRenewal) {
+		$license.renewalInterval = '';
+	}
 </script>
 
 <div class="expiration-container">
@@ -34,7 +36,7 @@
 				id="renewal"
 				name="renewal"
 				value="renewal"
-				bind:checked={autoRenewal}
+				bind:checked={$license.autoRenewal}
 			/>
 			<label for="renewal">Autorenewal</label>
 		</div>
@@ -51,12 +53,12 @@
 			placeholder="Enter cost of license"
 		/>
 	</div>
-	{#if autoRenewal}
+	{#if $license.autoRenewal}
 		<div transition:slide={{ duration: 80 }} class="interval-field">
 			<SelectField
 				bind:value={$license.renewalInterval}
 				label="Renewal interval"
-				options={['Monthly', 'Yearly']}
+				options={['Monthly', 'Anually']}
 				defaultOption="Monthly"
 				required
 				type="secondary"

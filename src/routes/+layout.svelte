@@ -22,7 +22,7 @@
 
 	@media (max-height: 850px) {
 		main {
-			min-height: calc(100vh - 3.3rem);
+			max-height: calc(100vh - 3.3rem);
 		}
 	}
 </style>

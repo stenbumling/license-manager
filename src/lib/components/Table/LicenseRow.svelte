@@ -40,7 +40,9 @@
 		</p>
 	</td>
 	<td class="renewal-cell">
-		<Repeat size={16} />
+		{#if license.autoRenewal}
+			<Repeat size={16} />
+		{/if}
 	</td>
 	<td class="menu-cell">
 		<div class="vertical-line" />

@@ -5,6 +5,7 @@ export function getInitialValues() {
 		application: '',
 		assignedUsers: '',
 		renewalDate: '',
+		autoRenewal: false,
 		cost: '',
 		renewalInterval: '',
 		category: '',
@@ -19,6 +20,7 @@ export interface NewLicense {
 	application: string;
 	assignedUsers: string;
 	renewalDate: string;
+	autoRenewal: boolean;
 	cost: string;
 	renewalInterval: string;
 	category: string;
