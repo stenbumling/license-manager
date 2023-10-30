@@ -39,7 +39,7 @@
 	function handleSave() {
 		showLicenseModal.set(false);
 		goto('/');
-		licenseStore.update($license as License);
+		licenseStore.updateLicense($license as License);
 		licenseStore.resetFields();
 	}
 </script>

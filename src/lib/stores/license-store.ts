@@ -71,11 +71,10 @@ function createLicenseStore() {
 	}
 
 	function getLicenseById(id: string) {
-		const licenses = get(licenseStore);
-		const fetchedLicense = licenses.find((license) => license.id === id);
-		console.log('fetchedLicense: ', fetchedLicense);
+		const fetchedLicense = get(licenseStore).find((license) => license.id === id);
+
 		if (fetchedLicense) {
-			license.set(fetchedLicense);
+			license.set(structuredClone(fetchedLicense));
 		} else {
 			console.error('Failed to get license from store');
 		}
@@ -96,10 +95,11 @@ function createLicenseStore() {
 	return {
 		subscribe,
 		set,
-		update: updateLicense,
+		update,
 		add: addLicense,
 		delete: deleteLicense,
 		fetch: getLicenseById,
+		updateLicense: updateLicense,
 		resetFields: () => license.set(getInitialValues()),
 	};
 }
