@@ -92,7 +92,13 @@
 
 	.vertical-line {
 		border-left: 1px solid #d1d0d0;
-		margin: 0 1rem 0 1rem;
+		margin: 0 1.4rem 0 1rem;
+	}
+
+	@media (max-width: 1400px) {
+		.vertical-line {
+			border: none;
+		}
 	}
 
 	.menu-button {
@@ -145,6 +151,6 @@
 
 	.menu-cell {
 		width: 7%;
-		justify-content: space-around;
+		justify-content: flex-end;
 	}
 </style>

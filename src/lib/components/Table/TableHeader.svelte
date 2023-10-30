@@ -30,12 +30,16 @@
 	}
 
 	tr {
-		overflow-y: auto;
+		overflow-y: scroll;
 		border-bottom: 2px solid black;
 		display: flex;
 		flex-direction: row;
 		align-items: flex-end;
-		padding: 0 1rem 1rem 0;
+		padding: 0 0rem 1rem 0;
+	}
+
+	tr::-webkit-scrollbar {
+		background-color: transparent;
 	}
 
 	th {
