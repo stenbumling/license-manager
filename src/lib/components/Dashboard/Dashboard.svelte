@@ -66,7 +66,7 @@
 		width: 20rem;
 		height: 37.7rem;
 		margin-right: 3rem;
-		margin-top: 3.6rem;
+		margin-top: 4rem;
 		padding: 0.4rem 2rem;
 		border: 1px solid black;
 		display: flex;

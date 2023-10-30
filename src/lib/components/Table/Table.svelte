@@ -45,7 +45,7 @@
 	}
 
 	.license-row:hover {
-		background-color: #dddddd;
+		background-color: #eeeeee;
 		cursor: pointer;
 	}
 

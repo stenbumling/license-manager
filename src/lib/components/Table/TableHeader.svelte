@@ -40,13 +40,14 @@
 
 	thead th {
 		display: flex;
-		height: 1.3rem;
-		align-items: center;
+		height: 3rem;
+		align-items: flex-end;
 	}
 
 	thead th:nth-child(1) {
 		width: 7%;
 		justify-content: center;
+		padding: 0 0 0.15rem 0;
 	}
 
 	thead th:nth-child(2) {

@@ -15,7 +15,7 @@
 
 <style>
 	main {
-		min-height: calc(100vh - 4.65rem);
+		max-height: calc(100vh - 4.65rem);
 		display: flex;
 		justify-content: center;
 	}

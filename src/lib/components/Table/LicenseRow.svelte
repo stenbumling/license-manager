@@ -46,7 +46,6 @@
 	.license-row-container {
 		min-height: 3.6rem;
 		height: 3.6rem;
-		/* padding: 0 2rem; */
 		border-bottom: 1px solid #e6e6e6;
 		display: flex;
 		align-items: center;
@@ -60,10 +59,12 @@
 
 	.warning-text {
 		color: #ff9736;
+		font-weight: bold;
 	}
 
 	.alert-text {
 		color: #ff0000;
+		font-weight: bold;
 	}
 
 	.status-icon {
@@ -95,7 +96,7 @@
 	}
 
 	.menu-button:hover {
-		background-color: #d1d1d1;
+		background-color: #cfcfcf;
 	}
 
 	tr td {
