@@ -2,6 +2,7 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import { license } from '$lib/stores/license-store.ts';
+	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { slide } from 'svelte/transition';
 	export let value: string = '';
 	let autoRenewal = false;
@@ -10,6 +11,7 @@
 	$: {
 		label = autoRenewal ? 'Renewal date' : 'Expiration date';
 	}
+	$: renewalDate = getRelativeDate($license.renewalDate);
 </script>
 
 <div class="expiration-container">
@@ -31,7 +33,7 @@
 		</div>
 	</div>
 	<div class="secondary-text">
-		<p>In x days</p>
+		<p>{renewalDate.text}</p>
 	</div>
 	<div class="cost-field">
 		<TextField
