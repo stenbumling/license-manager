@@ -2,25 +2,25 @@
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
 </script>
 
-<thead class="table-header-container">
+<thead>
 	<tr>
-		<th>
+		<th class="icon-col">
 			<CircleDash size={20} />
 		</th>
-		<th>
+		<th class="application-col">
 			<h3>Application</h3>
 		</th>
-		<th>
+		<th class="contact-col">
 			<h3>Contact person</h3>
 		</th>
-		<th>
+		<th class="assigned-col">
 			<h3>Assigned</h3>
 		</th>
-		<th>
+		<th class="expiration-col">
 			<h3>Expires in</h3>
 		</th>
-		<th />
-		<th />
+		<th class="renewal-col" />
+		<th class="menu-col" />
 	</tr>
 </thead>
 
@@ -28,54 +28,54 @@
 	* {
 		box-sizing: border-box;
 	}
+
 	tr {
-		scrollbar-gutter: stable;
 		overflow-y: auto;
 		border-bottom: 2px solid black;
 		display: flex;
 		flex-direction: row;
 		align-items: flex-end;
-		padding: 0 0 1rem 0;
+		padding: 0 1rem 1rem 0;
 	}
 
-	thead th {
+	th {
 		display: flex;
 		height: 3rem;
 		align-items: flex-end;
 	}
 
-	thead th:nth-child(1) {
+	.icon-col {
 		width: 7%;
 		justify-content: center;
 		padding: 0 0 0.15rem 0;
 	}
 
-	thead th:nth-child(2) {
+	.application-col {
 		width: 30%;
 		justify-content: flex-start;
 	}
 
-	thead th:nth-child(3) {
+	.contact-col {
 		width: 25%;
 		justify-content: flex-start;
 	}
 
-	thead th:nth-child(4) {
+	.assigned-col {
 		width: 10%;
 		justify-content: center;
 	}
 
-	thead th:nth-child(5) {
+	.expiration-col {
 		width: 14%;
 		justify-content: flex-end;
 	}
 
-	thead th:nth-child(6) {
+	.renewal-col {
 		width: 5%;
 		justify-content: center;
 	}
 
-	thead th:nth-child(7) {
+	.menu-col {
 		width: 7%;
 		justify-content: center;
 	}

@@ -10,28 +10,36 @@
 </script>
 
 <tr class="license-row-container">
-	<td>
+	<td class="icon-cell">
 		<div
 			class="status-icon"
 			class:inactive={license.status === 'Inactive'}
 			class:expired={license.status === 'Expired'}
 		/>
 	</td>
-	<td><p class="table-text">{license.application}</p></td>
-	<td><p class="table-text">{license.contactPerson}</p></td>
-	<td><p class="table-text">5</p></td>
-	<td align="right"
-		><p
+	<td class="application-cell">
+		<p class="table-text">{license.application}</p>
+	</td>
+	<td class="contact-cell">
+		<p class="table-text">{license.contactPerson}</p>
+	</td>
+	<td class="assigned-cell">
+		<p class="table-text">5</p>
+	</td>
+	<td class="expiration-cell">
+		<p
 			class="table-text"
 			class:warning-text={renewalDate.status === 'warning'}
 			class:alert-text={renewalDate.status === 'alert'}
 		>
 			{renewalDate.text}
-		</p></td
-	>
-	<td><Repeat size={16} /></td>
-	<td
-		><div class="vertical-line" />
+		</p>
+	</td>
+	<td class="renewal-cell">
+		<Repeat size={16} />
+	</td>
+	<td class="menu-cell">
+		<div class="vertical-line" />
 		<div class="menu-button">
 			<OverflowMenuHorizontal size={32} />
 		</div>
@@ -51,6 +59,21 @@
 		align-items: center;
 	}
 
+	.status-icon {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background-color: #6ae674;
+	}
+
+	.inactive {
+		background-color: #bfbfbf;
+	}
+
+	.expired {
+		background-color: #ff0000;
+	}
+
 	.table-text {
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -65,21 +88,6 @@
 	.alert-text {
 		color: #ff0000;
 		font-weight: bold;
-	}
-
-	.status-icon {
-		width: 0.5rem;
-		height: 0.5rem;
-		border-radius: 50%;
-		background-color: #6ae674;
-	}
-
-	.inactive {
-		background-color: #bfbfbf;
-	}
-
-	.expired {
-		background-color: #ff0000;
 	}
 
 	.vertical-line {
@@ -99,41 +107,43 @@
 		background-color: #cfcfcf;
 	}
 
-	tr td {
+	/* Table cells */
+
+	td {
 		display: flex;
 	}
 
-	tr td:nth-child(1) {
+	.icon-cell {
 		width: 7%;
 		justify-content: center;
 	}
 
-	tr td:nth-child(2) {
+	.application-cell {
 		width: 30%;
 		justify-content: flex-start;
 	}
 
-	tr td:nth-child(3) {
+	.contact-cell {
 		width: 25%;
 		justify-content: flex-start;
 	}
 
-	tr td:nth-child(4) {
+	.assigned-cell {
 		width: 10%;
 		justify-content: center;
 	}
 
-	tr td:nth-child(5) {
+	.expiration-cell {
 		width: 14%;
 		justify-content: flex-end;
 	}
 
-	tr td:nth-child(6) {
+	.renewal-cell {
 		width: 5%;
 		justify-content: center;
 	}
 
-	tr td:nth-child(7) {
+	.menu-cell {
 		width: 7%;
 		justify-content: space-around;
 	}

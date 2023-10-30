@@ -32,8 +32,7 @@
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
-		overflow-y: auto;
-		scrollbar-gutter: stable;
+		overflow-y: scroll;
 	}
 
 	.license-row {
@@ -47,9 +46,5 @@
 	.license-row:hover {
 		background-color: #eeeeee;
 		cursor: pointer;
-	}
-
-	.table > :global(:last-child) {
-		border-bottom: none;
 	}
 </style>
