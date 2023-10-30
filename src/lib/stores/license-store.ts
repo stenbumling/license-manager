@@ -46,7 +46,7 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			const newLicense = await response.json();
-			update((licenses) => [...licenses, newLicense]);
+			update((licenses) => [newLicense, ...licenses]);
 		} catch (error) {
 			console.error('Failed to add license:', error);
 		}

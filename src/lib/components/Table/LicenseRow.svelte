@@ -8,7 +8,7 @@
 	<td><p>o</p></td>
 	<td><p class="table-text">{license.application}</p></td>
 	<td><p class="table-text">{license.contactPerson}</p></td>
-	<td><p class="table-text">5</p></td> 
+	<td><p class="table-text">5</p></td>
 	<td><p class="table-text">{license.renewalDate}</p></td>
 	<!-- <td><p class="table-text">...</p></td> -->
 </tr>
