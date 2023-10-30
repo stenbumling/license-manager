@@ -8,7 +8,15 @@
 </script>
 
 <tr class="license-row-container">
-	<td><p>o</p></td>
+	<td
+		><div
+			class="status-icon {license.status === 'Inactive'
+				? 'inactive'
+				: license.status === 'Expired'
+				? 'expired'
+				: ''}"
+		/></td
+	>
 	<td><p class="table-text">{license.application}</p></td>
 	<td><p class="table-text">{license.contactPerson}</p></td>
 	<td><p class="table-text">5</p></td>
@@ -54,11 +62,26 @@
 		color: #ff0000;
 	}
 
+	.status-icon {
+		width: 0.5rem;
+		height: 0.5rem;
+		border-radius: 50%;
+		background-color: #6ae674;
+	}
+
+	.inactive {
+		background-color: #bfbfbf;
+	}
+
+	.expired {
+		background-color: #ff0000;
+	}
+
 	tr td:nth-child(1) {
 		width: 5%;
 		display: flex;
 		justify-content: flex-start;
-		padding: 0 2rem 0 0;
+		padding: 0 0 0 0.45rem;
 	}
 
 	tr td:nth-child(2) {

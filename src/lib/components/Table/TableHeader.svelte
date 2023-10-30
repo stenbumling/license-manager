@@ -1,7 +1,11 @@
+<script lang="ts">
+	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
+</script>
+
 <thead class="table-header-container">
 	<tr>
 		<th>
-			<h3>?</h3>
+			<CircleDash size={20} />
 		</th>
 		<th>
 			<h3>Application</h3>
@@ -32,30 +36,40 @@
 
 	thead th:nth-child(1) {
 		width: 5%;
+		height: 1.6rem;
 		display: flex;
 		justify-content: flex-start;
+		align-items: center;
 	}
 
 	thead th:nth-child(2) {
 		width: 35%;
+		height: 1.6rem;
+		align-items: center;
 		display: flex;
 		justify-content: flex-start;
 	}
 
 	thead th:nth-child(3) {
 		width: 25%;
+		height: 1.6rem;
+		align-items: center;
 		display: flex;
 		justify-content: flex-start;
 	}
 
 	thead th:nth-child(4) {
 		width: 10%;
+		height: 1.6rem;
+		align-items: center;
 		display: flex;
 		justify-content: center;
 	}
 
 	thead th:nth-child(5) {
 		width: 20%;
+		height: 1.6rem;
+		align-items: center;
 		display: flex;
 		justify-content: flex-end;
 	}
