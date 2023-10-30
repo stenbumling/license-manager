@@ -3,13 +3,13 @@
 	import { page } from '$app/stores';
 	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
-	import LicenseTitle from '$lib/components/license/LicenseHeader.svelte';
+	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
 	import ExpirationField from '$lib/components/license/fields/ExpirationField.svelte';
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import type { License } from '$lib/stores/license-store';
+	import type { License, NewLicense } from '$lib/stores/license-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
 	import { onMount } from 'svelte';
@@ -32,7 +32,7 @@
 	function handleAdd() {
 		showLicenseModal.set(false);
 		goto('/');
-		licenseStore.add($license);
+		licenseStore.add($license as NewLicense);
 		licenseStore.resetFields();
 	}
 
@@ -50,7 +50,7 @@
 
 <div class="license-container">
 	{#if loaded}
-		<LicenseTitle />
+		<LicenseHeader />
 		<div class="fields-grid">
 			<ApplicationSelection bind:value={$license.application} />
 			<TextField bind:value={$license.assignedUsers} label="Assigned users" required />

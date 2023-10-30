@@ -4,16 +4,16 @@
 			<h3>?</h3>
 		</th>
 		<th>
-			<h3>APPLICATION</h3>
+			<h3>Application</h3>
 		</th>
 		<th>
-			<h3>CONTACT PERSON</h3>
+			<h3>Contact person</h3>
 		</th>
 		<th>
-			<h3>Assigned Users</h3>
+			<h3>Assigned</h3>
 		</th>
 		<th>
-			<h3>EXPIRES IN</h3>
+			<h3>Expires in</h3>
 		</th>
 		<th />
 	</tr>

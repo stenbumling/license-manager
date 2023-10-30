@@ -15,7 +15,11 @@
 
 <tbody class="table">
 	{#each $licenseStore as license}
-		<a href={`/license/view/${license.id}`} on:click={(e) => handleClick(license, e)}>
+		<a
+			class="license-row"
+			href={`/license/view/${license.id}`}
+			on:click={(e) => handleClick(license, e)}
+		>
 			<LicensRow {license} />
 		</a>
 	{/each}
@@ -30,6 +34,20 @@
 		flex-grow: 1;
 		overflow-y: auto;
 		scrollbar-gutter: stable both-edges;
+	}
+
+	.license-row {
+		transition: background-color 0.1s ease;
+	}
+
+	.license-row:nth-child(even) {
+		background-color: #f9f9f9;
+	}
+
+	.license-row:hover {
+		background-color: #dddddd;
+		/* color: white; */
+		cursor: pointer;
 	}
 
 	.table > :global(:last-child) {

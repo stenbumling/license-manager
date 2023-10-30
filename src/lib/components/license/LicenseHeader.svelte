@@ -6,8 +6,8 @@
 
 	function handleClose() {
 		showLicenseModal.set(false);
+		licenseStore.resetFields();
 		goto('/');
-		licenseStore.reset();
 	}
 </script>
 
