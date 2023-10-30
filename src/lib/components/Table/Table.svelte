@@ -33,7 +33,7 @@
 		flex-direction: column;
 		flex-grow: 1;
 		overflow-y: auto;
-		scrollbar-gutter: stable both-edges;
+		scrollbar-gutter: stable;
 	}
 
 	.license-row {
@@ -46,7 +46,6 @@
 
 	.license-row:hover {
 		background-color: #dddddd;
-		/* color: white; */
 		cursor: pointer;
 	}
 

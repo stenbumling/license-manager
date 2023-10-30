@@ -20,63 +20,62 @@
 			<h3>Expires in</h3>
 		</th>
 		<th />
+		<th />
 	</tr>
 </thead>
 
 <style>
+	* {
+		box-sizing: border-box;
+	}
 	tr {
-		scrollbar-gutter: stable both-edges;
+		scrollbar-gutter: stable;
 		overflow-y: auto;
-		padding: 1.05rem 2rem;
 		border-bottom: 2px solid black;
 		display: flex;
 		flex-direction: row;
 		align-items: flex-end;
+		padding: 0 0 1rem 0;
+	}
+
+	thead th {
+		display: flex;
+		height: 1.3rem;
+		align-items: center;
 	}
 
 	thead th:nth-child(1) {
-		width: 5%;
-		height: 1.6rem;
-		display: flex;
-		justify-content: flex-start;
-		align-items: center;
+		width: 7%;
+		justify-content: center;
 	}
 
 	thead th:nth-child(2) {
-		width: 35%;
-		height: 1.6rem;
-		align-items: center;
-		display: flex;
+		width: 30%;
 		justify-content: flex-start;
 	}
 
 	thead th:nth-child(3) {
 		width: 25%;
-		height: 1.6rem;
-		align-items: center;
-		display: flex;
 		justify-content: flex-start;
 	}
 
 	thead th:nth-child(4) {
 		width: 10%;
-		height: 1.6rem;
-		align-items: center;
-		display: flex;
 		justify-content: center;
 	}
 
 	thead th:nth-child(5) {
-		width: 20%;
-		height: 1.6rem;
-		align-items: center;
-		display: flex;
+		width: 14%;
 		justify-content: flex-end;
 	}
 
 	thead th:nth-child(6) {
 		width: 5%;
-		display: flex;
+		justify-content: center;
+	}
+
+	thead th:nth-child(7) {
+		width: 7%;
 		justify-content: center;
 	}
 </style>
