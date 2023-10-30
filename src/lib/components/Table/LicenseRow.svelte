@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { License } from '$lib/stores/license-store';
+	import { getRelativeDate } from '$lib/utils/date-utils';
 
 	export let license: License;
+
+	$: renewalDate = getRelativeDate(license.renewalDate);
 </script>
 
 <tr class="license-row-container">
@@ -9,7 +12,7 @@
 	<td><p class="table-text">{license.application}</p></td>
 	<td><p class="table-text">{license.contactPerson}</p></td>
 	<td><p class="table-text">5</p></td>
-	<td><p class="table-text">{license.renewalDate}</p></td>
+	<td><p class="table-text {renewalDate.warning ? 'warning-text' : ''}">{renewalDate.text}</p></td>
 	<!-- <td><p class="table-text">...</p></td> -->
 </tr>
 
@@ -31,6 +34,10 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
+	}
+
+	.warning-text {
+		color: #ff0000;
 	}
 
 	tr td:nth-child(1) {
