@@ -20,7 +20,14 @@
 		<span class="required">*</span>
 	</h3>
 	<div class="expiration-row">
-		<input class="date-picker" type="date" min={getTodaysDate()} required name="applications" bind:value />
+		<input
+			class="date-picker"
+			type="date"
+			min={getTodaysDate()}
+			required
+			name="applications"
+			bind:value
+		/>
 		<div class="renewal-checkbox">
 			<input
 				type="checkbox"

@@ -1,3 +1,5 @@
+type DateStatus = 'ok' | 'warning' | 'alert' | 'invalid';
+
 export function getTodaysDate(): string {
 	const currentDate = new Date().toISOString().split('T')[0];
 	return currentDate;
@@ -15,29 +17,35 @@ export function daysUntil(date: string): number {
 	return diffDays;
 }
 
-export function getRelativeDate(date: string): { text: string; warning: boolean } {
+export function getRelativeDate(date: string): {
+	text: string;
+	status: DateStatus;
+} {
 	const diffDays = daysUntil(date);
 	let text = 'No date selected';
-	let warning = false;
+	let status: DateStatus = 'ok';
 
 	if (Number.isNaN(diffDays)) {
 		text = 'No date selected';
+		status = 'alert';
 	} else if (diffDays === 0) {
 		text = 'today';
+		status = 'alert';
 	} else if (diffDays === 1) {
 		text = 'tomorrow';
+		status = 'warning';
 	} else if (diffDays === -1) {
 		text = 'yesterday';
+		status = 'alert';
+	} else if (diffDays > 1 && diffDays < 15) {
+		text = `In ${diffDays} days`;
+		status = 'warning';
 	} else if (diffDays > 0) {
 		text = `In ${diffDays} days`;
 	} else {
 		text = `${Math.abs(diffDays)} days ago`;
-		warning = true;
+		status = 'alert';
 	}
 
-	if (diffDays < 14) {
-		warning = true;
-	}
-
-	return { text, warning };
+	return { text, status };
 }
