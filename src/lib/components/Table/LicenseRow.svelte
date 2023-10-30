@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { License } from '$lib/stores/license-store';
+	import { licenseStore, type License } from '$lib/stores/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
@@ -7,6 +7,10 @@
 	export let license: License;
 
 	$: renewalDate = getRelativeDate(license.renewalDate);
+
+	function handleContextMenu(e: MouseEvent) {
+		licenseStore.delete(license.id);
+	}
 </script>
 
 <tr class="license-row-container">
@@ -40,9 +44,9 @@
 	</td>
 	<td class="menu-cell">
 		<div class="vertical-line" />
-		<div class="menu-button">
+		<button class="menu-button" on:click|stopPropagation|preventDefault={handleContextMenu}>
 			<OverflowMenuHorizontal size={32} />
-		</div>
+		</button>
 	</td>
 </tr>
 
@@ -107,6 +111,7 @@
 		transition: color 0.25s ease;
 		transition: background-color 0.2s ease;
 		border-radius: 6px;
+		cursor: pointer;
 	}
 
 	.menu-button:hover {

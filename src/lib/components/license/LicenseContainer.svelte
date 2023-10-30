@@ -12,6 +12,7 @@
 	import type { License, NewLicense } from '$lib/stores/license-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
+	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import { onMount } from 'svelte';
 
 	let loaded = false;
@@ -41,6 +42,18 @@
 		goto('/');
 		licenseStore.updateLicense($license as License);
 		licenseStore.resetFields();
+	}
+
+	function handleDelete() {
+		showLicenseModal.set(false);
+		goto('/');
+		const id = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
+		if (id) {
+			licenseStore.delete(id);
+			licenseStore.resetFields();
+		} else {
+			console.log("Couldn't find license id");
+		}
 	}
 </script>
 
@@ -80,6 +93,9 @@
 		</div>
 		<div class="bottom-container">
 			{#if $licenseMode === 'edit'}
+				<button class="menu-button" on:click={handleDelete}>
+					<OverflowMenuHorizontal size={32} />
+				</button>
 				<button class="main-button" on:click|preventDefault={handleSave}>
 					<ButtonLarge title="Save changes" />
 				</button>
@@ -121,6 +137,21 @@
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
+	}
+
+	.menu-button {
+		padding: 0.2rem;
+		border-radius: 6px;
+		display: flex;
+		align-self: center;
+		cursor: pointer;
+		margin: 0 2rem 0 0;
+		transition: color 0.25s ease;
+		transition: background-color 0.2s ease;
+
+		&:hover {
+			background-color: #eeeeee;
+		}
 	}
 	.main-button {
 		width: 16rem;
