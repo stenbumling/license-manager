@@ -3,9 +3,10 @@
 	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
-	export let appId = '';
+	export let value = '';
 
-	$: $license.application.name = $applicationStore.find((app) => app.id === appId)?.name || '';
+	// Update the application name when the application id changes
+	$: $license.application.name = $applicationStore.find((app) => app.id === value)?.name || '';
 
 	function handleClick() {
 		showApplicationModal.set(true);
@@ -15,7 +16,7 @@
 <div class="application-selection-container">
 	<h3 class="application-selection-label">Application</h3>
 	<div class="application-selection-row">
-		<select required name="applications" bind:value={appId}>
+		<select required name="applications" bind:value>
 			<option disabled selected hidden value="">Select a application</option>
 			{#each $applicationStore as application}
 				<option value={application.id}>{application.name}</option>
