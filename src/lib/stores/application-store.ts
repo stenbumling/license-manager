@@ -25,7 +25,7 @@ function createApplicationStore() {
 				body: JSON.stringify(application),
 			});
 			const newApplication = await response.json();
-			update((applications) => [...applications, newApplication]);
+			update((applications) => [newApplication, ...applications]);
 		} catch (error) {
 			console.error('Failed to add application:', error);
 		}
