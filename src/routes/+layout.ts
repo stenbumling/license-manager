@@ -13,6 +13,8 @@ export const load = async ({ fetch }) => {
 		licenseStore.set(licenses);
 		const applications = await applicationResponse.json();
 		applicationStore.set(applications);
+		console.log('Licenses: ', licenses);
+		console.log('Applications: ', applications);
 
 		return { licenses, applications };
 	} catch (error) {

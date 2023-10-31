@@ -17,8 +17,8 @@
 			<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
 	</div>
-	{#if $license.application}
-		<h1 class="title-label">{$license.application}</h1>
+	{#if $license.application.name}
+		<h1 class="title-label">{$license.application.name}</h1>
 	{:else}
 		<h1 class="new-license-label">New license</h1>
 	{/if}

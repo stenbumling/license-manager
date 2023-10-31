@@ -2,13 +2,13 @@ import { writable } from 'svelte/store';
 
 export function getInitialValues() {
 	return {
-		id: null,
+		id: '',
 		name: '',
 	};
 }
 
 export interface Application {
-	id: number | null;
+	id: string;
 	name: string;
 }
 
@@ -31,7 +31,7 @@ function createApplicationStore() {
 		}
 	}
 
-	async function deleteApplication(id: number | null) {
+	async function deleteApplication(id: string) {
 		try {
 			const response = await fetch(`/api/application/delete/${id}`, {
 				method: 'DELETE',

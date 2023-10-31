@@ -2,7 +2,11 @@ import { get, writable } from 'svelte/store';
 
 export function getInitialValues() {
 	return {
-		application: '',
+		application: {
+			id: '',
+			name: '',
+		},
+		applicationId: '',
 		assignedUsers: '',
 		renewalDate: '',
 		autoRenewal: false,
@@ -17,7 +21,11 @@ export function getInitialValues() {
 }
 
 export interface NewLicense {
-	application: string;
+	application: {
+		id: string;
+		name: string;
+	};
+	applicationId: string;
 	assignedUsers: string;
 	renewalDate: string;
 	autoRenewal: boolean;
@@ -71,7 +79,6 @@ function createLicenseStore() {
 			console.error('Failed to update license:', error);
 		}
 	}
-
 	function getLicenseById(id: string) {
 		const fetchedLicense = get(licenseStore).find((license) => license.id === id);
 

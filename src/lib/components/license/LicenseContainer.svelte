@@ -65,7 +65,7 @@
 	{#if loaded}
 		<LicenseHeader />
 		<div class="fields-grid">
-			<ApplicationSelection bind:value={$license.application} />
+			<ApplicationSelection bind:appId={$license.applicationId} />
 			<TextField bind:value={$license.assignedUsers} label="Assigned users" required />
 			<ExpirationField bind:value={$license.renewalDate} />
 			<SelectField

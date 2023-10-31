@@ -22,7 +22,9 @@
 		/>
 	</td>
 	<td class="application-cell">
-		<p class="table-text">{license.application}</p>
+		{#if license.application.name}
+			<p class="table-text">{license.application.name}</p>
+		{/if}
 	</td>
 	<td class="contact-cell">
 		<p class="table-text">{license.contactPerson}</p>
