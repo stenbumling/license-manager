@@ -7,6 +7,7 @@ export function getInitialValues() {
 			id: '',
 			name: '',
 		},
+		applicationId: '',
 		users: [],
 		assignedUsers: '',
 		renewalDate: '',
@@ -26,6 +27,7 @@ export interface NewLicense {
 		id: string;
 		name: string;
 	};
+	applicationId: string;
 	users: User[];
 	assignedUsers: string;
 	renewalDate: string;

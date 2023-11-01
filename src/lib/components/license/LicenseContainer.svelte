@@ -9,6 +9,7 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
+	import { applicationStore } from '$lib/stores/application-store';
 	import type { License, NewLicense } from '$lib/stores/license-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
@@ -31,10 +32,16 @@
 	});
 
 	function handleAdd() {
-		showLicenseModal.set(false);
-		goto('/');
-		licenseStore.add($license as NewLicense);
-		licenseStore.resetFields();
+		const licenseApp = $applicationStore.find((app) => app.name === $license.application.name);
+		if (licenseApp) {
+			$license.applicationId = licenseApp.id;
+			showLicenseModal.set(false);
+			goto('/');
+			licenseStore.add($license as NewLicense);
+			licenseStore.resetFields();
+		} else {
+			console.error("Couldn't find application id");
+		}
 	}
 
 	function handleSave() {
@@ -65,7 +72,7 @@
 	{#if loaded}
 		<LicenseHeader />
 		<div class="fields-grid">
-			<ApplicationSelection bind:value={$license.applicationId} />
+			<ApplicationSelection bind:value={$license.application.name} />
 			<TextField bind:value={$license.assignedUsers} label="Assigned users" required />
 			<ExpirationField bind:value={$license.renewalDate} />
 			<SelectField

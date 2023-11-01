@@ -1,12 +1,8 @@
 <script lang="ts">
 	import { applicationStore } from '$lib/stores/application-store';
-	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	export let value = '';
-
-	// Update the application name when the application id changes
-	$: $license.application.name = $applicationStore.find((app) => app.id === value)?.name || '';
 
 	function handleClick() {
 		showApplicationModal.set(true);
@@ -19,7 +15,7 @@
 		<select required name="applications" bind:value>
 			<option disabled selected hidden value="">Select a application</option>
 			{#each $applicationStore as application}
-				<option value={application.id}>{application.name}</option>
+				<option value={application.name}>{application.name}</option>
 			{/each}
 		</select>
 		<button class="settings-button" on:click={handleClick}>
