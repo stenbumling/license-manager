@@ -1,21 +1,33 @@
 <script lang="ts">
 	import { applicationStore } from '$lib/stores/application-store';
+	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
-	export let value = '';
 
 	function handleClick() {
 		showApplicationModal.set(true);
+	}
+
+	function handleApplicationChange(e: Event) {
+		const target = e.target as HTMLSelectElement;
+		const selectedAppId = target.value;
+		const foundApp = $applicationStore.find((app) => app.id === selectedAppId);
+		$license.application.name = foundApp ? foundApp.name : '';
 	}
 </script>
 
 <div class="application-selection-container">
 	<h3 class="application-selection-label">Application</h3>
 	<div class="application-selection-row">
-		<select required name="applications" bind:value>
+		<select
+			required
+			name="applications"
+			bind:value={$license.applicationId}
+			on:change={handleApplicationChange}
+		>
 			<option disabled selected hidden value="">Select a application</option>
 			{#each $applicationStore as application}
-				<option value={application.name}>{application.name}</option>
+				<option value={application.id}>{application.name}</option>
 			{/each}
 		</select>
 		<button class="settings-button" on:click={handleClick}>
