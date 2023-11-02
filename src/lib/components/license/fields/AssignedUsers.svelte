@@ -14,13 +14,17 @@
 	$: {
 		const assignedUsers = new Set($license.users.map((user) => user.id));
 		if (userInput.trim()) {
-			userSuggestions = $userStore.filter(
-				(user) =>
-					user.name.toLowerCase().startsWith(userInput.toLowerCase()) &&
-					!assignedUsers.has(user.id),
-			);
+			userSuggestions = $userStore
+				.filter(
+					(user) =>
+						user.name.toLowerCase().startsWith(userInput.toLowerCase()) &&
+						!assignedUsers.has(user.id),
+				)
+				.sort((a, b) => a.name.localeCompare(b.name));
 		} else if (isInputFieldFocused) {
-			userSuggestions = $userStore.filter((user) => !assignedUsers.has(user.id));
+			userSuggestions = $userStore
+				.filter((user) => !assignedUsers.has(user.id))
+				.sort((a, b) => a.name.localeCompare(b.name));
 		} else {
 			userSuggestions = [];
 		}
