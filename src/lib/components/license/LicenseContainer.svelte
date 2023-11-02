@@ -17,13 +17,12 @@
 	import { onMount } from 'svelte';
 
 	let loaded = false;
+	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
 	onMount(async () => {
-		const id = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
-
-		if (id) {
+		if (urlId) {
 			licenseMode.set('edit');
-			licenseStore.fetch(id);
+			licenseStore.fetch(urlId);
 		} else {
 			licenseMode.set('add');
 			licenseStore.resetFields();
@@ -67,7 +66,7 @@
 		<LicenseHeader />
 		<div class="fields-grid">
 			<ApplicationSelection />
-			<AssignedUsers/>
+			<AssignedUsers />
 			<ExpirationField bind:value={$license.renewalDate} />
 			<SelectField
 				bind:value={$license.category}

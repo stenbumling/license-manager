@@ -1,8 +1,18 @@
 <script lang="ts">
 	import { license } from '$lib/stores/license-store.ts';
+	import type { User } from '$lib/stores/user-store';
+	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
 	import { v4 as uuidv4 } from 'uuid';
 
 	const id = uuidv4();
+
+	function handleAddUser(user: User) {
+		$license.users = [...$license.users, user];
+	}
+
+	function handleRemoveUser(user: User) {
+		$license.users = $license.users.filter((u) => u.id !== user.id);
+	}
 </script>
 
 <div class="text-field-container">
@@ -10,9 +20,14 @@
 		Assigned users
 		<span class="required">*</span>
 	</h3>
-	<div>
+	<div class="badge-container">
 		{#each $license.users as user}
-			<p>{user.name}</p>
+			<div class="badge">
+				<div class="badge-text">{user.name}</div>
+				<button class="badge-delete" on:click={() => handleRemoveUser(user)}>
+					<CloseFilled fill="white" size={16} />
+				</button>
+			</div>
 		{/each}
 	</div>
 	<input type="text" aria-labelledby={id} required placeholder="Search for user to add" />
@@ -34,6 +49,39 @@
 	}
 	.required {
 		color: red;
+	}
+
+	.badge-container {
+		display: flex;
+		flex-wrap: wrap;
+		margin-bottom: 0.5rem;
+	}
+
+	.badge {
+		display: flex;
+		box-sizing: border-box;
+		background-color: var(--deep-purple);
+		color: white;
+		align-items: center;
+		text-align: center;
+		border-radius: 0.5rem;
+		padding: 0.3rem 0.6rem;
+		margin: 0.2rem 0.4rem 0.2rem 0;
+		height: 2rem;
+	}
+
+	.badge-text {
+		box-sizing: border-box;
+		font-size: 0.8rem;
+		margin-right: 0.5rem;
+		display: flex;
+		align-items: center;
+	}
+
+	.badge-delete {
+		box-sizing: border-box;
+		cursor: pointer;
+		display: flex;
 	}
 
 	input {

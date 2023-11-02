@@ -1,18 +1,12 @@
 import { writable } from 'svelte/store';
 
-export function getInitialValues() {
-	return {
-		id: '',
-		name: '',
-	};
-}
-
 export interface User {
 	id: string;
 	name: string;
 }
 
-export const user = writable<User>(getInitialValues());
+export const usersToRemove = writable<User[]>([]);
+export const usersToAdd = writable<User[]>([]);
 
 function createUserStore() {
 	const { subscribe, set, update } = writable<User[]>([]);
@@ -49,7 +43,6 @@ function createUserStore() {
 		update,
 		add: addUser,
 		delete: deleteUser,
-		reset: () => user.set(getInitialValues()),
 	};
 }
 
