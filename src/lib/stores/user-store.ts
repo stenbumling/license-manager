@@ -5,13 +5,10 @@ export interface User {
 	name: string;
 }
 
-export const usersToRemove = writable<User[]>([]);
-export const usersToAdd = writable<User[]>([]);
-
 function createUserStore() {
 	const { subscribe, set, update } = writable<User[]>([]);
 
-	async function addUser(user: User) {
+	async function addUserToTable(user: User) {
 		try {
 			const response = await fetch('/api/user/add', {
 				method: 'POST',
@@ -20,12 +17,13 @@ function createUserStore() {
 			});
 			const newUser = await response.json();
 			update((users) => [newUser, ...users]);
+			return newUser;
 		} catch (error) {
 			console.error('Failed to add user:', error);
 		}
 	}
 
-	async function deleteUser(id: string) {
+	async function deleteUserFromDatabase(id: string) {
 		try {
 			const response = await fetch(`/api/user/delete/${id}`, {
 				method: 'DELETE',
@@ -41,8 +39,8 @@ function createUserStore() {
 		subscribe,
 		set,
 		update,
-		add: addUser,
-		delete: deleteUser,
+		add: addUserToTable,
+		delete: deleteUserFromDatabase,
 	};
 }
 
