@@ -130,9 +130,9 @@
 		color: white;
 		align-items: center;
 		border-radius: 0.5rem;
-		padding: 0.3rem 0.6rem;
+		padding: 0 0.6rem;
 		margin: 0.2rem 0.4rem 0.2rem 0;
-		height: 30px;
+		height: 34px;
 	}
 
 	.badge-text {
@@ -150,6 +150,10 @@
 		box-sizing: border-box;
 		cursor: pointer;
 		display: flex;
+	}
+
+	.badge-delete-button:hover > :global(svg) {
+		fill: #c7c7c7;
 	}
 
 	.input-container {
