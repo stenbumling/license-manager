@@ -81,17 +81,16 @@ function createLicenseStore() {
 		}
 	}
 
-	
 	function getLicenseById(id: string) {
 		const fetchedLicense = get(licenseStore).find((license) => license.id === id);
-		
+
 		if (fetchedLicense) {
 			license.set(structuredClone(fetchedLicense));
 		} else {
 			console.error('Failed to get license from store');
 		}
 	}
-	
+
 	async function deleteLicense(id: string) {
 		try {
 			const response = await fetch(`/api/license/delete/${id}`, {

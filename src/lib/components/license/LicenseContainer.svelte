@@ -52,7 +52,7 @@
 			licenseStore.delete(id);
 			licenseStore.resetFields();
 		} else {
-			console.log("Couldn't find license id");
+			console.error("Couldn't find license id");
 		}
 	}
 </script>

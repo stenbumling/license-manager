@@ -8,16 +8,21 @@ export interface User {
 function createUserStore() {
 	const { subscribe, set, update } = writable<User[]>([]);
 
-	async function addUserToTable(user: User) {
+	async function findOrCreateUser(userName: string) {
 		try {
-			const response = await fetch('/api/user/add', {
+			const response = await fetch('/api/user/find-or-create', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(user),
+				body: JSON.stringify({ name: userName }),
 			});
-			const newUser = await response.json();
-			update((users) => [newUser, ...users]);
-			return newUser;
+			if (!response.ok) {
+				throw new Error('Failed to add/find user');
+			}
+			const data = await response.json();
+			if (data.created) {
+				update((users) => [data.user, ...users]);
+			}
+			return data.user;
 		} catch (error) {
 			console.error('Failed to add user:', error);
 		}
@@ -39,7 +44,7 @@ function createUserStore() {
 		subscribe,
 		set,
 		update,
-		add: addUserToTable,
+		findOrCreateUser,
 		delete: deleteUserFromDatabase,
 	};
 }
