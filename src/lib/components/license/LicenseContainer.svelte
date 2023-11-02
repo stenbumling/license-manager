@@ -67,7 +67,7 @@
 		<LicenseHeader />
 		<div class="fields-grid">
 			<ApplicationSelection />
-			<AssignedUsers label="Assigned users" required />
+			<AssignedUsers/>
 			<ExpirationField bind:value={$license.renewalDate} />
 			<SelectField
 				bind:value={$license.category}
