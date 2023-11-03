@@ -1,8 +1,11 @@
 <script lang="ts">
+	import AssignedUsersModal from '$lib/components/license/AssignedUsersModal.svelte';
 	import { license } from '$lib/stores/license-store.ts';
+	import { showAssignedUsersModal } from '$lib/stores/modal-state';
 	import type { User } from '$lib/stores/user-store';
 	import { userStore } from '$lib/stores/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
+	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { slide } from 'svelte/transition';
 
 	let userInput = '';
@@ -46,6 +49,10 @@
 	function handleRemoveUser(user: User) {
 		$license.users = $license.users.filter((u) => u.id !== user.id);
 	}
+
+	function handleViewAllAssignedUsers() {
+		showAssignedUsersModal.set(true);
+	}
 </script>
 
 <div class="component-container">
@@ -57,15 +64,20 @@
 		<div class="badge-container">
 			{#each $license.users.slice(0, 8) as user}
 				<div class="badge">
-					<div class="badge-text">{user.name}</div>
+					<div class="badge-text-container">
+						<span class="badge-text">{user.name}</span>
+					</div>
 					<button class="badge-delete-button" on:click={() => handleRemoveUser(user)}>
-						<CloseFilled fill="white" size={16} />
+						<CloseFilled fill="#f0d0fc" size={16} />
 					</button>
 				</div>
 			{/each}
 			{#if $license.users.length > 8}
-				<button class="badge view-all-button">
-					<h4 class="view-all-button-text">View all ({$license.users.length})</h4>
+				<button class="badge view-all-button" on:click={handleViewAllAssignedUsers}>
+					<div class="badge-view-icon">
+						<ViewFilled size={16} />
+					</div>
+					<h4 class="view-all-button-text">View all {$license.users.length}</h4>
 				</button>
 			{/if}
 		</div>
@@ -104,6 +116,10 @@
 			</ul>
 		{/if}
 	</div>
+
+	{#if $showAssignedUsersModal}
+		<AssignedUsersModal />
+	{/if}
 </div>
 
 <style>
@@ -137,50 +153,60 @@
 		border-radius: 0.5rem;
 		padding: 0 0.6rem;
 		margin: 0.2rem 0.4rem 0.2rem 0;
-		height: 34px;
+		height: 36px;
 	}
 
-	.badge-text {
-		box-sizing: border-box;
-		font-size: 0.8rem;
+	.badge-text-container {
+		display: flex;
+		height: 20px;
 		margin-right: 0.5rem;
+		max-width: 12rem;
+	}
+	.badge-text {
+		color: #f0d0fc;
+		font-size: 0.8rem;
 		white-space: nowrap;
 		padding-top: 1px;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		max-width: 12rem;
 		user-select: none;
 	}
-	
+
 	.view-all-button {
 		cursor: pointer;
 		transition: background-color 0.2s ease;
-		/* text-align: center; */
-		/* display: flex; */
-		/* justify-content: center; */
-		/* font-size: 0.8rem; */
-		/* padding-top: 1px; */
 		padding: 1px 1rem 0 1rem;
 	}
 
 	.view-all-button:hover {
-		background-color: var(--light-purple)
+		background-color: var(--light-purple);
 	}
 
 	.view-all-button-text {
 		user-select: none;
 		cursor: pointer;
+		margin-left: 0.5rem;
+	}
+
+	.badge-view-icon {
+		box-sizing: border-box;
+		display: flex;
+		height: 100%;
+		align-items: center;
+		margin-bottom: 1px;
 	}
 
 	.badge-delete-button {
 		box-sizing: border-box;
 		cursor: pointer;
 		display: flex;
+		height: 100%;
+		align-items: center;
 	}
-	
+
 	.badge-delete-button:hover > :global(svg) {
-		transition: fill 0.2s ease;
-		fill: #c7c7c7;
+		transition: fill 0.4s ease;
+		fill: white;
 	}
 
 	.input-container {
