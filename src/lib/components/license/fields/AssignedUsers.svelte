@@ -55,7 +55,7 @@
 	</h3>
 	{#if $license.users.length}
 		<div class="badge-container">
-			{#each $license.users as user}
+			{#each $license.users.slice(0, 8) as user}
 				<div class="badge">
 					<div class="badge-text">{user.name}</div>
 					<button class="badge-delete-button" on:click={() => handleRemoveUser(user)}>
@@ -63,6 +63,11 @@
 					</button>
 				</div>
 			{/each}
+			{#if $license.users.length > 8}
+				<button class="badge view-all-button">
+					<h4 class="view-all-button-text">View all ({$license.users.length})</h4>
+				</button>
+			{/if}
 		</div>
 	{/if}
 	<div class="input-container">
@@ -144,6 +149,27 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		max-width: 12rem;
+		user-select: none;
+	}
+	
+	.view-all-button {
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+		/* text-align: center; */
+		/* display: flex; */
+		/* justify-content: center; */
+		/* font-size: 0.8rem; */
+		/* padding-top: 1px; */
+		padding: 1px 1rem 0 1rem;
+	}
+
+	.view-all-button:hover {
+		background-color: var(--light-purple)
+	}
+
+	.view-all-button-text {
+		user-select: none;
+		cursor: pointer;
 	}
 
 	.badge-delete-button {
@@ -151,8 +177,9 @@
 		cursor: pointer;
 		display: flex;
 	}
-
+	
 	.badge-delete-button:hover > :global(svg) {
+		transition: fill 0.2s ease;
 		fill: #c7c7c7;
 	}
 
@@ -172,7 +199,7 @@
 		width: 100%;
 		border: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
-		max-height: 20rem;
+		max-height: 14rem;
 		overflow-y: auto;
 	}
 	.suggestions-list li {
