@@ -30,7 +30,13 @@
 		<p class="table-text">{license.contactPerson}</p>
 	</td>
 	<td class="assigned-cell">
-		<p class="table-text">{license.users.length}</p>
+		<p class="table-text">
+			{#if license.users.length === 0}
+				None
+			{:else}
+				{license.users.length}
+			{/if}
+		</p>
 	</td>
 	<td class="expiration-cell">
 		<p
