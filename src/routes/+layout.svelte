@@ -2,7 +2,6 @@
 	import Header from '$lib/components/Header.svelte';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
-	import '../app.postcss';
 </script>
 
 <header>
