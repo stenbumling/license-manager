@@ -1,9 +1,14 @@
+import type { User } from '$lib/stores/user-store';
 import { get, writable } from 'svelte/store';
 
 export function getInitialValues() {
 	return {
-		application: '',
-		assignedUsers: '',
+		application: {
+			id: '',
+			name: '',
+		},
+		applicationId: '',
+		users: [],
 		renewalDate: '',
 		autoRenewal: false,
 		cost: '',
@@ -17,8 +22,12 @@ export function getInitialValues() {
 }
 
 export interface NewLicense {
-	application: string;
-	assignedUsers: string;
+	application: {
+		id: string;
+		name: string;
+	};
+	applicationId: string;
+	users: User[];
 	renewalDate: string;
 	autoRenewal: boolean;
 	cost: string;
@@ -48,7 +57,7 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			const newLicense = await response.json();
-			update((licenses) => [newLicense, ...licenses]);
+			update((allLicenses) => [newLicense, ...allLicenses]);
 		} catch (error) {
 			console.error('Failed to add license:', error);
 		}
@@ -62,9 +71,9 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			if (!response.ok) throw new Error('Failed to update license');
-			update((licenses) =>
-				licenses.map((existingLicense) =>
-					existingLicense.id === license.id ? license : existingLicense,
+			update((allLicenses) =>
+				allLicenses.map((currentLicense) =>
+					currentLicense.id === license.id ? license : currentLicense,
 				),
 			);
 		} catch (error) {
@@ -88,11 +97,62 @@ function createLicenseStore() {
 				method: 'DELETE',
 			});
 			if (!response.ok) throw new Error('Failed to delete license');
-			update((licenses) => licenses.filter((license) => license.id !== id));
+			update((allLicenses) => allLicenses.filter((license) => license.id !== id));
 		} catch (error) {
 			console.error('Failed to delete license:', error);
 		}
 	}
+
+	// async function assignUsersToLicense(licenseId: string, newUsers: User[]) {
+	// 	try {
+	// 		const response = await fetch(`/api/license/${licenseId}/assign/`, {
+	// 			method: 'POST',
+	// 			headers: { 'Content-Type': 'application/json' },
+	// 			body: JSON.stringify({ newUsers }),
+	// 		});
+	// 		if (!response.ok) throw new Error('Failed to assign user to license');
+	// 		update((allLicenses) =>
+	// 			allLicenses.map((currentLicense) =>
+	// 				currentLicense.id === licenseId
+	// 					? {
+	// 							...currentLicense,
+	// 							users: [
+	// 								...currentLicense.users,
+	// 								...newUsers.filter(
+	// 									(newUser) => !currentLicense.users.some((u) => u.id === newUser.id),
+	// 								),
+	// 							],
+	// 					  }
+	// 					: currentLicense,
+	// 			),
+	// 		);
+	// 	} catch (error) {
+	// 		console.error('Failed to assign user to license:', error);
+	// 	}
+	// }
+
+	// async function removeUsersFromLicense(licenseId: string, removedUsers: User[]) {
+	// 	try {
+	// 		const response = await fetch(`/api/license/${licenseId}/remove`, {
+	// 			method: 'DELETE',
+	// 			headers: { 'Content-Type': 'application/json' },
+	// 			body: JSON.stringify({ removedUsers }),
+	// 		});
+	// 		if (!response.ok) throw new Error('Failed to remove user from license');
+	// 		update((allLicenses) =>
+	// 			allLicenses.map((currentLicense) =>
+	// 				currentLicense.id === licenseId
+	// 					? {
+	// 							...currentLicense,
+	// 							users: currentLicense.users.filter((user) => user.id !== userId),
+	// 					  }
+	// 					: currentLicense,
+	// 			),
+	// 		);
+	// 	} catch (error) {
+	// 		console.error('Failed to remove user from license:', error);
+	// 	}
+	// }
 
 	return {
 		subscribe,
@@ -100,6 +160,8 @@ function createLicenseStore() {
 		update,
 		add: addLicense,
 		delete: deleteLicense,
+		// assignUsers: assignUsersToLicense,
+		// removeUsers: removeUsersFromLicense,
 		fetch: getLicenseById,
 		updateLicense: updateLicense,
 		resetFields: () => license.set(getInitialValues()),

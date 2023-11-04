@@ -5,6 +5,7 @@
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
+	import AssignedUsers from '$lib/components/license/fields/AssignedUsers.svelte';
 	import ExpirationField from '$lib/components/license/fields/ExpirationField.svelte';
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
@@ -16,13 +17,12 @@
 	import { onMount } from 'svelte';
 
 	let loaded = false;
+	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
 	onMount(async () => {
-		const id = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
-
-		if (id) {
+		if (urlId) {
 			licenseMode.set('edit');
-			licenseStore.fetch(id);
+			licenseStore.fetch(urlId);
 		} else {
 			licenseMode.set('add');
 			licenseStore.resetFields();
@@ -52,7 +52,7 @@
 			licenseStore.delete(id);
 			licenseStore.resetFields();
 		} else {
-			console.log("Couldn't find license id");
+			console.error("Couldn't find license id");
 		}
 	}
 </script>
@@ -65,8 +65,8 @@
 	{#if loaded}
 		<LicenseHeader />
 		<div class="fields-grid">
-			<ApplicationSelection bind:value={$license.application} />
-			<TextField bind:value={$license.assignedUsers} label="Assigned users" required />
+			<ApplicationSelection />
+			<AssignedUsers />
 			<ExpirationField bind:value={$license.renewalDate} />
 			<SelectField
 				bind:value={$license.category}

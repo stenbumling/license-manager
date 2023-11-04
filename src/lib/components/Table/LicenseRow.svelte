@@ -22,13 +22,21 @@
 		/>
 	</td>
 	<td class="application-cell">
-		<p class="table-text">{license.application}</p>
+		{#if license.application.name}
+			<p class="table-text">{license.application.name}</p>
+		{/if}
 	</td>
 	<td class="contact-cell">
 		<p class="table-text">{license.contactPerson}</p>
 	</td>
 	<td class="assigned-cell">
-		<p class="table-text">5</p>
+		<p class="table-text">
+			{#if license.users.length === 0}
+				None
+			{:else}
+				{license.users.length}
+			{/if}
+		</p>
 	</td>
 	<td class="expiration-cell">
 		<p
