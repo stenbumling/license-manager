@@ -7,10 +7,14 @@
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { style } from 'svelte-body';
+	import { slide } from 'svelte/transition';
 
+	export let tableHeight: any;
 	export let license: License;
 
 	$: renewalDate = getRelativeDate(license.renewalDate);
+
+	let contextMenuPosition: 'top' | 'bottom' = 'top';
 
 	function handleLink(license: License, e: MouseEvent | KeyboardEvent) {
 		e.stopPropagation();
@@ -34,8 +38,12 @@
 
 	// Context menu logic
 	function toggleContextMenu(e: MouseEvent) {
+		if (e.clientY > tableHeight) {
+			contextMenuPosition = 'bottom';
+		} else {
+			contextMenuPosition = 'top';
+		}
 		activeContextMenu.set($activeContextMenu === license.id ? null : license.id);
-		e.stopPropagation();
 	}
 
 	function handleClickOutside(event: MouseEvent) {
@@ -183,8 +191,10 @@
 					role="menu"
 					tabindex="0"
 					class="context-menu"
+					class:bottom={contextMenuPosition === 'bottom'}
 					on:click|stopPropagation
 					on:keydown|stopPropagation
+					transition:slide={{ duration: 80 }}
 				>
 					<ul>
 						<li role="menuitem">View license</li>
@@ -354,16 +364,20 @@
 
 	.context-menu {
 		position: absolute;
-		top: 0%;
+		top: 11px;
 		right: 80%;
 		background: white;
 		border: 1px solid #ccc;
 		border-radius: 4px;
 		padding: 0.5rem;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-		z-index: 10;
+		z-index: 100000;
 		pointer-events: auto;
 		width: 14rem;
+	}
+
+	.bottom {
+		top: -134px;
 	}
 
 	.context-menu ul {
