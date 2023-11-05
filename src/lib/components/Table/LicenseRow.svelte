@@ -3,37 +3,25 @@
 	import { licenseStore, type License } from '$lib/stores/license-store';
 	import { activeContextMenu } from '$lib/stores/modal-state';
 	import { getRelativeDate } from '$lib/utils/date-utils';
+	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
+	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
+	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
+	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { style } from 'svelte-body';
 	import { slide } from 'svelte/transition';
 
-	export let tableHeight: any;
 	export let license: License;
-
-	$: renewalDate = getRelativeDate(license.renewalDate);
-
+	export let tableHeight: any;
 	let contextMenuPosition: 'top' | 'bottom' = 'top';
-
-	function handleLink(license: License, e: MouseEvent | KeyboardEvent) {
-		e.stopPropagation();
-		if (e.metaKey || e.ctrlKey) {
-			return;
-		}
-		e.preventDefault();
-		goto(`/?modal=edit&id=${license.id}`);
-	}
+	$: renewalDate = getRelativeDate(license.renewalDate);
 
 	// Hover logic
 	const dispatch = createEventDispatcher();
-
-	function handleMouseOver() {
-		dispatch('hover', { hovered: true });
-	}
-
-	function handleMouseOut() {
-		dispatch('hover', { hovered: false });
+	function handleMouseHover(isHovered: boolean) {
+		dispatch('hover', { hovered: isHovered });
 	}
 
 	// Context menu logic
@@ -52,7 +40,24 @@
 		}
 	}
 
+	// Menu item functions
+	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
+		activeContextMenu.set(null);
+		e.stopPropagation();
+		if (e.metaKey || e.ctrlKey) {
+			return;
+		}
+		e.preventDefault();
+		goto(`/?modal=edit&id=${license.id}`);
+	}
+
+	function handleCopyLink() {
+		activeContextMenu.set(null);
+		navigator.clipboard.writeText(`${window.location.origin}/license/view/${license.id}`);
+	}
+
 	function handleDelete(e: MouseEvent) {
+		activeContextMenu.set(null);
 		licenseStore.delete(license.id);
 	}
 </script>
@@ -64,15 +69,15 @@
 	<!-- Icon cell -->
 	<td
 		class="status-cell-container"
-		on:mouseover={handleMouseOver}
-		on:focus={handleMouseOver}
-		on:mouseout={handleMouseOut}
-		on:blur={handleMouseOut}
+		on:mouseover={() => handleMouseHover(true)}
+		on:mouseout={() => handleMouseHover(false)}
+		on:focus={() => handleMouseHover(true)}
+		on:blur={() => handleMouseHover(false)}
 	>
 		<a
 			class="status-cell"
 			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleLink(license, e)}
+			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<div
 				class="status-icon"
@@ -84,15 +89,15 @@
 	<!-- Application cell -->
 	<td
 		class="application-cell-container"
-		on:mouseover={handleMouseOver}
-		on:focus={handleMouseOver}
-		on:mouseout={handleMouseOut}
-		on:blur={handleMouseOut}
+		on:mouseover={() => handleMouseHover(true)}
+		on:mouseout={() => handleMouseHover(false)}
+		on:focus={() => handleMouseHover(true)}
+		on:blur={() => handleMouseHover(false)}
 	>
 		<a
 			class="application-cell"
 			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleLink(license, e)}
+			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<p class="table-text">{license.application.name}</p>
 		</a>
@@ -100,15 +105,15 @@
 	<!-- Contact cell -->
 	<td
 		class="contact-cell-container"
-		on:mouseover={handleMouseOver}
-		on:focus={handleMouseOver}
-		on:mouseout={handleMouseOut}
-		on:blur={handleMouseOut}
+		on:mouseover={() => handleMouseHover(true)}
+		on:mouseout={() => handleMouseHover(false)}
+		on:focus={() => handleMouseHover(true)}
+		on:blur={() => handleMouseHover(false)}
 	>
 		<a
 			class="contact-cell"
 			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleLink(license, e)}
+			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<p class="table-text">{license.contactPerson}</p>
 		</a>
@@ -116,15 +121,15 @@
 	<!-- Assigned cell -->
 	<td
 		class="assigned-cell-container"
-		on:mouseover={handleMouseOver}
-		on:focus={handleMouseOver}
-		on:mouseout={handleMouseOut}
-		on:blur={handleMouseOut}
+		on:mouseover={() => handleMouseHover(true)}
+		on:mouseout={() => handleMouseHover(false)}
+		on:focus={() => handleMouseHover(true)}
+		on:blur={() => handleMouseHover(false)}
 	>
 		<a
 			class="assigned-cell"
 			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleLink(license, e)}
+			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<p class="table-text">
 				{#if license.users.length === 0}
@@ -138,15 +143,15 @@
 	<!-- Expiration cell -->
 	<td
 		class="expiration-cell-container"
-		on:mouseover={handleMouseOver}
-		on:focus={handleMouseOver}
-		on:mouseout={handleMouseOut}
-		on:blur={handleMouseOut}
+		on:mouseover={() => handleMouseHover(true)}
+		on:mouseout={() => handleMouseHover(false)}
+		on:focus={() => handleMouseHover(true)}
+		on:blur={() => handleMouseHover(false)}
 	>
 		<a
 			class="expiration-cell"
 			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleLink(license, e)}
+			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<p
 				class="table-text"
@@ -157,18 +162,18 @@
 			</p>
 		</a>
 	</td>
-	<!-- Renwal cell -->
+	<!-- Renewal cell -->
 	<td
 		class="renewal-cell-container"
-		on:mouseover={handleMouseOver}
-		on:focus={handleMouseOver}
-		on:mouseout={handleMouseOut}
-		on:blur={handleMouseOut}
+		on:mouseover={() => handleMouseHover(true)}
+		on:mouseout={() => handleMouseHover(false)}
+		on:focus={() => handleMouseHover(true)}
+		on:blur={() => handleMouseHover(false)}
 	>
 		<a
 			class="renewal-cell"
 			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleLink(license, e)}
+			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			{#if license.autoRenewal}
 				<Repeat size={16} />
@@ -194,13 +199,33 @@
 					class:bottom={contextMenuPosition === 'bottom'}
 					on:click|stopPropagation
 					on:keydown|stopPropagation
-					transition:slide={{ duration: 80 }}
+					in:slide={{ duration: 80 }}
 				>
 					<ul>
-						<li role="menuitem">View license</li>
-						<li role="menuitem">Copy link</li>
-						<li role="menuitem">Copy license data</li>
-						<li class="alert-text" role="menuitem">Delete license</li>
+						<li role="menuitem" on:click|stopPropagation={(e) => handleView(license, e)} on:keydown>
+							<div class="context-menu-item-icon">
+								<ViewFilled size={16} />
+							</div>
+							<span>View license</span>
+						</li>
+						<li role="menuitem" on:click|stopPropagation={(e) => handleCopyLink()} on:keydown>
+							<div class="context-menu-item-icon">
+								<CopyLink size={16} />
+							</div>
+							<span>Copy link</span>
+						</li>
+						<li role="menuitem" on:click|stopPropagation={(e) => handleCopyLink()} on:keydown>
+							<div class="context-menu-item-icon">
+								<Copy size={16} />
+							</div>
+							<span>Copy license data</span>
+						</li>
+						<li class="alert-text" role="menuitem" on:click={handleDelete} on:keydown>
+							<div class="context-menu-item-icon" style="margin-bottom: 1px">
+								<TrashCan size={16} />
+							</div>
+							<span>Delete license</span>
+						</li>
 					</ul>
 				</div>
 			{/if}
@@ -392,9 +417,19 @@
 		border-radius: 6px;
 		transition: background-color 0.2s ease;
 		user-select: none;
+		display: flex;
+		align-items: center;
 	}
 
 	.context-menu li:hover {
 		background-color: #eeeeee;
+	}
+
+	.context-menu-item-icon {
+		box-sizing: border-box;
+		display: flex;
+		height: 100%;
+		align-items: center;
+		margin-right: 0.6rem;
 	}
 </style>
