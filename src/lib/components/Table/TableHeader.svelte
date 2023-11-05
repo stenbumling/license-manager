@@ -4,7 +4,7 @@
 
 <thead>
 	<tr>
-		<th class="icon-col">
+		<th class="status-col">
 			<CircleDash size={20} />
 		</th>
 		<th class="application-col">
@@ -48,39 +48,39 @@
 		align-items: flex-end;
 	}
 
-	.icon-col {
-		width: 7%;
+	.status-col {
+		flex: 0 0 60px;
 		justify-content: center;
 		padding: 0 0 0.15rem 0;
 	}
 
 	.application-col {
-		width: 30%;
+		flex: 2;
 		justify-content: flex-start;
 	}
 
 	.contact-col {
-		width: 25%;
+		flex: 2;
 		justify-content: flex-start;
 	}
 
 	.assigned-col {
-		width: 10%;
+		flex: 1;
 		justify-content: center;
 	}
 
 	.expiration-col {
-		width: 14%;
+		flex: 2;
 		justify-content: flex-end;
 	}
 
 	.renewal-col {
-		width: 5%;
+		flex: 0 0 70px;
 		justify-content: center;
 	}
 
 	.menu-col {
-		width: 7%;
+		flex: 0 0 80px;
 		justify-content: center;
 	}
 </style>
