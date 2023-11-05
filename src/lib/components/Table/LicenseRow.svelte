@@ -11,7 +11,7 @@
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { style } from 'svelte-body';
-	import { slide } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 
 	export let license: License;
 	export let tableRect: any;
@@ -200,7 +200,10 @@
 					class:bottom={contextMenuPosition === 'bottom'}
 					on:click|stopPropagation
 					on:keydown|stopPropagation
-					in:slide={{ duration: 80 }}
+					in:fly={{
+						duration: 180,
+						y: contextMenuPosition === 'bottom' ? '15%' : '-15%',
+					}}
 				>
 					<ul>
 						<li role="menuitem" on:click|stopPropagation={(e) => handleView(license, e)} on:keydown>
