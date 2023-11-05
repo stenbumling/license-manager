@@ -14,7 +14,7 @@
 	import { slide } from 'svelte/transition';
 
 	export let license: License;
-	export let tableHeight: any;
+	export let tableRect: any;
 	let contextMenuPosition: 'top' | 'bottom' = 'top';
 	$: renewalDate = getRelativeDate(license.renewalDate);
 
@@ -26,7 +26,8 @@
 
 	// Context menu logic
 	function toggleContextMenu(e: MouseEvent) {
-		if (e.clientY > tableHeight) {
+		console.log(e.clientY, tableRect.bottom);
+		if (e.clientY > tableRect.bottom - 200) {
 			contextMenuPosition = 'bottom';
 		} else {
 			contextMenuPosition = 'top';
