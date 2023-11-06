@@ -103,65 +103,12 @@ function createLicenseStore() {
 		}
 	}
 
-	// async function assignUsersToLicense(licenseId: string, newUsers: User[]) {
-	// 	try {
-	// 		const response = await fetch(`/api/license/${licenseId}/assign/`, {
-	// 			method: 'POST',
-	// 			headers: { 'Content-Type': 'application/json' },
-	// 			body: JSON.stringify({ newUsers }),
-	// 		});
-	// 		if (!response.ok) throw new Error('Failed to assign user to license');
-	// 		update((allLicenses) =>
-	// 			allLicenses.map((currentLicense) =>
-	// 				currentLicense.id === licenseId
-	// 					? {
-	// 							...currentLicense,
-	// 							users: [
-	// 								...currentLicense.users,
-	// 								...newUsers.filter(
-	// 									(newUser) => !currentLicense.users.some((u) => u.id === newUser.id),
-	// 								),
-	// 							],
-	// 					  }
-	// 					: currentLicense,
-	// 			),
-	// 		);
-	// 	} catch (error) {
-	// 		console.error('Failed to assign user to license:', error);
-	// 	}
-	// }
-
-	// async function removeUsersFromLicense(licenseId: string, removedUsers: User[]) {
-	// 	try {
-	// 		const response = await fetch(`/api/license/${licenseId}/remove`, {
-	// 			method: 'DELETE',
-	// 			headers: { 'Content-Type': 'application/json' },
-	// 			body: JSON.stringify({ removedUsers }),
-	// 		});
-	// 		if (!response.ok) throw new Error('Failed to remove user from license');
-	// 		update((allLicenses) =>
-	// 			allLicenses.map((currentLicense) =>
-	// 				currentLicense.id === licenseId
-	// 					? {
-	// 							...currentLicense,
-	// 							users: currentLicense.users.filter((user) => user.id !== userId),
-	// 					  }
-	// 					: currentLicense,
-	// 			),
-	// 		);
-	// 	} catch (error) {
-	// 		console.error('Failed to remove user from license:', error);
-	// 	}
-	// }
-
 	return {
 		subscribe,
 		set,
 		update,
 		add: addLicense,
 		delete: deleteLicense,
-		// assignUsers: assignUsersToLicense,
-		// removeUsers: removeUsersFromLicense,
 		fetch: getLicenseById,
 		updateLicense: updateLicense,
 		resetFields: () => license.set(getInitialValues()),

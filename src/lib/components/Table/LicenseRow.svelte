@@ -2,32 +2,23 @@
 	import { goto } from '$app/navigation';
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
-	import { activeContextMenu } from '$lib/stores/context-menu-store';
+	import { contextMenu } from '$lib/stores/context-menu-store';
 	import type { License } from '$lib/stores/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { style } from 'svelte-body';
 
 	export let license: License;
 	let menuButtonRect: DOMRect;
 	$: renewalDate = getRelativeDate(license.renewalDate);
 
-	// Hover logic
-	const dispatch = createEventDispatcher();
-	function handleMouseHover(isHovered: boolean) {
-		dispatch('hover', { hovered: isHovered });
+	function openContextMenu() {
+		contextMenu.open(license.id);
 	}
 
-	// Context menu logic
-	function toggleContextMenu() {
-		activeContextMenu.set($activeContextMenu === license.id ? null : license.id);
-	}
-
-	// Menu item functions
 	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
-		activeContextMenu.set(null);
+		contextMenu.close();
 		e.stopPropagation();
 		if (e.metaKey || e.ctrlKey) {
 			return;
@@ -35,10 +26,13 @@
 		e.preventDefault();
 		goto(`/?modal=edit&id=${license.id}`);
 	}
-</script>
 
-<!-- <svelte:window on:click={handleClickOutside} /> -->
-<svelte:body use:style={$activeContextMenu ? 'pointer-events: none' : ''} />
+	// Hover logic
+	const dispatch = createEventDispatcher();
+	function handleMouseHover(isHovered: boolean) {
+		dispatch('hover', { hovered: isHovered });
+	}
+</script>
 
 <tr class="license-row-container">
 	<!-- Icon cell -->
@@ -153,21 +147,21 @@
 			{#if license.autoRenewal}
 				<Repeat size={16} />
 			{/if}
-		</a></td
-	>
+		</a>
+	</td>
 	<!-- Menu cell -->
 	<td class="menu-cell-container">
 		<div class="menu-cell">
 			<div class="vertical-line" />
 			<button
 				class="menu-button"
-				class:active={$activeContextMenu === license.id}
-				on:click|stopPropagation|preventDefault={toggleContextMenu}
+				class:active={$contextMenu.activeId === license.id}
+				on:click|stopPropagation|preventDefault={openContextMenu}
 				use:getElementRect={(element) => (menuButtonRect = element)}
 			>
 				<OverflowMenuHorizontal size={32} />
 			</button>
-			{#if $activeContextMenu === license.id}
+			{#if $contextMenu.activeId === license.id}
 				<ContextMenu bind:referenceElementRect={menuButtonRect} {license} />
 			{/if}
 		</div>

@@ -2,12 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import { getElementRect } from '$lib/actions/getElementRect';
-	import { activeContextMenu, contextMenuPosition } from '$lib/stores/context-menu-store';
+	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { licenseStore, type License } from '$lib/stores/license-store';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
+	import { style } from 'svelte-body';
 	import { fly } from 'svelte/transition';
 
 	export let license: License;
@@ -16,44 +17,35 @@
 
 	function renderContextMenu(node: DOMRect) {
 		contextMenuRect = node;
-
-		let newPosition = {
-			top:
-				referenceElementRect.bottom > window.innerHeight - contextMenuRect.height
-					? referenceElementRect.bottom - contextMenuRect.height
-					: referenceElementRect.top,
-			left: referenceElementRect.left - contextMenuRect.width - 10,
-		};
-
-		contextMenuPosition.set(newPosition);
+		contextMenu.updatePosition(referenceElementRect, contextMenuRect);
 	}
 
 	function closeMenu() {
-		if ($activeContextMenu === license.id) {
-			activeContextMenu.set(null);
-		}
+		contextMenu.close();
 	}
 
 	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
-		activeContextMenu.set(null);
-		e.stopPropagation();
-		if (e.metaKey || e.ctrlKey) {
-			return;
-		}
-		e.preventDefault();
+		contextMenu.close();
 		goto(`/?modal=edit&id=${license.id}`);
 	}
 
 	function handleCopyLink() {
-		activeContextMenu.set(null);
+		contextMenu.close();
 		navigator.clipboard.writeText(`${window.location.origin}/license/view/${license.id}`);
 	}
 
+	function handleCopyLicenseData() {
+		contextMenu.close();
+		navigator.clipboard.writeText(JSON.stringify(license));
+	}
+
 	function handleDelete() {
-		activeContextMenu.set(null);
+		contextMenu.close();
 		licenseStore.delete(license.id);
 	}
 </script>
+
+<svelte:body use:style={$contextMenu.activeId ? 'pointer-events: none' : ''} />
 
 <div
 	role="menu"
@@ -65,10 +57,10 @@
 	on:keydown|stopPropagation
 	in:fly={{
 		duration: 180,
-		// y: $contextMenuPosition === 'bottom' ? '15%' : '-15%',
+		y: '-15%',
 	}}
-	style="top: {$contextMenuPosition ? $contextMenuPosition.top + 'px' : 'auto'}; 
-    left: {$contextMenuPosition ? $contextMenuPosition.left + 'px' : 'auto'};"
+	style="top: {$contextMenu.position ? $contextMenu.position.top + 'px' : 'auto'}; 
+    left: {$contextMenu.position ? $contextMenu.position.left + 'px' : 'auto'};"
 >
 	<ul>
 		<li role="menuitem" on:click|stopPropagation={(e) => handleView(license, e)} on:keydown>
@@ -83,7 +75,7 @@
 			</div>
 			<span>Copy link</span>
 		</li>
-		<li role="menuitem" on:click|stopPropagation={handleCopyLink} on:keydown>
+		<li role="menuitem" on:click|stopPropagation={handleCopyLicenseData} on:keydown>
 			<div class="context-menu-item-icon">
 				<Copy size={16} />
 			</div>
