@@ -1,21 +1,17 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { licenseStore, type License } from '$lib/stores/license-store';
-	import { activeContextMenu } from '$lib/stores/modal-state';
+	import { getElementRect } from '$lib/actions/getElementRect';
+	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
+	import { activeContextMenu, contextMenuPosition } from '$lib/stores/context-menu-store';
+	import type { License } from '$lib/stores/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
-	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
-	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
-	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
-	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { style } from 'svelte-body';
-	import { fly } from 'svelte/transition';
 
 	export let license: License;
-	export let tableRect: any;
-	let contextMenuPosition: 'top' | 'bottom' = 'top';
+	let menuButtonRect: DOMRect;
 	$: renewalDate = getRelativeDate(license.renewalDate);
 
 	// Hover logic
@@ -26,12 +22,6 @@
 
 	// Context menu logic
 	function toggleContextMenu(e: MouseEvent) {
-		console.log(e.clientY, tableRect.bottom);
-		if (e.clientY > tableRect.bottom - 200) {
-			contextMenuPosition = 'bottom';
-		} else {
-			contextMenuPosition = 'top';
-		}
 		activeContextMenu.set($activeContextMenu === license.id ? null : license.id);
 	}
 
@@ -50,16 +40,6 @@
 		}
 		e.preventDefault();
 		goto(`/?modal=edit&id=${license.id}`);
-	}
-
-	function handleCopyLink() {
-		activeContextMenu.set(null);
-		navigator.clipboard.writeText(`${window.location.origin}/license/view/${license.id}`);
-	}
-
-	function handleDelete(e: MouseEvent) {
-		activeContextMenu.set(null);
-		licenseStore.delete(license.id);
 	}
 </script>
 
@@ -189,49 +169,12 @@
 				class="menu-button"
 				class:active={$activeContextMenu === license.id}
 				on:click|stopPropagation|preventDefault={toggleContextMenu}
+				use:getElementRect={(element) => (menuButtonRect = element)}
 			>
 				<OverflowMenuHorizontal size={32} />
 			</button>
 			{#if $activeContextMenu === license.id}
-				<div
-					role="menu"
-					tabindex="0"
-					class="context-menu"
-					class:bottom={contextMenuPosition === 'bottom'}
-					on:click|stopPropagation
-					on:keydown|stopPropagation
-					in:fly={{
-						duration: 180,
-						y: contextMenuPosition === 'bottom' ? '15%' : '-15%',
-					}}
-				>
-					<ul>
-						<li role="menuitem" on:click|stopPropagation={(e) => handleView(license, e)} on:keydown>
-							<div class="context-menu-item-icon">
-								<ViewFilled size={16} />
-							</div>
-							<span>View license</span>
-						</li>
-						<li role="menuitem" on:click|stopPropagation={(e) => handleCopyLink()} on:keydown>
-							<div class="context-menu-item-icon">
-								<CopyLink size={16} />
-							</div>
-							<span>Copy link</span>
-						</li>
-						<li role="menuitem" on:click|stopPropagation={(e) => handleCopyLink()} on:keydown>
-							<div class="context-menu-item-icon">
-								<Copy size={16} />
-							</div>
-							<span>Copy license data</span>
-						</li>
-						<li class="alert-text" role="menuitem" on:click={handleDelete} on:keydown>
-							<div class="context-menu-item-icon" style="margin-bottom: 1px">
-								<TrashCan size={16} />
-							</div>
-							<span>Delete license</span>
-						</li>
-					</ul>
-				</div>
+				<ContextMenu bind:referenceElementRect={menuButtonRect} {license} />
 			{/if}
 		</div>
 	</td>
@@ -387,53 +330,5 @@
 
 	.menu-button.active {
 		background-color: #dddddd;
-	}
-
-	/* Context menu */
-
-	.context-menu {
-		position: absolute;
-		top: 11px;
-		right: 80%;
-		background: white;
-		border: 1px solid #ccc;
-		border-radius: 4px;
-		padding: 0.5rem;
-		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-		z-index: 100000;
-		pointer-events: auto;
-		width: 14rem;
-	}
-
-	.bottom {
-		top: -134px;
-	}
-
-	.context-menu ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	.context-menu li {
-		padding: 0.5rem 1rem;
-		cursor: pointer;
-		border-radius: 6px;
-		transition: background-color 0.2s ease;
-		user-select: none;
-		display: flex;
-		align-items: center;
-	}
-
-	.context-menu li:hover {
-		background-color: #eeeeee;
-	}
-
-	.context-menu-item-icon {
-		box-sizing: border-box;
-		display: flex;
-		height: 100%;
-		align-items: center;
-		margin-right: 0.6rem;
 	}
 </style>

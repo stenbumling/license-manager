@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import ButtonLarge from '$lib/components/ButtonLarge.svelte';
+	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
 	import { activeFilter } from '$lib/stores/filter-state';
