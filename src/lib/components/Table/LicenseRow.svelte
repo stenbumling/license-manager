@@ -5,13 +5,41 @@
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import type { License } from '$lib/stores/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
+	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
+	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
+	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
+	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let license: License;
 	let menuButtonRect: DOMRect;
 	$: renewalDate = getRelativeDate(license.renewalDate);
+
+	const contextMenuItems = [
+		{
+			label: 'View license',
+			icon: ViewFilled,
+			action: () => contextMenu.viewLicense(license),
+		},
+		{
+			label: 'Copy link',
+			icon: CopyLink,
+			action: () => contextMenu.copyLicenseLink(license),
+		},
+		{
+			label: 'Copy license data',
+			icon: Copy,
+			action: () => contextMenu.copyLicenseData(license),
+		},
+		{
+			label: 'Delete license',
+			icon: TrashCan,
+			action: () => contextMenu.deleteLicense(license),
+			classes: 'alert-text',
+		},
+	];
 
 	function openContextMenu() {
 		contextMenu.open(license.id);
@@ -162,7 +190,7 @@
 				<OverflowMenuHorizontal size={32} />
 			</button>
 			{#if $contextMenu.activeId === license.id}
-				<ContextMenu bind:referenceElementRect={menuButtonRect} {license} />
+				<ContextMenu bind:referenceElementRect={menuButtonRect} items={contextMenuItems} />
 			{/if}
 		</div>
 	</td>

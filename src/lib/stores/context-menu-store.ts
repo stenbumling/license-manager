@@ -1,4 +1,7 @@
+import { goto } from '$app/navigation';
+import type { License } from '$lib/stores/license-store';
 import { writable } from 'svelte/store';
+import { licenseStore } from './license-store';
 
 type ContextMenuState = {
 	position: { top: number; left: number } | null;
@@ -24,7 +27,7 @@ function createContextMenuStore() {
 		set(initialState);
 	}
 
-	function updatePosition(referenceElementRect: DOMRect, contextMenuRect: DOMRect) {
+	function setPosition(referenceElementRect: DOMRect, contextMenuRect: DOMRect) {
 		let top =
 			referenceElementRect.bottom > window.innerHeight - contextMenuRect.height
 				? referenceElementRect.bottom - contextMenuRect.height
@@ -37,13 +40,37 @@ function createContextMenuStore() {
 		}));
 	}
 
+	// Assortment of functions to be called by items in the context menu
+
+	function viewLicense(license: License) {
+		contextMenu.close();
+		goto(`/?modal=edit&id=${license.id}`);
+	}
+
+	function copyLicenseLink(license: License) {
+		contextMenu.close();
+		navigator.clipboard.writeText(`${window.location.origin}/license/view/${license.id}`);
+	}
+
+	function copyLicenseData(license: License) {
+		contextMenu.close();
+		navigator.clipboard.writeText(JSON.stringify(license));
+	}
+
+	function deleteLicense(license: License) {
+		contextMenu.close();
+		licenseStore.delete(license.id);
+	}
+
 	return {
 		subscribe,
-		set,
-		update,
 		close: closeMenu,
 		open: setId,
-		updatePosition,
+		setPosition,
+		viewLicense,
+		copyLicenseLink,
+		copyLicenseData,
+		deleteLicense,
 	};
 }
 
