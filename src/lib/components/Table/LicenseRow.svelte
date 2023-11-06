@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
-	import { activeContextMenu, contextMenuPosition } from '$lib/stores/context-menu-store';
+	import { activeContextMenu } from '$lib/stores/context-menu-store';
 	import type { License } from '$lib/stores/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
@@ -21,14 +21,8 @@
 	}
 
 	// Context menu logic
-	function toggleContextMenu(e: MouseEvent) {
+	function toggleContextMenu() {
 		activeContextMenu.set($activeContextMenu === license.id ? null : license.id);
-	}
-
-	function handleClickOutside(event: MouseEvent) {
-		if ($activeContextMenu === license.id) {
-			activeContextMenu.set(null);
-		}
 	}
 
 	// Menu item functions
@@ -43,7 +37,7 @@
 	}
 </script>
 
-<svelte:window on:click={handleClickOutside} />
+<!-- <svelte:window on:click={handleClickOutside} /> -->
 <svelte:body use:style={$activeContextMenu ? 'pointer-events: none' : ''} />
 
 <tr class="license-row-container">

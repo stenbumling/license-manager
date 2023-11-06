@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { clickOutside } from '$lib/actions/clickOutside';
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import { activeContextMenu, contextMenuPosition } from '$lib/stores/context-menu-store';
 	import { licenseStore, type License } from '$lib/stores/license-store';
@@ -15,8 +16,6 @@
 
 	function renderContextMenu(node: DOMRect) {
 		contextMenuRect = node;
-		console.log(contextMenuRect);
-		console.log(referenceElementRect.bottom, window.innerHeight - contextMenuRect.height);
 
 		let newPosition = {
 			top:
@@ -27,6 +26,12 @@
 		};
 
 		contextMenuPosition.set(newPosition);
+	}
+
+	function closeMenu() {
+		if ($activeContextMenu === license.id) {
+			activeContextMenu.set(null);
+		}
 	}
 
 	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
@@ -44,7 +49,7 @@
 		navigator.clipboard.writeText(`${window.location.origin}/license/view/${license.id}`);
 	}
 
-	function handleDelete(e: MouseEvent) {
+	function handleDelete() {
 		activeContextMenu.set(null);
 		licenseStore.delete(license.id);
 	}
@@ -55,6 +60,7 @@
 	tabindex="0"
 	class="context-menu"
 	use:getElementRect={renderContextMenu}
+	use:clickOutside={closeMenu}
 	on:click|stopPropagation
 	on:keydown|stopPropagation
 	in:fly={{

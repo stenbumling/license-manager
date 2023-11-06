@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { getElementRect } from '$lib/actions/getElementRect';
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
 	import { licenseStore } from '$lib/stores/license-store';
 
