@@ -52,7 +52,7 @@
 						<svelte:component this={item.icon} size={16} />
 					</div>
 				{/if}
-				<span>{item.label}</span>
+				<span class="context-menu-item-label">{item.label}</span>
 			</li>
 		{/each}
 	</ul>
@@ -79,12 +79,14 @@
 
 	.context-menu li {
 		padding: 0.5rem 1rem;
+		height: 2rem;
 		cursor: pointer;
 		border-radius: 6px;
 		transition: background-color 0.2s ease;
 		user-select: none;
 		display: flex;
 		align-items: center;
+		text-align: center;
 	}
 
 	.context-menu li:hover {

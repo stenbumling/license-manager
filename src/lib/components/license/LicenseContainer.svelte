@@ -15,6 +15,7 @@
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
+	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
@@ -26,6 +27,11 @@
 	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
 	const contextMenuItems = [
+		{
+			label: 'Close without saving',
+			icon: CloseLarge,
+			action: () => handleClose(),
+		},
 		{
 			label: 'Copy link',
 			icon: CopyLink,
@@ -67,6 +73,12 @@
 		goto('/');
 		licenseStore.updateLicense($license);
 		licenseStore.resetFields();
+	}
+
+	function handleClose() {
+		showLicenseModal.set(false);
+		licenseStore.resetFields();
+		goto('/');
 	}
 </script>
 
@@ -174,6 +186,11 @@
 			background-color: #eeeeee;
 		}
 	}
+
+	.menu-button.active {
+		background-color: #dddddd;
+	}
+
 	.main-button {
 		width: 16rem;
 	}
