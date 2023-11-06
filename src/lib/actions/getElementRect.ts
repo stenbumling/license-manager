@@ -13,6 +13,7 @@ export function getElementRect(node: Element, callback: (arg0: DOMRect) => void)
 	});
 
 	observer.observe(node);
+	window.addEventListener('resize', () => callback(node.getBoundingClientRect()));
 
 	return {
 		destroy() {
