@@ -3,6 +3,7 @@ import { get, writable } from 'svelte/store';
 
 export function getInitialValues() {
 	return {
+		id: 'temp-id',
 		application: {
 			id: '',
 			name: '',
@@ -21,7 +22,8 @@ export function getInitialValues() {
 	};
 }
 
-export interface NewLicense {
+export interface License {
+	id: string;
 	application: {
 		id: string;
 		name: string;
@@ -39,17 +41,13 @@ export interface NewLicense {
 	comment: string;
 }
 
-export interface License extends NewLicense {
-	id: string;
-}
-
 export const licenseMode = writable<'add' | 'edit'>('add');
-export const license = writable<NewLicense | License>(getInitialValues());
+export const license = writable<License>(getInitialValues());
 
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
-	async function addLicense(license: NewLicense) {
+	async function addLicense(license: License) {
 		try {
 			const response = await fetch('/api/license/add', {
 				method: 'POST',

@@ -2,6 +2,7 @@ import { goto } from '$app/navigation';
 import type { License } from '$lib/stores/license-store';
 import { writable } from 'svelte/store';
 import { licenseStore } from './license-store';
+import { showLicenseModal } from './modal-state';
 
 type ContextMenuState = {
 	position: { top: number; left: number } | null;
@@ -29,7 +30,7 @@ function createContextMenuStore() {
 
 	function setPosition(referenceElementRect: DOMRect, contextMenuRect: DOMRect) {
 		let top =
-			referenceElementRect.bottom > window.innerHeight - contextMenuRect.height
+			referenceElementRect.bottom > window.innerHeight - contextMenuRect.height - 40
 				? referenceElementRect.bottom - contextMenuRect.height
 				: referenceElementRect.top;
 		let left = referenceElementRect.left - contextMenuRect.width - 10;
@@ -59,7 +60,10 @@ function createContextMenuStore() {
 
 	function deleteLicense(license: License) {
 		contextMenu.close();
+		showLicenseModal.set(false);
 		licenseStore.delete(license.id);
+		licenseStore.resetFields();
+		goto('/');
 	}
 
 	return {

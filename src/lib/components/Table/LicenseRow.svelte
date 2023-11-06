@@ -201,10 +201,6 @@
 		box-sizing: border-box;
 	}
 
-	td {
-		height: 100%;
-	}
-
 	td > * {
 		height: 100%;
 		display: flex;

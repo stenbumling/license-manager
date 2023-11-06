@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
+	import { getElementRect } from '$lib/actions/getElementRect';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
@@ -10,14 +10,39 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import type { License, NewLicense } from '$lib/stores/license-store';
+	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
+	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
+	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
+	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
+	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
+	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { onMount } from 'svelte';
 
 	let loaded = false;
+	let menuButtonRect: DOMRect;
 	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
+
+	const contextMenuItems = [
+		{
+			label: 'Copy link',
+			icon: CopyLink,
+			action: () => contextMenu.copyLicenseLink($license),
+		},
+		{
+			label: 'Copy license data',
+			icon: Copy,
+			action: () => contextMenu.copyLicenseData($license),
+		},
+		{
+			label: 'Delete license',
+			icon: TrashCan,
+			action: () => contextMenu.deleteLicense($license),
+			classes: 'alert-text',
+		},
+	];
 
 	onMount(async () => {
 		if (urlId) {
@@ -33,27 +58,15 @@
 	function handleAdd() {
 		showLicenseModal.set(false);
 		goto('/');
-		licenseStore.add($license as NewLicense);
+		licenseStore.add($license);
 		licenseStore.resetFields();
 	}
 
 	function handleSave() {
 		showLicenseModal.set(false);
 		goto('/');
-		licenseStore.updateLicense($license as License);
+		licenseStore.updateLicense($license);
 		licenseStore.resetFields();
-	}
-
-	function handleDelete() {
-		showLicenseModal.set(false);
-		goto('/');
-		const id = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
-		if (id) {
-			licenseStore.delete(id);
-			licenseStore.resetFields();
-		} else {
-			console.error("Couldn't find license id");
-		}
 	}
 </script>
 
@@ -93,9 +106,17 @@
 		</div>
 		<div class="bottom-container">
 			{#if $licenseMode === 'edit'}
-				<button class="menu-button" on:click={handleDelete}>
+				<button
+					class="menu-button"
+					class:active={$contextMenu.activeId === 'license-view'}
+					on:click|stopPropagation|preventDefault={() => contextMenu.open('license-view')}
+					use:getElementRect={(element) => (menuButtonRect = element)}
+				>
 					<OverflowMenuHorizontal size={32} />
 				</button>
+				{#if $contextMenu.activeId === 'license-view'}
+					<ContextMenu bind:referenceElementRect={menuButtonRect} items={contextMenuItems} />
+				{/if}
 				<button class="main-button" on:click|preventDefault={handleSave}>
 					<ButtonLarge title="Save changes" />
 				</button>
