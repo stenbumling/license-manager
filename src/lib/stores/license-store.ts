@@ -145,6 +145,7 @@ function createLicenseStore() {
 			if (!response.ok) throw new Error('Failed to delete license');
 			update((allLicenses) => allLicenses.filter((license) => license.id !== id));
 			tableData.update((allLicenses) => allLicenses.filter((license) => license.id !== id));
+			updateLicenseCounts();
 		} catch (error) {
 			console.error('Failed to delete license:', error);
 		}
