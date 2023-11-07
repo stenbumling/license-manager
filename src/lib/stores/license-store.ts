@@ -1,6 +1,6 @@
 import type { User } from '$lib/stores/user-store';
 import { get, writable } from 'svelte/store';
-import { activeFilter, table, tableData } from './table-store';
+import { activeFilter, searchQuery, sortState, table, tableData } from './table-store';
 
 export function getInitialValues() {
 	return {
@@ -120,6 +120,12 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			if (!response.ok) throw new Error('Failed to update license');
+			await table.applyFilter(
+				get(activeFilter),
+				get(searchQuery),
+				get(sortState).column,
+				get(sortState).order,
+			);
 			update((allLicenses) =>
 				allLicenses.map((currentLicense) =>
 					currentLicense.id === license.id ? license : currentLicense,
@@ -143,6 +149,12 @@ function createLicenseStore() {
 				method: 'DELETE',
 			});
 			if (!response.ok) throw new Error('Failed to delete license');
+			await table.applyFilter(
+				get(activeFilter),
+				get(searchQuery),
+				get(sortState).column,
+				get(sortState).order,
+			);
 			update((allLicenses) => allLicenses.filter((license) => license.id !== id));
 			tableData.update((allLicenses) => allLicenses.filter((license) => license.id !== id));
 			updateLicenseCounts();

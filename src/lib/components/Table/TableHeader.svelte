@@ -1,35 +1,39 @@
 <script lang="ts">
+	import { table, searchQuery } from '$lib/stores/table-store';
 	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
 	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
+	import { get } from 'svelte/store';
 
-	type SortState = 'asc' | 'desc' | 'none';
+	type SortState = 'ASC' | 'DESC' | '';
 
-	let sortStates: Record<string, SortState> = {
-		application: 'none',
-		contact: 'none',
-		assigned: 'none',
-		expires: 'none',
+	let columnSortOrder: Record<string, SortState> = {
+		application: '',
+		contactPerson: '',
+		assigned: '',
+		renewalDate: '',
 	};
 
 	function handleSort(column: string) {
-		if (sortStates[column] === 'none') {
-			for (let key in sortStates) {
-				sortStates[key] = 'none';
+		if (columnSortOrder[column] === '') {
+			for (let key in columnSortOrder) {
+				columnSortOrder[key] = '';
 			}
 		}
 
-		switch (sortStates[column]) {
-			case 'none':
-				sortStates[column] = 'asc';
+		switch (columnSortOrder[column]) {
+			case '':
+				columnSortOrder[column] = 'ASC';
 				break;
-			case 'asc':
-				sortStates[column] = 'desc';
+			case 'ASC':
+				columnSortOrder[column] = 'DESC';
 				break;
-			case 'desc':
-				sortStates[column] = 'none';
+			case 'DESC':
+				columnSortOrder[column] = '';
 				break;
 		}
+		const currentSearchQuery = get(searchQuery);
+		table.sort(column, columnSortOrder[column], currentSearchQuery);
 	}
 </script>
 
@@ -40,22 +44,22 @@
 		</th>
 		<th class="application-col" on:click={() => handleSort('application')}>
 			<h3 class="column-label">Application</h3>
-			{#if sortStates['application'] === 'asc'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if sortStates['application'] === 'desc'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			{#if columnSortOrder['application'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if columnSortOrder['application'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
-		<th class="contact-col" on:click={() => handleSort('contact')}>
+		<th class="contact-col" on:click={() => handleSort('contactPerson')}>
 			<h3 class="column-label">Contact person</h3>
-			{#if sortStates['contact'] === 'asc'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if sortStates['contact'] === 'desc'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			{#if columnSortOrder['contactPerson'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if columnSortOrder['contactPerson'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
 		<th class="assigned-col" on:click={() => handleSort('assigned')}>
 			<h3 class="column-label">Assigned</h3>
-			{#if sortStates['assigned'] === 'asc'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if sortStates['assigned'] === 'desc'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			{#if columnSortOrder['assigned'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if columnSortOrder['assigned'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
-		<th class="expiration-col" on:click={() => handleSort('expires')}>
-			{#if sortStates['expires'] === 'asc'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if sortStates['expires'] === 'desc'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+		<th class="expiration-col" on:click={() => handleSort('renewalDate')}>
+			{#if columnSortOrder['renewalDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if columnSortOrder['renewalDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 			<h3 class="column-label">Expires in</h3>
 		</th>
 		<th class="renewal-col" />
@@ -108,7 +112,7 @@
 	.status-col {
 		flex: 0 0 60px;
 		justify-content: center;
-		padding: 0 0 0.15rem 0;
+		padding: 0 0 0.2rem 0;
 	}
 
 	.application-col {
