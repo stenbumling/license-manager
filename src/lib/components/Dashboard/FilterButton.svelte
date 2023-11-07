@@ -1,29 +1,29 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	export let title: string = 'Filter';
-	export let amount: number = 0;
-	export let color: string = 'var(--filter-blue)';
-	export let isActive: boolean = false;
+	import { activeFilter, table } from '$lib/stores/table-store';
+	export let filter: {
+		title: string;
+		amount: number;
+		color: string;
+	};
 
-	const dispatch = createEventDispatcher();
-
-	function handleClick() {
-		dispatch('filterclicked', { title });
+	function handleClick(e: MouseEvent | KeyboardEvent) {
+		table.setActiveFilter(filter.title);
 	}
 </script>
 
 <button
-	style={isActive ? `background-color: ${color};` : ''}
-	class="filter-container {isActive ? 'active' : ''}"
-	on:click={handleClick}
+	class="filter-container"
+	class:active={$activeFilter === filter.title}
+	style:background-color={$activeFilter === filter.title ? filter.color : ''}
+	on:click|preventDefault={handleClick}
 >
 	<div class="filter-content">
-		<h4 class="filter-title">{title}</h4>
-		<h4 class="filter-amount">{amount}</h4>
+		<h4 class="filter-title">{filter.title}</h4>
+		<h4 class="filter-amount">{filter.amount}</h4>
 	</div>
 	<div
 		class="filter-animated-hover"
-		style="background: linear-gradient(to right, {color} 50%, transparent 50%);"
+		style:background={`linear-gradient(to right, ${filter.color} 100%, transparent 100%`}
 	/>
 </button>
 
@@ -45,11 +45,11 @@
 		left: 0;
 		width: 0;
 		height: 100%;
-		transition: width 0.15s ease;
+		transition: width 0.25s ease;
 	}
 
 	.filter-container:hover .filter-animated-hover {
-		width: 200%;
+		width: 100%;
 	}
 
 	.filter-content {

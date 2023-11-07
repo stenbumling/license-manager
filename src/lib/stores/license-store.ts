@@ -1,5 +1,6 @@
 import type { User } from '$lib/stores/user-store';
 import { get, writable } from 'svelte/store';
+import { activeFilter, table, tableData } from './table-store';
 
 export function getInitialValues() {
 	return {
@@ -50,7 +51,7 @@ function createLicenseStore() {
 	async function fetchLicenses() {
 		try {
 			const response = await fetch('/api/license');
-			const licenses = await response.json();
+			const { licenses, counts } = await response.json();
 			set(licenses);
 		} catch (error) {
 			console.error('Failed to fetch licenses:', error);
@@ -76,6 +77,8 @@ function createLicenseStore() {
 			});
 			const newLicense = await response.json();
 			update((allLicenses) => [newLicense, ...allLicenses]);
+			tableData.update((allLicenses) => [newLicense, ...allLicenses]);
+			await table.applyFilter(get(activeFilter));
 		} catch (error) {
 			console.error('Failed to add license:', error);
 		}
@@ -94,11 +97,16 @@ function createLicenseStore() {
 					currentLicense.id === license.id ? license : currentLicense,
 				),
 			);
+			tableData.update((allLicenses) =>
+				allLicenses.map((currentLicense) =>
+					currentLicense.id === license.id ? license : currentLicense,
+				),
+			);
+			await table.applyFilter(get(activeFilter));
 		} catch (error) {
 			console.error('Failed to update license:', error);
 		}
 	}
-
 
 	async function deleteLicense(id: string) {
 		try {
@@ -107,6 +115,7 @@ function createLicenseStore() {
 			});
 			if (!response.ok) throw new Error('Failed to delete license');
 			update((allLicenses) => allLicenses.filter((license) => license.id !== id));
+			tableData.update((allLicenses) => allLicenses.filter((license) => license.id !== id));
 		} catch (error) {
 			console.error('Failed to delete license:', error);
 		}

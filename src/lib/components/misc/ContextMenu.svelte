@@ -36,8 +36,8 @@
 		duration: 180,
 		y: '-15%',
 	}}
-	style="top: {$contextMenu.position ? $contextMenu.position.top + 'px' : 'auto'}; 
-    left: {$contextMenu.position ? $contextMenu.position.left + 'px' : 'auto'};"
+	style:top={$contextMenu.position ? `${$contextMenu.position.top}px` : 'auto'}
+	style:left={$contextMenu.position ? `${$contextMenu.position.left}px` : 'auto'}
 >
 	<ul>
 		{#each items as item}

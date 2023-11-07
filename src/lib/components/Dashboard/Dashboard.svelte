@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
-	import { activeFilter } from '$lib/stores/table-store';
+	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
+	import { filterCount } from '$lib/stores/table-store';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
@@ -13,6 +12,34 @@
 		e.preventDefault();
 		goto('/?modal=add-new');
 	}
+
+	const filters = [
+		{
+			title: 'All',
+			amount: $filterCount.all,
+			color: 'var(--filter-blue)',
+		},
+		{
+			title: 'In use',
+			amount: $filterCount.inUse,
+			color: 'var(--filter-green)',
+		},
+		{
+			title: 'Unassigned',
+			amount: $filterCount.unassigned,
+			color: 'var(--filter-yellow)',
+		},
+		{
+			title: 'Near expiration',
+			amount: $filterCount.nearExpiration,
+			color: 'var(--warning)',
+		},
+		{
+			title: 'Expired',
+			amount: $filterCount.expired,
+			color: 'var(--alert)',
+		},
+	];
 </script>
 
 <div class="dashboard">
@@ -20,41 +47,9 @@
 	<SearchBar />
 	<h2>Filter</h2>
 	<div class="filter-list">
-		<FilterButton
-			title="All"
-			amount={0}
-			color="var(--filter-blue)"
-			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
-			isActive={$activeFilter === 'All'}
-		/>
-		<FilterButton
-			title="In use"
-			amount={23}
-			color="var(--filter-green)"
-			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
-			isActive={$activeFilter === 'In use'}
-		/>
-		<FilterButton
-			title="Unassigned"
-			amount={32}
-			color="var(--filter-yellow)"
-			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
-			isActive={$activeFilter === 'Unassigned'}
-		/>
-		<FilterButton
-			title="Near expiration"
-			amount={99}
-			color="var(--warning)"
-			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
-			isActive={$activeFilter === 'Near expiration'}
-		/>
-		<FilterButton
-			title="Expired"
-			amount={31}
-			color="var(--alert)"
-			on:filterclicked={(e) => activeFilter.set(e.detail.title)}
-			isActive={$activeFilter === 'Expired'}
-		/>
+		{#each filters as filter}
+			<FilterButton {filter} />
+		{/each}
 	</div>
 	<a href="/license/add-new" on:click={handleClick}>
 		<ButtonLarge title="Add new license" />
