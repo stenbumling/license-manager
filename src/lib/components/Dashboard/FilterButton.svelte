@@ -6,7 +6,7 @@
 		color: string;
 	};
 
-	function handleClick(e: MouseEvent | KeyboardEvent) {
+	function handleClick() {
 		table.setActiveFilter(filter.title);
 	}
 </script>

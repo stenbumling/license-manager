@@ -13,7 +13,7 @@ function createTableStore() {
 		applyFilter(filter);
 	}
 
-	async function applyFilter(filterName: string) {
+	async function applyFilter(filterName: string, searchQuery?: string) {
 		let query: string = '';
 		switch (filterName) {
 			case 'All':
@@ -30,6 +30,12 @@ function createTableStore() {
 				break;
 			case 'Expired':
 				query = '?expired=true';
+				break;
+			case 'Search':
+				if (searchQuery) {
+					query = `?search=${searchQuery}`;
+					activeFilter.set('Search');
+				}
 				break;
 			default:
 				console.error(`Unknown filter: ${filterName}`);
