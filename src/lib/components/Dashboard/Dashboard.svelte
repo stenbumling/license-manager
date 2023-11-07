@@ -4,7 +4,7 @@
 	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
-	import { activeFilter } from '$lib/stores/filter-state';
+	import { activeFilter } from '$lib/stores/table-store';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {

@@ -1,6 +1,7 @@
 import { applicationStore } from '$lib/stores/application-store';
 import { licenseStore } from '$lib/stores/license-store';
 import { userStore } from '$lib/stores/user-store';
+import { tableData } from '$lib/stores/table-store';
 
 export const load = async ({ fetch }) => {
 	try {
@@ -15,6 +16,7 @@ export const load = async ({ fetch }) => {
 
 		const licenses = await licenseResponse.json();
 		licenseStore.set(licenses);
+		tableData.set(licenses);
 		const applications = await applicationResponse.json();
 		applicationStore.set(applications);
 		const users = await userResponse.json();

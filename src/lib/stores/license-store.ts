@@ -47,6 +47,26 @@ export const license = writable<License>(getInitialValues());
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
+	async function fetchLicenses() {
+		try {
+			const response = await fetch('/api/license');
+			const licenses = await response.json();
+			set(licenses);
+		} catch (error) {
+			console.error('Failed to fetch licenses:', error);
+		}
+	}
+
+	function getLicenseById(id: string) {
+		const fetchedLicense = get(licenseStore).find((license) => license.id === id);
+
+		if (fetchedLicense) {
+			license.set(structuredClone(fetchedLicense));
+		} else {
+			console.error('Failed to get license from store');
+		}
+	}
+
 	async function addLicense(license: License) {
 		try {
 			const response = await fetch('/api/license/add', {
@@ -79,15 +99,6 @@ function createLicenseStore() {
 		}
 	}
 
-	function getLicenseById(id: string) {
-		const fetchedLicense = get(licenseStore).find((license) => license.id === id);
-
-		if (fetchedLicense) {
-			license.set(structuredClone(fetchedLicense));
-		} else {
-			console.error('Failed to get license from store');
-		}
-	}
 
 	async function deleteLicense(id: string) {
 		try {
@@ -105,9 +116,10 @@ function createLicenseStore() {
 		subscribe,
 		set,
 		update,
+		fetchAll: fetchLicenses,
+		fetch: getLicenseById,
 		add: addLicense,
 		delete: deleteLicense,
-		fetch: getLicenseById,
 		updateLicense: updateLicense,
 		resetFields: () => license.set(getInitialValues()),
 	};
