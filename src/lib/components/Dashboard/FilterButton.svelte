@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activeFilter, table } from '$lib/stores/table-store';
+	import { activeFilter, searchQuery, table } from '$lib/stores/table-store';
 	export let filter: {
 		title: string;
 		amount: number;
@@ -7,6 +7,7 @@
 	};
 
 	function handleClick() {
+		searchQuery.set('');
 		table.setActiveFilter(filter.title);
 	}
 </script>
