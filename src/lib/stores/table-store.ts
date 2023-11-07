@@ -1,8 +1,8 @@
 import { get, writable } from 'svelte/store';
 import type { License } from './license-store';
 
-export const searchQuery = writable('');
 export const activeFilter = writable('All');
+export const searchQuery = writable('');
 export const tableData = writable<License[]>([]);
 export const sortState = writable({ column: '', order: '' });
 
@@ -22,9 +22,10 @@ function createTableStore() {
 		sortOrder?: string,
 	) {
 		let query: string = '';
+
 		switch (filterName) {
 			case 'All':
-				query = '?';
+				query = '';
 				break;
 			case 'In use':
 				query = '?users=true';
@@ -40,7 +41,7 @@ function createTableStore() {
 				break;
 			case 'Search':
 				if (searchQueryParam === '') {
-					query = '?';
+					query = '';
 					activeFilter.set('All');
 				} else {
 					query = `?search=${searchQueryParam}`;
@@ -49,7 +50,7 @@ function createTableStore() {
 				break;
 			default:
 				console.error(`Unknown filter: ${filterName}`);
-				query = '?';
+				query = '';
 				break;
 		}
 
@@ -60,9 +61,11 @@ function createTableStore() {
 			setSort(currentSort);
 		}
 
-		if (currentSort.column && currentSort.order) {
-			query += `&sortBy=${currentSort.column}&sortDirection=${currentSort.order}`;
-		}
+		const sortQuery =
+			currentSort.column && currentSort.order
+				? `sortBy=${currentSort.column}&sortDirection=${currentSort.order}`
+				: '';
+		query += (query ? '&' : '?') + sortQuery;
 
 		filterTable(query);
 	}
