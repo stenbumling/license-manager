@@ -1,26 +1,9 @@
 import { writable } from 'svelte/store';
 import type { License } from './license-store';
 
-export interface LicenseCount {
-	all: number;
-	inUse: number;
-	unassigned: number;
-	nearExpiration: number;
-	expired: number;
-}
-
-const initialLicenseCount = {
-	all: 0,
-	inUse: 0,
-	unassigned: 0,
-	nearExpiration: 0,
-	expired: 0,
-};
-
 export const activeFilter = writable('All');
 export const activeSort = writable('Name');
 export const tableData = writable<License[]>([]);
-export const filterCount = writable<LicenseCount>(initialLicenseCount);
 
 function createTableStore() {
 	const { subscribe, set, update } = writable<License[]>([]);

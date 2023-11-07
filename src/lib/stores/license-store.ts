@@ -23,6 +23,14 @@ export function getInitialValues() {
 	};
 }
 
+const initialLicenseCounts = {
+	all: 0,
+	inUse: 0,
+	unassigned: 0,
+	nearExpiration: 0,
+	expired: 0,
+};
+
 export interface License {
 	id: string;
 	application: {
@@ -42,8 +50,17 @@ export interface License {
 	comment: string;
 }
 
+export interface LicenseCounts {
+	all: number;
+	inUse: number;
+	unassigned: number;
+	nearExpiration: number;
+	expired: number;
+}
+
 export const licenseMode = writable<'add' | 'edit'>('add');
 export const license = writable<License>(getInitialValues());
+export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
 
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
@@ -51,7 +68,7 @@ function createLicenseStore() {
 	async function fetchLicenses() {
 		try {
 			const response = await fetch('/api/license');
-			const { licenses, counts } = await response.json();
+			const { licenses } = await response.json();
 			set(licenses);
 		} catch (error) {
 			console.error('Failed to fetch licenses:', error);

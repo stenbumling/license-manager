@@ -3,7 +3,7 @@
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
 	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
-	import { filterCount } from '$lib/stores/table-store';
+	import { licenseCounts } from '$lib/stores/license-store';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
@@ -16,27 +16,27 @@
 	const filters = [
 		{
 			title: 'All',
-			amount: $filterCount.all,
+			amount: $licenseCounts.all,
 			color: 'var(--filter-blue)',
 		},
 		{
 			title: 'In use',
-			amount: $filterCount.inUse,
+			amount: $licenseCounts.inUse,
 			color: 'var(--filter-green)',
 		},
 		{
 			title: 'Unassigned',
-			amount: $filterCount.unassigned,
+			amount: $licenseCounts.unassigned,
 			color: 'var(--filter-yellow)',
 		},
 		{
 			title: 'Near expiration',
-			amount: $filterCount.nearExpiration,
+			amount: $licenseCounts.nearExpiration,
 			color: 'var(--warning)',
 		},
 		{
 			title: 'Expired',
-			amount: $filterCount.expired,
+			amount: $licenseCounts.expired,
 			color: 'var(--alert)',
 		},
 	];
