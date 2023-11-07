@@ -33,7 +33,10 @@ function createTableStore() {
 				query = '?expired=true';
 				break;
 			case 'Search':
-				if (searchQuery) {
+				if (searchQuery === '') {
+					query = '';
+					activeFilter.set('All');
+				} else if (searchQuery) {
 					query = `?search=${searchQuery}`;
 					activeFilter.set('Search');
 				}
@@ -49,7 +52,6 @@ function createTableStore() {
 		try {
 			const response = await fetch(`/api/license/filter${query}`);
 			const licenses = await response.json();
-			console.log('Filtered licenses:', licenses);
 			tableData.set(licenses);
 		} catch (error) {
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
