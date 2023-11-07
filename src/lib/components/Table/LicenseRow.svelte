@@ -201,6 +201,10 @@
 		box-sizing: border-box;
 	}
 
+	td {
+		min-width: 0;
+	}
+
 	td > * {
 		height: 100%;
 		display: flex;
@@ -215,6 +219,9 @@
 	}
 
 	.table-text {
+		align-items: flex-end;
+		user-select: none;
+		padding: 0.1rem 0.4rem 0 0.4rem;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
@@ -268,7 +275,7 @@
 	/* Assigned cell */
 
 	.assigned-cell-container {
-		flex: 1;
+		flex: 1.5;
 	}
 
 	.assigned-cell {
@@ -278,7 +285,7 @@
 	/* Expiration cell */
 
 	.expiration-cell-container {
-		flex: 2;
+		flex: 1.5;
 	}
 
 	.expiration-cell {

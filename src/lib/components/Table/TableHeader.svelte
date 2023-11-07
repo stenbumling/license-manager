@@ -1,23 +1,62 @@
 <script lang="ts">
+	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
+	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
+
+	type SortState = 'asc' | 'desc' | 'none';
+
+	let sortStates: Record<string, SortState> = {
+		application: 'none',
+		contact: 'none',
+		assigned: 'none',
+		expires: 'none',
+	};
+
+	function handleSort(column: string) {
+		if (sortStates[column] === 'none') {
+			for (let key in sortStates) {
+				sortStates[key] = 'none';
+			}
+		}
+
+		switch (sortStates[column]) {
+			case 'none':
+				sortStates[column] = 'asc';
+				break;
+			case 'asc':
+				sortStates[column] = 'desc';
+				break;
+			case 'desc':
+				sortStates[column] = 'none';
+				break;
+		}
+	}
 </script>
 
 <thead>
 	<tr>
-		<th class="status-col">
+		<th class="status-col" on:click={() => {}}>
 			<CircleDash size={20} />
 		</th>
-		<th class="application-col">
-			<h3>Application</h3>
+		<th class="application-col" on:click={() => handleSort('application')}>
+			<h3 class="column-label">Application</h3>
+			{#if sortStates['application'] === 'asc'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if sortStates['application'] === 'desc'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
-		<th class="contact-col">
-			<h3>Contact person</h3>
+		<th class="contact-col" on:click={() => handleSort('contact')}>
+			<h3 class="column-label">Contact person</h3>
+			{#if sortStates['contact'] === 'asc'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if sortStates['contact'] === 'desc'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
-		<th class="assigned-col">
-			<h3>Assigned</h3>
+		<th class="assigned-col" on:click={() => handleSort('assigned')}>
+			<h3 class="column-label">Assigned</h3>
+			{#if sortStates['assigned'] === 'asc'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if sortStates['assigned'] === 'desc'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
-		<th class="expiration-col">
-			<h3>Expires in</h3>
+		<th class="expiration-col" on:click={() => handleSort('expires')}>
+			{#if sortStates['expires'] === 'asc'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if sortStates['expires'] === 'desc'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			<h3 class="column-label">Expires in</h3>
 		</th>
 		<th class="renewal-col" />
 		<th class="menu-col" />
@@ -44,8 +83,26 @@
 
 	th {
 		display: flex;
-		height: 3rem;
-		align-items: flex-end;
+		align-items: center;
+		min-width: 0;
+	}
+
+	th > * {
+		margin-top: 1px;
+	}
+
+	.column-label {
+		cursor: pointer;
+		border-radius: 6px;
+		user-select: none;
+		padding: 0.1rem 0.4rem 0 0.4rem;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+
+	.column-label:hover {
+		background-color: #eeeeee;
 	}
 
 	.status-col {
@@ -65,12 +122,12 @@
 	}
 
 	.assigned-col {
-		flex: 1;
+		flex: 1.5;
 		justify-content: center;
 	}
 
 	.expiration-col {
-		flex: 2;
+		flex: 1.5;
 		justify-content: flex-end;
 	}
 
