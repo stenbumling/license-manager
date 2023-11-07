@@ -85,6 +85,16 @@ function createLicenseStore() {
 		}
 	}
 
+	async function updateLicenseCounts() {
+		try {
+			const response = await fetch('/api/license/counts');
+			const counts = await response.json();
+			licenseCounts.set(counts);
+		} catch (error) {
+			console.error('Failed to fetch license counts:', error);
+		}
+	}
+
 	async function addLicense(license: License) {
 		try {
 			const response = await fetch('/api/license/add', {
@@ -95,6 +105,7 @@ function createLicenseStore() {
 			const newLicense = await response.json();
 			update((allLicenses) => [newLicense, ...allLicenses]);
 			tableData.update((allLicenses) => [newLicense, ...allLicenses]);
+			updateLicenseCounts();
 			await table.applyFilter(get(activeFilter));
 		} catch (error) {
 			console.error('Failed to add license:', error);
@@ -119,6 +130,7 @@ function createLicenseStore() {
 					currentLicense.id === license.id ? license : currentLicense,
 				),
 			);
+			updateLicenseCounts();
 			await table.applyFilter(get(activeFilter));
 		} catch (error) {
 			console.error('Failed to update license:', error);

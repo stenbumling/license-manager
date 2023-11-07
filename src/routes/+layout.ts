@@ -1,5 +1,5 @@
 import { applicationStore } from '$lib/stores/application-store';
-import { licenseStore, licenseCounts } from '$lib/stores/license-store';
+import { licenseCounts, licenseStore } from '$lib/stores/license-store';
 import { tableData } from '$lib/stores/table-store';
 import { userStore } from '$lib/stores/user-store';
 

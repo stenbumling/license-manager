@@ -13,7 +13,7 @@
 		goto('/?modal=add-new');
 	}
 
-	const filters = [
+	$: filters = [
 		{
 			title: 'All',
 			amount: $licenseCounts.all,
