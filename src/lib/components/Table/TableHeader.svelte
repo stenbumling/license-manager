@@ -1,39 +1,11 @@
 <script lang="ts">
-	import { searchQuery, table } from '$lib/stores/table-store';
+	import { sortState, table } from '$lib/stores/table-store';
 	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
 	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
-	import { get } from 'svelte/store';
-
-	type SortState = 'ASC' | 'DESC' | 'DEFAULT';
-
-	let sortOrder: Record<string, SortState> = {
-		application: 'DEFAULT',
-		contactPerson: 'DEFAULT',
-		users: 'DEFAULT',
-		renewalDate: 'DEFAULT',
-	};
 
 	function handleSort(column: string) {
-		if (sortOrder[column] === 'DEFAULT') {
-			for (let key in sortOrder) {
-				sortOrder[key] = 'DEFAULT';
-			}
-		}
-
-		switch (sortOrder[column]) {
-			case 'DEFAULT':
-				sortOrder[column] = 'ASC';
-				break;
-			case 'ASC':
-				sortOrder[column] = 'DESC';
-				break;
-			case 'DESC':
-				sortOrder[column] = 'DEFAULT';
-				break;
-		}
-		const currentSearchQuery = get(searchQuery);
-		table.sort(column, sortOrder[column], currentSearchQuery);
+		table.handleSort(column);
 	}
 </script>
 
@@ -44,22 +16,22 @@
 		</th>
 		<th class="application-col" on:click={() => handleSort('application')}>
 			<h3 class="column-label">Application</h3>
-			{#if sortOrder['application'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if sortOrder['application'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['application'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['application'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
 		<th class="contact-col" on:click={() => handleSort('contactPerson')}>
 			<h3 class="column-label">Contact person</h3>
-			{#if sortOrder['contactPerson'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if sortOrder['contactPerson'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['contactPerson'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['contactPerson'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
 		<th class="users-col" on:click={() => handleSort('users')}>
 			<h3 class="column-label">Users</h3>
-			{#if sortOrder['users'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if sortOrder['users'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['users'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['users'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
 		<th class="expiration-col" on:click={() => handleSort('renewalDate')}>
-			{#if sortOrder['renewalDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if sortOrder['renewalDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['renewalDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['renewalDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 			<h3 class="column-label">Expires in</h3>
 		</th>
 		<th class="renewal-col" />

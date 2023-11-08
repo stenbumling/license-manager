@@ -64,6 +64,7 @@
 	function handleAdd() {
 		showLicenseModal.set(false);
 		goto('/');
+		console.log($license)
 		licenseStore.add($license);
 		licenseStore.resetFields();
 	}
