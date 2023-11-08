@@ -54,7 +54,7 @@ function createTableStore() {
 				break;
 		}
 
-		if (sortOrder !== '') {
+		if (sortOrder !== 'DEFAULT') {
 			const currentSort =
 				sortColumn && sortOrder ? { column: sortColumn, order: sortOrder } : get(sortState);
 

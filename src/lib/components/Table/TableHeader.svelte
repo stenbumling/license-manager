@@ -5,31 +5,31 @@
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
 	import { get } from 'svelte/store';
 
-	type SortState = 'ASC' | 'DESC' | '';
+	type SortState = 'ASC' | 'DESC' | 'DEFAULT';
 
 	let sortOrder: Record<string, SortState> = {
-		application: '',
-		contactPerson: '',
-		users: '',
-		renewalDate: '',
+		application: 'DEFAULT',
+		contactPerson: 'DEFAULT',
+		users: 'DEFAULT',
+		renewalDate: 'DEFAULT',
 	};
 
 	function handleSort(column: string) {
-		if (sortOrder[column] === '') {
+		if (sortOrder[column] === 'DEFAULT') {
 			for (let key in sortOrder) {
-				sortOrder[key] = '';
+				sortOrder[key] = 'DEFAULT';
 			}
 		}
 
 		switch (sortOrder[column]) {
-			case '':
+			case 'DEFAULT':
 				sortOrder[column] = 'ASC';
 				break;
 			case 'ASC':
 				sortOrder[column] = 'DESC';
 				break;
 			case 'DESC':
-				sortOrder[column] = '';
+				sortOrder[column] = 'DEFAULT';
 				break;
 		}
 		const currentSearchQuery = get(searchQuery);
