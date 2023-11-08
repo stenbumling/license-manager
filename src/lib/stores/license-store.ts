@@ -1,10 +1,11 @@
 import type { User } from '$lib/stores/user-store';
 import { get, writable } from 'svelte/store';
+import { v4 as uuidv4 } from 'uuid';
 import { activeFilter, searchQuery, sortState, table, tableData } from './table-store';
 
 export function getInitialValues() {
 	return {
-		id: 'temp-id',
+		id: uuidv4(),
 		application: {
 			id: '',
 			name: '',
