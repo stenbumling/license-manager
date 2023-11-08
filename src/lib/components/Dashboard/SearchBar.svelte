@@ -1,8 +1,25 @@
 <script lang="ts">
+	import { searchQuery, table } from '$lib/stores/table-store';
 	import Search from 'carbon-icons-svelte/lib/Search.svelte';
+
+	let inputField: HTMLInputElement;
+
+	function handleSearch(e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			table.filterBy('Search');
+			inputField.blur();
+		}
+	}
 </script>
 
-<input class="search-field" type="text" placeholder="Search" />
+<input
+	bind:value={$searchQuery}
+	bind:this={inputField}
+	type="search"
+	class="search-field"
+	placeholder="Search"
+	on:keydown={handleSearch}
+/>
 <div class="search-icon">
 	<Search size={20} fill="black" aria-label="Search" />
 </div>

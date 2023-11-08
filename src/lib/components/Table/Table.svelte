@@ -1,27 +1,26 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import LicensRow from '$lib/components/table/LicenseRow.svelte';
-	import type { License } from '$lib/stores/license-store';
-	import { licenseStore } from '$lib/stores/license-store';
+	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
+	import { tableState } from '$lib/stores/table-store';
 
-	function handleClick(license: License, e: MouseEvent | KeyboardEvent) {
-		if (e.metaKey || e.ctrlKey) {
-			return;
+	let hoveredRowId: string | null = null;
+
+	// Decides which row should create a hovered effect, based on license ID
+	function handleHover(e: CustomEvent<any>, licenseId: string) {
+		if (e.detail.hovered) {
+			hoveredRowId = licenseId;
+		} else {
+			if (hoveredRowId === licenseId) {
+				hoveredRowId = null;
+			}
 		}
-		e.preventDefault();
-		goto(`/?modal=edit&id=${license.id}`);
 	}
 </script>
 
 <tbody class="table">
-	{#each $licenseStore as license}
-		<a
-			class="license-row"
-			href={`/license/view/${license.id}`}
-			on:click={(e) => handleClick(license, e)}
-		>
-			<LicensRow {license} />
-		</a>
+	{#each $tableState as license}
+		<div class="license-row" class:hovered={hoveredRowId === license.id}>
+			<LicenseRow {license} on:hover={(event) => handleHover(event, license.id)} />
+		</div>
 	{/each}
 </tbody>
 
@@ -43,8 +42,9 @@
 		background-color: #f9f9f9;
 	}
 
-	.license-row:hover {
+	.license-row.hovered {
 		background-color: #eeeeee;
+		transition: background-color 0.1s ease;
 		cursor: pointer;
 	}
 </style>
