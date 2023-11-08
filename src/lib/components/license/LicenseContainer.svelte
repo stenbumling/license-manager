@@ -61,24 +61,37 @@
 		loaded = true;
 	});
 
-	function handleAdd() {
-		showLicenseModal.set(false);
-		goto('/');
-		licenseStore.add($license);
-		licenseStore.resetFields();
+	async function handleAdd() {
+		contextMenu.close();
+		const isValid = await licenseStore.validate($license);
+		if (isValid) {
+			showLicenseModal.set(false);
+			goto('/');
+			licenseStore.add($license);
+			licenseStore.resetFields();
+		} else {
+			return;
+		}
 	}
 
-	function handleSave() {
-		showLicenseModal.set(false);
-		goto('/');
-		licenseStore.updateLicense($license);
-		licenseStore.resetFields();
+	async function handleSave() {
+		contextMenu.close();
+		const isValid = await licenseStore.validate($license);
+		if (isValid) {
+			showLicenseModal.set(false);
+			goto('/');
+			licenseStore.updateLicense($license);
+			licenseStore.resetFields();
+		} else {
+			return;
+		}
 	}
 
-	function handleClose() {
+	async function handleClose() {
+		contextMenu.close();
 		showLicenseModal.set(false);
-		licenseStore.resetFields();
 		goto('/');
+		licenseStore.resetFields();
 	}
 </script>
 
