@@ -54,19 +54,20 @@ function createTableStore() {
 				break;
 		}
 
-		const currentSort =
-			sortColumn && sortOrder ? { column: sortColumn, order: sortOrder } : get(sortState);
+		if (sortOrder !== '') {
+			const currentSort =
+				sortColumn && sortOrder ? { column: sortColumn, order: sortOrder } : get(sortState);
 
-		if (sortColumn && sortOrder) {
-			setSort(currentSort);
+			if (sortColumn && sortOrder) {
+				setSort(currentSort);
+			}
+
+			const sortQuery =
+				currentSort.column && currentSort.order
+					? `sortBy=${currentSort.column}&sortDirection=${currentSort.order}`
+					: '';
+			query += (query ? '&' : '?') + sortQuery;
 		}
-
-		const sortQuery =
-			currentSort.column && currentSort.order
-				? `sortBy=${currentSort.column}&sortDirection=${currentSort.order}`
-				: '';
-		query += (query ? '&' : '?') + sortQuery;
-
 		filterTable(query);
 	}
 
@@ -77,6 +78,7 @@ function createTableStore() {
 
 	async function filterTable(query: string) {
 		try {
+			console.log(query);
 			const response = await fetch(`/api/license/filter${query}`);
 			console.log(response);
 			const licenses = await response.json();
