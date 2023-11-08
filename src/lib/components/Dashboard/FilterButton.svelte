@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { activeFilter, searchQuery, table } from '$lib/stores/table-store';
+	import { filterState, searchQuery, table } from '$lib/stores/table-store';
 	export let filter: {
 		title: string;
 		amount: number;
@@ -8,14 +8,14 @@
 
 	function handleClick() {
 		searchQuery.set('');
-		table.setActiveFilter(filter.title);
+		table.filterBy(filter.title);
 	}
 </script>
 
 <button
 	class="filter-container"
-	class:active={$activeFilter === filter.title}
-	style:background-color={$activeFilter === filter.title ? filter.color : ''}
+	class:active={$filterState === filter.title}
+	style:background-color={$filterState === filter.title ? filter.color : ''}
 	on:click|preventDefault={handleClick}
 >
 	<div class="filter-content">

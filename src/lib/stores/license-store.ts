@@ -1,7 +1,7 @@
 import type { User } from '$lib/stores/user-store';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { activeFilter, searchQuery, sortState, table, tableData } from './table-store';
+import { table, tableState } from './table-store';
 
 export function getInitialValues() {
 	return {
@@ -105,9 +105,9 @@ function createLicenseStore() {
 			});
 			const newLicense = await response.json();
 			update((allLicenses) => [newLicense, ...allLicenses]);
-			tableData.update((allLicenses) => [newLicense, ...allLicenses]);
+			tableState.update((allLicenses) => [newLicense, ...allLicenses]);
 			updateLicenseCounts();
-			await table.applyFilter(get(activeFilter));
+			table.updateState();
 		} catch (error) {
 			console.error('Failed to add license:', error);
 		}
@@ -121,24 +121,18 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			if (!response.ok) throw new Error('Failed to update license');
-			await table.applyFilter(
-				get(activeFilter),
-				get(searchQuery),
-				get(sortState).column,
-				get(sortState).order,
-			);
 			update((allLicenses) =>
 				allLicenses.map((currentLicense) =>
 					currentLicense.id === license.id ? license : currentLicense,
 				),
 			);
-			tableData.update((allLicenses) =>
+			tableState.update((allLicenses) =>
 				allLicenses.map((currentLicense) =>
 					currentLicense.id === license.id ? license : currentLicense,
 				),
 			);
 			updateLicenseCounts();
-			await table.applyFilter(get(activeFilter));
+			table.updateState();
 		} catch (error) {
 			console.error('Failed to update license:', error);
 		}
@@ -150,15 +144,10 @@ function createLicenseStore() {
 				method: 'DELETE',
 			});
 			if (!response.ok) throw new Error('Failed to delete license');
-			await table.applyFilter(
-				get(activeFilter),
-				get(searchQuery),
-				get(sortState).column,
-				get(sortState).order,
-			);
 			update((allLicenses) => allLicenses.filter((license) => license.id !== id));
-			tableData.update((allLicenses) => allLicenses.filter((license) => license.id !== id));
+			tableState.update((allLicenses) => allLicenses.filter((license) => license.id !== id));
 			updateLicenseCounts();
+			table.updateState();
 		} catch (error) {
 			console.error('Failed to delete license:', error);
 		}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
-	import { tableData } from '$lib/stores/table-store';
+	import { tableState } from '$lib/stores/table-store';
 
 	let hoveredRowId: string | null = null;
 
@@ -17,7 +17,7 @@
 </script>
 
 <tbody class="table">
-	{#each $tableData as license}
+	{#each $tableState as license}
 		<div class="license-row" class:hovered={hoveredRowId === license.id}>
 			<LicenseRow {license} on:hover={(event) => handleHover(event, license.id)} />
 		</div>

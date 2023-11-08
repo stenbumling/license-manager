@@ -6,7 +6,7 @@
 
 	function handleSearch(e: KeyboardEvent) {
 		if (e.key === 'Enter') {
-			table.applyFilter('Search', $searchQuery);
+			table.filterBy('Search');
 			inputField.blur();
 		}
 	}

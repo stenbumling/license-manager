@@ -3,10 +3,6 @@
 	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
 	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
-
-	function handleSort(column: string) {
-		table.handleSort(column);
-	}
 </script>
 
 <thead>
@@ -14,22 +10,22 @@
 		<th class="status-col" on:click={() => {}}>
 			<CircleDash size={20} />
 		</th>
-		<th class="application-col" on:click={() => handleSort('application')}>
+		<th class="application-col" on:click={() => table.sortBy('application')}>
 			<h3 class="column-label">Application</h3>
 			{#if $sortState['application'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['application'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
-		<th class="contact-col" on:click={() => handleSort('contactPerson')}>
+		<th class="contact-col" on:click={() => table.sortBy('contactPerson')}>
 			<h3 class="column-label">Contact person</h3>
 			{#if $sortState['contactPerson'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['contactPerson'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
-		<th class="users-col" on:click={() => handleSort('users')}>
+		<th class="users-col" on:click={() => table.sortBy('users')}>
 			<h3 class="column-label">Users</h3>
 			{#if $sortState['users'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['users'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</th>
-		<th class="expiration-col" on:click={() => handleSort('renewalDate')}>
+		<th class="expiration-col" on:click={() => table.sortBy('renewalDate')}>
 			{#if $sortState['renewalDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['renewalDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 			<h3 class="column-label">Expires in</h3>

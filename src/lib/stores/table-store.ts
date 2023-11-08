@@ -1,113 +1,107 @@
 import { get, writable } from 'svelte/store';
 import type { License } from './license-store';
 
-export const activeFilter = writable('All');
-export const searchQuery = writable('');
-export const tableData = writable<License[]>([]);
+export const tableState = writable<License[]>([]);
+export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
 	contactPerson: 'DEFAULT',
 	users: 'DEFAULT',
 	renewalDate: 'DEFAULT',
 });
+export const searchQuery = writable('');
 
-function createTableStore() {
-	const { subscribe, set, update } = writable<License[]>([]);
+export function createTableStore() {
+	const { subscribe } = writable<License[]>([]);
 
-	function setActiveFilter(filter: string) {
-		activeFilter.set(filter);
+	function updateFilterState(filter: string) {
+		filterState.set(filter);
+		updateTableState();
+	}
+
+	function updateSortState(column: string) {
+		sortState.update((currentState) => {
+			updateSortOrder(column, currentState);
+			return currentState;
+		});
+		updateTableState();
+	}
+
+	function updateTableState() {
+		const { sortColumn, sortOrder } = getSortState();
+		const query = constructFilterQuery(get(filterState), get(searchQuery), sortOrder, sortColumn);
+		sendQueryToDatabase(query);
+	}
+
+	function getSortState() {
 		const sortStateValue = get(sortState);
 		const sortColumn = Object.keys(sortStateValue).find((key) => sortStateValue[key] !== 'DEFAULT');
 		const sortOrder = sortColumn ? sortStateValue[sortColumn] : 'DEFAULT';
-		applyFilter(filter, get(searchQuery), sortColumn, sortOrder);
+		return { sortColumn, sortOrder };
 	}
 
-	function handleSort(column: string) {
-		sortState.update((currentState) => {
-			if (currentState[column] === 'DEFAULT') {
-				// Reset other columns to 'DEFAULT'
-				for (let key in currentState) {
-					currentState[key] = 'DEFAULT';
-				}
-			}
-
-			// Update the sort order for the current column
-			switch (currentState[column]) {
-				case 'DEFAULT':
-					currentState[column] = 'ASC';
-					break;
-				case 'ASC':
-					currentState[column] = 'DESC';
-					break;
-				case 'DESC':
-					currentState[column] = 'DEFAULT';
-					break;
-			}
-
-			// Reapply the filter with the new sort order
-			applyFilter(get(activeFilter), get(searchQuery), column, currentState[column]);
-			return currentState;
-		});
-	}
-
-	async function applyFilter(
-		filterName: string,
-		searchQueryParam = get(searchQuery),
-		sortColumn?: string,
-		sortOrder: 'ASC' | 'DESC' | 'DEFAULT' = 'DEFAULT',
+	function updateSortOrder(
+		column: string,
+		currentState: Record<string, 'ASC' | 'DESC' | 'DEFAULT'>,
 	) {
-		let query: string = '';
+		Object.keys(currentState).forEach((key) => {
+			if (key !== column) currentState[key] = 'DEFAULT';
+		});
 
-		switch (filterName) {
-			case 'All':
-				query = '';
+		switch (currentState[column]) {
+			case 'DEFAULT':
+				currentState[column] = 'ASC';
 				break;
-			case 'In use':
-				query = '?users=true';
+			case 'ASC':
+				currentState[column] = 'DESC';
 				break;
-			case 'Unassigned':
-				query = '?users=false';
-				break;
-			case 'Near expiration':
-				query = '?nearExpiration=true';
-				break;
-			case 'Expired':
-				query = '?expired=true';
-				break;
-			case 'Search':
-				if (searchQueryParam === '') {
-					query = '';
-					activeFilter.set('All');
-				} else {
-					query = `?search=${searchQueryParam}`;
-					activeFilter.set('Search');
-				}
-				break;
-			default:
-				console.error(`Unknown filter: ${filterName}`);
-				query = '';
+			case 'DESC':
+				currentState[column] = 'DEFAULT';
 				break;
 		}
+	}
 
-		if (!sortColumn) {
-			const sortStateValue = get(sortState);
-			sortColumn = Object.keys(sortStateValue).find((key) => sortStateValue[key] !== 'DEFAULT');
-			sortOrder = sortColumn ? sortStateValue[sortColumn] : 'DEFAULT';
-		}
+	function constructFilterQuery(
+		filterName: string,
+		searchQueryParam: string,
+		sortOrder: 'ASC' | 'DESC' | 'DEFAULT',
+		sortColumn?: string,
+	): string {
+		let query = determineBaseQuery(filterName, searchQueryParam);
 
 		if (sortColumn && sortOrder !== 'DEFAULT') {
 			const sortQuery = `sortBy=${sortColumn}&sortDirection=${sortOrder}`;
 			query += (query ? '&' : '?') + sortQuery;
 		}
 
-		filterTable(query);
+		return query;
 	}
 
-	async function filterTable(query: string) {
+	function determineBaseQuery(filterName: string, searchQueryParam: string): string {
+		switch (filterName) {
+			case 'All':
+				return '';
+			case 'In use':
+				return '?users=true';
+			case 'Unassigned':
+				return '?users=false';
+			case 'Near expiration':
+				return '?nearExpiration=true';
+			case 'Expired':
+				return '?expired=true';
+			case 'Search':
+				return searchQueryParam === '' ? '' : `?search=${searchQueryParam}`;
+			default:
+				console.error(`Unknown filter: ${filterName}`);
+				return '';
+		}
+	}
+
+	async function sendQueryToDatabase(query: string) {
 		try {
-			const response = await fetch(`/api/license/filter${query}`);
+			const response = await fetch(`/api/license/query${query}`);
 			const licenses = await response.json();
-			tableData.set(licenses);
+			tableState.set(licenses);
 		} catch (error) {
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 		}
@@ -115,11 +109,9 @@ function createTableStore() {
 
 	return {
 		subscribe,
-		set,
-		update,
-		setActiveFilter,
-		applyFilter,
-		handleSort,
+		filterBy: updateFilterState,
+		sortBy: updateSortState,
+		updateState: updateTableState,
 	};
 }
 
