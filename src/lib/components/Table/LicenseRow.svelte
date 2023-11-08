@@ -112,19 +112,25 @@
 			href={`/license/view/${license.id}`}
 			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
-			<p class="table-text">{license.contactPerson}</p>
+			<p class="table-text">
+				{#if license.contactPerson}
+					{license.contactPerson}
+				{:else}
+					Unassigned
+				{/if}
+			</p>
 		</a>
 	</td>
-	<!-- Assigned cell -->
+	<!-- Users cell -->
 	<td
-		class="assigned-cell-container"
+		class="users-cell-container"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
 		on:focus={() => handleMouseHover(true)}
 		on:blur={() => handleMouseHover(false)}
 	>
 		<a
-			class="assigned-cell"
+			class="users-cell"
 			href={`/license/view/${license.id}`}
 			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
@@ -272,13 +278,13 @@
 		justify-content: flex-start;
 	}
 
-	/* Assigned cell */
+	/* Users cell */
 
-	.assigned-cell-container {
+	.users-cell-container {
 		flex: 1.5;
 	}
 
-	.assigned-cell {
+	.users-cell {
 		justify-content: center;
 	}
 
