@@ -65,7 +65,7 @@
 
 	.warning-text {
 		font-size: 0.75rem;
-		color: var(--text-placeholder);
+		color: red;
 		height: 2.8rem;
 		margin-left: 1px;
 	}

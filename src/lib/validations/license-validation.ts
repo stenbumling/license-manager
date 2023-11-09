@@ -14,7 +14,7 @@ export const licenseSchema = z.object({
 			message: 'Please select a valid date',
 		}),
 	autoRenewal: z.boolean(),
-	cost: z.string().trim(), // change to number().nonnegative()
+	cost: z.number().nonnegative(),
 	renewalInterval: z.string().min(1),
 	category: z.string().trim().min(1, { message: 'Please select a category' }),
 	status: z.string().trim().min(1, { message: 'Please select a status' }),

@@ -172,7 +172,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-auto-rows: min-content;
-		gap: 1rem 8rem;
+		gap: 1rem 6rem;
 		overflow-y: auto;
 	}
 

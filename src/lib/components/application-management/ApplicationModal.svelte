@@ -1,14 +1,16 @@
 <script lang="ts">
+	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
 	import { application, applicationStore } from '$lib/stores/application-store';
+	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
 	import { applicationErrors, validateApplication } from '$lib/validations/application-validation';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
-	import { scrollShadow } from '$lib/actions/scrollShadow';
 
-	async function handleAdd() {
+	async function handleAdd(e: MouseEvent | KeyboardEvent) {
+		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($application);
 		if (isValid) {
 			applicationStore.add($application);
@@ -34,7 +36,13 @@
 		</div>
 		<h3>Add new application</h3>
 		<div class="input-container">
-			<input bind:value={$application.name} type="text" placeholder="Application name" required />
+			<input
+				bind:value={$application.name}
+				type="text"
+				placeholder="Application name"
+				required
+				on:keyup={handleAdd}
+			/>
 			<button class="add-button" on:click={handleAdd}>
 				<Add size={32} fill="white" aria-label="Add" />
 			</button>
