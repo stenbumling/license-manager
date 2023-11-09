@@ -7,7 +7,7 @@
 		<h3 class="button-title">{title}</h3>
 		<img src={'/button-arrow.svg'} alt="arrow" />
 	</div>
-	<div class="button-animated-hover" />
+	<div class="button-animated-hover" 		style:background={`linear-gradient(to right, var(--deep-purple) 100%, transparent 100%`} />
 </div>
 
 <style>
@@ -29,17 +29,17 @@
 		left: 0;
 		width: 0;
 		height: 100%;
-		background: linear-gradient(to right, var(--deep-purple) 50%, transparent 50%);
 		transition: width 0.25s ease;
 	}
 
 	.button-container:hover .button-animated-hover {
-		width: 200%;
+		width: 100%;
 	}
 
 	.button-content {
 		z-index: 1;
 		width: 100%;
+		height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;

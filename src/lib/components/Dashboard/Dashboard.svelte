@@ -10,7 +10,7 @@
 			return;
 		}
 		e.preventDefault();
-		goto('/?modal=add-new');
+		goto('/?modal=add');
 	}
 
 	$: filters = [
@@ -51,8 +51,8 @@
 			<FilterButton {filter} />
 		{/each}
 	</div>
-	<a href="/license/add-new" on:click={handleClick}>
-		<ButtonLarge title="Add new license" />
+	<a href="?modal=add" on:click={handleClick}>
+		<ButtonLarge title="Add new license"/>
 	</a>
 </div>
 

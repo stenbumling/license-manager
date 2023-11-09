@@ -45,12 +45,12 @@ function createContextMenuStore() {
 
 	function viewLicense(license: License) {
 		contextMenu.close();
-		goto(`/?modal=edit&id=${license.id}`);
+		goto(`/?modal=view&id=${license.id}`);
 	}
 
 	function copyLicenseLink(license: License) {
 		contextMenu.close();
-		navigator.clipboard.writeText(`${window.location.origin}/license/view/${license.id}`);
+		navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
 	}
 
 	function copyLicenseData(license: License) {

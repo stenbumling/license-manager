@@ -52,7 +52,7 @@
 			return;
 		}
 		e.preventDefault();
-		goto(`/?modal=edit&id=${license.id}`);
+		goto(`/?modal=view&id=${license.id}`);
 	}
 
 	// Hover logic
@@ -73,7 +73,7 @@
 	>
 		<a
 			class="status-cell"
-			href={`/license/view/${license.id}`}
+			href={`/?modal=view&id=${license.id}`}
 			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<div
@@ -93,7 +93,7 @@
 	>
 		<a
 			class="application-cell"
-			href={`/license/view/${license.id}`}
+			href={`/?modal=view&id=${license.id}`}
 			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<p class="table-text">{license.application.name}</p>
@@ -109,7 +109,7 @@
 	>
 		<a
 			class="contact-cell"
-			href={`/license/view/${license.id}`}
+			href={`/?modal=view&id=${license.id}`}
 			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<p class="table-text">
@@ -131,7 +131,7 @@
 	>
 		<a
 			class="users-cell"
-			href={`/license/view/${license.id}`}
+			href={`/?modal=view&id=${license.id}`}
 			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<p class="table-text">
@@ -153,7 +153,7 @@
 	>
 		<a
 			class="expiration-cell"
-			href={`/license/view/${license.id}`}
+			href={`/?modal=view&id=${license.id}`}
 			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			<p
@@ -175,7 +175,7 @@
 	>
 		<a
 			class="renewal-cell"
-			href={`/license/view/${license.id}`}
+			href={`/?modal=view&id=${license.id}`}
 			on:click|stopPropagation={(e) => handleView(license, e)}
 		>
 			{#if license.autoRenewal}
