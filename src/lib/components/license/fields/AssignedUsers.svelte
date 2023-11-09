@@ -67,9 +67,7 @@
 </script>
 
 <div class="component-container">
-	<h3 class="label">
-		Assigned users
-	</h3>
+	<h3 class="label">Assigned users</h3>
 	{#if $license.users.length}
 		<div class="badge-container">
 			{#each $license.users.slice(0, 8) as user}
@@ -148,7 +146,7 @@
 	.label {
 		margin-bottom: 0.4rem;
 	}
-	
+
 	.badge-container {
 		display: flex;
 		flex-wrap: wrap;

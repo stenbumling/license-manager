@@ -20,10 +20,7 @@
 	function enforceNumeric(event: KeyboardEvent) {
 		const validKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'End', 'Home'];
 
-		if (
-			!validKeys.includes(event.key) &&
-			(event.key < '0' || event.key > '9')
-		) {
+		if (!validKeys.includes(event.key) && (event.key < '0' || event.key > '9')) {
 			event.preventDefault();
 		}
 	}

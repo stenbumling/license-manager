@@ -6,6 +6,7 @@
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
+	import { scrollShadow } from '$lib/actions/scrollShadow';
 
 	async function handleAdd() {
 		const isValid = await validateApplication($application);
@@ -44,7 +45,7 @@
 			{/if}
 		</p>
 		<h3>List of applications</h3>
-		<div class="application-list">
+		<div class="application-list" use:scrollShadow>
 			{#each $applicationStore as application}
 				<ApplicationItem {application} />
 			{/each}

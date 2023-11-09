@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { getElementRect } from '$lib/actions/getElementRect';
+	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
@@ -94,7 +95,7 @@
 <div class="license-container">
 	{#if loaded}
 		<LicenseHeader />
-		<div class="fields-grid">
+		<div class="fields-grid" use:scrollShadow>
 			<ApplicationSelection />
 			<AssignedUsers />
 			<ExpirationField />
@@ -166,12 +167,12 @@
 		width: 100%;
 		max-width: 100rem;
 		height: auto;
-		margin: 0 0 3rem 0;
-		padding: 0 1rem 0 0;
+		margin: 0 0 2rem 0;
+		padding: 4rem 1rem 0 0;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-auto-rows: min-content;
-		gap: 2rem 8rem;
+		gap: 1rem 8rem;
 		overflow-y: auto;
 	}
 

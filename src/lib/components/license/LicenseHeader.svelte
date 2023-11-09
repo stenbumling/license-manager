@@ -26,7 +26,7 @@
 
 <style>
 	.header-container {
-		margin-bottom: 4rem;
+		/* margin-bottom: 4rem; */
 		border-bottom: 1px solid var(--text-placeholder);
 		display: flex;
 		flex-direction: column;
