@@ -60,6 +60,7 @@
 	.dashboard {
 		width: 20rem;
 		height: auto;
+		max-height: 37.4rem;
 		margin-right: 3rem;
 		margin-top: 2.79rem;
 		padding: 0.4rem 2rem 2rem 2rem;
@@ -71,12 +72,16 @@
 
 	.filter-list {
 		margin-bottom: 2rem;
+		margin-top: 0.5rem;
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;
 	}
 
 	@media (max-height: 850px) {
+		.dashboard {
+			max-height: 30rem;
+		}
 		.filter-list {
 			grid-template-columns: 1fr 1fr;
 		}
