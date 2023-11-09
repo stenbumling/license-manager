@@ -5,9 +5,10 @@ import { z } from 'zod';
 import { table, tableState } from './table-store';
 
 export const licenseSchema = z.object({
+	applicationId: z.string().uuid(),
 	renewalDate: z.coerce.date(),
 	autoRenewal: z.boolean(),
-	cost: z.string(),
+	cost: z.string(), // change to number
 	renewalInterval: z.string(),
 	category: z.string(),
 	status: z.string(),
@@ -65,6 +66,7 @@ export interface License {
 }
 
 interface LicenseErrors {
+	applicationId?: { message: string };
 	renewalDate?: { message: string };
 	autoRenewal?: { message: string };
 	cost?: { message: string };

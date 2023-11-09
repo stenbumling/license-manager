@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { applicationStore } from '$lib/stores/application-store';
-	import { license } from '$lib/stores/license-store';
+	import { license, licenseErrors } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 
@@ -34,6 +34,11 @@
 			<SettingsAdjust size={20} fill="white" aria-label="SettingsAdjust" />
 		</button>
 	</div>
+	<div class="helper-text">
+		{#if $licenseErrors.applicationId}
+			<p>{$licenseErrors.applicationId.message}</p>
+		{/if}
+	</div>
 </div>
 
 <style>
@@ -54,6 +59,12 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
+	}
+
+	.helper-text {
+		margin-bottom: 0.4rem;
+		font-size: 0.75rem;
+		color: #ff0000;
 	}
 
 	.settings-button {

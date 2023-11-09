@@ -8,6 +8,7 @@
 	export let required: boolean = false;
 	export let autocomplete: string = 'off';
 	export let type: 'primary' | 'secondary' = 'primary';
+	export let errorMessage: string | undefined;
 
 	const id = uuidv4();
 
@@ -23,11 +24,15 @@
 		{/if}
 	</h3>
 	<input bind:value type="text" aria-labelledby={id} {required} {placeholder} {autocomplete} />
-	<div class="secondary-text">
-		{#if secondaryText}
+	{#if errorMessage}
+		<div class="helper-text">
+			<p>{errorMessage}</p>
+		</div>
+	{:else if secondaryText}
+		<div class="secondary-text">
 			<p>{secondaryText}</p>
-		{/if}
-	</div>
+		</div>
+	{/if}
 	{#if $$slots.secondary}
 		<div class="slotted-field">
 			<slot name="secondary" />
@@ -80,6 +85,12 @@
 	.slotted-field {
 		margin-top: 1.4rem;
 		width: 100%;
+	}
+
+	.helper-text {
+		margin-bottom: 0.4rem;
+		font-size: 0.75rem;
+		color: #ff0000;
 	}
 
 	input {

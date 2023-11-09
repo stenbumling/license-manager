@@ -8,6 +8,7 @@
 	export let required: boolean = false;
 	export let autocomplete: string = 'off';
 	export let type: 'primary' | 'secondary' = 'primary';
+	export let errorMessage: string | undefined;
 
 	const id = uuidv4();
 	let textarea: HTMLTextAreaElement;
@@ -33,11 +34,20 @@
 		on:blur={scrollToTop}
 		aria-labelledby={id}
 	/>
-	<div class="secondary-text">
-		{#if secondaryText}
+	{#if errorMessage}
+		<div class="helper-text">
+			<p>{errorMessage}</p>
+		</div>
+	{:else if secondaryText}
+		<div class="secondary-text">
 			<p>{secondaryText}</p>
-		{/if}
-	</div>
+		</div>
+	{/if}
+	{#if $$slots.secondary}
+		<div class="slotted-field">
+			<slot name="secondary" />
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -72,6 +82,12 @@
 		color: red;
 	}
 
+	.helper-text {
+		margin-bottom: 0.4rem;
+		font-size: 0.75rem;
+		color: #ff0000;
+	}
+	
 	textarea {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		font-size: 0.83rem;

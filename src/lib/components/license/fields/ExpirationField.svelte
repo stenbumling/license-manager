@@ -1,16 +1,17 @@
 <script lang="ts">
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
+	import { licenseErrors } from '$lib/stores/license-store';
 	import { license } from '$lib/stores/license-store.ts';
 	import { getRelativeDate, getTodaysDate } from '$lib/utils/date-utils';
 	import { slide } from 'svelte/transition';
-	export let value: string = '';
+
 	let label: string = '';
 
 	$: {
 		label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
 	}
-	$: renewalDate = getRelativeDate($license.renewalDate);
+	$: daysLeft = getRelativeDate($license.renewalDate);
 	$: if (!$license.autoRenewal) {
 		$license.renewalInterval = '';
 	}
@@ -28,7 +29,7 @@
 			min={getTodaysDate()}
 			required
 			name="applications"
-			bind:value
+			bind:value={$license.renewalDate}
 		/>
 		<div class="renewal-checkbox">
 			<input
@@ -41,9 +42,15 @@
 			<label for="renewal">Autorenewal</label>
 		</div>
 	</div>
-	<div class="secondary-text">
-		<p>{renewalDate.text}</p>
-	</div>
+	{#if $licenseErrors.renewalDate}
+		<div class="helper-text">
+			<p>{$licenseErrors.renewalDate?.message}</p>
+		</div>
+	{:else}
+		<div class="secondary-text">
+			<p>{daysLeft.text}</p>
+		</div>
+	{/if}
 	<div class="cost-field">
 		<TextField
 			bind:value={$license.cost}
@@ -51,6 +58,7 @@
 			secondaryText="x kr/year"
 			type="secondary"
 			placeholder="Enter cost of license"
+			errorMessage={$licenseErrors.cost?.message}
 		/>
 	</div>
 	{#if $license.autoRenewal}
@@ -62,6 +70,7 @@
 				defaultOption="Monthly"
 				required
 				type="secondary"
+				errorMessage={$licenseErrors.cost?.message}
 			/>
 		</div>
 	{/if}
@@ -89,6 +98,12 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
+	}
+
+	.helper-text {
+		margin-bottom: 0.4rem;
+		font-size: 0.75rem;
+		color: #ff0000;
 	}
 
 	.date-picker {

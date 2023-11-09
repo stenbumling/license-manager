@@ -98,7 +98,6 @@
 				}
 			}}
 		/>
-
 		{#if userSuggestions.length}
 			<ul class="suggestions-list" in:slide={{ duration: 100 }}>
 				{#each userSuggestions as suggestion}

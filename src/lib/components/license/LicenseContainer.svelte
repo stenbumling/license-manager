@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { licenseErrors } from '$lib/stores/license-store';
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
@@ -105,12 +106,13 @@
 		<div class="fields-grid">
 			<ApplicationSelection />
 			<AssignedUsers />
-			<ExpirationField bind:value={$license.renewalDate} />
+			<ExpirationField />
 			<SelectField
 				bind:value={$license.category}
 				label="Category"
 				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 				defaultOption="Uncategorized"
+				errorMessage={$licenseErrors.category?.message}
 			/>
 			<SelectField
 				bind:value={$license.status}
@@ -118,16 +120,22 @@
 				options={['Active', 'Inactive', 'Expired']}
 				defaultOption="Active"
 				required
+				errorMessage={$licenseErrors.status?.message}
 			/>
-			<TextField bind:value={$license.contactPerson} label="Contact person">
+			<TextField
+				bind:value={$license.contactPerson}
+				label="Contact person"
+				errorMessage={$licenseErrors.contactPerson?.message}
+			>
 				<TextField
 					slot="secondary"
 					bind:value={$license.additionalContactInfo}
 					label="Additional contact information"
 					type="secondary"
+					errorMessage={$licenseErrors.additionalContactInfo?.message}
 				/>
 			</TextField>
-			<TextAreaField bind:value={$license.comment} label="Comment" />
+			<TextAreaField bind:value={$license.comment} label="Comment" errorMessage={$licenseErrors.comment?.message} />
 		</div>
 		<div class="bottom-container">
 			{#if $licenseMode === 'edit'}
