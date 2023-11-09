@@ -15,7 +15,7 @@ export function getInitialValues() {
 		users: [],
 		renewalDate: '',
 		autoRenewal: false,
-		cost: '',
+		cost: 0,
 		renewalInterval: 'None',
 		category: 'Uncategorized',
 		status: 'Active',
@@ -43,7 +43,7 @@ export interface License {
 	users: User[];
 	renewalDate: string;
 	autoRenewal: boolean;
-	cost: string;
+	cost: number;
 	renewalInterval: string;
 	category: string;
 	status: string;

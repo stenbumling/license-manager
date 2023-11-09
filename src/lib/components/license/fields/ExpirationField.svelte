@@ -2,11 +2,26 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import { license } from '$lib/stores/license-store.ts';
-	import { getRelativeDate, getTodaysDate } from '$lib/utils/date-utils';
+	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { licenseErrors } from '$lib/validations/license-validation';
 	import { fade, slide } from 'svelte/transition';
 
 	let label: string = '';
+
+	$: costValue = calculateCost($license.renewalInterval, $license.cost);
+
+	function calculateCost(renewalInterval: string, cost: number): string {
+		switch (renewalInterval) {
+			case 'None':
+				return '';
+			case 'Monthly':
+				return `${Math.floor(cost * 12).toString()} kr/year`;
+			case 'Annually':
+				return `${Math.floor(cost / 12).toString()} kr/month`;
+			default:
+				return '';
+		}
+	}
 
 	$: {
 		label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
@@ -26,7 +41,6 @@
 		<input
 			class="date-picker"
 			type="date"
-			min={getTodaysDate()}
 			required
 			name="applications"
 			bind:value={$license.renewalDate}
@@ -52,8 +66,9 @@
 	<div class="cost-field">
 		<TextField
 			bind:value={$license.cost}
+			number
 			label="Cost"
-			secondaryText="x kr/year"
+			secondaryText={`${costValue}`}
 			type="secondary"
 			placeholder="Enter cost of license"
 			errorMessage={$licenseErrors.cost}
@@ -64,8 +79,8 @@
 			<SelectField
 				bind:value={$license.renewalInterval}
 				label="Renewal interval"
-				options={['Monthly', 'Anually']}
-				defaultOption="Monthly"
+				options={['None', 'Monthly', 'Annually']}
+				defaultOption="None"
 				required
 				type="secondary"
 				errorMessage={$licenseErrors.renewalInterval}

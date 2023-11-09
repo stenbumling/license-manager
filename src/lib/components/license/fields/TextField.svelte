@@ -3,18 +3,30 @@
 	import { v4 as uuidv4 } from 'uuid';
 
 	export let label: string = '';
-	export let value: string = '';
+	export let value: string | number;
 	export let secondaryText: string = '';
 	export let placeholder: string = 'Enter some text';
 	export let required: boolean = false;
 	export let autocomplete: string = 'off';
 	export let type: 'primary' | 'secondary' = 'primary';
+	export let number: boolean = false;
 	export let errorMessage: { message: string } | undefined;
 
 	const id = uuidv4();
 
 	let textContainer: string =
 		type === 'secondary' ? 'text-field-secondary-container' : 'text-field-container';
+
+	function enforceNumeric(event: KeyboardEvent) {
+		const validKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'End', 'Home'];
+
+		if (
+			!validKeys.includes(event.key) &&
+			(event.key < '0' || event.key > '9')
+		) {
+			event.preventDefault();
+		}
+	}
 </script>
 
 <div class={textContainer}>
@@ -24,7 +36,26 @@
 			<span class="required">*</span>
 		{/if}
 	</h3>
-	<input bind:value type="text" aria-labelledby={id} {required} {placeholder} {autocomplete} />
+	{#if number}
+		<input
+			bind:value
+			type="number"
+			aria-labelledby={id}
+			{required}
+			{placeholder}
+			on:keydown={enforceNumeric}
+		/>
+	{:else}
+		<input
+			bind:value
+			type="text"
+			pattern="[0-9]*"
+			aria-labelledby={id}
+			{required}
+			{placeholder}
+			{autocomplete}
+		/>
+	{/if}
 	<p class="secondary-text" class:warning-text={errorMessage}>
 		{#if errorMessage}
 			<span in:fade={{ duration: 120 }}>{errorMessage}</span>
