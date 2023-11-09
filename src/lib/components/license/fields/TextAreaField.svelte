@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
 	export let label: string = '';
@@ -8,6 +9,7 @@
 	export let required: boolean = false;
 	export let autocomplete: string = 'off';
 	export let type: 'primary' | 'secondary' = 'primary';
+	export let errorMessage: { message: string } | undefined;
 
 	const id = uuidv4();
 	let textarea: HTMLTextAreaElement;
@@ -33,11 +35,18 @@
 		on:blur={scrollToTop}
 		aria-labelledby={id}
 	/>
-	<div class="secondary-text">
-		{#if secondaryText}
-			<p>{secondaryText}</p>
+	<p class="secondary-text" class:warning-text={errorMessage}>
+		{#if errorMessage}
+			<span in:fade={{ duration: 120 }}>{errorMessage}</span>
+		{:else if secondaryText}
+			<span in:fade={{ duration: 120 }}>{secondaryText}</span>
 		{/if}
-	</div>
+	</p>
+	{#if $$slots.secondary}
+		<div class="slotted-field">
+			<slot name="secondary" />
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -66,6 +75,15 @@
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
+	}
+
+	.slotted-field {
+		margin-top: 1.4rem;
+		width: 100%;
+	}
+
+	.warning-text {
+		color: red;
 	}
 
 	.required {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
 	export let label: string = '';
@@ -9,6 +10,7 @@
 	export let defaultOption: string = '';
 	export let placeholder: string = 'Select an option';
 	export let type: 'primary' | 'secondary' = 'primary';
+	export let errorMessage: { message: string } | undefined;
 
 	const id = uuidv4();
 
@@ -29,11 +31,13 @@
 			<option value={option}>{option}</option>
 		{/each}
 	</select>
-	<div class="secondary-text">
-		{#if secondaryText}
-			<p>{secondaryText}</p>
+	<p class="secondary-text" class:warning-text={errorMessage}>
+		{#if errorMessage}
+			<span in:fade={{ duration: 120 }}>{errorMessage}</span>
+		{:else if secondaryText}
+			<span in:fade={{ duration: 120 }}>{secondaryText}</span>
 		{/if}
-	</div>
+	</p>
 	{#if $$slots.secondary}
 		<div class="slotted-field">
 			<slot name="secondary" />
@@ -76,6 +80,10 @@
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
+	}
+
+	.warning-text {
+		color: red;
 	}
 
 	.slotted-field {

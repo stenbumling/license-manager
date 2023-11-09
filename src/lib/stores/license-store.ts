@@ -2,20 +2,21 @@ import type { User } from '$lib/stores/user-store';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { table, tableState } from './table-store';
+import { licenseErrors } from '$lib/validations/license-validation';
 
 export function getInitialValues() {
 	return {
 		id: uuidv4(),
 		application: {
-			id: '',
+			id: uuidv4(),
 			name: '',
 		},
 		applicationId: '',
 		users: [],
 		renewalDate: '',
 		autoRenewal: false,
-		cost: '',
-		renewalInterval: '',
+		cost: 0,
+		renewalInterval: 'None',
 		category: 'Uncategorized',
 		status: 'Active',
 		contactPerson: '',
@@ -42,7 +43,7 @@ export interface License {
 	users: User[];
 	renewalDate: string;
 	autoRenewal: boolean;
-	cost: string;
+	cost: number;
 	renewalInterval: string;
 	category: string;
 	status: string;
@@ -153,6 +154,11 @@ function createLicenseStore() {
 		}
 	}
 
+	function resetFields() {
+		license.set(getInitialValues());
+		licenseErrors.set({});
+	}
+
 	return {
 		subscribe,
 		set,
@@ -162,7 +168,7 @@ function createLicenseStore() {
 		add: addLicense,
 		delete: deleteLicense,
 		updateLicense: updateLicense,
-		resetFields: () => license.set(getInitialValues()),
+		resetFields: resetFields,
 	};
 }
 

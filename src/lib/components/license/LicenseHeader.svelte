@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { license, licenseStore } from '$lib/stores/license-store';
+	import { license, licenseStore, licenseMode } from '$lib/stores/license-store';
 	import { showLicenseModal } from '$lib/stores/modal-state';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
@@ -17,7 +17,7 @@
 			<CloseLarge size={24} aria-label="CloseLarge" />
 		</a>
 	</div>
-	{#if $license.application.name}
+	{#if $license.application.name && $licenseMode === 'edit'}
 		<h1 class="title-label">{$license.application.name}</h1>
 	{:else}
 		<h1 class="new-license-label">New license</h1>
@@ -26,7 +26,7 @@
 
 <style>
 	.header-container {
-		margin-bottom: 4rem;
+		/* margin-bottom: 4rem; */
 		border-bottom: 1px solid var(--text-placeholder);
 		display: flex;
 		flex-direction: column;

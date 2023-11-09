@@ -2,7 +2,9 @@
 	import { applicationStore } from '$lib/stores/application-store';
 	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
+	import { licenseErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
+	import { fade } from 'svelte/transition';
 
 	function handleClick() {
 		showApplicationModal.set(true);
@@ -17,7 +19,7 @@
 </script>
 
 <div class="application-selection-container">
-	<h3 class="application-selection-label">Application</h3>
+	<h3 class="application-selection-label">Application <span class="required">*</span></h3>
 	<div class="application-selection-row">
 		<select
 			required
@@ -34,6 +36,11 @@
 			<SettingsAdjust size={20} fill="white" aria-label="SettingsAdjust" />
 		</button>
 	</div>
+	<p class="warning-text">
+		{#if $licenseErrors.applicationId}
+			<span in:fade={{ duration: 120 }}>{$licenseErrors.applicationId}</span>
+		{/if}
+	</p>
 </div>
 
 <style>
@@ -54,6 +61,17 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
+	}
+
+	.warning-text {
+		font-size: 0.75rem;
+		color: red;
+		height: 2.8rem;
+		margin-left: 1px;
+	}
+
+	.required {
+		color: red;
 	}
 
 	.settings-button {
