@@ -14,7 +14,7 @@ export const applicationSchema = z.object({
 				const applications = get(applicationStore);
 				return !applications.some((application) => application.name === val);
 			},
-			{ message: 'Application name already exists' },
+			{ message: 'Application already exists' },
 		),
 });
 
@@ -27,7 +27,6 @@ interface ApplicationErrors {
 export async function validateApplication(application: Application): Promise<boolean> {
 	try {
 		applicationSchema.parse(application);
-
 		applicationErrors.set({});
 		return true;
 	} catch (error) {

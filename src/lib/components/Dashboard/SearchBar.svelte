@@ -1,13 +1,19 @@
 <script lang="ts">
 	import { searchQuery, table } from '$lib/stores/table-store';
+	import { validateSearchQuery } from '$lib/validations/search-query-validation';
 	import Search from 'carbon-icons-svelte/lib/Search.svelte';
 
 	let inputField: HTMLInputElement;
 
-	function handleSearch(e: KeyboardEvent) {
+	async function handleSearch(e: KeyboardEvent) {
 		if (e.key === 'Enter') {
-			table.filterBy('Search');
-			inputField.blur();
+			const isValid = await validateSearchQuery($searchQuery);
+			if (isValid) {
+				table.filterBy('Search');
+				inputField.blur();
+			} else {
+				inputField.focus();
+			}
 		}
 	}
 </script>
