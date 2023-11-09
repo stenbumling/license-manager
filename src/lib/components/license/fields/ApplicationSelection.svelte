@@ -2,6 +2,7 @@
 	import { applicationStore } from '$lib/stores/application-store';
 	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
+	import { licenseErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	import { fade } from 'svelte/transition';
 
@@ -18,7 +19,7 @@
 </script>
 
 <div class="application-selection-container">
-	<h3 class="application-selection-label">Application</h3>
+	<h3 class="application-selection-label">Application <span class="required">*</span></h3>
 	<div class="application-selection-row">
 		<select
 			required
@@ -36,8 +37,8 @@
 		</button>
 	</div>
 	<p class="warning-text">
-		{#if $license.applicationId}
-			<span in:fade={{ duration: 120 }}>{$license.applicationId}</span>
+		{#if $licenseErrors.applicationId}
+			<span in:fade={{ duration: 120 }}>{$licenseErrors.applicationId}</span>
 		{/if}
 	</p>
 </div>
@@ -67,6 +68,10 @@
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
+	}
+
+	.required {
+		color: red;
 	}
 
 	.settings-button {

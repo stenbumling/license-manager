@@ -33,9 +33,9 @@
 	</select>
 	<p class="secondary-text" class:warning-text={errorMessage}>
 		{#if errorMessage}
-		<span in:fade={{ duration: 120 }}>{errorMessage}</span>
+			<span in:fade={{ duration: 120 }}>{errorMessage}</span>
 		{:else if secondaryText}
-		<span in:fade={{ duration: 120 }}>{secondaryText}</span>
+			<span in:fade={{ duration: 120 }}>{secondaryText}</span>
 		{/if}
 	</p>
 	{#if $$slots.secondary}

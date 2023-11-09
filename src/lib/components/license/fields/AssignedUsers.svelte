@@ -69,7 +69,6 @@
 <div class="component-container">
 	<h3 class="label">
 		Assigned users
-		<span class="required">*</span>
 	</h3>
 	{#if $license.users.length}
 		<div class="badge-container">
@@ -110,26 +109,26 @@
 			}}
 		/>
 		{#if userSuggestions.length}
-		<ul class="suggestions-list" in:slide={{ duration: 100 }}>
-			{#each userSuggestions as suggestion}
-			<li>
+			<ul class="suggestions-list" in:slide={{ duration: 100 }}>
+				{#each userSuggestions as suggestion}
+					<li>
 						<div
-						role="button"
-						tabindex="0"
-						on:mousedown|preventDefault
-						on:mouseup={() => handleAssignUser(suggestion.name)}
+							role="button"
+							tabindex="0"
+							on:mousedown|preventDefault
+							on:mouseup={() => handleAssignUser(suggestion.name)}
 						>
-						{suggestion.name}
-					</div>
-				</li>
+							{suggestion.name}
+						</div>
+					</li>
 				{/each}
 			</ul>
+		{/if}
+		<p class="secondary-text" class:warning-text={$userErrors}>
+			{#if $userErrors}
+				<span transition:fade={{ duration: 120 }}>{$userErrors}</span>
 			{/if}
-			<p class="secondary-text" class:warning-text={$userErrors}>
-				{#if $userErrors}
-					<span transition:fade={{ duration: 120 }}>{$userErrors}</span>
-				{/if}
-			</p>
+		</p>
 	</div>
 
 	{#if $showAssignedUsersModal}
@@ -149,10 +148,7 @@
 	.label {
 		margin-bottom: 0.4rem;
 	}
-	.required {
-		color: red;
-	}
-
+	
 	.badge-container {
 		display: flex;
 		flex-wrap: wrap;

@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 export const searchQuerySchema = z
 	.string({ invalid_type_error: 'Your search query must be a string' })
-	.trim()
+	.trim();
 
 export const searchQueryErrors = writable<string[]>([]);
 

@@ -110,7 +110,6 @@
 				label="Status"
 				options={['Active', 'Inactive', 'Expired']}
 				defaultOption="Active"
-				required
 				errorMessage={$licenseErrors.status}
 			/>
 			<TextField

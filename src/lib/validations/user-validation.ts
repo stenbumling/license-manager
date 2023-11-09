@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const userSchema = z
 	.string({ invalid_type_error: 'Your search query must be a string' })
 	.trim()
-	.min(1, { message: 'Please enter the name of a user' })
+	.min(1, { message: 'Please enter the name of a user' });
 
 export const userErrors = writable<string[]>([]);
 
