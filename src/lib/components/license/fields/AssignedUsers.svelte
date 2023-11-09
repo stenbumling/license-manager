@@ -4,9 +4,10 @@
 	import { showAssignedUsersModal } from '$lib/stores/modal-state';
 	import type { User } from '$lib/stores/user-store';
 	import { userStore } from '$lib/stores/user-store';
+	import { userErrors, validateUser } from '$lib/validations/user-validation';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
-	import { slide } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 
 	let userInput = '';
 	let userSuggestions: User[] = [];
@@ -33,16 +34,26 @@
 		}
 	}
 
-	async function handleAssignUser(addedUser: string) {
-		userInput = '';
+	async function handleAssignUser(addedUserName: string) {
+		const isValid = await validateUser(addedUserName);
 		userSuggestions = [];
-		inputField.blur();
-		try {
-			const foundUser = await userStore.findOrCreateUser(addedUser);
+		if (isValid) {
+			try {
+				const foundUser = await userStore.findOrCreateUser(addedUserName);
 
-			$license.users = [...$license.users, foundUser];
-		} catch (error) {
-			console.error('Failed to add or find user:', error);
+				const isAlreadyAssigned = $license.users.some((u) => u.id === foundUser.id);
+
+				if (isAlreadyAssigned) {
+					userErrors.set(['User is already assigned']);
+				} else {
+					$license.users = [...$license.users, foundUser];
+					userInput = '';
+					inputField.blur();
+					userErrors.set([]);
+				}
+			} catch (error) {
+				console.error('Failed to add or find user:', error);
+			}
 		}
 	}
 
@@ -99,21 +110,26 @@
 			}}
 		/>
 		{#if userSuggestions.length}
-			<ul class="suggestions-list" in:slide={{ duration: 100 }}>
-				{#each userSuggestions as suggestion}
-					<li>
+		<ul class="suggestions-list" in:slide={{ duration: 100 }}>
+			{#each userSuggestions as suggestion}
+			<li>
 						<div
-							role="button"
-							tabindex="0"
-							on:mousedown|preventDefault
-							on:mouseup={() => handleAssignUser(suggestion.name)}
+						role="button"
+						tabindex="0"
+						on:mousedown|preventDefault
+						on:mouseup={() => handleAssignUser(suggestion.name)}
 						>
-							{suggestion.name}
-						</div>
-					</li>
+						{suggestion.name}
+					</div>
+				</li>
 				{/each}
 			</ul>
-		{/if}
+			{/if}
+			<p class="secondary-text" class:warning-text={$userErrors}>
+				{#if $userErrors}
+					<span transition:fade={{ duration: 120 }}>{$userErrors}</span>
+				{/if}
+			</p>
 	</div>
 
 	{#if $showAssignedUsersModal}
@@ -160,6 +176,17 @@
 		height: 20px;
 		margin-right: 0.5rem;
 		max-width: 12rem;
+	}
+
+	.secondary-text {
+		font-size: 0.75rem;
+		color: var(--text-placeholder);
+		height: 2.8rem;
+		margin-left: 1px;
+	}
+
+	.warning-text {
+		color: red;
 	}
 	.badge-text {
 		color: #f9e8ff;
