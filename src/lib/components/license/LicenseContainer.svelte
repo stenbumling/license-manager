@@ -13,9 +13,9 @@
 	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
 	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { licenseErrors } from '$lib/stores/license-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
+	import { licenseErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
@@ -64,7 +64,7 @@
 
 	async function handleLicense() {
 		contextMenu.close();
-		const isValid = await licenseStore.validate($license);
+		const isValid = await validateLicense($license);
 		if (isValid) {
 			showLicenseModal.set(false);
 			goto('/');
@@ -103,7 +103,7 @@
 				label="Category"
 				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 				defaultOption="Uncategorized"
-				errorMessage={$licenseErrors.category?.message}
+				errorMessage={$licenseErrors.category}
 			/>
 			<SelectField
 				bind:value={$license.status}
@@ -111,25 +111,25 @@
 				options={['Active', 'Inactive', 'Expired']}
 				defaultOption="Active"
 				required
-				errorMessage={$licenseErrors.status?.message}
+				errorMessage={$licenseErrors.status}
 			/>
 			<TextField
 				bind:value={$license.contactPerson}
 				label="Contact person"
-				errorMessage={$licenseErrors.contactPerson?.message}
+				errorMessage={$licenseErrors.contactPerson}
 			>
 				<TextField
 					slot="secondary"
 					bind:value={$license.additionalContactInfo}
 					label="Additional contact information"
 					type="secondary"
-					errorMessage={$licenseErrors.additionalContactInfo?.message}
+					errorMessage={$licenseErrors.additionalContactInfo}
 				/>
 			</TextField>
 			<TextAreaField
 				bind:value={$license.comment}
 				label="Comment"
-				errorMessage={$licenseErrors.comment?.message}
+				errorMessage={$licenseErrors.comment}
 			/>
 		</div>
 		<div class="bottom-container">

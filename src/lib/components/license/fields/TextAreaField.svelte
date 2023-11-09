@@ -8,7 +8,7 @@
 	export let required: boolean = false;
 	export let autocomplete: string = 'off';
 	export let type: 'primary' | 'secondary' = 'primary';
-	export let errorMessage: string | undefined;
+	export let errorMessage: { message: string; } | undefined;
 
 	const id = uuidv4();
 	let textarea: HTMLTextAreaElement;

@@ -9,7 +9,7 @@
 	export let defaultOption: string = '';
 	export let placeholder: string = 'Select an option';
 	export let type: 'primary' | 'secondary' = 'primary';
-	export let errorMessage: string | undefined;
+	export let errorMessage: { message: string; } | undefined;
 
 	const id = uuidv4();
 

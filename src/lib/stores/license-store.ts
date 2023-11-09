@@ -1,26 +1,8 @@
 import type { User } from '$lib/stores/user-store';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
 import { table, tableState } from './table-store';
-
-export const licenseSchema = z.object({
-	id: z.string().trim().uuid({ message: 'Invalid license ID' }),
-	application: z.object({ id: z.string().uuid(), name: z.string().trim().min(1) }),
-	applicationId: z.string().uuid({ message: 'Please select an application' }),
-	users: z.array(z.object({ id: z.string().trim().uuid(), name: z.string().trim().min(1) })),
-	renewalDate: z.string().trim().refine((val) => !isNaN(Date.parse(val)), {
-		message: 'Please select a valid date',
-	}),
-	autoRenewal: z.boolean(),
-	cost: z.string().trim(), // change to number().nonnegative()
-	renewalInterval: z.string().min(1),
-	category: z.string().trim().min(1),
-	status: z.string().trim().min(1),
-	contactPerson: z.string().trim(),
-	additionalContactInfo: z.string().trim(),
-	comment: z.string().trim(),
-});
+import { licenseErrors } from '$lib/validations/license-validation';
 
 export function getInitialValues() {
 	return {
@@ -70,19 +52,6 @@ export interface License {
 	comment: string;
 }
 
-interface LicenseErrors {
-	applicationId?: { message: string };
-	renewalDate?: { message: string };
-	autoRenewal?: { message: string };
-	cost?: { message: string };
-	renewalInterval?: { message: string };
-	category?: { message: string };
-	status?: { message: string };
-	contactPerson?: { message: string };
-	additionalContactInfo?: { message: string };
-	comment?: { message: string };
-}
-
 export interface LicenseCounts {
 	all: number;
 	inUse: number;
@@ -93,7 +62,6 @@ export interface LicenseCounts {
 
 export const licenseMode = writable<'add' | 'edit'>('add');
 export const license = writable<License>(getInitialValues());
-export const licenseErrors = writable<LicenseErrors>({});
 export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
 
 function createLicenseStore() {
@@ -186,33 +154,6 @@ function createLicenseStore() {
 		}
 	}
 
-	async function validateLicense(license: License): Promise<boolean> {
-		try {
-			licenseSchema.parse(license);
-			licenseErrors.set({});
-			return true;
-		} catch (error) {
-			if (error instanceof z.ZodError) {
-				const errors: Record<string, any> = {};
-
-				for (const issue of error.issues) {
-					const { path, message } = issue;
-					const key = path[0];
-
-					if (!errors[key]) {
-						errors[key] = { message: message };
-					}
-				}
-				console.log(license);
-				licenseErrors.set(errors);
-				return false;
-			} else {
-				console.error('Unexpected error when validating license:', error);
-				return false;
-			}
-		}
-	}
-
 	function resetFields() {
 		license.set(getInitialValues());
 		licenseErrors.set({});
@@ -227,7 +168,6 @@ function createLicenseStore() {
 		add: addLicense,
 		delete: deleteLicense,
 		updateLicense: updateLicense,
-		validate: validateLicense,
 		resetFields: resetFields,
 	};
 }

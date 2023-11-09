@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { applicationStore } from '$lib/stores/application-store';
-	import { license, licenseErrors } from '$lib/stores/license-store';
+	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
+	import { licenseErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 
 	function handleClick() {
@@ -36,7 +37,7 @@
 	</div>
 	<div class="helper-text">
 		{#if $licenseErrors.applicationId}
-			<p>{$licenseErrors.applicationId.message}</p>
+			<p>{$licenseErrors.applicationId}</p>
 		{/if}
 	</div>
 </div>

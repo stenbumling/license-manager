@@ -1,9 +1,9 @@
 <script lang="ts">
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import { licenseErrors } from '$lib/stores/license-store';
 	import { license } from '$lib/stores/license-store.ts';
 	import { getRelativeDate, getTodaysDate } from '$lib/utils/date-utils';
+	import { licenseErrors } from '$lib/validations/license-validation';
 	import { slide } from 'svelte/transition';
 
 	let label: string = '';
@@ -44,7 +44,7 @@
 	</div>
 	{#if $licenseErrors.renewalDate}
 		<div class="helper-text">
-			<p>{$licenseErrors.renewalDate?.message}</p>
+			<p>{$licenseErrors.renewalDate}</p>
 		</div>
 	{:else}
 		<div class="secondary-text">
@@ -58,7 +58,7 @@
 			secondaryText="x kr/year"
 			type="secondary"
 			placeholder="Enter cost of license"
-			errorMessage={$licenseErrors.cost?.message}
+			errorMessage={$licenseErrors.cost}
 		/>
 	</div>
 	{#if $license.autoRenewal}
@@ -70,7 +70,7 @@
 				defaultOption="Monthly"
 				required
 				type="secondary"
-				errorMessage={$licenseErrors.renewalInterval?.message}
+				errorMessage={$licenseErrors.renewalInterval}
 			/>
 		</div>
 	{/if}
