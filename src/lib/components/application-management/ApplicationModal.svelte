@@ -2,17 +2,24 @@
 	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
 	import { application, applicationStore } from '$lib/stores/application-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
+	import { applicationErrors, validateApplication } from '$lib/validations/application-validation';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
 
-	function handleAdd() {
-		applicationStore.add($application);
-		applicationStore.reset();
+	async function handleAdd() {
+		const isValid = await validateApplication($application);
+		if (isValid) {
+			applicationStore.add($application);
+			applicationStore.reset();
+		} else {
+			return;
+		}
 	}
 
 	function handleClose() {
 		showApplicationModal.set(false);
+		applicationStore.reset();
 	}
 </script>
 
@@ -31,6 +38,11 @@
 				<Add size={32} fill="white" aria-label="Add" />
 			</button>
 		</div>
+		<p class="warning-text">
+			{#if $applicationErrors.name}
+				<span transition:fade={{ duration: 120 }}>{$applicationErrors.name}</span>
+			{/if}
+		</p>
 		<h3>List of applications</h3>
 		<div class="application-list">
 			{#each $applicationStore as application}
@@ -96,9 +108,16 @@
 		}
 	}
 
+	.warning-text {
+		font-size: 0.75rem;
+		color: red;
+		height: 2.8rem;
+		margin-left: 1px;
+		margin-bottom: 2rem;
+	}
+
 	.input-container {
 		width: 100%;
-		margin-bottom: 3rem;
 		display: flex;
 		flex-direction: row;
 		align-items: center;

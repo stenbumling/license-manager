@@ -1,8 +1,10 @@
+import { applicationErrors } from '$lib/validations/application-validation';
 import { writable } from 'svelte/store';
+import { v4 as uuidv4 } from 'uuid';
 
 export function getInitialValues() {
 	return {
-		id: '',
+		id: uuidv4(),
 		name: '',
 	};
 }
@@ -43,13 +45,18 @@ function createApplicationStore() {
 		}
 	}
 
+	function resetField() {
+		application.set(getInitialValues());
+		applicationErrors.set({});
+	}
+
 	return {
 		subscribe,
 		set,
 		update,
 		add: addApplication,
 		delete: deleteApplication,
-		reset: () => application.set(getInitialValues()),
+		reset: resetField,
 	};
 }
 
