@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
 	export let label: string = '';
@@ -8,7 +9,7 @@
 	export let required: boolean = false;
 	export let autocomplete: string = 'off';
 	export let type: 'primary' | 'secondary' = 'primary';
-	export let errorMessage: { message: string; } | undefined;
+	export let errorMessage: { message: string } | undefined;
 
 	const id = uuidv4();
 	let textarea: HTMLTextAreaElement;
@@ -34,15 +35,13 @@
 		on:blur={scrollToTop}
 		aria-labelledby={id}
 	/>
-	{#if errorMessage}
-		<div class="helper-text">
-			<p>{errorMessage}</p>
-		</div>
-	{:else if secondaryText}
-		<div class="secondary-text">
-			<p>{secondaryText}</p>
-		</div>
-	{/if}
+	<p class="secondary-text" class:warning-text={errorMessage}>
+		{#if errorMessage}
+			<span in:fade={{ duration: 120 }}>{errorMessage}</span>
+		{:else if secondaryText}
+			<span in:fade={{ duration: 120 }}>{secondaryText}</span>
+		{/if}
+	</p>
 	{#if $$slots.secondary}
 		<div class="slotted-field">
 			<slot name="secondary" />
@@ -78,16 +77,19 @@
 		margin-left: 1px;
 	}
 
+	.slotted-field {
+		margin-top: 1.4rem;
+		width: 100%;
+	}
+
+	.warning-text {
+		color: red;
+	}
+
 	.required {
 		color: red;
 	}
 
-	.helper-text {
-		margin-bottom: 0.4rem;
-		font-size: 0.75rem;
-		color: #ff0000;
-	}
-	
 	textarea {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		font-size: 0.83rem;

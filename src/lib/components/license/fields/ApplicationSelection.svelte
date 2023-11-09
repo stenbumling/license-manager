@@ -2,8 +2,8 @@
 	import { applicationStore } from '$lib/stores/application-store';
 	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-state';
-	import { licenseErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
+	import { fade } from 'svelte/transition';
 
 	function handleClick() {
 		showApplicationModal.set(true);
@@ -35,11 +35,11 @@
 			<SettingsAdjust size={20} fill="white" aria-label="SettingsAdjust" />
 		</button>
 	</div>
-	<div class="helper-text">
-		{#if $licenseErrors.applicationId}
-			<p>{$licenseErrors.applicationId}</p>
+	<p class="warning-text">
+		{#if $license.applicationId}
+			<span in:fade={{ duration: 120 }}>{$license.applicationId}</span>
 		{/if}
-	</div>
+	</p>
 </div>
 
 <style>
@@ -62,10 +62,11 @@
 		align-items: center;
 	}
 
-	.helper-text {
-		margin-bottom: 0.4rem;
+	.warning-text {
 		font-size: 0.75rem;
-		color: #ff0000;
+		color: var(--text-placeholder);
+		height: 2.8rem;
+		margin-left: 1px;
 	}
 
 	.settings-button {

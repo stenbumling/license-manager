@@ -4,7 +4,7 @@
 	import { license } from '$lib/stores/license-store.ts';
 	import { getRelativeDate, getTodaysDate } from '$lib/utils/date-utils';
 	import { licenseErrors } from '$lib/validations/license-validation';
-	import { slide } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 
 	let label: string = '';
 
@@ -42,15 +42,13 @@
 			<label for="renewal">Autorenewal</label>
 		</div>
 	</div>
-	{#if $licenseErrors.renewalDate}
-		<div class="helper-text">
-			<p>{$licenseErrors.renewalDate}</p>
-		</div>
-	{:else}
-		<div class="secondary-text">
-			<p>{daysLeft.text}</p>
-		</div>
-	{/if}
+	<p class="secondary-text" class:warning-text={$licenseErrors.renewalDate}>
+		{#if $licenseErrors.renewalDate}
+			<span in:fade={{ duration: 120 }}>{$licenseErrors.renewalDate}</span>
+		{:else}
+			<span in:fade={{ duration: 120 }}>{daysLeft.text}</span>
+		{/if}
+	</p>
 	<div class="cost-field">
 		<TextField
 			bind:value={$license.cost}
@@ -100,12 +98,6 @@
 		align-items: center;
 	}
 
-	.helper-text {
-		margin-bottom: 0.4rem;
-		font-size: 0.75rem;
-		color: #ff0000;
-	}
-
 	.date-picker {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		border: none;
@@ -152,6 +144,10 @@
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
+	}
+
+	.warning-text {
+		color: red;
 	}
 
 	.cost-field {

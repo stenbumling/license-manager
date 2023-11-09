@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
 	export let label: string = '';
@@ -8,7 +9,7 @@
 	export let required: boolean = false;
 	export let autocomplete: string = 'off';
 	export let type: 'primary' | 'secondary' = 'primary';
-	export let errorMessage: { message: string; } | undefined;
+	export let errorMessage: { message: string } | undefined;
 
 	const id = uuidv4();
 
@@ -24,15 +25,13 @@
 		{/if}
 	</h3>
 	<input bind:value type="text" aria-labelledby={id} {required} {placeholder} {autocomplete} />
-	{#if errorMessage}
-		<div class="helper-text">
-			<p>{errorMessage}</p>
-		</div>
-	{:else if secondaryText}
-		<div class="secondary-text">
-			<p>{secondaryText}</p>
-		</div>
-	{/if}
+	<p class="secondary-text" class:warning-text={errorMessage}>
+		{#if errorMessage}
+		<span in:fade={{ duration: 120 }}>{errorMessage}</span>
+		{:else if secondaryText}
+		<span in:fade={{ duration: 120 }}>{secondaryText}</span>
+		{/if}
+	</p>
 	{#if $$slots.secondary}
 		<div class="slotted-field">
 			<slot name="secondary" />
@@ -87,9 +86,7 @@
 		width: 100%;
 	}
 
-	.helper-text {
-		margin-bottom: 0.4rem;
-		font-size: 0.75rem;
+	.warning-text {
 		color: #ff0000;
 	}
 
