@@ -13,7 +13,7 @@
 	}
 	$: daysLeft = getRelativeDate($license.renewalDate);
 	$: if (!$license.autoRenewal) {
-		$license.renewalInterval = '';
+		$license.renewalInterval = 'None';
 	}
 </script>
 
@@ -70,7 +70,7 @@
 				defaultOption="Monthly"
 				required
 				type="secondary"
-				errorMessage={$licenseErrors.cost?.message}
+				errorMessage={$licenseErrors.renewalInterval?.message}
 			/>
 		</div>
 	{/if}

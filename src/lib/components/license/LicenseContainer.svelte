@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { licenseErrors } from '$lib/stores/license-store';
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
@@ -14,6 +13,7 @@
 	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
 	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
 	import { contextMenu } from '$lib/stores/context-menu-store';
+	import { licenseErrors } from '$lib/stores/license-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
@@ -62,26 +62,17 @@
 		loaded = true;
 	});
 
-	async function handleAdd() {
+	async function handleLicense() {
 		contextMenu.close();
 		const isValid = await licenseStore.validate($license);
 		if (isValid) {
 			showLicenseModal.set(false);
 			goto('/');
-			licenseStore.add($license);
-			licenseStore.resetFields();
-		} else {
-			return;
-		}
-	}
-
-	async function handleSave() {
-		contextMenu.close();
-		const isValid = await licenseStore.validate($license);
-		if (isValid) {
-			showLicenseModal.set(false);
-			goto('/');
-			licenseStore.updateLicense($license);
+			if ($licenseMode === 'edit') {
+				licenseStore.updateLicense($license);
+			} else {
+				licenseStore.add($license);
+			}
 			licenseStore.resetFields();
 		} else {
 			return;
@@ -135,7 +126,11 @@
 					errorMessage={$licenseErrors.additionalContactInfo?.message}
 				/>
 			</TextField>
-			<TextAreaField bind:value={$license.comment} label="Comment" errorMessage={$licenseErrors.comment?.message} />
+			<TextAreaField
+				bind:value={$license.comment}
+				label="Comment"
+				errorMessage={$licenseErrors.comment?.message}
+			/>
 		</div>
 		<div class="bottom-container">
 			{#if $licenseMode === 'edit'}
@@ -150,14 +145,10 @@
 				{#if $contextMenu.activeId === 'license-view'}
 					<ContextMenu bind:referenceElementRect={menuButtonRect} items={contextMenuItems} />
 				{/if}
-				<button class="main-button" on:click|preventDefault={handleSave}>
-					<ButtonLarge title="Save changes" />
-				</button>
-			{:else}
-				<button class="main-button" on:click|preventDefault={handleAdd}>
-					<ButtonLarge title="Add new license" />
-				</button>
 			{/if}
+			<button class="main-button" on:click|preventDefault={handleLicense}>
+				<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
+			</button>
 		</div>
 	{:else}
 		<p>Loading...</p>

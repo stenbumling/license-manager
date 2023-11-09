@@ -5,23 +5,28 @@ import { z } from 'zod';
 import { table, tableState } from './table-store';
 
 export const licenseSchema = z.object({
-	applicationId: z.string().uuid(),
-	renewalDate: z.coerce.date(),
+	id: z.string().trim().uuid({ message: 'Invalid license ID' }),
+	application: z.object({ id: z.string().uuid(), name: z.string().trim().min(1) }),
+	applicationId: z.string().uuid({ message: 'Please select an application' }),
+	users: z.array(z.object({ id: z.string().trim().uuid(), name: z.string().trim().min(1) })),
+	renewalDate: z.string().trim().refine((val) => !isNaN(Date.parse(val)), {
+		message: 'Please select a valid date',
+	}),
 	autoRenewal: z.boolean(),
-	cost: z.string(), // change to number
-	renewalInterval: z.string(),
-	category: z.string(),
-	status: z.string(),
-	contactPerson: z.string(),
-	additionalContactInfo: z.string(),
-	comment: z.string(),
+	cost: z.string().trim(), // change to number().nonnegative()
+	renewalInterval: z.string().min(1),
+	category: z.string().trim().min(1),
+	status: z.string().trim().min(1),
+	contactPerson: z.string().trim(),
+	additionalContactInfo: z.string().trim(),
+	comment: z.string().trim(),
 });
 
 export function getInitialValues() {
 	return {
 		id: uuidv4(),
 		application: {
-			id: '',
+			id: uuidv4(),
 			name: '',
 		},
 		applicationId: '',
@@ -29,7 +34,7 @@ export function getInitialValues() {
 		renewalDate: '',
 		autoRenewal: false,
 		cost: '',
-		renewalInterval: '',
+		renewalInterval: 'None',
 		category: 'Uncategorized',
 		status: 'Active',
 		contactPerson: '',
@@ -192,20 +197,25 @@ function createLicenseStore() {
 
 				for (const issue of error.issues) {
 					const { path, message } = issue;
-					const key = path[0]
+					const key = path[0];
 
 					if (!errors[key]) {
 						errors[key] = { message: message };
 					}
 				}
+				console.log(license);
 				licenseErrors.set(errors);
-				console.log(errors)
 				return false;
 			} else {
 				console.error('Unexpected error when validating license:', error);
 				return false;
 			}
 		}
+	}
+
+	function resetFields() {
+		license.set(getInitialValues());
+		licenseErrors.set({});
 	}
 
 	return {
@@ -218,7 +228,7 @@ function createLicenseStore() {
 		delete: deleteLicense,
 		updateLicense: updateLicense,
 		validate: validateLicense,
-		resetFields: () => license.set(getInitialValues()),
+		resetFields: resetFields,
 	};
 }
 
