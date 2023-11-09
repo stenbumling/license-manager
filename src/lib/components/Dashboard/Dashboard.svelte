@@ -59,13 +59,14 @@
 <style>
 	.dashboard {
 		width: 20rem;
-		height: 37.7rem;
+		height: auto;
 		margin-right: 3rem;
-		margin-top: 4rem;
-		padding: 0.4rem 2rem;
+		margin-top: 2.79rem;
+		padding: 0.4rem 2rem 2rem 2rem;
 		border: 1px solid black;
 		display: flex;
 		flex-direction: column;
+		overflow-y: auto;
 	}
 
 	.filter-list {
@@ -76,9 +77,6 @@
 	}
 
 	@media (max-height: 850px) {
-		.dashboard {
-			height: 30.4rem;
-		}
 		.filter-list {
 			grid-template-columns: 1fr 1fr;
 		}
