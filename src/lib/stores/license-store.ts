@@ -1,8 +1,8 @@
 import type { User } from '$lib/stores/user-store';
+import { licenseErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { table, tableState } from './table-store';
-import { licenseErrors } from '$lib/validations/license-validation';
 
 export function getInitialValues() {
 	return {
@@ -77,14 +77,20 @@ function createLicenseStore() {
 		}
 	}
 
-	function getLicenseById(id: string) {
-		const fetchedLicense = get(licenseStore).find((license) => license.id === id);
+	async function getLicenseById(id: string) {
+		return new Promise((resolve, reject) => {
+			setTimeout(async () => {
+				const fetchedLicense = get(licenseStore).find((license) => license.id === id);
 
-		if (fetchedLicense) {
-			license.set(structuredClone(fetchedLicense));
-		} else {
-			console.error('Failed to get license from store');
-		}
+				if (fetchedLicense) {
+					license.set(structuredClone(fetchedLicense));
+					resolve(fetchedLicense); // Resolve the promise with the fetched license
+				} else {
+					console.error('Failed to get license from store');
+					reject(new Error('Failed to get license from store')); // Reject the promise
+				}
+			}, 1000); // Delay for 2000 milliseconds (2 seconds)
+		});
 	}
 
 	async function updateLicenseCounts() {

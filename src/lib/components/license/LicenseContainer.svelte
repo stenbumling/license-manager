@@ -23,8 +23,9 @@
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { onMount } from 'svelte';
+	import { Circle } from 'svelte-loading-spinners';
 
-	let loaded = false;
+	let promise: Promise<unknown>;
 	let menuButtonRect: DOMRect;
 	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
@@ -55,12 +56,11 @@
 	onMount(async () => {
 		if (urlId) {
 			licenseMode.set('edit');
-			licenseStore.fetch(urlId);
+			promise = licenseStore.fetch(urlId);
 		} else {
 			licenseMode.set('add');
 			licenseStore.resetFields();
 		}
-		loaded = true;
 	});
 
 	async function handleLicense() {
@@ -80,6 +80,16 @@
 		}
 	}
 
+	async function handleTest() {
+		if (urlId) {
+			licenseMode.set('edit');
+			promise = licenseStore.fetch(urlId);
+		} else {
+			licenseMode.set('add');
+			licenseStore.resetFields();
+		}
+	}
+
 	async function handleClose() {
 		contextMenu.close();
 		showLicenseModal.set(false);
@@ -93,7 +103,9 @@
 {/if}
 
 <div class="license-container">
-	{#if loaded}
+	{#await promise}
+		<div class="loading"><Circle color="var(--deep-purple)" /></div>
+	{:then}
 		<LicenseHeader />
 		<div class="fields-grid" use:scrollShadow>
 			<ApplicationSelection />
@@ -150,9 +162,13 @@
 				<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
 			</button>
 		</div>
-	{:else}
-		<p>Loading...</p>
-	{/if}
+	{:catch error}
+		{#if error.message === 'License not found'}
+			<p>License not found</p>
+		{:else}
+			<p>{error.message}</p>
+		{/if}
+	{/await}
 </div>
 
 <style>
@@ -197,6 +213,13 @@
 		&:hover {
 			background-color: #eeeeee;
 		}
+	}
+
+	.loading {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
 	}
 
 	.menu-button.active {

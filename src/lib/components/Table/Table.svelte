@@ -1,6 +1,8 @@
 <script lang="ts">
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
+	import { appLoad } from '$lib/stores/app-load-store';
 	import { tableState } from '$lib/stores/table-store';
+	import { Circle } from 'svelte-loading-spinners';
 
 	let hoveredRowId: string | null = null;
 
@@ -17,11 +19,21 @@
 </script>
 
 <tbody class="table">
-	{#each $tableState as license}
-		<div class="license-row" class:hovered={hoveredRowId === license.id}>
-			<LicenseRow {license} on:hover={(event) => handleHover(event, license.id)} />
-		</div>
-	{/each}
+	{#await $appLoad}
+		<div class="loading"><Circle color="var(--deep-purple)" /></div>
+	{:then}
+		{#if $tableState.length === 0}
+			<p>No licenses found</p>
+		{:else}
+			{#each $tableState as license}
+				<div class="license-row" class:hovered={hoveredRowId === license.id}>
+					<LicenseRow {license} on:hover={(event) => handleHover(event, license.id)} />
+				</div>
+			{/each}
+		{/if}
+	{:catch}
+		<p>aaa</p>
+	{/await}
 </tbody>
 
 <style>
@@ -32,6 +44,13 @@
 		flex-direction: column;
 		flex-grow: 1;
 		overflow-y: scroll;
+	}
+
+	.loading {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
 	}
 
 	.license-row {

@@ -4,11 +4,13 @@
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
+	import { appLoad, fetchAllData } from '$lib/stores/app-load-store';
 	import { showLicenseModal } from '$lib/stores/modal-state';
 	import { validateLicenseId } from '$lib/utils/uuid-utils';
 	import { onMount } from 'svelte';
 
 	onMount(() => {
+		appLoad.set(fetchAllData());
 		const urlParams = new URLSearchParams($page.url.search);
 		const modal = urlParams.get('modal');
 		const id = urlParams.get('id');
