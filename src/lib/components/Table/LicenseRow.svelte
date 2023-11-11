@@ -116,7 +116,7 @@
 				{#if license.contactPerson}
 					{license.contactPerson}
 				{:else}
-					Unassigned
+					<p style="font-style: italic">Unassigned</p>
 				{/if}
 			</p>
 		</a>
@@ -136,7 +136,7 @@
 		>
 			<p class="table-text">
 				{#if license.users.length === 0}
-					None
+					<p style="font-style: italic">None</p>
 				{:else}
 					{license.users.length}
 				{/if}
