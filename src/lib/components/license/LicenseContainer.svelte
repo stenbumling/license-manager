@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import { getElementRect } from '$lib/actions/getElementRect';
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
@@ -12,7 +11,8 @@
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
-	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
+	import LicenseMenu from '$lib/components/misc/LicenseMenu.svelte';
+	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
 	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
@@ -20,16 +20,14 @@
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
-	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { onMount } from 'svelte';
 	import { Circle } from 'svelte-loading-spinners';
 
 	let promise: Promise<unknown>;
-	let menuButtonRect: DOMRect;
 	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
-	const contextMenuItems = [
+	const contextMenuItems: ContextMenuItem[] = [
 		{
 			label: 'Close without saving',
 			icon: CloseLarge,
@@ -49,7 +47,7 @@
 			label: 'Delete license',
 			icon: TrashCan,
 			action: () => contextMenu.deleteLicense($license),
-			classes: 'alert-text',
+			class: 'alert',
 		},
 	];
 
@@ -146,17 +144,7 @@
 		</div>
 		<div class="bottom-container">
 			{#if $licenseMode === 'edit'}
-				<button
-					class="menu-button"
-					class:active={$contextMenu.activeId === 'license-view'}
-					on:click|stopPropagation|preventDefault={() => contextMenu.open('license-view')}
-					use:getElementRect={(element) => (menuButtonRect = element)}
-				>
-					<OverflowMenuHorizontal size={32} />
-				</button>
-				{#if $contextMenu.activeId === 'license-view'}
-					<ContextMenu bind:referenceElementRect={menuButtonRect} items={contextMenuItems} />
-				{/if}
+				<LicenseMenu items={contextMenuItems} />
 			{/if}
 			<button class="main-button" on:click|preventDefault={handleLicense}>
 				<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
@@ -200,30 +188,11 @@
 		justify-content: flex-end;
 	}
 
-	.menu-button {
-		padding: 0.2rem;
-		border-radius: 6px;
-		display: flex;
-		align-self: center;
-		cursor: pointer;
-		margin: 0 2rem 0 0;
-		transition: color 0.25s ease;
-		transition: background-color 0.2s ease;
-
-		&:hover {
-			background-color: #eeeeee;
-		}
-	}
-
 	.loading {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-	}
-
-	.menu-button.active {
-		background-color: #dddddd;
 	}
 
 	.main-button {

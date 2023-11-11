@@ -1,23 +1,15 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import { getElementRect } from '$lib/actions/getElementRect';
+	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import type { ComponentType } from 'svelte';
 	import { style } from 'svelte-body';
 	import { fly } from 'svelte/transition';
 
-	export let items: {
-		label: string;
-		action: () => void;
-		icon?: ComponentType;
-		classes?: string;
-	}[] = [];
-
+	export let items: ContextMenuItem[];
 	export let referenceElementRect: DOMRect;
-	let contextMenuRect: DOMRect;
 
-	function renderContextMenu(node: DOMRect) {
-		contextMenuRect = node;
+	function renderContextMenu(contextMenuRect: DOMRect) {
 		contextMenu.setPosition(referenceElementRect, contextMenuRect);
 	}
 </script>
@@ -30,8 +22,11 @@
 	class="context-menu"
 	use:getElementRect={renderContextMenu}
 	use:clickOutside={() => contextMenu.close()}
-	on:click|stopPropagation
-	on:keydown|stopPropagation
+	on:keydown|stopPropagation={(e) => {
+		if (e.key === 'Escape') {
+			contextMenu.close();
+		}
+	}}
 	in:fly={{
 		duration: 180,
 		y: '-15%',
@@ -43,9 +38,14 @@
 		{#each items as item}
 			<li
 				role="menuitem"
-				class={item.classes}
+				tabindex="0"
+				class={item.class}
 				on:click|stopPropagation={() => item.action()}
-				on:keydown
+				on:keydown|stopPropagation={(e) => {
+					if (e.key === 'Enter') {
+						item.action();
+					}
+				}}
 			>
 				{#if item.icon}
 					<div class="context-menu-item-icon">
@@ -59,6 +59,12 @@
 </div>
 
 <style>
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
 	.context-menu {
 		position: fixed;
 		background: white;
@@ -66,19 +72,12 @@
 		border-radius: 4px;
 		padding: 0.5rem;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-		z-index: 100000;
+		z-index: 10000;
 		pointer-events: auto;
-		width: 14rem;
 	}
 
-	.context-menu ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	.context-menu li {
-		padding: 0.5rem 1rem;
+	li {
+		padding: 0.5rem 2rem 0.5rem 1rem;
 		height: 2rem;
 		cursor: pointer;
 		border-radius: 6px;
@@ -86,10 +85,9 @@
 		user-select: none;
 		display: flex;
 		align-items: center;
-		text-align: center;
 	}
 
-	.context-menu li:hover {
+	li:hover {
 		background-color: #eeeeee;
 	}
 
@@ -102,11 +100,11 @@
 		margin-bottom: 2px;
 	}
 
-	.alert-text {
+	.alert {
 		color: #ff0000;
 	}
 
-	.warning-text {
+	.warning {
 		color: #ff9736;
 	}
 </style>

@@ -1,23 +1,21 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { getElementRect } from '$lib/actions/getElementRect';
-	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
+	import LicenseMenu from '$lib/components/misc/LicenseMenu.svelte';
+	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import type { License } from '$lib/stores/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
-	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { createEventDispatcher } from 'svelte';
 
 	export let license: License;
-	let menuButtonRect: DOMRect;
 	$: renewalDate = getRelativeDate(license.renewalDate);
 
-	const contextMenuItems = [
+	const licenseMenuItems: ContextMenuItem[] = [
 		{
 			label: 'View license',
 			icon: ViewFilled,
@@ -37,13 +35,9 @@
 			label: 'Delete license',
 			icon: TrashCan,
 			action: () => contextMenu.deleteLicense(license),
-			classes: 'alert-text',
+			class: 'alert',
 		},
 	];
-
-	function openContextMenu() {
-		contextMenu.open(license.id);
-	}
 
 	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
 		contextMenu.close();
@@ -67,7 +61,7 @@
 	<div
 		role="cell"
 		tabindex="0"
-		class="status-cell-container"
+		class="status-cell-container cell"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
 		on:focus={() => handleMouseHover(true)}
@@ -89,7 +83,7 @@
 	<div
 		role="cell"
 		tabindex="0"
-		class="application-cell-container"
+		class="application-cell-container cell"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
 		on:focus={() => handleMouseHover(true)}
@@ -107,7 +101,7 @@
 	<div
 		role="cell"
 		tabindex="0"
-		class="contact-cell-container"
+		class="contact-cell-container cell"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
 		on:focus={() => handleMouseHover(true)}
@@ -131,7 +125,7 @@
 	<div
 		role="cell"
 		tabindex="0"
-		class="users-cell-container"
+		class="users-cell-container cell"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
 		on:focus={() => handleMouseHover(true)}
@@ -155,7 +149,7 @@
 	<div
 		role="cell"
 		tabindex="0"
-		class="expiration-cell-container"
+		class="expiration-cell-container cell"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
 		on:focus={() => handleMouseHover(true)}
@@ -179,7 +173,7 @@
 	<div
 		role="cell"
 		tabindex="0"
-		class="renewal-cell-container"
+		class="renewal-cell-container cell"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
 		on:focus={() => handleMouseHover(true)}
@@ -196,21 +190,9 @@
 		</a>
 	</div>
 	<!-- Menu cell -->
-	<div class="menu-cell-container">
-		<div class="menu-cell">
-			<div class="vertical-line" />
-			<button
-				class="menu-button"
-				class:active={$contextMenu.activeId === license.id}
-				on:click|stopPropagation|preventDefault={openContextMenu}
-				use:getElementRect={(element) => (menuButtonRect = element)}
-			>
-				<OverflowMenuHorizontal size={32} />
-			</button>
-			{#if $contextMenu.activeId === license.id}
-				<ContextMenu bind:referenceElementRect={menuButtonRect} items={contextMenuItems} />
-			{/if}
-		</div>
+	<div class="menu-cell-container cell">
+		<!-- <div class="vertical-line" /> -->
+		<LicenseMenu items={licenseMenuItems} />
 	</div>
 </div>
 
@@ -219,11 +201,7 @@
 		box-sizing: border-box;
 	}
 
-	td {
-		min-width: 0;
-	}
-
-	td > * {
+	.cell > * {
 		height: 100%;
 		display: flex;
 		align-items: center;
@@ -340,32 +318,8 @@
 		flex: 0 0 80px;
 	}
 
-	.menu-cell {
-		justify-content: space-between;
-		position: relative;
-	}
-
 	.vertical-line {
 		border-right: 1px solid #d1d0d0;
 		height: 70%;
-	}
-
-	.menu-button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		transition: color 0.25s ease;
-		transition: background-color 0.2s ease;
-		border-radius: 6px;
-		cursor: pointer;
-		margin: 0 1.3rem;
-	}
-
-	.menu-button:hover {
-		background-color: #eeeeee;
-	}
-
-	.menu-button.active {
-		background-color: #dddddd;
 	}
 </style>
