@@ -6,6 +6,8 @@
 
 	let hoveredRowId: string | null = null;
 
+	console.log($appLoad);
+
 	// Decides which row should create a hovered effect, based on license ID
 	function handleHover(e: CustomEvent<any>, licenseId: string) {
 		if (e.detail.hovered) {
@@ -18,23 +20,24 @@
 	}
 </script>
 
-<tbody class="table">
-	{#await $appLoad}
-		<div class="loading"><Circle color="var(--deep-purple)" /></div>
-	{:then}
-		{#if $tableState.length === 0}
-			<p>No licenses found</p>
-		{:else}
+{#await $appLoad}
+	<div class="loading"><Circle color="var(--deep-purple)" /></div>
+{:then}
+	{#if $tableState.length === 0}
+		<div class="loading"><h1>No licenses found</h1></div>
+	{:else}
+		<div role="rowgroup" class="table">
 			{#each $tableState as license}
 				<div class="license-row" class:hovered={hoveredRowId === license.id}>
 					<LicenseRow {license} on:hover={(event) => handleHover(event, license.id)} />
+						<!-- menu component! -->
 				</div>
 			{/each}
-		{/if}
-	{:catch}
-		<p>aaa</p>
-	{/await}
-</tbody>
+		</div>
+	{/if}
+{:catch}
+	<div class="loading"><h1>I AM ERROR</h1></div>
+{/await}
 
 <style>
 	.table {

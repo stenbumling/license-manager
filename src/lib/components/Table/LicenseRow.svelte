@@ -62,9 +62,11 @@
 	}
 </script>
 
-<tr class="license-row-container">
+<div role="row" class="license-row-container">
 	<!-- Icon cell -->
-	<td
+	<div
+		role="cell"
+		tabindex="0"
 		class="status-cell-container"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
@@ -82,9 +84,11 @@
 				class:expired={license.status === 'Expired'}
 			/>
 		</a>
-	</td>
+	</div>
 	<!-- Application cell -->
-	<td
+	<div
+		role="cell"
+		tabindex="0"
 		class="application-cell-container"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
@@ -98,9 +102,11 @@
 		>
 			<p class="table-text">{license.application.name}</p>
 		</a>
-	</td>
+	</div>
 	<!-- Contact cell -->
-	<td
+	<div
+		role="cell"
+		tabindex="0"
 		class="contact-cell-container"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
@@ -120,9 +126,11 @@
 				{/if}
 			</p>
 		</a>
-	</td>
+	</div>
 	<!-- Users cell -->
-	<td
+	<div
+		role="cell"
+		tabindex="0"
 		class="users-cell-container"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
@@ -142,9 +150,11 @@
 				{/if}
 			</p>
 		</a>
-	</td>
+	</div>
 	<!-- Expiration cell -->
-	<td
+	<div
+		role="cell"
+		tabindex="0"
 		class="expiration-cell-container"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
@@ -164,9 +174,11 @@
 				{renewalDate.text}
 			</p>
 		</a>
-	</td>
+	</div>
 	<!-- Renewal cell -->
-	<td
+	<div
+		role="cell"
+		tabindex="0"
 		class="renewal-cell-container"
 		on:mouseover={() => handleMouseHover(true)}
 		on:mouseout={() => handleMouseHover(false)}
@@ -182,9 +194,9 @@
 				<Repeat size={16} />
 			{/if}
 		</a>
-	</td>
+	</div>
 	<!-- Menu cell -->
-	<td class="menu-cell-container">
+	<div class="menu-cell-container">
 		<div class="menu-cell">
 			<div class="vertical-line" />
 			<button
@@ -199,8 +211,8 @@
 				<ContextMenu bind:referenceElementRect={menuButtonRect} items={contextMenuItems} />
 			{/if}
 		</div>
-	</td>
-</tr>
+	</div>
+</div>
 
 <style>
 	* {

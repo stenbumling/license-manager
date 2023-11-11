@@ -5,42 +5,66 @@
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
 </script>
 
-<thead>
-	<tr>
-		<th class="status-col" on:click={() => {}}>
+<div role="rowgroup">
+	<div role="row" class="header-row">
+		<div role="columnheader" tabindex="0" class="status-col">
 			<CircleDash size={20} />
-		</th>
-		<th class="application-col" on:click={() => table.sortBy('application')}>
+		</div>
+		<div
+			role="columnheader"
+			tabindex="0"
+			class="application-col"
+			on:click={() => table.sortBy('application')}
+			on:keydown={() => table.sortBy('application')}
+		>
 			<h3 class="column-label">Application</h3>
 			{#if $sortState['application'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['application'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
-		</th>
-		<th class="contact-col" on:click={() => table.sortBy('contactPerson')}>
+		</div>
+		<div
+			role="columnheader"
+			tabindex="0"
+			class="contact-col"
+			on:click={() => table.sortBy('contactPerson')}
+			on:keydown={() => table.sortBy('contactPerson')}
+		>
 			<h3 class="column-label">Contact person</h3>
 			{#if $sortState['contactPerson'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['contactPerson'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
-		</th>
-		<th class="users-col" on:click={() => table.sortBy('users')}>
+		</div>
+		<div
+			role="columnheader"
+			tabindex="0"
+			class="users-col"
+			on:click={() => table.sortBy('users')}
+			on:keydown={() => table.sortBy('users')}
+		>
 			<h3 class="column-label">Users</h3>
 			{#if $sortState['users'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['users'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
-		</th>
-		<th class="expiration-col" on:click={() => table.sortBy('renewalDate')}>
+		</div>
+		<div
+			role="columnheader"
+			tabindex="0"
+			class="expiration-col"
+			on:click={() => table.sortBy('renewalDate')}
+			on:keydown={() => table.sortBy('renewalDate')}
+		>
 			{#if $sortState['renewalDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['renewalDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 			<h3 class="column-label">Expires in</h3>
-		</th>
-		<th class="renewal-col" />
-		<th class="menu-col" />
-	</tr>
-</thead>
+		</div>
+		<div role="columnheader" tabindex="0" class="renewal-col" />
+		<div class="menu-col" />
+	</div>
+</div>
 
 <style>
 	* {
 		box-sizing: border-box;
 	}
 
-	tr {
+	.header-row {
 		overflow-y: scroll;
 		border-bottom: 2px solid black;
 		display: flex;
@@ -49,18 +73,20 @@
 		padding: 0 0rem 1rem 0;
 	}
 
-	tr::-webkit-scrollbar {
+	::-webkit-scrollbar {
 		background-color: transparent;
 	}
 
-	th {
+	.status-col,
+	.application-col,
+	.contact-col,
+	.users-col,
+	.expiration-col,
+	.renewal-col,
+	.menu-col {
 		display: flex;
 		align-items: center;
 		min-width: 0;
-	}
-
-	th > * {
-		margin-top: 1px;
 	}
 
 	.column-label {
