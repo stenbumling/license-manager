@@ -98,6 +98,10 @@
 		min-width: 0;
 	}
 
+	.table-header-row > * > * {
+		min-width: 0;
+	}
+
 	::-webkit-scrollbar {
 		background-color: transparent;
 	}
