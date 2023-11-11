@@ -40,7 +40,7 @@
 
 	.search-field {
 		width: 100%;
-		height: 3rem;
+		min-height: 3rem;
 		padding-left: 50px;
 		border: none;
 		border-bottom: 1px solid var(--text-placeholder);

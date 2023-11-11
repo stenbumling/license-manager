@@ -21,8 +21,6 @@
 			<div role="rowgroup">
 				{#each $tableState as license}
 					<LicenseRow {license} />
-					<LicenseRow {license} />
-					<LicenseRow {license} />
 				{/each}
 			</div>
 		{/if}
