@@ -10,12 +10,14 @@
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
-	import { createEventDispatcher } from 'svelte';
 
 	export let license: License;
+
+	let hovered = false;
+
 	$: renewalDate = getRelativeDate(license.renewalDate);
 
-	const licenseMenuItems: ContextMenuItem[] = [
+	export const licenseMenuItems: ContextMenuItem[] = [
 		{
 			label: 'View license',
 			icon: ViewFilled,
@@ -41,157 +43,79 @@
 
 	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
 		contextMenu.close();
-		e.stopPropagation();
 		if (e.metaKey || e.ctrlKey) {
 			return;
 		}
 		e.preventDefault();
 		goto(`/?modal=view&id=${license.id}`);
 	}
-
-	// Hover logic
-	const dispatch = createEventDispatcher();
-	function handleMouseHover(isHovered: boolean) {
-		dispatch('hover', { hovered: isHovered });
-	}
 </script>
 
-<div role="row" class="license-row-container">
-	<!-- Icon cell -->
-	<div
-		role="cell"
+<div role="row" tabindex="-1" class="license-row-container" class:hover={hovered}>
+	<a
+		class="license-row"
 		tabindex="0"
-		class="status-cell-container cell"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
+		href={`/?modal=view&id=${license.id}`}
+		on:mouseover={() => (hovered = true)}
+		on:mouseout={() => (hovered = false)}
+		on:focus={() => (hovered = true)}
+		on:blur={() => (hovered = false)}
+		on:click|stopPropagation={(e) => handleView(license, e)}
 	>
-		<a
-			class="status-cell"
-			href={`/?modal=view&id=${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
+		<!-- Icon cell -->
+		<div role="cell" tabindex="-1" class="cell status-cell">
 			<div
 				class="status-icon"
 				class:inactive={license.status === 'Inactive'}
 				class:expired={license.status === 'Expired'}
 			/>
-		</a>
-	</div>
-	<!-- Application cell -->
-	<div
-		role="cell"
-		tabindex="0"
-		class="application-cell-container cell"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="application-cell"
-			href={`/?modal=view&id=${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
-			<p class="table-text">{license.application.name}</p>
-		</a>
-	</div>
-	<!-- Contact cell -->
-	<div
-		role="cell"
-		tabindex="0"
-		class="contact-cell-container cell"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="contact-cell"
-			href={`/?modal=view&id=${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
-			<p class="table-text">
+		</div>
+		<!-- Application cell -->
+		<div role="cell" tabindex="-1" class="cell application-cell">
+			<p class="cell-text">{license.application.name}</p>
+		</div>
+		<!-- Contact cell -->
+		<div role="cell" tabindex="-1" class="cell contact-person-cell">
+			<p class="cell-text">
 				{#if license.contactPerson}
 					{license.contactPerson}
 				{:else}
-					<p style="font-style: italic">Unassigned</p>
+					<span style="font-style: italic">Unassigned</span>
 				{/if}
 			</p>
-		</a>
-	</div>
-	<!-- Users cell -->
-	<div
-		role="cell"
-		tabindex="0"
-		class="users-cell-container cell"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="users-cell"
-			href={`/?modal=view&id=${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
-			<p class="table-text">
+		</div>
+		<!-- Users cell -->
+		<div role="cell" tabindex="-1" class="cell users-cell">
+			<p class="cell-text">
 				{#if license.users.length === 0}
-					<p style="font-style: italic">None</p>
+					<span style="font-style: italic">None</span>
 				{:else}
 					{license.users.length}
 				{/if}
 			</p>
-		</a>
-	</div>
-	<!-- Expiration cell -->
-	<div
-		role="cell"
-		tabindex="0"
-		class="expiration-cell-container cell"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="expiration-cell"
-			href={`/?modal=view&id=${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
+		</div>
+		<!-- Expiration cell -->
+		<div role="cell" tabindex="-1" class="cell expiration-cell">
 			<p
-				class="table-text"
+				class="cell-text"
 				class:warning-text={renewalDate.status === 'warning'}
 				class:alert-text={renewalDate.status === 'alert'}
 			>
 				{renewalDate.text}
 			</p>
-		</a>
-	</div>
-	<!-- Renewal cell -->
-	<div
-		role="cell"
-		tabindex="0"
-		class="renewal-cell-container cell"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="renewal-cell"
-			href={`/?modal=view&id=${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
+		</div>
+		<!-- Renewal cell -->
+		<div role="cell" tabindex="-1" class="cell renewal-cell">
 			{#if license.autoRenewal}
-				<Repeat size={16} />
+				<div style="margin-right: 6px;">
+					<Repeat size={16} />
+				</div>
 			{/if}
-		</a>
-	</div>
+		</div>
+	</a>
 	<!-- Menu cell -->
-	<div class="menu-cell-container cell">
-		<!-- <div class="vertical-line" /> -->
+	<div class="cell menu-cell">
+		<div class="vertical-line" />
 		<LicenseMenu items={licenseMenuItems} />
 	</div>
 </div>
@@ -201,12 +125,6 @@
 		box-sizing: border-box;
 	}
 
-	.cell > * {
-		height: 100%;
-		display: flex;
-		align-items: center;
-	}
-
 	.license-row-container {
 		min-height: 60px;
 		height: 60px;
@@ -214,22 +132,41 @@
 		display: flex;
 	}
 
-	.table-text {
-		align-items: flex-end;
+	.license-row-container.hover {
+		background-color: #eeeeee;
+		transition: background-color 0.1s ease;
+		cursor: pointer;
+	}
+
+	.license-row {
+		display: flex;
+		width: 100%;
+	}
+
+	/* Cells */
+
+	.cell {
+		display: flex;
+		align-items: center;
+	}
+
+	.cell > * {
+		height: 100%;
+		display: flex;
+		align-items: center;
+	}
+
+	.cell-text {
 		user-select: none;
-		padding: 0.1rem 0.4rem 0 0.4rem;
+		padding: 0 0.4rem;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
 	}
 
-	/* Status cell */
-
-	.status-cell-container {
-		flex: 0 0 60px;
-	}
-
 	.status-cell {
+		flex: 0 0 60px;
+		display: flex;
 		justify-content: center;
 	}
 
@@ -240,86 +177,52 @@
 		background-color: #6ae674;
 	}
 
-	.inactive {
+	.status-icon.inactive {
 		background-color: #bfbfbf;
 	}
 
-	.expired {
+	.status-icon.expired {
 		background-color: #ff0000;
 	}
 
-	/* Application cell */
-
-	.application-cell-container {
-		flex: 2;
-	}
-
 	.application-cell {
-		justify-content: flex-start;
-	}
-
-	/* Contact cell */
-
-	.contact-cell-container {
 		flex: 2;
 	}
 
-	.contact-cell {
-		justify-content: flex-start;
-	}
-
-	/* Users cell */
-
-	.users-cell-container {
-		flex: 1.5;
+	.contact-person-cell {
+		flex: 2;
 	}
 
 	.users-cell {
-		justify-content: center;
-	}
-
-	/* Expiration cell */
-
-	.expiration-cell-container {
 		flex: 1.5;
+		justify-content: center;
 	}
 
 	.expiration-cell {
+		flex: 1.5;
 		justify-content: flex-end;
 	}
 
-	.expiration-cell > * {
-		height: 100%;
-		display: flex;
-		align-items: center;
-	}
-
-	.warning-text {
+	.expiration-cell > .warning-text {
 		color: #ff9736;
 	}
 
-	.alert-text {
+	.expiration-cell > .alert-text {
 		color: #ff0000;
 	}
 
-	/* Renewal cell */
-
-	.renewal-cell-container {
-		flex: 0 0 70px;
-	}
-
 	.renewal-cell {
+		flex: 0 0 70px;
 		justify-content: center;
 	}
 
-	/* Menu cell */
-
-	.menu-cell-container {
+	.menu-cell {
 		flex: 0 0 80px;
+		justify-content: center;
 	}
 
-	.vertical-line {
+	.menu-cell > .vertical-line {
 		border-right: 1px solid #d1d0d0;
-		height: 70%;
+		height: 60%;
 	}
 </style>

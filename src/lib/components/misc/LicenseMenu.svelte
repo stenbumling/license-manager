@@ -14,6 +14,7 @@
 
 <div class="menu-button-container">
 	<button
+		tabindex="0"
 		class="menu-button"
 		class:active={$contextMenu.activeId === menuId}
 		on:click|stopPropagation|preventDefault={() => {
@@ -22,6 +23,8 @@
 		on:keydown|stopPropagation={(e) => {
 			if (e.key === 'Enter') {
 				contextMenu.open(menuId);
+			} else if (e.key === 'Escape') {
+				contextMenu.close();
 			}
 		}}
 		use:getElementRect={(element) => (menuButtonRect = element)}

@@ -18,7 +18,7 @@
 
 <div
 	role="menu"
-	tabindex="0"
+	tabindex="-1"
 	class="context-menu"
 	use:getElementRect={renderContextMenu}
 	use:clickOutside={() => contextMenu.close()}

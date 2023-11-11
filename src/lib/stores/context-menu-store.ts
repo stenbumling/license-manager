@@ -10,17 +10,17 @@ type ContextMenuState = {
 	activeId: string | null;
 };
 
+const initialState: ContextMenuState = {
+	position: null,
+	activeId: null,
+};
+
 export interface ContextMenuItem {
 	label: string;
 	action: () => void;
 	icon?: ComponentType;
 	class?: 'warning' | 'alert';
 }
-
-const initialState: ContextMenuState = {
-	position: null,
-	activeId: null,
-};
 
 function createContextMenuStore() {
 	const { subscribe, set, update } = writable<ContextMenuState>(initialState);
