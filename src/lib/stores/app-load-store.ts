@@ -4,7 +4,9 @@ import { tableState } from '$lib/stores/table-store';
 import { userStore } from '$lib/stores/user-store';
 import { writable } from 'svelte/store';
 
-export const appLoad = writable<Promise<unknown>>();
+const pendingPromise = new Promise(() => {});
+
+export const appLoad = writable<Promise<unknown>>(pendingPromise);
 
 export async function fetchAllData() {
 	return new Promise(async (resolve, reject) => {

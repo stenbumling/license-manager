@@ -7,7 +7,10 @@
 		<h3 class="button-title">{title}</h3>
 		<img src={'/button-arrow.svg'} alt="arrow" />
 	</div>
-	<div class="button-animated-hover" 		style:background={`linear-gradient(to right, var(--deep-purple) 100%, transparent 100%`} />
+	<div
+		class="button-animated-hover"
+		style:background={`linear-gradient(to right, var(--deep-purple) 100%, transparent 100%`}
+	/>
 </div>
 
 <style>
