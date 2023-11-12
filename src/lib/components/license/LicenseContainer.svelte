@@ -24,7 +24,7 @@
 	import { onMount } from 'svelte';
 	import { Circle } from 'svelte-loading-spinners';
 
-	let promise: Promise<unknown>;
+	let promise: Promise<pending>;
 	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
 	const contextMenuItems: ContextMenuItem[] = [
