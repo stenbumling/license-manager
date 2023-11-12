@@ -19,6 +19,29 @@ export const application = writable<Application>(getInitialValues());
 function createApplicationStore() {
 	const { subscribe, set, update } = writable<Application[]>([]);
 
+	async function fetchApplications() {
+		try {
+			const response = await fetch('/api/application');
+			if (response.ok) {
+				const applications = await response.json();
+				update(() => applications);
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
+		} catch (error) {
+			console.error('Failed to fetch applications\n:', error);
+			// toast
+		}
+	}
+
 	async function addApplication(application: Application) {
 		try {
 			const response = await fetch('/api/application/add', {
@@ -26,10 +49,23 @@ function createApplicationStore() {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
 			});
-			const newApplication = await response.json();
-			update((applications) => [newApplication, ...applications]);
+			if (response.ok) {
+				const newApplication = await response.json();
+				update((applications) => [newApplication, ...applications]);
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
-			console.error('Failed to add application:', error);
+			console.error('Failed to add application\n:', error);
+			// toast
 		}
 	}
 
@@ -38,10 +74,22 @@ function createApplicationStore() {
 			const response = await fetch(`/api/application/delete/${id}`, {
 				method: 'DELETE',
 			});
-			if (!response.ok) throw new Error('Failed to delete application');
-			update((applications) => applications.filter((application) => application.id !== id));
+			if (response.ok) {
+				update((applications) => applications.filter((application) => application.id !== id));
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
-			console.error('Failed to delete application:', error);
+			console.error('Failed to delete application\n:', error);
+			// toast
 		}
 	}
 
@@ -54,6 +102,7 @@ function createApplicationStore() {
 		subscribe,
 		set,
 		update,
+		fetch: fetchApplications,
 		add: addApplication,
 		delete: deleteApplication,
 		reset: resetField,

@@ -101,13 +101,23 @@ export function createTableStore() {
 	async function sendQueryToDatabase(query: string) {
 		try {
 			const response = await fetch(`/api/license/query${query}`);
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
+			if (response.ok) {
+				const licenses = await response.json();
+				licenseStore.set(licenses);
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
 			}
-			const licenses = await response.json();
-			licenseStore.set(licenses);
 		} catch (error) {
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
+			// toast
 		}
 	}
 

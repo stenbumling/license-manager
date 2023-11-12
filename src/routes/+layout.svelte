@@ -24,7 +24,8 @@
 		}
 
 		if (data.error) {
-			console.log(data.error);
+			console.log(`${data.error.code}: ${data.error.message}`);
+			// toast
 		} else {
 			licenseStore.set(data.licenses);
 			applicationStore.set(data.applications);
@@ -48,15 +49,30 @@
 	<Header />
 </header>
 
-<main>
-	<slot />
-</main>
+{#if data.error}
+	<div class="fallback-container">
+		<h1 style="font-size: 5rem">{data.error.code}</h1>
+		<h1>{data.error.message}</h1>
+	</div>
+{:else}
+	<main>
+		<slot />
+	</main>
+{/if}
 
 <style>
 	main {
 		max-height: calc(100vh - 4.65rem);
 		display: flex;
 		justify-content: center;
+	}
+
+	.fallback-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-grow: 1;
+		flex-direction: column;
 	}
 
 	@media (max-height: 850px) {

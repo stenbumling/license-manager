@@ -70,38 +70,69 @@ function createLicenseStore() {
 	async function fetchLicenses() {
 		try {
 			const response = await fetch('/api/license');
-			const { licenses } = await response.json();
-			if (licenses) {
+			if (response.ok) {
+				const { licenses } = await response.json();
 				set(licenses);
 			} else {
-				throw new Error(`Licenses could not be fetched`);
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
 			}
 		} catch (error) {
 			console.error('Failed to fetch licenses:', error);
+			// toast
 		}
 	}
 
 	async function getLicenseById(id: string) {
 		try {
 			const response = await fetch(`/api/license/${id}`);
-			const fetchedLicense = await response.json();
-			if (fetchedLicense) {
+			if (response.ok) {
+				const fetchedLicense = await response.json();
 				license.set(fetchedLicense);
 			} else {
-				throw new Error(`License with id ${id} not found`);
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
 			}
 		} catch (error) {
 			console.error('Failed to fetch license:', error);
+			// toast
 		}
 	}
 
 	async function updateLicenseCounts() {
 		try {
 			const response = await fetch('/api/license/counts');
-			const counts = await response.json();
-			licenseCounts.set(counts);
+			if (response.ok) {
+				const counts = await response.json();
+				licenseCounts.set(counts);
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
 			console.error('Failed to fetch license counts:', error);
+			// toast
 		}
 	}
 
@@ -112,10 +143,23 @@ function createLicenseStore() {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
 			});
-			updateLicenseCounts();
-			await table.updateState();
+			if (response.ok) {
+				updateLicenseCounts();
+				await table.updateState();
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
 			console.error('Failed to add license:', error);
+			// toast
 		}
 	}
 
@@ -126,11 +170,23 @@ function createLicenseStore() {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
 			});
-			if (!response.ok) throw new Error('Failed to update license');
-			updateLicenseCounts();
-			await table.updateState();
+			if (response.ok) {
+				updateLicenseCounts();
+				await table.updateState();
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
 			console.error('Failed to update license:', error);
+			// toast
 		}
 	}
 
@@ -139,11 +195,23 @@ function createLicenseStore() {
 			const response = await fetch(`/api/license/delete/${id}`, {
 				method: 'DELETE',
 			});
-			if (!response.ok) throw new Error('Failed to delete license');
-			updateLicenseCounts();
-			await table.updateState();
+			if (response.ok) {
+				updateLicenseCounts();
+				await table.updateState();
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
 			console.error('Failed to delete license:', error);
+			// toast
 		}
 	}
 
