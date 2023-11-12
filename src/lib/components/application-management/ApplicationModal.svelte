@@ -2,8 +2,7 @@
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
 	import { application, applicationStore } from '$lib/stores/application-store';
-	import { license } from '$lib/stores/license-store';
-	import { showApplicationModal } from '$lib/stores/modal-state';
+	import { showApplicationModal } from '$lib/stores/modal-store';
 	import { applicationErrors, validateApplication } from '$lib/validations/application-validation';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';

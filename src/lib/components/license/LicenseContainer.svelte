@@ -15,7 +15,7 @@
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
-	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
+	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-store';
 	import { licenseErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';

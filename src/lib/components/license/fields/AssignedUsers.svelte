@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AssignedUsersModal from '$lib/components/license/AssignedUsersModal.svelte';
 	import { license } from '$lib/stores/license-store.ts';
-	import { showAssignedUsersModal } from '$lib/stores/modal-state';
+	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import type { User } from '$lib/stores/user-store';
 	import { userStore } from '$lib/stores/user-store';
 	import { userErrors, validateUser } from '$lib/validations/user-validation';

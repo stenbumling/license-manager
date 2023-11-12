@@ -3,7 +3,7 @@ import type { License } from '$lib/stores/license-store';
 import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
 import { licenseStore } from './license-store';
-import { showLicenseModal } from './modal-state';
+import { showLicenseModal } from './modal-store';
 
 type ContextMenuState = {
 	position: { top: number; left: number } | null;

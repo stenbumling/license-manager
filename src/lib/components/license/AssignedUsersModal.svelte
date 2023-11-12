@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { license } from '$lib/stores/license-store.ts';
-	import { showAssignedUsersModal } from '$lib/stores/modal-state';
+	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import type { User } from '$lib/stores/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';

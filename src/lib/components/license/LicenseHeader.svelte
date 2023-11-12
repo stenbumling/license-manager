@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store';
-	import { showLicenseModal } from '$lib/stores/modal-state';
+	import { showLicenseModal } from '$lib/stores/modal-store';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	function closeLicenseModal() {

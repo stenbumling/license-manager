@@ -1,33 +1,8 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
-	import { showLicenseModal } from '$lib/stores/modal-state';
-	import { validateLicenseId } from '$lib/utils/uuid-utils';
-	import { onMount } from 'svelte';
-
-	onMount(() => {
-		const urlParams = new URLSearchParams($page.url.search);
-		const modal = urlParams.get('modal');
-		const id = urlParams.get('id');
-
-		if (modal === 'add') {
-		} else if (modal === 'view' && id && validateLicenseId(id)) {
-		} else {
-			goto('/');
-		}
-	});
-
-	$: if (
-		$page.url.search.startsWith('?modal=add') ||
-		($page.url.search.startsWith('?modal=view') && $page.url.search.includes('&id='))
-	) {
-		showLicenseModal.set(true);
-	} else {
-		showLicenseModal.set(false);
-	}
+	import { showLicenseModal } from '$lib/stores/modal-store';
 </script>
 
 <div class="main-container">

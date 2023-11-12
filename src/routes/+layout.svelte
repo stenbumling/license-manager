@@ -4,23 +4,21 @@
 	import Header from '$lib/components/misc/Header.svelte';
 	import { applicationStore } from '$lib/stores/application-store';
 	import { licenseCounts, licenseStore } from '$lib/stores/license-store';
-	import { showLicenseModal } from '$lib/stores/modal-state';
+	import { showLicenseModal } from '$lib/stores/modal-store.js';
 	import { table } from '$lib/stores/table-store.js';
 	import { userStore } from '$lib/stores/user-store';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
-	import { validateLicenseId } from '$lib/utils/uuid-utils';
+	import { validateLicenseId } from '$lib/utils/url-utils.js';
 	import { onMount } from 'svelte';
 
 	export let data;
 
 	onMount(async () => {
-		const urlParams = new URLSearchParams($page.url.search);
-		const modal = urlParams.get('modal');
-		const id = urlParams.get('id');
+		const modal = $page.url.searchParams.get('modal');
+		const id = $page.url.searchParams.get('id');
 
-		if (modal === 'add') {
-		} else if (modal === 'view' && id && validateLicenseId(id)) {
+		if (modal === 'add' || (modal === 'view' && id && validateLicenseId(id))) {
 		} else {
 			goto('/');
 		}
@@ -37,8 +35,8 @@
 	});
 
 	$: if (
-		$page.url.search.startsWith('?modal=add') ||
-		($page.url.search.startsWith('?modal=view') && $page.url.search.includes('&id='))
+		$page.url.searchParams.get('modal') == 'add' ||
+		($page.url.searchParams.get('modal') == 'view' && $page.url.searchParams.get('id'))
 	) {
 		showLicenseModal.set(true);
 	} else {

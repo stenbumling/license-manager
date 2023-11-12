@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applicationStore } from '$lib/stores/application-store';
 	import { license } from '$lib/stores/license-store';
-	import { showApplicationModal } from '$lib/stores/modal-state';
+	import { showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	import { fade } from 'svelte/transition';
