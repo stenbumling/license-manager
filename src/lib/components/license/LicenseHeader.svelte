@@ -3,7 +3,6 @@
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store';
 	import { showLicenseModal } from '$lib/stores/modal-state';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
-	import { page } from '$app/stores';
 
 	function closeLicenseModal() {
 		showLicenseModal.set(false);
@@ -26,17 +25,17 @@
 </div>
 
 <style>
-  .header-container {
-    border-bottom: 1px solid var(--text-placeholder);
-    display: flex;
-    flex-direction: column;
-  }
+	.header-container {
+		border-bottom: 1px solid var(--text-placeholder);
+		display: flex;
+		flex-direction: column;
+	}
 
-  .header-content {
-    margin-bottom: 0.4rem;
-    display: flex;
-    justify-content: space-between;
-  }
+	.header-content {
+		margin-bottom: 0.4rem;
+		display: flex;
+		justify-content: space-between;
+	}
 
 	.close-button {
 		padding: 0.2rem;
@@ -60,13 +59,13 @@
 		}
 	}
 
-  .title {
-    margin-bottom: 1rem;
-    font-size: 2.8rem;
-    font-weight: 500;
-  }
+	.title {
+		margin-bottom: 1rem;
+		font-size: 2.8rem;
+		font-weight: 500;
+	}
 
-  .new-license {
-    color: var(--text-placeholder);
-  }
+	.new-license {
+		color: var(--text-placeholder);
+	}
 </style>
