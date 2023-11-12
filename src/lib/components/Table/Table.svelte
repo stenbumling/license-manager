@@ -1,25 +1,25 @@
 <script lang="ts">
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
-	import { appLoad } from '$lib/stores/app-load-store';
-	import { tableState } from '$lib/stores/table-store';
+	import { licenseStore } from '$lib/stores/license-store.ts';
 	import { Circle } from 'svelte-loading-spinners';
+	import { fade } from 'svelte/transition';
 
-	console.log($appLoad);
+	let pending: any;
 </script>
 
 <div class="table-body-wrapper">
-	{#await $appLoad}
-		<div class="fallback-container">
+	{#await pending}
+		<div class="fallback-container" in:fade={{ duration: 500 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
 	{:then}
-		{#if $tableState.length === 0}
+		{#if $licenseStore.length === 0}
 			<div class="fallback-container">
 				<h1>No licenses found</h1>
 			</div>
 		{:else}
 			<div role="rowgroup">
-				{#each $tableState as license}
+				{#each $licenseStore as license}
 					<LicenseRow {license} />
 				{/each}
 			</div>

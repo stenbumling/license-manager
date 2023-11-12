@@ -1,8 +1,8 @@
 import type { User } from '$lib/stores/user-store';
 import { licenseErrors } from '$lib/validations/license-validation';
-import { get, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { table, tableState } from './table-store';
+import { table } from './table-store';
 
 export function getInitialValues() {
 	return {
@@ -71,26 +71,28 @@ function createLicenseStore() {
 		try {
 			const response = await fetch('/api/license');
 			const { licenses } = await response.json();
-			set(licenses);
+			if (licenses) {
+				set(licenses);
+			} else {
+				throw new Error(`Licenses could not be fetched`);
+			}
 		} catch (error) {
 			console.error('Failed to fetch licenses:', error);
 		}
 	}
 
 	async function getLicenseById(id: string) {
-		return new Promise((resolve, reject) => {
-			setTimeout(async () => {
-				const fetchedLicense = get(licenseStore).find((license) => license.id === id);
-
-				if (fetchedLicense) {
-					license.set(structuredClone(fetchedLicense));
-					resolve(fetchedLicense); // Resolve the promise with the fetched license
-				} else {
-					console.error('Failed to get license from store');
-					reject(new Error('Failed to get license from store')); // Reject the promise
-				}
-			}, 1000); // Delay for 2000 milliseconds (2 seconds)
-		});
+		try {
+			const response = await fetch(`/api/license/${id}`);
+			const fetchedLicense = await response.json();
+			if (fetchedLicense) {
+				license.set(fetchedLicense);
+			} else {
+				throw new Error(`License with id ${id} not found`);
+			}
+		} catch (error) {
+			console.error('Failed to fetch license:', error);
+		}
 	}
 
 	async function updateLicenseCounts() {
@@ -110,11 +112,8 @@ function createLicenseStore() {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
 			});
-			const newLicense = await response.json();
-			update((allLicenses) => [newLicense, ...allLicenses]);
-			tableState.update((allLicenses) => [newLicense, ...allLicenses]);
 			updateLicenseCounts();
-			table.updateState();
+			await table.updateState();
 		} catch (error) {
 			console.error('Failed to add license:', error);
 		}
@@ -128,18 +127,8 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			if (!response.ok) throw new Error('Failed to update license');
-			update((allLicenses) =>
-				allLicenses.map((currentLicense) =>
-					currentLicense.id === license.id ? license : currentLicense,
-				),
-			);
-			tableState.update((allLicenses) =>
-				allLicenses.map((currentLicense) =>
-					currentLicense.id === license.id ? license : currentLicense,
-				),
-			);
 			updateLicenseCounts();
-			table.updateState();
+			await table.updateState();
 		} catch (error) {
 			console.error('Failed to update license:', error);
 		}
@@ -151,10 +140,8 @@ function createLicenseStore() {
 				method: 'DELETE',
 			});
 			if (!response.ok) throw new Error('Failed to delete license');
-			update((allLicenses) => allLicenses.filter((license) => license.id !== id));
-			tableState.update((allLicenses) => allLicenses.filter((license) => license.id !== id));
 			updateLicenseCounts();
-			table.updateState();
+			await table.updateState();
 		} catch (error) {
 			console.error('Failed to delete license:', error);
 		}

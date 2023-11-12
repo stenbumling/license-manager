@@ -1,7 +1,8 @@
 import { get, writable } from 'svelte/store';
-import type { License } from './license-store';
+import { licenseStore, type License } from './license-store';
 
-export const tableState = writable<License[]>([]);
+export const tableLoading = writable(false);
+
 export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
@@ -14,23 +15,23 @@ export const searchQuery = writable('');
 export function createTableStore() {
 	const { subscribe } = writable<License[]>([]);
 
-	function updateFilterState(filter: string) {
+	async function updateFilterState(filter: string) {
 		filterState.set(filter);
-		updateTableState();
+		await updateTableState();
 	}
 
-	function updateSortState(column: string) {
+	async function updateSortState(column: string) {
 		sortState.update((currentState) => {
 			updateSortOrder(column, currentState);
 			return currentState;
 		});
-		updateTableState();
+		await updateTableState();
 	}
 
-	function updateTableState() {
+	async function updateTableState() {
 		const { sortColumn, sortOrder } = getSortState();
 		const query = constructFilterQuery(get(filterState), get(searchQuery), sortOrder, sortColumn);
-		sendQueryToDatabase(query);
+		await sendQueryToDatabase(query);
 	}
 
 	function getSortState() {
@@ -100,8 +101,11 @@ export function createTableStore() {
 	async function sendQueryToDatabase(query: string) {
 		try {
 			const response = await fetch(`/api/license/query${query}`);
+			if (!response.ok) {
+				throw new Error(`HTTP error! status: ${response.status}`);
+			}
 			const licenses = await response.json();
-			tableState.set(licenses);
+			licenseStore.set(licenses);
 		} catch (error) {
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 		}
