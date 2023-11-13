@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
 	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
 	import { licenseCounts } from '$lib/stores/license-store';
+	import { modal } from '$lib/stores/modal-store';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
 			return;
 		}
 		e.preventDefault();
-		goto('/?modal=add');
+		modal.openLicense('add');
 	}
 
 	$: filters = [

@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import LicenseMenu from '$lib/components/misc/LicenseMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import type { License } from '$lib/stores/license-store';
+	import { modal } from '$lib/stores/modal-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
@@ -47,7 +47,7 @@
 			return;
 		}
 		e.preventDefault();
-		goto(`/?modal=view&id=${license.id}`);
+		modal.openLicense(license.id);
 	}
 </script>
 

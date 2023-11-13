@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
@@ -15,23 +13,18 @@
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
-	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-store';
+	import { modal, showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
-	import { onMount } from 'svelte';
-	import { Circle } from 'svelte-loading-spinners';
-
-	let promise: Promise<unknown>;
-	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
 			label: 'Close without saving',
 			icon: CloseLarge,
-			action: () => handleClose(),
+			action: () => modal.closeLicense(),
 		},
 		{
 			label: 'Copy link',
@@ -51,48 +44,18 @@
 		},
 	];
 
-	onMount(async () => {
-		if (urlId) {
-			licenseMode.set('edit');
-			promise = licenseStore.fetch(urlId);
-		} else {
-			licenseMode.set('add');
-			licenseStore.resetFields();
-		}
-	});
-
 	async function handleLicense() {
-		contextMenu.close();
 		const isValid = await validateLicense($license);
 		if (isValid) {
-			showLicenseModal.set(false);
-			goto('/');
-			if ($licenseMode === 'edit') {
+			if ($licenseMode === 'view') {
 				licenseStore.updateLicense($license);
-			} else {
+			} else if ($licenseMode === 'add') {
 				licenseStore.add($license);
 			}
-			licenseStore.resetFields();
+			modal.closeLicense();
 		} else {
 			return;
 		}
-	}
-
-	async function handleTest() {
-		if (urlId) {
-			licenseMode.set('edit');
-			promise = licenseStore.fetch(urlId);
-		} else {
-			licenseMode.set('add');
-			licenseStore.resetFields();
-		}
-	}
-
-	async function handleClose() {
-		contextMenu.close();
-		showLicenseModal.set(false);
-		goto('/');
-		licenseStore.resetFields();
 	}
 </script>
 
@@ -101,62 +64,62 @@
 {/if}
 
 <div class="license-container">
-	{#await promise}
+	<!-- {#await promise}
 		<div class="loading"><Circle color="var(--deep-purple)" /></div>
-	{:then}
-		<LicenseHeader />
-		<div class="fields-grid" use:scrollShadow>
-			<ApplicationSelection />
-			<AssignedUsers />
-			<ExpirationField />
-			<SelectField
-				bind:value={$license.category}
-				label="Category"
-				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
-				defaultOption="Uncategorized"
-				errorMessage={$licenseErrors.category}
-			/>
-			<SelectField
-				bind:value={$license.status}
-				label="Status"
-				options={['Active', 'Inactive', 'Expired']}
-				defaultOption="Active"
-				errorMessage={$licenseErrors.status}
-			/>
+	{:then} -->
+	<LicenseHeader />
+	<div class="fields-grid" use:scrollShadow>
+		<ApplicationSelection />
+		<AssignedUsers />
+		<ExpirationField />
+		<SelectField
+			bind:value={$license.category}
+			label="Category"
+			options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
+			defaultOption="Uncategorized"
+			errorMessage={$licenseErrors.category}
+		/>
+		<SelectField
+			bind:value={$license.status}
+			label="Status"
+			options={['Active', 'Inactive', 'Expired']}
+			defaultOption="Active"
+			errorMessage={$licenseErrors.status}
+		/>
+		<TextField
+			bind:value={$license.contactPerson}
+			label="Contact person"
+			errorMessage={$licenseErrors.contactPerson}
+		>
 			<TextField
-				bind:value={$license.contactPerson}
-				label="Contact person"
-				errorMessage={$licenseErrors.contactPerson}
-			>
-				<TextField
-					slot="secondary"
-					bind:value={$license.additionalContactInfo}
-					label="Additional contact information"
-					type="secondary"
-					errorMessage={$licenseErrors.additionalContactInfo}
-				/>
-			</TextField>
-			<TextAreaField
-				bind:value={$license.comment}
-				label="Comment"
-				errorMessage={$licenseErrors.comment}
+				slot="secondary"
+				bind:value={$license.additionalContactInfo}
+				label="Additional contact information"
+				type="secondary"
+				errorMessage={$licenseErrors.additionalContactInfo}
 			/>
-		</div>
-		<div class="bottom-container">
-			{#if $licenseMode === 'edit'}
-				<LicenseMenu items={contextMenuItems} />
-			{/if}
-			<button class="main-button" on:click|preventDefault={handleLicense}>
-				<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
-			</button>
-		</div>
-	{:catch error}
+		</TextField>
+		<TextAreaField
+			bind:value={$license.comment}
+			label="Comment"
+			errorMessage={$licenseErrors.comment}
+		/>
+	</div>
+	<div class="bottom-container">
+		{#if $licenseMode === 'view'}
+			<LicenseMenu items={contextMenuItems} />
+		{/if}
+		<button class="main-button" on:click|preventDefault={handleLicense}>
+			<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
+		</button>
+	</div>
+	<!-- {:catch error}
 		{#if error.message === 'License not found'}
 			<p>License not found</p>
 		{:else}
 			<p>{error.message}</p>
 		{/if}
-	{/await}
+	{/await} -->
 </div>
 
 <style>
@@ -188,12 +151,12 @@
 		justify-content: flex-end;
 	}
 
-	.loading {
+	/* .loading {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-	}
+	} */
 
 	.main-button {
 		width: 16rem;

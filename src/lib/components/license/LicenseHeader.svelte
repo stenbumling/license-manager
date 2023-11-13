@@ -1,19 +1,16 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { license, licenseMode, licenseStore } from '$lib/stores/license-store';
-	import { showLicenseModal } from '$lib/stores/modal-store';
+	import { license, licenseMode } from '$lib/stores/license-store';
+	import { modal } from '$lib/stores/modal-store';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	function closeLicenseModal() {
-		showLicenseModal.set(false);
-		licenseStore.resetFields();
-		goto('/');
+		modal.closeLicense();
 	}
 </script>
 
 <div class="header-container">
 	<div class="header-content">
-		{#if $license.application.name && $licenseMode === 'edit'}
+		{#if $license.application.name && $licenseMode === 'view'}
 			<h1 class="title">{$license.application.name}</h1>
 		{:else}
 			<h1 class="title new-license">New license</h1>
@@ -47,16 +44,16 @@
 		color: black;
 		transition: color 0.25s ease;
 		transition: background-color 0.2s ease;
+	}
 
-		&:hover {
-			background-color: #eeeeee;
-		}
+	.close-button:hover {
+		background-color: #eeeeee;
+	}
 
-		&:active {
-			position: relative;
-			top: 1px;
-			left: 1px;
-		}
+	.close-button:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 
 	.title {

@@ -1,9 +1,8 @@
-import { goto } from '$app/navigation';
 import type { License } from '$lib/stores/license-store';
+import { modal } from '$lib/stores/modal-store';
 import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
 import { licenseStore } from './license-store';
-import { showLicenseModal } from './modal-store';
 
 type ContextMenuState = {
 	position: { top: number; left: number } | null;
@@ -53,7 +52,7 @@ function createContextMenuStore() {
 
 	function viewLicense(license: License) {
 		contextMenu.close();
-		goto(`/?modal=view&id=${license.id}`);
+		modal.openLicense(license.id);
 	}
 
 	function copyLicenseLink(license: License) {
@@ -67,11 +66,8 @@ function createContextMenuStore() {
 	}
 
 	function deleteLicense(license: License) {
-		contextMenu.close();
-		showLicenseModal.set(false);
+		modal.closeLicense();
 		licenseStore.delete(license.id);
-		licenseStore.resetFields();
-		goto('/');
 	}
 
 	return {

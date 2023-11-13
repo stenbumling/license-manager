@@ -60,7 +60,7 @@ export interface LicenseCounts {
 	expired: number;
 }
 
-export const licenseMode = writable<'add' | 'edit'>('add');
+export const licenseMode = writable<'add' | 'view'>('add');
 export const license = writable<License>(getInitialValues());
 export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
 
@@ -99,6 +99,7 @@ function createLicenseStore() {
 			} else {
 				const errorMessage = await response.json();
 				if (response.status === 404) {
+					throw new Error(`License with id ${id} not found`);
 					// toast
 				} else if (response.status === 401) {
 					// toast
@@ -108,7 +109,7 @@ function createLicenseStore() {
 				console.error(errorMessage);
 			}
 		} catch (error) {
-			console.error('Failed to fetch license:', error);
+			console.error('Failed to fetch license:', (error as Error).message);
 			// toast
 		}
 	}

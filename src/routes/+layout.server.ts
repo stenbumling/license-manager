@@ -10,10 +10,12 @@ export const load = async ({ fetch }) => {
 			fetch('/api/license/counts'),
 		]);
 
-		const failedResponse = responses.find(response => !response.ok);
+		const failedResponse = responses.find((response) => !response.ok);
 
 		if (failedResponse) {
-			console.error(`Failed to load data: ${failedResponse.url} responded with status ${failedResponse.status}`);
+			console.error(
+				`Failed to load data: ${failedResponse.url} responded with status ${failedResponse.status}`,
+			);
 			statusCode = failedResponse.status;
 			throw error(failedResponse.status, {
 				message: 'Failed to load all required data',
@@ -31,7 +33,7 @@ export const load = async ({ fetch }) => {
 		return {
 			error: {
 				message: 'An error occurred while loading data',
-				code: statusCode
+				code: statusCode,
 			},
 		};
 	}
