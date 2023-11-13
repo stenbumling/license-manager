@@ -60,6 +60,10 @@
 		margin-bottom: 1rem;
 		font-size: 2.8rem;
 		font-weight: 500;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		max-width: 90%
 	}
 
 	.new-license {

@@ -4,11 +4,12 @@ import { get, writable } from 'svelte/store';
 import { z } from 'zod';
 
 export const applicationSchema = z.object({
-	id: z.string().trim().uuid({ message: 'Invalid application ID' }),
+	id: z.string().uuid({ message: 'Invalid application ID' }),
 	name: z
 		.string()
 		.trim()
 		.min(1, { message: 'Please enter a name of the application' })
+		.max(100, { message: 'Application name can be at most 100 characters long' })
 		.refine(
 			(val) => {
 				const applications = get(applicationStore);

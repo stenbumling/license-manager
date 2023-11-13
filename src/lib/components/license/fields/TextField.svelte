@@ -38,6 +38,7 @@
 			bind:value
 			type="number"
 			aria-labelledby={id}
+			max="10000000"
 			{required}
 			{placeholder}
 			on:keydown={enforceNumeric}

@@ -14,7 +14,7 @@
 	<button class="trashcan-icon" on:click={handleDelete}>
 		<TrashCan size={24} fill="red" />
 	</button>
-	<p>{application.name}</p>
+	<p class="application-name">{application.name}</p>
 </div>
 
 <style>
@@ -31,6 +31,7 @@
 		position: relative;
 		top: -1px;
 		width: 2rem;
+		min-width: 2rem;
 		height: 2rem;
 		margin-right: 1rem;
 		border-radius: 8px;
@@ -39,9 +40,15 @@
 		align-items: center;
 		cursor: pointer;
 		transition: background-color 0.2s ease;
+	}
 
-		&:hover {
-			background-color: #ffefef;
-		}
+	.trashcan-icon:hover {
+		background-color: #ffefef;
+	}
+
+	.application-name {
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 </style>

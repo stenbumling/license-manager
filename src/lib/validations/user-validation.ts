@@ -5,7 +5,8 @@ import { z } from 'zod';
 export const userSchema = z
 	.string({ invalid_type_error: 'Your search query must be a string' })
 	.trim()
-	.min(1, { message: 'Please enter the name of a user' });
+	.min(1, { message: 'Please enter a name of a user' })
+	.max(100, { message: 'User name can be at most 100 characters long' })
 
 export const userErrors = writable<string[]>([]);
 
