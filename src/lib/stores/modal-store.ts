@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { writable } from 'svelte/store';
+import { applicationStore } from './application-store';
 import { contextMenu } from './context-menu-store';
 import { licenseMode, licenseStore } from './license-store';
 
@@ -58,12 +59,25 @@ function createModalStore() {
 		}, 120);
 	}
 
+	function closeApplication() {
+		showApplicationModal.set(false);
+		setTimeout(() => {
+			applicationStore.reset();
+		}, 120);
+	}
+
+	function closeAssignedUsers() {
+		showAssignedUsersModal.set(false);
+	}
+
 	return {
 		subscribe,
 		set,
 		update,
 		openLicense,
 		closeLicense,
+		closeApplication,
+		closeAssignedUsers,
 	};
 }
 

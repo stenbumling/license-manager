@@ -49,7 +49,7 @@
 		if (isValid) {
 			if ($licenseMode === 'view') {
 				licenseStore.updateLicense($license);
-			} else if ($licenseMode === 'add') {
+			} else if ($licenseMode === 'add'){
 				licenseStore.add($license);
 			}
 			modal.closeLicense();
@@ -57,6 +57,7 @@
 			return;
 		}
 	}
+
 </script>
 
 {#if $showApplicationModal}

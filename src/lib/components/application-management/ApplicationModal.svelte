@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
+	import CloseModalButton from '$lib/components/misc/CloseModalButton.svelte';
 	import { application, applicationStore } from '$lib/stores/application-store';
-	import { showApplicationModal } from '$lib/stores/modal-store';
+	import { modal } from '$lib/stores/modal-store';
 	import { applicationErrors, validateApplication } from '$lib/validations/application-validation';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
-	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
 
 	async function handleAdd(e: MouseEvent | KeyboardEvent) {
@@ -18,20 +18,13 @@
 			return;
 		}
 	}
-
-	function handleClose() {
-		showApplicationModal.set(false);
-		applicationStore.reset();
-	}
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
 		<div class="modal-header">
 			<h1 class="modal-title">Application<br />management</h1>
-			<a href="/" class="close-button" on:click|preventDefault={handleClose}>
-				<CloseLarge size={24} aria-label="CloseLarge" />
-			</a>
+			<CloseModalButton action={modal.closeApplication} />
 		</div>
 		<h3>Add new application</h3>
 		<div class="input-container">
@@ -94,26 +87,6 @@
 	.modal-title {
 		margin: 0;
 		font-size: 2rem;
-	}
-
-	.close-button {
-		padding: 0.2rem;
-		display: flex;
-		border-radius: 6px;
-		color: black;
-		transition: color 0.25s ease;
-		transition: background-color 0.2s ease;
-		text-decoration: none;
-		font-size: 1rem;
-		&:hover {
-			background-color: #eeeeee;
-		}
-
-		&:active {
-			position: relative;
-			top: 1px;
-			left: 1px;
-		}
 	}
 
 	.warning-text {

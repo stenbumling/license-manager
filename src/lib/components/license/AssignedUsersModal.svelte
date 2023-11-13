@@ -1,14 +1,10 @@
 <script lang="ts">
+	import CloseModalButton from '$lib/components/misc/CloseModalButton.svelte';
 	import { license } from '$lib/stores/license-store.ts';
-	import { showAssignedUsersModal } from '$lib/stores/modal-store';
+	import { modal } from '$lib/stores/modal-store';
 	import type { User } from '$lib/stores/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
-	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import { fade } from 'svelte/transition';
-
-	function handleClose() {
-		showAssignedUsersModal.set(false);
-	}
 
 	function handleRemoveUser(user: User) {
 		$license.users = $license.users.filter((u) => u.id !== user.id);
@@ -19,9 +15,7 @@
 	<dialog open class="modal-window">
 		<div class="modal-header">
 			<h1 class="modal-title">Assigned<br />users</h1>
-			<a href="/" class="close-button" on:click|preventDefault={handleClose}>
-				<CloseLarge size={24} aria-label="CloseLarge" />
-			</a>
+			<CloseModalButton action={modal.closeAssignedUsers} />
 		</div>
 		<h3>List of assigned users</h3>
 		<div class="badge-container">
@@ -73,26 +67,6 @@
 	.modal-title {
 		margin: 0;
 		font-size: 2rem;
-	}
-
-	.close-button {
-		padding: 0.2rem;
-		display: flex;
-		border-radius: 6px;
-		color: black;
-		transition: color 0.25s ease;
-		transition: background-color 0.2s ease;
-		text-decoration: none;
-		font-size: 1rem;
-		&:hover {
-			background-color: #eeeeee;
-		}
-
-		&:active {
-			position: relative;
-			top: 1px;
-			left: 1px;
-		}
 	}
 
 	.badge-container {
