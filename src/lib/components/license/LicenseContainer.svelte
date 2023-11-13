@@ -9,7 +9,7 @@
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
-	import LicenseMenu from '$lib/components/misc/LicenseMenu.svelte';
+	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';

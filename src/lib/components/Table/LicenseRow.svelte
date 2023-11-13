@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LicenseMenu from '$lib/components/misc/LicenseMenu.svelte';
+	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import type { License } from '$lib/stores/license-store';
@@ -10,6 +10,7 @@
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
+	import { slide } from 'svelte/transition';
 
 	export let license: License;
 

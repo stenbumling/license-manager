@@ -2,7 +2,7 @@
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
 	import { licenseStore } from '$lib/stores/license-store.ts';
 	import { Circle } from 'svelte-loading-spinners';
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 
 	let pending: any;
 </script>
@@ -20,7 +20,9 @@
 		{:else}
 			<div role="rowgroup">
 				{#each $licenseStore as license}
+				<div transition:slide|global={{ duration: 160 }}>
 					<LicenseRow {license} />
+				</div>
 				{/each}
 			</div>
 		{/if}
