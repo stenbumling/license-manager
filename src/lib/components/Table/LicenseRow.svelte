@@ -146,14 +146,9 @@
 	/* Cells */
 
 	.cell {
-		display: flex;
-		align-items: center;
-	}
-
-	.cell > * {
-		height: 100%;
-		display: flex;
-		align-items: center;
+    display: flex;
+    align-items: center;
+    min-width: 0;
 	}
 
 	.cell-text {
@@ -162,6 +157,7 @@
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
+		max-width: 300px;
 	}
 
 	.status-cell {
