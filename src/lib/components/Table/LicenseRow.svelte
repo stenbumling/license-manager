@@ -10,9 +10,9 @@
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
-	import { slide } from 'svelte/transition';
 
 	export let license: License;
+	export let index: number;
 
 	let hovered = false;
 
@@ -52,7 +52,13 @@
 	}
 </script>
 
-<div role="row" tabindex="-1" class="license-row-container" class:hover={hovered}>
+<div
+	role="row"
+	tabindex="-1"
+	class="license-row-container"
+	class:even-row={index % 2 === 1}
+	class:hover={hovered}
+>
 	<a
 		class="license-row"
 		tabindex="0"
@@ -137,6 +143,10 @@
 		background-color: #eeeeee;
 		transition: background-color 0.1s ease;
 		cursor: pointer;
+	}
+
+	.even-row {
+		background-color: #f9f9f9;
 	}
 
 	.license-row {

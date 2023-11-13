@@ -19,10 +19,10 @@
 			</div>
 		{:else}
 			<div role="rowgroup">
-				{#each $licenseStore as license}
-				<div transition:slide|global={{ duration: 160 }}>
-					<LicenseRow {license} />
-				</div>
+				{#each $licenseStore as license, index}
+					<div transition:slide|global={{ duration: 160 }}>
+						<LicenseRow {license} {index} />
+					</div>
 				{/each}
 			</div>
 		{/if}
@@ -46,9 +46,5 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-	}
-
-	:global(.license-row-container):nth-child(even) {
-		background-color: #f9f9f9;
 	}
 </style>

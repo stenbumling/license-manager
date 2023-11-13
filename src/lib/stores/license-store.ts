@@ -3,6 +3,7 @@ import { licenseErrors } from '$lib/validations/license-validation';
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { table } from './table-store';
+import type { Application } from '$lib/stores/application-store';
 
 export function getInitialValues() {
 	return {
@@ -35,10 +36,7 @@ const initialLicenseCounts = {
 
 export interface License {
 	id: string;
-	application: {
-		id: string;
-		name: string;
-	};
+	application: Application;
 	applicationId: string;
 	users: User[];
 	expirationDate: string;
