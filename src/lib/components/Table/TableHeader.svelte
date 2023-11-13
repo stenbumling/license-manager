@@ -153,4 +153,14 @@
 		flex: 0 0 80px;
 		justify-content: center;
 	}
+
+	@media (max-width: 1450px) {
+		.renewal-col {
+			display: none;
+		}
+
+		.expiration-col {
+			padding-right: 1rem;
+		}
+	}
 </style>

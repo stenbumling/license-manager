@@ -107,7 +107,7 @@
 		<!-- Renewal cell -->
 		<div role="cell" tabindex="-1" class="cell renewal-cell">
 			{#if license.autoRenewal}
-				<div style="margin-right: 6px;">
+				<div style="margin-right: 4px; margin-top: 5px;">
 					<Repeat size={16} />
 				</div>
 			{/if}
@@ -220,5 +220,15 @@
 	.menu-cell > .vertical-line {
 		border-right: 1px solid #d1d0d0;
 		height: 60%;
+	}
+
+	@media (max-width: 1250px) {
+		.renewal-cell {
+			display: none;
+		}
+
+		.expiration-cell {
+			padding-right: 1rem;
+		}
 	}
 </style>
