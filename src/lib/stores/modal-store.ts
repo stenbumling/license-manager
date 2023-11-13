@@ -52,8 +52,10 @@ function createModalStore() {
 	function closeLicense() {
 		contextMenu.close();
 		showLicenseModal.set(false);
-		licenseStore.resetFields();
 		goto('/');
+		setTimeout(() => {
+			licenseStore.resetFields();
+		}, 120);
 	}
 
 	return {
