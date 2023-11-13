@@ -8,7 +8,7 @@ export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
 	contactPerson: 'DEFAULT',
 	users: 'DEFAULT',
-	renewalDate: 'DEFAULT',
+	expirationDate: 'DEFAULT',
 });
 export const searchQuery = writable('');
 

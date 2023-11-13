@@ -59,15 +59,15 @@
 			{#if $sortState['users'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</div>
 		<div class="expiration-col">
-			{#if $sortState['renewalDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if $sortState['renewalDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['expirationDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
+			{#if $sortState['expirationDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 			<div
 				role="columnheader"
 				tabindex="0"
-				on:click={() => table.sortBy('renewalDate')}
+				on:click={() => table.sortBy('expirationDate')}
 				on:keydown|stopPropagation={(e) => {
 					if (e.key === 'Enter') {
-						table.sortBy('renewalDate');
+						table.sortBy('expirationDate');
 					}
 				}}
 			>

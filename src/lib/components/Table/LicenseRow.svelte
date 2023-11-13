@@ -15,7 +15,7 @@
 
 	let hovered = false;
 
-	$: renewalDate = getRelativeDate(license.renewalDate);
+	$: expirationDate = getRelativeDate(license.expirationDate);
 
 	export const licenseMenuItems: ContextMenuItem[] = [
 		{
@@ -98,10 +98,10 @@
 		<div role="cell" tabindex="-1" class="cell expiration-cell">
 			<p
 				class="cell-text"
-				class:warning-text={renewalDate.status === 'warning'}
-				class:alert-text={renewalDate.status === 'alert'}
+				class:warning-text={expirationDate.status === 'warning'}
+				class:alert-text={expirationDate.status === 'alert'}
 			>
-				{renewalDate.text}
+				{expirationDate.text}
 			</p>
 		</div>
 		<!-- Renewal cell -->
@@ -146,9 +146,9 @@
 	/* Cells */
 
 	.cell {
-    display: flex;
-    align-items: center;
-    min-width: 0;
+		display: flex;
+		align-items: center;
+		min-width: 0;
 	}
 
 	.cell-text {

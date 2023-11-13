@@ -26,7 +26,7 @@
 	$: {
 		label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
 	}
-	$: daysLeft = getRelativeDate($license.renewalDate);
+	$: daysLeft = getRelativeDate($license.expirationDate);
 	$: if (!$license.autoRenewal) {
 		$license.renewalInterval = 'None';
 	}
@@ -43,7 +43,7 @@
 			type="date"
 			required
 			name="applications"
-			bind:value={$license.renewalDate}
+			bind:value={$license.expirationDate}
 		/>
 		<div class="renewal-checkbox">
 			<input
@@ -56,9 +56,9 @@
 			<label for="renewal">Autorenewal</label>
 		</div>
 	</div>
-	<p class="secondary-text" class:warning-text={$licenseErrors.renewalDate}>
-		{#if $licenseErrors.renewalDate}
-			<span in:fade={{ duration: 120 }}>{$licenseErrors.renewalDate}</span>
+	<p class="secondary-text" class:warning-text={$licenseErrors.expirationDate}>
+		{#if $licenseErrors.expirationDate}
+			<span in:fade={{ duration: 120 }}>{$licenseErrors.expirationDate}</span>
 		{:else}
 			<span in:fade={{ duration: 120 }}>{daysLeft.text}</span>
 		{/if}

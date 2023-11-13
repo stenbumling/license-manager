@@ -13,7 +13,7 @@ export function getInitialValues() {
 		},
 		applicationId: '',
 		users: [],
-		renewalDate: '',
+		expirationDate: '',
 		autoRenewal: false,
 		cost: 0,
 		renewalInterval: 'None',
@@ -41,7 +41,7 @@ export interface License {
 	};
 	applicationId: string;
 	users: User[];
-	renewalDate: string;
+	expirationDate: string;
 	autoRenewal: boolean;
 	cost: number;
 	renewalInterval: string;

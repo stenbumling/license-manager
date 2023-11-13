@@ -8,7 +8,7 @@ export const licenseSchema = z.object({
 	application: z.object({ id: z.string().uuid(), name: z.string().trim().min(1).max(100) }),
 	applicationId: z.string().uuid({ message: 'Please select an application' }),
 	users: z.array(z.object({ id: z.string().uuid(), name: z.string().trim().min(1).max(100) })),
-	renewalDate: z
+	expirationDate: z
 		.string()
 		.trim()
 		.refine((val) => moment(val, 'YYYY-MM-DD', true).isValid(), {
@@ -50,7 +50,7 @@ export const licenseErrors = writable<LicenseErrors>({});
 
 interface LicenseErrors {
 	applicationId?: { message: string };
-	renewalDate?: { message: string };
+	expirationDate?: { message: string };
 	cost?: { message: string };
 	renewalInterval?: { message: string };
 	category?: { message: string };
