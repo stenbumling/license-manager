@@ -21,7 +21,7 @@ function createApplicationStore() {
 
 	async function fetchApplications() {
 		try {
-			const response = await fetch('/api/application');
+			const response = await fetch('/api/applications');
 			if (response.ok) {
 				const applications = await response.json();
 				update(() => applications);
@@ -44,7 +44,7 @@ function createApplicationStore() {
 
 	async function addApplication(application: Application) {
 		try {
-			const response = await fetch('/api/application/add', {
+			const response = await fetch('/api/applications', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
@@ -71,7 +71,7 @@ function createApplicationStore() {
 
 	async function deleteApplication(id: string) {
 		try {
-			const response = await fetch(`/api/application/delete/${id}`, {
+			const response = await fetch(`/api/applications/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {

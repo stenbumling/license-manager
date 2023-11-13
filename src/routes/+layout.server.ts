@@ -4,10 +4,10 @@ export const load = async ({ fetch }) => {
 	let statusCode;
 	try {
 		const responses = await Promise.all([
-			fetch('/api/license'),
-			fetch('/api/application'),
-			fetch('/api/user'),
-			fetch('/api/license/counts'),
+			fetch('/api/licenses'),
+			fetch('/api/applications'),
+			fetch('/api/users'),
+			fetch('/api/licenses/counts'),
 		]);
 
 		const failedResponse = responses.find((response) => !response.ok);

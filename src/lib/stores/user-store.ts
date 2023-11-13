@@ -10,7 +10,7 @@ function createUserStore() {
 
 	async function fetchUsers() {
 		try {
-			const response = await fetch('/api/user');
+			const response = await fetch('/api/users');
 			if (response.ok) {
 				const users = await response.json();
 				update(() => users);
@@ -33,7 +33,7 @@ function createUserStore() {
 
 	async function findOrCreateUser(userName: string) {
 		try {
-			const response = await fetch('/api/user/find-or-create', {
+			const response = await fetch('/api/users', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ name: userName }),
@@ -63,7 +63,7 @@ function createUserStore() {
 
 	async function deleteUserFromDatabase(id: string) {
 		try {
-			const response = await fetch(`/api/user/delete/${id}`, {
+			const response = await fetch(`/api/users/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {

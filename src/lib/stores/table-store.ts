@@ -100,7 +100,7 @@ export function createTableStore() {
 
 	async function sendQueryToDatabase(query: string) {
 		try {
-			const response = await fetch(`/api/license/query${query}`);
+			const response = await fetch(`/api/licenses/query${query}`);
 			if (response.ok) {
 				const licenses = await response.json();
 				licenseStore.set(licenses);

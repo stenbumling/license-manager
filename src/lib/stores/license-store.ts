@@ -69,7 +69,7 @@ function createLicenseStore() {
 
 	async function fetchLicenses() {
 		try {
-			const response = await fetch('/api/license');
+			const response = await fetch('/api/licenses');
 			if (response.ok) {
 				const { licenses } = await response.json();
 				set(licenses);
@@ -92,7 +92,7 @@ function createLicenseStore() {
 
 	async function getLicenseById(id: string) {
 		try {
-			const response = await fetch(`/api/license/${id}`);
+			const response = await fetch(`/api/licenses/${id}`);
 			if (response.ok) {
 				const fetchedLicense = await response.json();
 				license.set(fetchedLicense);
@@ -116,7 +116,7 @@ function createLicenseStore() {
 
 	async function updateLicenseCounts() {
 		try {
-			const response = await fetch('/api/license/counts');
+			const response = await fetch('/api/licenses/counts');
 			if (response.ok) {
 				const counts = await response.json();
 				licenseCounts.set(counts);
@@ -139,7 +139,7 @@ function createLicenseStore() {
 
 	async function addLicense(license: License) {
 		try {
-			const response = await fetch('/api/license/add', {
+			const response = await fetch('/api/licenses', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
@@ -166,7 +166,7 @@ function createLicenseStore() {
 
 	async function updateLicense(license: License) {
 		try {
-			const response = await fetch(`/api/license/update/${license.id}`, {
+			const response = await fetch(`/api/licenses/${license.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
@@ -193,7 +193,7 @@ function createLicenseStore() {
 
 	async function deleteLicense(id: string) {
 		try {
-			const response = await fetch(`/api/license/delete/${id}`, {
+			const response = await fetch(`/api/licenses/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {
