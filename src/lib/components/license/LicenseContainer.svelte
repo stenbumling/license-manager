@@ -8,7 +8,7 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
+	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
 	import LicenseMenu from '$lib/components/misc/LicenseMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
@@ -49,7 +49,7 @@
 		if (isValid) {
 			if ($licenseMode === 'view') {
 				licenseStore.updateLicense($license);
-			} else if ($licenseMode === 'add'){
+			} else if ($licenseMode === 'add') {
 				licenseStore.add($license);
 			}
 			modal.closeLicense();
@@ -57,7 +57,6 @@
 			return;
 		}
 	}
-
 </script>
 
 {#if $showApplicationModal}

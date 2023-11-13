@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
-	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
+	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
 	import { licenseCounts } from '$lib/stores/license-store';
 	import { modal } from '$lib/stores/modal-store';
 

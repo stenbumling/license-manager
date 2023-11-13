@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
-	import CloseModalButton from '$lib/components/misc/CloseModalButton.svelte';
+	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
+	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
 	import { application, applicationStore } from '$lib/stores/application-store';
 	import { modal } from '$lib/stores/modal-store';
 	import { applicationErrors, validateApplication } from '$lib/validations/application-validation';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { fade } from 'svelte/transition';
 
-	async function handleAdd(e: MouseEvent | KeyboardEvent) {
+	async function handleAdd(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($application);
 		if (isValid) {
@@ -35,9 +36,7 @@
 				required
 				on:keyup={handleAdd}
 			/>
-			<button class="add-button" on:click={handleAdd}>
-				<Add size={32} fill="white" aria-label="Add" />
-			</button>
+			<ButtonSmall icon={Add} iconSize={32} action={handleAdd} />
 		</div>
 		<p class="warning-text">
 			{#if $applicationErrors.name}
@@ -68,7 +67,7 @@
 	.modal-window {
 		width: 40vw;
 		max-width: 30rem;
-		max-height: 60vh;
+		max-height: 70vh;
 		padding: 3rem 4rem;
 		border: none;
 		display: flex;
@@ -105,29 +104,6 @@
 		justify-content: space-between;
 	}
 
-	.add-button {
-		height: 2.2rem;
-		aspect-ratio: 1/1;
-		margin-left: 1.6rem;
-		border-radius: 6px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: black;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-
-		&:hover {
-			background-color: var(--deep-purple);
-		}
-
-		&:active {
-			position: relative;
-			top: 1px;
-			left: 1px;
-		}
-	}
-
 	.application-list {
 		overflow-y: auto;
 		padding-right: 2.8rem;
@@ -145,6 +121,7 @@
 		border-bottom: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
 		background-color: transparent;
+		margin-right: 1.4rem;
 	}
 
 	input:hover {

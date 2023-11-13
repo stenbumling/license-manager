@@ -21,7 +21,7 @@
 			userStore.set(data.users);
 			licenseCounts.set(data.counts);
 			table.updateState();
-			
+
 			modal.openLicense();
 		}
 	});
