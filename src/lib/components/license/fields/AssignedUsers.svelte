@@ -107,17 +107,15 @@
 			}}
 		/>
 		{#if userSuggestions.length}
-			<ul class="suggestions-list" in:slide={{ duration: 100 }}>
+			<ul role="menu" class="suggestions-list" in:slide={{ duration: 100 }}>
 				{#each userSuggestions as suggestion}
-					<li>
-						<div
-							role="button"
-							tabindex="0"
-							on:mousedown|preventDefault
-							on:mouseup={() => handleAssignUser(suggestion.name)}
-						>
-							{suggestion.name}
-						</div>
+					<li
+						role="menuitem"
+						tabindex="0"
+						on:mousedown|preventDefault
+						on:mouseup={() => handleAssignUser(suggestion.name)}
+					>
+						{suggestion.name}
 					</li>
 				{/each}
 			</ul>
