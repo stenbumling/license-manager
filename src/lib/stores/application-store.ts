@@ -2,7 +2,7 @@ import { applicationErrors } from '$lib/validations/application-validation';
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 
-export function getInitialValues() {
+function getInitialValues() {
 	return {
 		id: uuidv4(),
 		name: '',

@@ -1,8 +1,10 @@
 import { get, writable } from 'svelte/store';
 import { licenseStore, type License } from './license-store';
+import { loadingState, tableFetchRequest } from './loading-store';
 
-export const tableLoading = writable(false);
-
+// Writable stores
+export const tableIsLoading = writable(false);
+export const tableError = writable('');
 export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
@@ -12,6 +14,7 @@ export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 });
 export const searchQuery = writable('');
 
+// Custom store for table state
 export function createTableStore() {
 	const { subscribe } = writable<License[]>([]);
 
@@ -99,7 +102,9 @@ export function createTableStore() {
 	}
 
 	async function sendQueryToDatabase(query: string) {
+		loadingState.start(tableFetchRequest);
 		try {
+			// await delay(1000);
 			const response = await fetch(`/api/licenses/query${query}`);
 			if (response.ok) {
 				const licenses = await response.json();
@@ -118,6 +123,8 @@ export function createTableStore() {
 		} catch (error) {
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			// toast
+		} finally {
+			loadingState.end(tableFetchRequest);
 		}
 	}
 

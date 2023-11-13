@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { table } from './table-store';
 import type { Application } from '$lib/stores/application-store';
 
-export function getInitialValues() {
+function getInitialValues() {
 	return {
 		id: uuidv4(),
 		application: {

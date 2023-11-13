@@ -9,7 +9,11 @@
 		if (e.key === 'Enter') {
 			const isValid = await validateSearchQuery($searchQuery);
 			if (isValid) {
-				table.filterBy('Search');
+				if ($searchQuery === '') {
+					table.filterBy('All');
+				} else {
+					table.filterBy('Search');
+				}
 				inputField.blur();
 			} else {
 				inputField.focus();
