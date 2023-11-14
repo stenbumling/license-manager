@@ -1,3 +1,4 @@
+import { delay } from '$lib/utils/delay';
 import { get, writable } from 'svelte/store';
 import { licenseStore, type License } from './license-store';
 import { loadingState, tableFetchRequest } from './loading-store';
@@ -104,7 +105,7 @@ export function createTableStore() {
 	async function sendQueryToDatabase(query: string) {
 		loadingState.start(tableFetchRequest);
 		try {
-			// await delay(1000);
+			await delay(1000);
 			const response = await fetch(`/api/licenses/query${query}`);
 			if (response.ok) {
 				const licenses = await response.json();

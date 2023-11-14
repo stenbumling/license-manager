@@ -2,12 +2,14 @@
 	import AssignedUsersModal from '$lib/components/license/AssignedUsersModal.svelte';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import { license } from '$lib/stores/license-store.ts';
+	import { userFetchRequest } from '$lib/stores/loading-store';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import type { User } from '$lib/stores/user-store';
 	import { userStore } from '$lib/stores/user-store';
 	import { userErrors, validateUser } from '$lib/validations/user-validation';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { fade, slide } from 'svelte/transition';
+	import { Pulse } from 'svelte-loading-spinners';
 
 	let userInput = '';
 	let userSuggestions: User[] = [];
@@ -62,7 +64,7 @@
 	<h3 class="label">Assigned users</h3>
 	{#if $license.users.length}
 		<div class="badge-container">
-			{#each $license.users.slice(0, 8) as user}
+			{#each $license.users.slice(0, 8) as user (user.id)}
 				<UserBadge {user} />
 			{/each}
 			{#if $license.users.length > 8}
@@ -70,8 +72,15 @@
 					<div class="badge-view-icon">
 						<ViewFilled size={16} />
 					</div>
-					<h4 class="view-all-button-text">View all {$license.users.length}</h4>
+					<h4 class="view-all-button-text" in:fade={{ duration: 120 }}>
+						View all {$license.users.length}
+					</h4>
 				</button>
+			{/if}
+			{#if $userFetchRequest.isLoading}
+				<div class="loading" in:fade={{ duration: 120 }}>
+					<Pulse size="20" color="white" />
+				</div>
 			{/if}
 		</div>
 	{/if}
@@ -134,6 +143,18 @@
 		display: flex;
 		flex-wrap: wrap;
 		margin-bottom: 1rem;
+	}
+
+	.loading {
+		display: flex;
+		box-sizing: border-box;
+		background-color: var(--deep-purple);
+		color: white;
+		align-items: center;
+		border-radius: 0.5rem;
+		padding: 0 1rem;
+		margin: 0.2rem 0.4rem 0.2rem 0;
+		height: 36px;
 	}
 
 	.secondary-text {

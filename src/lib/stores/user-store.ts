@@ -1,4 +1,6 @@
+import { delay } from '$lib/utils/delay';
 import { writable } from 'svelte/store';
+import { loadingState, userFetchRequest } from './loading-store';
 
 export interface User {
 	id: string;
@@ -32,7 +34,9 @@ function createUserStore() {
 	}
 
 	async function findOrCreateUser(userName: string) {
+		loadingState.start(userFetchRequest);
 		try {
+			await delay(2000);
 			const response = await fetch('/api/users', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
@@ -58,6 +62,8 @@ function createUserStore() {
 		} catch (error) {
 			console.error('Failed to add user:\n', error);
 			// toast
+		} finally {
+			loadingState.end(userFetchRequest);
 		}
 	}
 

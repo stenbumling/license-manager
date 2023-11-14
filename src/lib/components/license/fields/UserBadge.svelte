@@ -2,7 +2,7 @@
 	import { license } from '$lib/stores/license-store.ts';
 	import type { User } from '$lib/stores/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
-
+	import { fade } from 'svelte/transition';
 	export let user: User;
 
 	function handleRemoveUser(user: User) {
@@ -10,7 +10,7 @@
 	}
 </script>
 
-<div class="badge">
+<div class="badge" in:fade={{ duration: 120 }}>
 	<div class="badge-text-container">
 		<span class="badge-text">{user.name}</span>
 	</div>

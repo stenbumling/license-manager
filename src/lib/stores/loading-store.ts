@@ -22,6 +22,7 @@ export const tableFetchRequest = writable<RequestState>({
 });
 export const licenseFetchRequest = writable<RequestState>(getInitialValues());
 export const licensePostRequest = writable<RequestState>(getInitialValues());
+export const userFetchRequest = writable<RequestState>(getInitialValues());
 export const applicationPostRequest = writable<RequestState>(getInitialValues());
 
 export function createLoadingStore() {
