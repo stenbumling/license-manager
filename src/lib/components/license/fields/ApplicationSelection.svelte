@@ -3,7 +3,7 @@
 	import { applicationStore } from '$lib/stores/application-store';
 	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-store';
-	import { licenseErrors } from '$lib/validations/license-validation';
+	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	import { fade } from 'svelte/transition';
 
@@ -36,8 +36,8 @@
 		/>
 	</div>
 	<p class="warning-text">
-		{#if $licenseErrors.applicationId}
-			<span in:fade={{ duration: 120 }}>{$licenseErrors.applicationId}</span>
+		{#if $licenseValidationErrors.applicationId}
+			<span in:fade={{ duration: 120 }}>{$licenseValidationErrors.applicationId}</span>
 		{/if}
 	</p>
 </div>

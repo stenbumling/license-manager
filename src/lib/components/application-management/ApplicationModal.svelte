@@ -1,13 +1,27 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
-	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
-	import { application, applicationStore } from '$lib/stores/application-store';
+	import {
+		application,
+		applicationFetchError,
+		applicationStore,
+	} from '$lib/stores/application-store';
+	import { applicationFetchRequest } from '$lib/stores/loading-store';
 	import { modal } from '$lib/stores/modal-store';
-	import { applicationErrors, validateApplication } from '$lib/validations/application-validation';
+	import {
+		applicationValidationError,
+		validateApplication,
+	} from '$lib/validations/application-validation';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
-	import { fade } from 'svelte/transition';
+	import { onMount } from 'svelte';
+	import { Circle } from 'svelte-loading-spinners';
+	import { fade, slide } from 'svelte/transition';
+	import ApplicationItem from './ApplicationItem.svelte';
+
+	onMount(() => {
+		applicationStore.fetch();
+	});
 
 	async function handleAdd(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
@@ -39,16 +53,30 @@
 			<ButtonSmall icon={Add} iconSize={32} action={handleAdd} />
 		</div>
 		<p class="warning-text">
-			{#if $applicationErrors.name}
-				<span transition:fade={{ duration: 120 }}>{$applicationErrors.name}</span>
+			{#if $applicationValidationError.name}
+				<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>
 			{/if}
 		</p>
 		<h3>List of applications</h3>
-		<div class="application-list" use:scrollShadow>
-			{#each $applicationStore as application}
-				<ApplicationItem {application} />
-			{/each}
-		</div>
+		{#if $applicationFetchRequest.isLoading}
+			<div class="fallback-container" in:fade={{ duration: 300 }}>
+				<Circle color="var(--deep-purple)" />
+			</div>
+		{:else if $applicationFetchError}
+			<div class="fallback-container" in:fade={{ duration: 300 }}>
+				<h3>$applicationFetchError</h3>
+			</div>
+		{:else if $applicationStore.length === 0}
+			<div class="fallback-container" in:fade={{ duration: 300 }}>
+				<h3>No applications added yet</h3>
+			</div>
+		{:else}
+			<div class="application-list" use:scrollShadow in:fade={{ duration: 200 }}>
+				{#each $applicationStore as application}
+					<ApplicationItem {application} />
+				{/each}
+			</div>
+		{/if}
 	</dialog>
 </div>
 
@@ -107,6 +135,15 @@
 	.application-list {
 		overflow-y: auto;
 		padding-right: 2.8rem;
+	}
+
+	.fallback-container {
+		width: 100%;
+		height: 100%;
+		min-height: 16rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	h3 {

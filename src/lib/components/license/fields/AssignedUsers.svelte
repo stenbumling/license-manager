@@ -6,10 +6,10 @@
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import type { User } from '$lib/stores/user-store';
 	import { userStore } from '$lib/stores/user-store';
-	import { userErrors, validateUser } from '$lib/validations/user-validation';
+	import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
-	import { fade, slide } from 'svelte/transition';
 	import { Pulse } from 'svelte-loading-spinners';
+	import { fade, slide } from 'svelte/transition';
 
 	let userInput = '';
 	let userSuggestions: User[] = [];
@@ -46,12 +46,12 @@
 				const isAlreadyAssigned = $license.users.some((u) => u.id === foundUser.id);
 
 				if (isAlreadyAssigned) {
-					userErrors.set(['User is already assigned']);
+					userValidationErrors.set(['User is already assigned']);
 				} else {
 					$license.users = [...$license.users, foundUser];
 					userInput = '';
 					inputField.blur();
-					userErrors.set([]);
+					userValidationErrors.set([]);
 				}
 			} catch (error) {
 				console.error('Failed to add or find user:', error);
@@ -62,7 +62,7 @@
 
 <div class="component-container">
 	<h3 class="label">Assigned users</h3>
-	{#if $license.users.length}
+	{#if $license.users.length || $userFetchRequest.isLoading}
 		<div class="badge-container">
 			{#each $license.users.slice(0, 8) as user (user.id)}
 				<UserBadge {user} />
@@ -114,9 +114,9 @@
 				{/each}
 			</ul>
 		{/if}
-		<p class="secondary-text" class:warning-text={$userErrors}>
-			{#if $userErrors}
-				<span transition:fade={{ duration: 120 }}>{$userErrors}</span>
+		<p class="secondary-text" class:warning-text={$userValidationErrors}>
+			{#if $userValidationErrors}
+				<span transition:fade={{ duration: 120 }}>{$userValidationErrors}</span>
 			{/if}
 		</p>
 	</div>

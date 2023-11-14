@@ -1,6 +1,6 @@
 import { applicationStore, type Application } from '$lib/stores/application-store';
 import type { User } from '$lib/stores/user-store';
-import { licenseErrors } from '$lib/validations/license-validation';
+import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { table } from './table-store';
@@ -226,7 +226,7 @@ function createLicenseStore() {
 
 	function resetFields() {
 		license.set(getInitialValues());
-		licenseErrors.set({});
+		licenseValidationErrors.set({});
 	}
 
 	return {

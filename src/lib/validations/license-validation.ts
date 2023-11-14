@@ -46,9 +46,9 @@ export const licenseSchema = z.object({
 	comment: z.string().trim().max(1000, { message: 'Comment can be at most 1000 characters long' }),
 });
 
-export const licenseErrors = writable<LicenseErrors>({});
+export const licenseValidationErrors = writable<LicenseValidationErrors>({});
 
-interface LicenseErrors {
+interface LicenseValidationErrors {
 	applicationId?: { message: string };
 	expirationDate?: { message: string };
 	cost?: { message: string };
@@ -63,11 +63,11 @@ interface LicenseErrors {
 export async function validateLicense(license: License): Promise<boolean> {
 	try {
 		licenseSchema.parse(license);
-		licenseErrors.set({});
+		licenseValidationErrors.set({});
 		return true;
 	} catch (error) {
 		if (error instanceof z.ZodError) {
-			licenseErrors.set(error.flatten().fieldErrors);
+			licenseValidationErrors.set(error.flatten().fieldErrors);
 		} else {
 			console.error('Unexpected error when validating license:', error);
 		}

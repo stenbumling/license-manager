@@ -1,6 +1,8 @@
-import { applicationErrors } from '$lib/validations/application-validation';
+import { delay } from '$lib/utils/delay';
+import { applicationValidationError } from '$lib/validations/application-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
+import { applicationFetchRequest, loadingState } from './loading-store';
 
 function getInitialValues() {
 	return {
@@ -17,12 +19,17 @@ export interface Application {
 }
 
 export const application = writable<Application>(getInitialValues());
+export const applicationFetchError = writable('');
+export const applicationPostError = writable('');
 
 function createApplicationStore() {
 	const { subscribe, set, update } = writable<Application[]>([]);
 
 	async function fetchApplications() {
+		applicationFetchError.set('');
+		loadingState.start(applicationFetchRequest, 0);
 		try {
+			await delay(1000);
 			const response = await fetch('/api/applications');
 			if (response.ok) {
 				const applications = await response.json();
@@ -41,6 +48,8 @@ function createApplicationStore() {
 		} catch (error) {
 			console.error('Failed to fetch applications\n:', error);
 			// toast
+		} finally {
+			loadingState.end(applicationFetchRequest);
 		}
 	}
 
@@ -53,7 +62,7 @@ function createApplicationStore() {
 			});
 			if (response.ok) {
 				const newApplication = await response.json();
-				update((applications) => [newApplication, ...applications]);
+				await fetchApplications();
 			} else {
 				const errorMessage = await response.json();
 				if (response.status === 404) {
@@ -77,7 +86,7 @@ function createApplicationStore() {
 				method: 'DELETE',
 			});
 			if (response.ok) {
-				update((applications) => applications.filter((application) => application.id !== id));
+				await fetchApplications();
 			} else {
 				const errorMessage = await response.json();
 				if (response.status === 404) {
@@ -132,7 +141,7 @@ function createApplicationStore() {
 
 	function resetField() {
 		application.set(getInitialValues());
-		applicationErrors.set({});
+		applicationValidationError.set({});
 	}
 
 	return {

@@ -6,16 +6,16 @@ export const searchQuerySchema = z
 	.trim()
 	.max(300, { message: 'Your search query is too long' });
 
-export const searchQueryErrors = writable<string[]>([]);
+export const searchQueryValidationError = writable<string[]>([]);
 
 export async function validateSearchQuery(query: string): Promise<boolean> {
 	try {
 		searchQuerySchema.parse(query);
-		searchQueryErrors.set([]);
+		searchQueryValidationError.set([]);
 		return true;
 	} catch (error) {
 		if (error instanceof z.ZodError) {
-			searchQueryErrors.set(error.flatten().formErrors);
+			searchQueryValidationError.set(error.flatten().formErrors);
 		} else {
 			console.error('Unexpected error when validating application:', error);
 		}
