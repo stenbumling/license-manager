@@ -16,9 +16,10 @@
 		license,
 		licenseFetchError,
 		licenseMode,
+		licensePostError,
 		licenseStore,
 	} from '$lib/stores/license-store.ts';
-	import { licenseFetchRequest } from '$lib/stores/loading-store';
+	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/loading-store';
 	import { modal, showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
@@ -57,9 +58,12 @@
 		const isValid = await validateLicense($license);
 		if (isValid) {
 			if ($licenseMode === 'view') {
-				licenseStore.updateLicense($license);
+				await licenseStore.updateLicense($license);
 			} else if ($licenseMode === 'add') {
-				licenseStore.add($license);
+				await licenseStore.add($license);
+			}
+			if ($licensePostError) {
+				return;
 			}
 			modal.closeLicense();
 		} else {
@@ -80,7 +84,7 @@
 	{:else if $licenseFetchError}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
-				<CloseModalButton action={modal.closeLicense}/>
+				<CloseModalButton action={modal.closeLicense} />
 			</div>
 			<h1>{$licenseFetchError}</h1>
 		</div>
@@ -129,9 +133,11 @@
 			{#if $licenseMode === 'view'}
 				<LicenseMenu items={contextMenuItems} />
 			{/if}
-			<button class="main-button" on:click|preventDefault={handleLicense}>
-				<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
-			</button>
+			<ButtonLarge
+				title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'}
+				action={handleLicense}
+				pendingRequest={$licensePostRequest.isLoading}
+			/>
 		</div>
 	{/if}
 </div>
@@ -176,9 +182,6 @@
 		position: absolute;
 		top: 2rem;
 		right: 3rem;
-	}
-	.main-button {
-		width: 16rem;
 	}
 
 	@media (max-width: 1400px) {

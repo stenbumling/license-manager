@@ -4,7 +4,7 @@ import { delay } from '$lib/utils/delay';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { licenseFetchRequest, loadingState } from './loading-store';
+import { licenseFetchRequest, licensePostRequest, loadingState } from './loading-store';
 import { table } from './table-store';
 
 function getInitialValues() {
@@ -95,9 +95,9 @@ function createLicenseStore() {
 
 	async function getLicenseById(id: string) {
 		licenseFetchError.set('');
-		loadingState.start(licenseFetchRequest, 0);
+		loadingState.start(licenseFetchRequest);
 		try {
-			await delay(1000);
+			// await delay(1000);
 			const response = await fetch(`/api/licenses/${id}`);
 			if (response.ok) {
 				const fetchedLicense = await response.json();
@@ -148,6 +148,8 @@ function createLicenseStore() {
 	}
 
 	async function addLicense(license: License) {
+		licensePostError.set('');
+		loadingState.start(licensePostRequest);
 		try {
 			const response = await fetch('/api/licenses', {
 				method: 'POST',
@@ -160,6 +162,7 @@ function createLicenseStore() {
 				await table.updateState();
 			} else {
 				const errorMessage = await response.json();
+				licensePostError.set(errorMessage);
 				if (response.status === 404) {
 					// toast
 				} else if (response.status === 401) {
@@ -170,13 +173,19 @@ function createLicenseStore() {
 				console.error(errorMessage);
 			}
 		} catch (error) {
+			licensePostError.set((error as Error).message);
 			console.error('Failed to add license:', error);
 			// toast
+		} finally {
+			loadingState.end(licensePostRequest);
 		}
 	}
 
 	async function updateLicense(license: License) {
+		licensePostError.set('');
+		loadingState.start(licensePostRequest);
 		try {
+			// await delay(1000);
 			const response = await fetch(`/api/licenses/${license.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
@@ -194,6 +203,7 @@ function createLicenseStore() {
 				await table.updateState();
 			} else {
 				const errorMessage = await response.json();
+				licensePostError.set(errorMessage);
 				if (response.status === 404) {
 					// toast
 				} else if (response.status === 401) {
@@ -204,8 +214,11 @@ function createLicenseStore() {
 				console.error(errorMessage);
 			}
 		} catch (error) {
+			licensePostError.set((error as Error).message);
 			console.error('Failed to update license:', error);
 			// toast
+		} finally {
+			loadingState.end(licensePostRequest);
 		}
 	}
 

@@ -29,7 +29,7 @@ function createApplicationStore() {
 		applicationFetchError.set('');
 		loadingState.start(applicationFetchRequest, 0);
 		try {
-			await delay(1000);
+			// await delay(1000);
 			const response = await fetch('/api/applications');
 			if (response.ok) {
 				const applications = await response.json();

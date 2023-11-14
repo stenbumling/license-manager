@@ -52,9 +52,7 @@
 				<FilterButton {filter} />
 			{/each}
 		</div>
-		<a href="?modal=add" on:click={handleClick}>
-			<ButtonLarge title="Add new license" />
-		</a>
+		<ButtonLarge title="Add new license" action={(e) => handleClick(e)} />
 	</div>
 </div>
 
