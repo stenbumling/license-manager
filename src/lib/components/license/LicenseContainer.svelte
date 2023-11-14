@@ -12,13 +12,22 @@
 	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
+	import {
+		license,
+		licenseFetchError,
+		licenseMode,
+		licenseStore,
+	} from '$lib/stores/license-store.ts';
+	import { licenseFetchRequest } from '$lib/stores/loading-store';
 	import { modal, showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
+	import { Circle } from 'svelte-loading-spinners';
+	import { fade } from 'svelte/transition';
+	import CloseModalButton from '../misc/buttons/CloseModalButton.svelte';
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
@@ -64,62 +73,67 @@
 {/if}
 
 <div class="license-container">
-	<!-- {#await promise}
-		<div class="loading"><Circle color="var(--deep-purple)" /></div>
-	{:then} -->
-	<LicenseHeader />
-	<div class="fields-grid" use:scrollShadow>
-		<ApplicationSelection />
-		<AssignedUsers />
-		<ExpirationField />
-		<SelectField
-			bind:value={$license.category}
-			label="Category"
-			options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
-			defaultOption="Uncategorized"
-			errorMessage={$licenseValidationErrors.category}
-		/>
-		<SelectField
-			bind:value={$license.status}
-			label="Status"
-			options={['Active', 'Inactive', 'Expired']}
-			defaultOption="Active"
-			errorMessage={$licenseValidationErrors.status}
-		/>
-		<TextField
-			bind:value={$license.contactPerson}
-			label="Contact person"
-			errorMessage={$licenseValidationErrors.contactPerson}
-		>
-			<TextField
-				slot="secondary"
-				bind:value={$license.additionalContactInfo}
-				label="Additional contact information"
-				type="secondary"
-				errorMessage={$licenseValidationErrors.additionalContactInfo}
+	{#if $licenseFetchRequest.isLoading}
+		<div class="fallback-container">
+			<Circle color="var(--deep-purple)" />
+		</div>
+	{:else if $licenseFetchError}
+		<div class="fallback-container">
+			<div class="fallback-container-close-button">
+				<CloseModalButton action={modal.closeLicense}/>
+			</div>
+			<h1>{$licenseFetchError}</h1>
+		</div>
+	{:else}
+		<div in:fade={{ duration: 300 }}>
+			<LicenseHeader />
+		</div>
+		<div class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
+			<ApplicationSelection />
+			<AssignedUsers />
+			<ExpirationField />
+			<SelectField
+				bind:value={$license.category}
+				label="Category"
+				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
+				defaultOption="Uncategorized"
+				errorMessage={$licenseValidationErrors.category}
 			/>
-		</TextField>
-		<TextAreaField
-			bind:value={$license.comment}
-			label="Comment"
-			errorMessage={$licenseValidationErrors.comment}
-		/>
-	</div>
-	<div class="bottom-container">
-		{#if $licenseMode === 'view'}
-			<LicenseMenu items={contextMenuItems} />
-		{/if}
-		<button class="main-button" on:click|preventDefault={handleLicense}>
-			<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
-		</button>
-	</div>
-	<!-- {:catch error}
-		{#if error.message === 'License not found'}
-			<p>License not found</p>
-		{:else}
-			<p>{error.message}</p>
-		{/if}
-	{/await} -->
+			<SelectField
+				bind:value={$license.status}
+				label="Status"
+				options={['Active', 'Inactive', 'Expired']}
+				defaultOption="Active"
+				errorMessage={$licenseValidationErrors.status}
+			/>
+			<TextField
+				bind:value={$license.contactPerson}
+				label="Contact person"
+				errorMessage={$licenseValidationErrors.contactPerson}
+			>
+				<TextField
+					slot="secondary"
+					bind:value={$license.additionalContactInfo}
+					label="Additional contact information"
+					type="secondary"
+					errorMessage={$licenseValidationErrors.additionalContactInfo}
+				/>
+			</TextField>
+			<TextAreaField
+				bind:value={$license.comment}
+				label="Comment"
+				errorMessage={$licenseValidationErrors.comment}
+			/>
+		</div>
+		<div class="bottom-container">
+			{#if $licenseMode === 'view'}
+				<LicenseMenu items={contextMenuItems} />
+			{/if}
+			<button class="main-button" on:click|preventDefault={handleLicense}>
+				<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
+			</button>
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -151,13 +165,18 @@
 		justify-content: flex-end;
 	}
 
-	/* .loading {
+	.fallback-container {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-	} */
+	}
 
+	.fallback-container-close-button {
+		position: absolute;
+		top: 2rem;
+		right: 3rem;
+	}
 	.main-button {
 		width: 16rem;
 	}

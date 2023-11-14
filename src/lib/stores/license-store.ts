@@ -1,8 +1,10 @@
 import { applicationStore, type Application } from '$lib/stores/application-store';
 import type { User } from '$lib/stores/user-store';
+import { delay } from '$lib/utils/delay';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
+import { licenseFetchRequest, loadingState } from './loading-store';
 import { table } from './table-store';
 
 function getInitialValues() {
@@ -59,9 +61,11 @@ export interface LicenseCounts {
 	expired: number;
 }
 
-export const licenseMode = writable<'add' | 'view'>('add');
 export const license = writable<License>(getInitialValues());
+export const licenseMode = writable<'add' | 'view'>('add');
 export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
+export const licenseFetchError = writable('');
+export const licensePostError = writable('');
 
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
@@ -90,13 +94,17 @@ function createLicenseStore() {
 	}
 
 	async function getLicenseById(id: string) {
+		licenseFetchError.set('');
+		loadingState.start(licenseFetchRequest, 0);
 		try {
+			await delay(1000);
 			const response = await fetch(`/api/licenses/${id}`);
 			if (response.ok) {
 				const fetchedLicense = await response.json();
 				license.set(fetchedLicense);
 			} else {
 				const errorMessage = await response.json();
+				licenseFetchError.set(errorMessage);
 				if (response.status === 404) {
 					throw new Error(`License with id ${id} not found`);
 					// toast
@@ -108,8 +116,11 @@ function createLicenseStore() {
 				console.error(errorMessage);
 			}
 		} catch (error) {
+			licenseFetchError.set((error as Error).message);
 			console.error('Failed to fetch license:', (error as Error).message);
 			// toast
+		} finally {
+			loadingState.end(licenseFetchRequest);
 		}
 	}
 

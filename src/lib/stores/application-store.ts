@@ -61,7 +61,6 @@ function createApplicationStore() {
 				body: JSON.stringify(application),
 			});
 			if (response.ok) {
-				const newApplication = await response.json();
 				await fetchApplications();
 			} else {
 				const errorMessage = await response.json();
