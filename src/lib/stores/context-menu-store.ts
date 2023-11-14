@@ -67,7 +67,7 @@ function createContextMenuStore() {
 
 	function deleteLicense(license: License) {
 		modal.closeLicense();
-		licenseStore.delete(license.id);
+		licenseStore.delete(license.id, license.applicationId);
 	}
 
 	return {

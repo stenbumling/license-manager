@@ -1,9 +1,9 @@
+import { applicationStore, type Application } from '$lib/stores/application-store';
 import type { User } from '$lib/stores/user-store';
 import { licenseErrors } from '$lib/validations/license-validation';
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { table } from './table-store';
-import type { Application } from '$lib/stores/application-store';
 
 function getInitialValues() {
 	return {
@@ -11,6 +11,7 @@ function getInitialValues() {
 		application: {
 			id: uuidv4(),
 			name: '',
+			licenseAssociations: 0,
 		},
 		applicationId: '',
 		users: [],
@@ -143,7 +144,8 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			if (response.ok) {
-				updateLicenseCounts();
+				await updateLicenseCounts();
+				await applicationStore.updateAssociations(license.applicationId, 'add');
 				await table.updateState();
 			} else {
 				const errorMessage = await response.json();
@@ -170,7 +172,14 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			if (response.ok) {
-				updateLicenseCounts();
+				const currentLicense = get(licenseStore).find((l) => l.id === license.id);
+				if (currentLicense) {
+					if (currentLicense.applicationId !== license.applicationId) {
+						await applicationStore.updateAssociations(currentLicense.applicationId, 'remove');
+						await applicationStore.updateAssociations(license.applicationId, 'add');
+					}
+				}
+				await updateLicenseCounts();
 				await table.updateState();
 			} else {
 				const errorMessage = await response.json();
@@ -189,13 +198,14 @@ function createLicenseStore() {
 		}
 	}
 
-	async function deleteLicense(id: string) {
+	async function deleteLicense(id: string, applicationId: string) {
 		try {
 			const response = await fetch(`/api/licenses/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {
-				updateLicenseCounts();
+				await updateLicenseCounts();
+				await applicationStore.updateAssociations(applicationId, 'remove');
 				await table.updateState();
 			} else {
 				const errorMessage = await response.json();
