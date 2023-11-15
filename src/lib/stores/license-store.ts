@@ -6,6 +6,7 @@ import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { licenseFetchRequest, licensePostRequest, loadingState } from './loading-store';
 import { table } from './table-store';
+import { notifications } from './notification-store';
 
 function getInitialValues() {
 	return {
@@ -160,6 +161,10 @@ function createLicenseStore() {
 				await updateLicenseCounts();
 				await applicationStore.updateAssociations(license.applicationId, 'add');
 				await table.updateState();
+				notifications.add({
+					message: 'License added successfully',
+					type: 'success',
+				});
 			} else {
 				const errorMessage = await response.json();
 				licensePostError.set(errorMessage);
@@ -201,6 +206,11 @@ function createLicenseStore() {
 				}
 				await updateLicenseCounts();
 				await table.updateState();
+				notifications.add({
+					message: 'License was successfully updated',
+					type: 'success',
+					timeout: 500000,
+				});
 			} else {
 				const errorMessage = await response.json();
 				licensePostError.set(errorMessage);

@@ -1,29 +1,45 @@
 import { writable } from 'svelte/store';
+import { v4 as uuidv4 } from 'uuid';
 
-interface Notification {
-	message?: string;
-	id?: number;
-	type?: string;
+interface NewNotification {
+	message: string;
+	type: 'success' | 'info' | 'warning' | 'alert';
 	dismissible?: boolean;
 	timeout?: number;
 }
 
-export const notifications = writable<Notification[]>([]);
-export const addNotification = (notification: Notification) => {
-	const id = Math.floor(Math.random() * 10000);
+interface Notification extends NewNotification {
+	id: string;
+}
 
-	const defaults = {
-		id,
-		type: 'info',
-		dismissible: true,
-		timeout: 5000,
+function createNotificationStore() {
+	const { subscribe, set, update } = writable<Notification[]>([]);
+
+	function addNotification(notification: NewNotification) {
+		const id = uuidv4();
+		const newNotification: Notification = {
+			id,
+			message: notification.message || 'Default toast message',
+			type: notification.type || 'info',
+			dismissible: notification.dismissible === undefined ? true : notification.dismissible,
+			timeout: notification.timeout === undefined ? 5000 : notification.timeout,
+		};
+
+		update((all) => [newNotification, ...all]);
+		console.log(newNotification.timeout);
+		console.log(newNotification.dismissible);
+		if (newNotification.timeout) setTimeout(() => dismissNotification(id), newNotification.timeout);
+	}
+
+	function dismissNotification(id: string) {
+		update((all) => all.filter((t) => t.id !== id));
+	}
+
+	return {
+    subscribe,
+		add: addNotification,
+		dismiss: dismissNotification,
 	};
+}
 
-	notifications.update((all) => [{ ...defaults, ...notification }, ...all]);
-
-	if (notification.timeout) setTimeout(() => dismissNotification(id), notification.timeout);
-};
-
-export const dismissNotification = (id: number) => {
-	notifications.update((all) => all.filter((t) => t.id !== id));
-};
+export const notifications = createNotificationStore();

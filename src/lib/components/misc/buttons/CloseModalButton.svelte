@@ -2,6 +2,7 @@
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	export let action: () => void;
+	export let color = 'black';
 </script>
 
 <div
@@ -15,7 +16,7 @@
 		}
 	}}
 >
-	<CloseLarge size={24} aria-label="Close" />
+	<CloseLarge size={24} fill={color} aria-label="Close" />
 </div>
 
 <style>
@@ -33,7 +34,7 @@
 	}
 
 	.close-button:hover {
-		background-color: #eeeeee;
+		background-color: rgba(0, 0, 0, 0.1)
 	}
 
 	.close-button:active {

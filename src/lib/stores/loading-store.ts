@@ -22,7 +22,7 @@ export const userFetchRequest = writable<RequestState>(getInitialValues());
 export const applicationFetchRequest = writable<RequestState>(getInitialValues());
 export const applicationPostRequest = writable<RequestState>(getInitialValues());
 
-export function createLoadingController() {
+function createLoadingController() {
 	function startLoadingState(loadingStore: Writable<RequestState>, delay = 100) {
 		loadingStore.update((state) => {
 			if (state.counter === 0) {

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Header from '$lib/components/misc/Header.svelte';
+	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
 	import { applicationStore } from '$lib/stores/application-store';
 	import { licenseCounts, licenseStore } from '$lib/stores/license-store';
 	import { modal } from '$lib/stores/modal-store';
@@ -42,6 +43,8 @@
 		<slot />
 	</main>
 {/if}
+
+<NotificationsContainer />
 
 <style>
 	main {
