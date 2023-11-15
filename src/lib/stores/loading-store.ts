@@ -1,9 +1,9 @@
 import type { Writable } from 'svelte/store';
 import { writable } from 'svelte/store';
 
-function getInitialValues() {
+function getInitialValues(defaultLoadingState = false) {
 	return {
-		isLoading: false,
+		isLoading: defaultLoadingState,
 		counter: 0,
 		timerId: null,
 	};
@@ -15,20 +15,14 @@ interface RequestState {
 	timerId: number | null;
 }
 
-export const tableFetchRequest = writable<RequestState>({
-	isLoading: true,
-	counter: 0,
-	timerId: null,
-});
+export const tableFetchRequest = writable<RequestState>(getInitialValues(true));
 export const licenseFetchRequest = writable<RequestState>(getInitialValues());
 export const licensePostRequest = writable<RequestState>(getInitialValues());
 export const userFetchRequest = writable<RequestState>(getInitialValues());
 export const applicationFetchRequest = writable<RequestState>(getInitialValues());
 export const applicationPostRequest = writable<RequestState>(getInitialValues());
 
-export function createLoadingStore() {
-	const { subscribe } = writable<RequestState>();
-
+export function createLoadingController() {
 	function startLoadingState(loadingStore: Writable<RequestState>, delay = 100) {
 		loadingStore.update((state) => {
 			if (state.counter === 0) {
@@ -55,10 +49,9 @@ export function createLoadingStore() {
 	}
 
 	return {
-		subscribe,
 		start: startLoadingState,
 		end: endLoadingState,
 	};
 }
 
-export const loadingState = createLoadingStore();
+export const loadingState = createLoadingController();

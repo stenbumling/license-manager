@@ -1,6 +1,5 @@
-import { delay } from '$lib/utils/delay';
 import { get, writable } from 'svelte/store';
-import { licenseStore, type License } from './license-store';
+import { licenseStore } from './license-store';
 import { loadingState, tableFetchRequest } from './loading-store';
 
 // Writable stores
@@ -16,9 +15,7 @@ export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 export const searchQuery = writable('');
 
 // Custom store for table state
-export function createTableStore() {
-	const { subscribe } = writable<License[]>([]);
-
+function createTableController() {
 	async function updateFilterState(filter: string) {
 		filterState.set(filter);
 		await updateTableState();
@@ -115,6 +112,16 @@ export function createTableStore() {
 				const errorMessage = await response.json();
 				tableFetchError.set(errorMessage);
 				console.error(errorMessage);
+
+				// Reset filter and sort state if query fails
+				filterState.set('All');
+				sortState.set({
+					application: 'DEFAULT',
+					contactPerson: 'DEFAULT',
+					users: 'DEFAULT',
+					expirationDate: 'DEFAULT',
+				});
+
 				if (response.status === 404) {
 					// toast
 				} else if (response.status === 401) {
@@ -132,11 +139,10 @@ export function createTableStore() {
 	}
 
 	return {
-		subscribe,
 		filterBy: updateFilterState,
 		sortBy: updateSortState,
 		updateState: updateTableState,
 	};
 }
 
-export const table = createTableStore();
+export const table = createTableController();

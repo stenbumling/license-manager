@@ -9,7 +9,7 @@ export const showLicenseModal = writable(false);
 export const showApplicationModal = writable(false);
 export const showAssignedUsersModal = writable(false);
 
-function modalController() {
+function createModalController() {
 	function validateLicenseId(uuid: string) {
 		const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[4][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 		return regex.test(uuid);
@@ -44,10 +44,10 @@ function modalController() {
 		showLicenseModal.set(true);
 	}
 
-	function closeLicense() {
+	async function closeLicense() {
 		contextMenu.close();
 		showLicenseModal.set(false);
-		goto('/');
+		await goto('/');
 		// Reset after closing animation is done
 		setTimeout(() => {
 			licenseStore.resetFields();
@@ -74,4 +74,4 @@ function modalController() {
 	};
 }
 
-export const modal = modalController();
+export const modal = createModalController();
