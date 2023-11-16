@@ -207,9 +207,8 @@ function createLicenseStore() {
 				await updateLicenseCounts();
 				await table.updateState();
 				notifications.add({
-					message: 'License was successfully updated',
+					message: 'License updated successfully',
 					type: 'success',
-					timeout: 500000,
 				});
 			} else {
 				const errorMessage = await response.json();
@@ -241,6 +240,10 @@ function createLicenseStore() {
 				await updateLicenseCounts();
 				await applicationStore.updateAssociations(applicationId, 'remove');
 				await table.updateState();
+				notifications.add({
+					message: 'License deleted successfully',
+					type: 'success',
+				});
 			} else {
 				const errorMessage = await response.json();
 				if (response.status === 404) {

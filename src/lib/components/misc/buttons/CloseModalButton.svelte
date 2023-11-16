@@ -2,7 +2,7 @@
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	export let action: () => void;
-	export let color = 'black';
+	export let color: string = 'black';
 </script>
 
 <div
