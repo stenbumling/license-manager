@@ -17,17 +17,21 @@ function createNotificationStore() {
 
 	function addNotification(notification: NewNotification) {
 		const id = uuidv4();
-		const newNotification: Notification = {
+
+		const defaultNotification = {
+			message: 'Default toast message',
+			type: 'info',
+			dismissible: true,
+			timeout: 5000,
+		}
+
+		const newNotification = {
 			id,
-			message: notification.message || 'Default toast message',
-			type: notification.type || 'info',
-			dismissible: notification.dismissible === undefined ? true : notification.dismissible,
-			timeout: notification.timeout === undefined ? 5000 : notification.timeout,
-		};
+			...defaultNotification,
+			...notification,
+		}
 
 		update((all) => [newNotification, ...all]);
-		console.log(newNotification.timeout);
-		console.log(newNotification.dismissible);
 		if (newNotification.timeout) setTimeout(() => dismissNotification(id), newNotification.timeout);
 	}
 
