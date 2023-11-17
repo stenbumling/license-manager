@@ -28,7 +28,10 @@
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
+	import WarningModal from '../misc/WarningModal.svelte';
 	import CloseModalButton from '../misc/buttons/CloseModalButton.svelte';
+
+	let showWarningModal = false;
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
@@ -49,10 +52,15 @@
 		{
 			label: 'Delete license',
 			icon: TrashCan,
-			action: () => contextMenu.deleteLicense($license),
+			action: () => handleWarningModal(),
 			class: 'alert',
 		},
 	];
+
+	function handleWarningModal() {
+		contextMenu.close();
+		showWarningModal = true;
+	}
 
 	async function handleLicense() {
 		const isValid = await validateLicense($license);
@@ -141,6 +149,14 @@
 		</div>
 	{/if}
 </div>
+
+{#if showWarningModal}
+	<WarningModal
+		warningText="Are you sure you want to close this license? All unsaved changes will be lost."
+		onConfirm={() => contextMenu.deleteLicense($license)}
+		onCancel={() => (showWarningModal = false)}
+	/>
+{/if}
 
 <style>
 	.license-container {

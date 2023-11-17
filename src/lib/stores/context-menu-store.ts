@@ -65,9 +65,9 @@ function createContextMenuStore() {
 		navigator.clipboard.writeText(JSON.stringify(license));
 	}
 
-	function deleteLicense(license: License) {
+	async function deleteLicense(license: License) {
 		modal.closeLicense();
-		licenseStore.delete(license.id, license.applicationId);
+		await licenseStore.delete(license.id, license.applicationId);
 	}
 
 	return {
