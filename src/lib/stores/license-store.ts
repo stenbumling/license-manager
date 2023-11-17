@@ -98,7 +98,6 @@ function createLicenseStore() {
 		licenseFetchError.set('');
 		loadingState.start(licenseFetchRequest);
 		try {
-			// await delay(1000);
 			const response = await fetch(`/api/licenses/${id}`);
 			if (response.ok) {
 				const fetchedLicense = await response.json();
@@ -190,7 +189,6 @@ function createLicenseStore() {
 		licensePostError.set('');
 		loadingState.start(licensePostRequest);
 		try {
-			// await delay(1000);
 			const response = await fetch(`/api/licenses/${license.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },

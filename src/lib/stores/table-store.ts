@@ -103,7 +103,6 @@ function createTableController() {
 		tableFetchError.set('');
 		loadingState.start(tableFetchRequest);
 		try {
-			// await delay(1000);
 			const response = await fetch(`/api/licenses/query${query}`);
 			if (response.ok) {
 				const licenses = await response.json();

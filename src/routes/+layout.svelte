@@ -14,7 +14,7 @@
 
 	onMount(async () => {
 		if (data.error) {
-			console.log(`${data.error.code}: ${data.error.message}`);
+			console.error(`${data.error.code}: ${data.error.message}`);
 			// toast
 		} else {
 			licenseStore.set(data.licenses);

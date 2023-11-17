@@ -36,7 +36,6 @@ function createUserStore() {
 	async function findOrCreateUser(userName: string) {
 		loadingState.start(userFetchRequest);
 		try {
-			// await delay(2000);
 			const response = await fetch('/api/users', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },

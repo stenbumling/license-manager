@@ -32,7 +32,6 @@ export async function validateApplication(application: Application): Promise<boo
 		return true;
 	} catch (error) {
 		if (error instanceof z.ZodError) {
-			console.log(error.flatten().fieldErrors);
 			applicationValidationError.set(error.flatten().fieldErrors);
 		} else {
 			console.error('Unexpected error when validating application:', error);
