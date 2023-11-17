@@ -23,13 +23,13 @@ function createNotificationStore() {
 			type: 'info',
 			dismissible: true,
 			timeout: 5000,
-		}
+		};
 
 		const newNotification = {
 			id,
 			...defaultNotification,
 			...notification,
-		}
+		};
 
 		update((all) => [newNotification, ...all]);
 		if (newNotification.timeout) setTimeout(() => dismissNotification(id), newNotification.timeout);
@@ -40,7 +40,7 @@ function createNotificationStore() {
 	}
 
 	return {
-    subscribe,
+		subscribe,
 		add: addNotification,
 		dismiss: dismissNotification,
 	};

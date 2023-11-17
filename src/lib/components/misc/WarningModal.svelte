@@ -14,8 +14,8 @@
 			<h3 class="modal-title">{warningText}</h3>
 		</div>
 		<div class="button-container">
+      <ButtonCancel action={onCancel} />
 			<ButtonLarge title="Confirm" action={onConfirm} />
-			<ButtonCancel action={onCancel} />
 		</div>
 	</dialog>
 </div>
@@ -55,11 +55,10 @@
 		margin: 0;
 	}
 
-  .button-container {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row-reverse;
-  }
+	.button-container {
+		display: flex;
+		justify-content: space-between;
+	}
 
 	h3 {
 		margin-bottom: 0.4rem;

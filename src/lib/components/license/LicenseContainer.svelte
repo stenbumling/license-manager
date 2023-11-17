@@ -35,7 +35,7 @@
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
-			label: 'Close without saving',
+			label: 'Close',
 			icon: CloseLarge,
 			action: () => modal.closeLicense(),
 		},
@@ -152,7 +152,7 @@
 
 {#if showWarningModal}
 	<WarningModal
-		warningText="Are you sure you want to close this license?"
+		warningText="Are you sure you want to delete this license?"
 		onConfirm={() => contextMenu.deleteLicense($license)}
 		onCancel={() => (showWarningModal = false)}
 	/>
