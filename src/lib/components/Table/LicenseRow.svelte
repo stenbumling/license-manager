@@ -1,23 +1,26 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { getElementRect } from '$lib/actions/getElementRect';
-	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
+	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
+	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import type { License } from '$lib/stores/license-store';
+	import { modal } from '$lib/stores/modal-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
-	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import WarningModal from '../misc/WarningModal.svelte';
 
 	export let license: License;
-	let menuButtonRect: DOMRect;
-	$: renewalDate = getRelativeDate(license.renewalDate);
+	export let index: number;
 
-	const contextMenuItems = [
+	let hovered = false;
+	let showWarningModal = false;
+
+	$: expirationDate = getRelativeDate(license.expirationDate);
+
+	export const licenseMenuItems: ContextMenuItem[] = [
 		{
 			label: 'View license',
 			icon: ViewFilled,
@@ -36,185 +39,112 @@
 		{
 			label: 'Delete license',
 			icon: TrashCan,
-			action: () => contextMenu.deleteLicense(license),
-			classes: 'alert-text',
+			action: () => handleWarningModal(),
+			class: 'alert',
 		},
 	];
 
-	function openContextMenu() {
-		contextMenu.open(license.id);
+	function handleWarningModal() {
+		contextMenu.close();
+		showWarningModal = true;
 	}
 
 	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
 		contextMenu.close();
-		e.stopPropagation();
 		if (e.metaKey || e.ctrlKey) {
 			return;
 		}
 		e.preventDefault();
-		goto(`/?modal=edit&id=${license.id}`);
-	}
-
-	// Hover logic
-	const dispatch = createEventDispatcher();
-	function handleMouseHover(isHovered: boolean) {
-		dispatch('hover', { hovered: isHovered });
+		modal.openLicense(license.id);
 	}
 </script>
 
-<tr class="license-row-container">
-	<!-- Icon cell -->
-	<td
-		class="status-cell-container"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
+<div
+	role="row"
+	tabindex="-1"
+	class="license-row-container"
+	class:even-row={index % 2 === 1}
+	class:hover={hovered}
+>
+	<a
+		class="license-row"
+		tabindex="0"
+		href={`/?modal=view&id=${license.id}`}
+		on:mouseover={() => (hovered = true)}
+		on:mouseout={() => (hovered = false)}
+		on:focus={() => (hovered = true)}
+		on:blur={() => (hovered = false)}
+		on:click|stopPropagation={(e) => handleView(license, e)}
 	>
-		<a
-			class="status-cell"
-			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
+		<!-- Icon cell -->
+		<div role="cell" tabindex="-1" class="cell status-cell">
 			<div
 				class="status-icon"
 				class:inactive={license.status === 'Inactive'}
 				class:expired={license.status === 'Expired'}
 			/>
-		</a>
-	</td>
-	<!-- Application cell -->
-	<td
-		class="application-cell-container"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="application-cell"
-			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
-			<p class="table-text">{license.application.name}</p>
-		</a>
-	</td>
-	<!-- Contact cell -->
-	<td
-		class="contact-cell-container"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="contact-cell"
-			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
-			<p class="table-text">
+		</div>
+		<!-- Application cell -->
+		<div role="cell" tabindex="-1" class="cell application-cell">
+			<p class="cell-text">{license.application.name}</p>
+		</div>
+		<!-- Contact cell -->
+		<div role="cell" tabindex="-1" class="cell contact-person-cell">
+			<p class="cell-text">
 				{#if license.contactPerson}
 					{license.contactPerson}
 				{:else}
-					Unassigned
+					<span style="font-style: italic">Unassigned</span>
 				{/if}
 			</p>
-		</a>
-	</td>
-	<!-- Users cell -->
-	<td
-		class="users-cell-container"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="users-cell"
-			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
-			<p class="table-text">
+		</div>
+		<!-- Users cell -->
+		<div role="cell" tabindex="-1" class="cell users-cell">
+			<p class="cell-text">
 				{#if license.users.length === 0}
-					None
+					<span style="font-style: italic">None</span>
 				{:else}
 					{license.users.length}
 				{/if}
 			</p>
-		</a>
-	</td>
-	<!-- Expiration cell -->
-	<td
-		class="expiration-cell-container"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="expiration-cell"
-			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
+		</div>
+		<!-- Expiration cell -->
+		<div role="cell" tabindex="-1" class="cell expiration-cell">
 			<p
-				class="table-text"
-				class:warning-text={renewalDate.status === 'warning'}
-				class:alert-text={renewalDate.status === 'alert'}
+				class="cell-text"
+				class:warning-text={expirationDate.status === 'warning'}
+				class:alert-text={expirationDate.status === 'alert'}
 			>
-				{renewalDate.text}
+				{expirationDate.text}
 			</p>
-		</a>
-	</td>
-	<!-- Renewal cell -->
-	<td
-		class="renewal-cell-container"
-		on:mouseover={() => handleMouseHover(true)}
-		on:mouseout={() => handleMouseHover(false)}
-		on:focus={() => handleMouseHover(true)}
-		on:blur={() => handleMouseHover(false)}
-	>
-		<a
-			class="renewal-cell"
-			href={`/license/view/${license.id}`}
-			on:click|stopPropagation={(e) => handleView(license, e)}
-		>
+		</div>
+		<!-- Renewal cell -->
+		<div role="cell" tabindex="-1" class="cell renewal-cell">
 			{#if license.autoRenewal}
-				<Repeat size={16} />
-			{/if}
-		</a>
-	</td>
-	<!-- Menu cell -->
-	<td class="menu-cell-container">
-		<div class="menu-cell">
-			<div class="vertical-line" />
-			<button
-				class="menu-button"
-				class:active={$contextMenu.activeId === license.id}
-				on:click|stopPropagation|preventDefault={openContextMenu}
-				use:getElementRect={(element) => (menuButtonRect = element)}
-			>
-				<OverflowMenuHorizontal size={32} />
-			</button>
-			{#if $contextMenu.activeId === license.id}
-				<ContextMenu bind:referenceElementRect={menuButtonRect} items={contextMenuItems} />
+				<div style="margin-right: 4px; margin-top: 5px;">
+					<Repeat size={16} />
+				</div>
 			{/if}
 		</div>
-	</td>
-</tr>
+	</a>
+	<!-- Menu cell -->
+	<div class="cell menu-cell">
+		<div class="vertical-line" />
+		<LicenseMenu items={licenseMenuItems} />
+	</div>
+</div>
+
+{#if showWarningModal}
+	<WarningModal
+		warningText="Are you sure you want to delete this license?"
+		onConfirm={() => contextMenu.deleteLicense(license)}
+		onCancel={() => (showWarningModal = false)}
+	/>
+{/if}
 
 <style>
 	* {
 		box-sizing: border-box;
-	}
-
-	td {
-		min-width: 0;
-	}
-
-	td > * {
-		height: 100%;
-		display: flex;
-		align-items: center;
 	}
 
 	.license-row-container {
@@ -224,22 +154,41 @@
 		display: flex;
 	}
 
-	.table-text {
-		align-items: flex-end;
+	.license-row-container.hover {
+		background-color: #eeeeee;
+		transition: background-color 0.1s ease;
+		cursor: pointer;
+	}
+
+	.even-row {
+		background-color: #f9f9f9;
+	}
+
+	.license-row {
+		display: flex;
+		width: 100%;
+	}
+
+	/* Cells */
+
+	.cell {
+		display: flex;
+		align-items: center;
+		min-width: 0;
+	}
+
+	.cell-text {
 		user-select: none;
-		padding: 0.1rem 0.4rem 0 0.4rem;
+		padding: 0 0.4rem;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
-	}
-
-	/* Status cell */
-
-	.status-cell-container {
-		flex: 0 0 60px;
+		max-width: 300px;
 	}
 
 	.status-cell {
+		flex: 0 0 60px;
+		display: flex;
 		justify-content: center;
 	}
 
@@ -250,110 +199,62 @@
 		background-color: #6ae674;
 	}
 
-	.inactive {
+	.status-icon.inactive {
 		background-color: #bfbfbf;
 	}
 
-	.expired {
+	.status-icon.expired {
 		background-color: #ff0000;
 	}
 
-	/* Application cell */
-
-	.application-cell-container {
-		flex: 2;
-	}
-
 	.application-cell {
-		justify-content: flex-start;
-	}
-
-	/* Contact cell */
-
-	.contact-cell-container {
 		flex: 2;
 	}
 
-	.contact-cell {
-		justify-content: flex-start;
-	}
-
-	/* Users cell */
-
-	.users-cell-container {
-		flex: 1.5;
+	.contact-person-cell {
+		flex: 2;
 	}
 
 	.users-cell {
-		justify-content: center;
-	}
-
-	/* Expiration cell */
-
-	.expiration-cell-container {
 		flex: 1.5;
+		justify-content: center;
 	}
 
 	.expiration-cell {
+		flex: 1.5;
 		justify-content: flex-end;
 	}
 
-	.expiration-cell > * {
-		height: 100%;
-		display: flex;
-		align-items: center;
-	}
-
-	.warning-text {
+	.expiration-cell > .warning-text {
 		color: #ff9736;
 	}
 
-	.alert-text {
+	.expiration-cell > .alert-text {
 		color: #ff0000;
 	}
 
-	/* Renewal cell */
-
-	.renewal-cell-container {
-		flex: 0 0 70px;
-	}
-
 	.renewal-cell {
+		flex: 0 0 70px;
 		justify-content: center;
-	}
-
-	/* Menu cell */
-
-	.menu-cell-container {
-		flex: 0 0 80px;
 	}
 
 	.menu-cell {
-		justify-content: space-between;
-		position: relative;
-	}
-
-	.vertical-line {
-		border-right: 1px solid #d1d0d0;
-		height: 70%;
-	}
-
-	.menu-button {
-		display: flex;
-		align-items: center;
+		flex: 0 0 80px;
 		justify-content: center;
-		transition: color 0.25s ease;
-		transition: background-color 0.2s ease;
-		border-radius: 6px;
-		cursor: pointer;
-		margin: 0 1.3rem;
 	}
 
-	.menu-button:hover {
-		background-color: #eeeeee;
+	.menu-cell > .vertical-line {
+		border-right: 1px solid #d1d0d0;
+		height: 60%;
 	}
 
-	.menu-button.active {
-		background-color: #dddddd;
+	@media (max-width: 1250px) {
+		.renewal-cell {
+			display: none;
+		}
+
+		.expiration-cell {
+			padding-right: 1rem;
+		}
 	}
 </style>

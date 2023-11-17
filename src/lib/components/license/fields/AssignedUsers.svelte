@@ -1,12 +1,14 @@
 <script lang="ts">
 	import AssignedUsersModal from '$lib/components/license/AssignedUsersModal.svelte';
+	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import { license } from '$lib/stores/license-store.ts';
-	import { showAssignedUsersModal } from '$lib/stores/modal-state';
+	import { userFetchRequest } from '$lib/stores/loading-store';
+	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import type { User } from '$lib/stores/user-store';
 	import { userStore } from '$lib/stores/user-store';
-	import { userErrors, validateUser } from '$lib/validations/user-validation';
-	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
+	import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
+	import { Pulse } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
 
 	let userInput = '';
@@ -44,49 +46,41 @@
 				const isAlreadyAssigned = $license.users.some((u) => u.id === foundUser.id);
 
 				if (isAlreadyAssigned) {
-					userErrors.set(['User is already assigned']);
+					userValidationErrors.set(['User is already assigned']);
 				} else {
 					$license.users = [...$license.users, foundUser];
 					userInput = '';
 					inputField.blur();
-					userErrors.set([]);
+					userValidationErrors.set([]);
 				}
 			} catch (error) {
 				console.error('Failed to add or find user:', error);
 			}
 		}
 	}
-
-	function handleRemoveUser(user: User) {
-		$license.users = $license.users.filter((u) => u.id !== user.id);
-	}
-
-	function handleViewAllAssignedUsers() {
-		showAssignedUsersModal.set(true);
-	}
 </script>
 
 <div class="component-container">
 	<h3 class="label">Assigned users</h3>
-	{#if $license.users.length}
+	{#if $license.users.length || $userFetchRequest.isLoading}
 		<div class="badge-container">
-			{#each $license.users.slice(0, 8) as user}
-				<div class="badge">
-					<div class="badge-text-container">
-						<span class="badge-text">{user.name}</span>
-					</div>
-					<button class="badge-delete-button" on:click={() => handleRemoveUser(user)}>
-						<CloseFilled fill="#f9e8ff" size={16} />
-					</button>
-				</div>
+			{#each $license.users.slice(0, 8) as user (user.id)}
+				<UserBadge {user} />
 			{/each}
 			{#if $license.users.length > 8}
-				<button class="badge view-all-button" on:click={handleViewAllAssignedUsers}>
+				<button class="view-all-button" on:click={() => showAssignedUsersModal.set(true)}>
 					<div class="badge-view-icon">
 						<ViewFilled size={16} />
 					</div>
-					<h4 class="view-all-button-text">View all {$license.users.length}</h4>
+					<h4 class="view-all-button-text" in:fade={{ duration: 120 }}>
+						View all {$license.users.length}
+					</h4>
 				</button>
+			{/if}
+			{#if $userFetchRequest.isLoading}
+				<div class="loading" in:fade={{ duration: 120 }}>
+					<Pulse size="20" color="white" />
+				</div>
 			{/if}
 		</div>
 	{/if}
@@ -107,24 +101,22 @@
 			}}
 		/>
 		{#if userSuggestions.length}
-			<ul class="suggestions-list" in:slide={{ duration: 100 }}>
+			<ul role="menu" class="suggestions-list" in:slide={{ duration: 100 }}>
 				{#each userSuggestions as suggestion}
-					<li>
-						<div
-							role="button"
-							tabindex="0"
-							on:mousedown|preventDefault
-							on:mouseup={() => handleAssignUser(suggestion.name)}
-						>
-							{suggestion.name}
-						</div>
+					<li
+						role="menuitem"
+						tabindex="0"
+						on:mousedown|preventDefault
+						on:mouseup={() => handleAssignUser(suggestion.name)}
+					>
+						{suggestion.name}
 					</li>
 				{/each}
 			</ul>
 		{/if}
-		<p class="secondary-text" class:warning-text={$userErrors}>
-			{#if $userErrors}
-				<span transition:fade={{ duration: 120 }}>{$userErrors}</span>
+		<p class="secondary-text" class:warning-text={$userValidationErrors}>
+			{#if $userValidationErrors}
+				<span transition:fade={{ duration: 120 }}>{$userValidationErrors}</span>
 			{/if}
 		</p>
 	</div>
@@ -153,23 +145,16 @@
 		margin-bottom: 1rem;
 	}
 
-	.badge {
+	.loading {
 		display: flex;
 		box-sizing: border-box;
 		background-color: var(--deep-purple);
 		color: white;
 		align-items: center;
 		border-radius: 0.5rem;
-		padding: 0 0.6rem;
+		padding: 0 1rem;
 		margin: 0.2rem 0.4rem 0.2rem 0;
 		height: 36px;
-	}
-
-	.badge-text-container {
-		display: flex;
-		height: 20px;
-		margin-right: 0.5rem;
-		max-width: 12rem;
 	}
 
 	.secondary-text {
@@ -182,17 +167,16 @@
 	.warning-text {
 		color: red;
 	}
-	.badge-text {
-		color: #f9e8ff;
-		font-size: 0.8rem;
-		white-space: nowrap;
-		padding-top: 1px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		user-select: none;
-	}
 
 	.view-all-button {
+		display: flex;
+		box-sizing: border-box;
+		background-color: var(--deep-purple);
+		color: white;
+		align-items: center;
+		border-radius: 0.5rem;
+		margin: 0.2rem 0.4rem 0.2rem 0;
+		height: 36px;
 		cursor: pointer;
 		transition: background-color 0.2s ease;
 		padding: 1px 1rem 0 1rem;
@@ -214,19 +198,6 @@
 		height: 100%;
 		align-items: center;
 		margin-bottom: 1px;
-	}
-
-	.badge-delete-button {
-		box-sizing: border-box;
-		cursor: pointer;
-		display: flex;
-		height: 100%;
-		align-items: center;
-	}
-
-	.badge-delete-button:hover > :global(svg) {
-		transition: fill 0.4s ease;
-		fill: white;
 	}
 
 	.input-container {

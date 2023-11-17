@@ -9,6 +9,9 @@ html {
 	line-height: 1.5;
 	cursor: default;
 	overscroll-behavior: none;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 h1 {

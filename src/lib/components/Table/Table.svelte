@@ -1,50 +1,48 @@
 <script lang="ts">
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
-	import { tableState } from '$lib/stores/table-store';
-
-	let hoveredRowId: string | null = null;
-
-	// Decides which row should create a hovered effect, based on license ID
-	function handleHover(e: CustomEvent<any>, licenseId: string) {
-		if (e.detail.hovered) {
-			hoveredRowId = licenseId;
-		} else {
-			if (hoveredRowId === licenseId) {
-				hoveredRowId = null;
-			}
-		}
-	}
+	import { licenseStore } from '$lib/stores/license-store.ts';
+	import { tableFetchRequest } from '$lib/stores/loading-store';
+	import { tableFetchError } from '$lib/stores/table-store';
+	import { Circle } from 'svelte-loading-spinners';
+	import { fade, slide } from 'svelte/transition';
 </script>
 
-<tbody class="table">
-	{#each $tableState as license}
-		<div class="license-row" class:hovered={hoveredRowId === license.id}>
-			<LicenseRow {license} on:hover={(event) => handleHover(event, license.id)} />
+<div class="table-body-wrapper">
+	{#if $tableFetchRequest.isLoading}
+		<div class="fallback-container" in:fade={{ duration: 300 }}>
+			<Circle color="var(--deep-purple)" />
 		</div>
-	{/each}
-</tbody>
+	{:else if $tableFetchError}
+		<div class="fallback-container" in:fade={{ duration: 300 }}>
+			<h1>$tableFetchError</h1>
+		</div>
+	{:else if $licenseStore.length === 0}
+		<div class="fallback-container" in:fade={{ duration: 300 }}>
+			<h1>No licenses found</h1>
+		</div>
+	{:else}
+		<div role="rowgroup" in:slide={{ duration: 120 }}>
+			{#each $licenseStore as license, index}
+				<div transition:slide={{ duration: 120 }}>
+					<LicenseRow {license} {index} />
+				</div>
+			{/each}
+		</div>
+	{/if}
+</div>
 
 <style>
-	.table {
-		min-height: 30.4rem;
-		max-height: 100%;
-		display: flex;
-		flex-direction: column;
+	.table-body-wrapper {
+		border-bottom: 2px solid black;
+		border-top: 2px solid black;
 		flex-grow: 1;
 		overflow-y: scroll;
 	}
 
-	.license-row {
-		transition: background-color 0.1s ease;
-	}
-
-	.license-row:nth-child(even) {
-		background-color: #f9f9f9;
-	}
-
-	.license-row.hovered {
-		background-color: #eeeeee;
-		transition: background-color 0.1s ease;
-		cursor: pointer;
+	.fallback-container {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
 	}
 </style>

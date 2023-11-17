@@ -1,19 +1,24 @@
+import { applicationStore, type Application } from '$lib/stores/application-store';
 import type { User } from '$lib/stores/user-store';
+import { delay } from '$lib/utils/delay';
+import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { table, tableState } from './table-store';
-import { licenseErrors } from '$lib/validations/license-validation';
+import { licenseFetchRequest, licensePostRequest, loadingState } from './loading-store';
+import { table } from './table-store';
+import { notifications } from './notification-store';
 
-export function getInitialValues() {
+function getInitialValues() {
 	return {
 		id: uuidv4(),
 		application: {
 			id: uuidv4(),
 			name: '',
+			licenseAssociations: 0,
 		},
 		applicationId: '',
 		users: [],
-		renewalDate: '',
+		expirationDate: '',
 		autoRenewal: false,
 		cost: 0,
 		renewalInterval: 'None',
@@ -35,13 +40,10 @@ const initialLicenseCounts = {
 
 export interface License {
 	id: string;
-	application: {
-		id: string;
-		name: string;
-	};
+	application: Application;
 	applicationId: string;
 	users: User[];
-	renewalDate: string;
+	expirationDate: string;
 	autoRenewal: boolean;
 	cost: number;
 	renewalInterval: string;
@@ -60,103 +62,206 @@ export interface LicenseCounts {
 	expired: number;
 }
 
-export const licenseMode = writable<'add' | 'edit'>('add');
 export const license = writable<License>(getInitialValues());
+export const licenseMode = writable<'add' | 'view'>('add');
 export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
+export const licenseFetchError = writable('');
+export const licensePostError = writable('');
 
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
 	async function fetchLicenses() {
 		try {
-			const response = await fetch('/api/license');
-			const { licenses } = await response.json();
-			set(licenses);
+			const response = await fetch('/api/licenses');
+			if (response.ok) {
+				const { licenses } = await response.json();
+				set(licenses);
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
 			console.error('Failed to fetch licenses:', error);
+			// toast
 		}
 	}
 
-	function getLicenseById(id: string) {
-		const fetchedLicense = get(licenseStore).find((license) => license.id === id);
-
-		if (fetchedLicense) {
-			license.set(structuredClone(fetchedLicense));
-		} else {
-			console.error('Failed to get license from store');
+	async function getLicenseById(id: string) {
+		licenseFetchError.set('');
+		loadingState.start(licenseFetchRequest);
+		try {
+			const response = await fetch(`/api/licenses/${id}`);
+			if (response.ok) {
+				const fetchedLicense = await response.json();
+				license.set(fetchedLicense);
+			} else {
+				const errorMessage = await response.json();
+				licenseFetchError.set(errorMessage);
+				if (response.status === 404) {
+					throw new Error(`License with id ${id} not found`);
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
+		} catch (error) {
+			licenseFetchError.set((error as Error).message);
+			console.error('Failed to fetch license:', (error as Error).message);
+			// toast
+		} finally {
+			loadingState.end(licenseFetchRequest);
 		}
 	}
 
 	async function updateLicenseCounts() {
 		try {
-			const response = await fetch('/api/license/counts');
-			const counts = await response.json();
-			licenseCounts.set(counts);
+			const response = await fetch('/api/licenses/counts');
+			if (response.ok) {
+				const counts = await response.json();
+				licenseCounts.set(counts);
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
 			console.error('Failed to fetch license counts:', error);
+			// toast
 		}
 	}
 
 	async function addLicense(license: License) {
+		licensePostError.set('');
+		loadingState.start(licensePostRequest);
 		try {
-			const response = await fetch('/api/license/add', {
+			const response = await fetch('/api/licenses', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
 			});
-			const newLicense = await response.json();
-			update((allLicenses) => [newLicense, ...allLicenses]);
-			tableState.update((allLicenses) => [newLicense, ...allLicenses]);
-			updateLicenseCounts();
-			table.updateState();
+			if (response.ok) {
+				await updateLicenseCounts();
+				await applicationStore.updateAssociations(license.applicationId, 'add');
+				await table.updateState();
+				notifications.add({
+					message: 'License added successfully',
+					type: 'success',
+				});
+			} else {
+				const errorMessage = await response.json();
+				licensePostError.set(errorMessage);
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
+			licensePostError.set((error as Error).message);
 			console.error('Failed to add license:', error);
+			// toast
+		} finally {
+			loadingState.end(licensePostRequest);
 		}
 	}
 
 	async function updateLicense(license: License) {
+		licensePostError.set('');
+		loadingState.start(licensePostRequest);
 		try {
-			const response = await fetch(`/api/license/update/${license.id}`, {
+			const response = await fetch(`/api/licenses/${license.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
 			});
-			if (!response.ok) throw new Error('Failed to update license');
-			update((allLicenses) =>
-				allLicenses.map((currentLicense) =>
-					currentLicense.id === license.id ? license : currentLicense,
-				),
-			);
-			tableState.update((allLicenses) =>
-				allLicenses.map((currentLicense) =>
-					currentLicense.id === license.id ? license : currentLicense,
-				),
-			);
-			updateLicenseCounts();
-			table.updateState();
+			if (response.ok) {
+				const currentLicense = get(licenseStore).find((l) => l.id === license.id);
+				if (currentLicense) {
+					if (currentLicense.applicationId !== license.applicationId) {
+						await applicationStore.updateAssociations(currentLicense.applicationId, 'remove');
+						await applicationStore.updateAssociations(license.applicationId, 'add');
+					}
+				}
+				await updateLicenseCounts();
+				await table.updateState();
+				notifications.add({
+					message: 'License updated successfully',
+					type: 'success',
+				});
+			} else {
+				const errorMessage = await response.json();
+				licensePostError.set(errorMessage);
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
+			licensePostError.set((error as Error).message);
 			console.error('Failed to update license:', error);
+			// toast
+		} finally {
+			loadingState.end(licensePostRequest);
 		}
 	}
 
-	async function deleteLicense(id: string) {
+	async function deleteLicense(id: string, applicationId: string) {
 		try {
-			const response = await fetch(`/api/license/delete/${id}`, {
+			const response = await fetch(`/api/licenses/${id}`, {
 				method: 'DELETE',
 			});
-			if (!response.ok) throw new Error('Failed to delete license');
-			update((allLicenses) => allLicenses.filter((license) => license.id !== id));
-			tableState.update((allLicenses) => allLicenses.filter((license) => license.id !== id));
-			updateLicenseCounts();
-			table.updateState();
+			if (response.ok) {
+				await updateLicenseCounts();
+				await applicationStore.updateAssociations(applicationId, 'remove');
+				await table.updateState();
+				notifications.add({
+					message: 'License deleted successfully',
+					type: 'success',
+				});
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
 			console.error('Failed to delete license:', error);
+			// toast
 		}
 	}
 
 	function resetFields() {
 		license.set(getInitialValues());
-		licenseErrors.set({});
+		licenseValidationErrors.set({});
 	}
 
 	return {

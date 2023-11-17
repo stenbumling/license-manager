@@ -24,7 +24,7 @@
 	.modal-window {
 		width: 80vw;
 		max-width: 100rem;
-		height: 76vh;
+		height: 86vh;
 		padding: 2rem 4rem;
 		border: none;
 		display: flex;

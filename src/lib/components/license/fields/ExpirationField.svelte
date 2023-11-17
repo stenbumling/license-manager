@@ -3,7 +3,7 @@
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import { license } from '$lib/stores/license-store.ts';
 	import { getRelativeDate } from '$lib/utils/date-utils';
-	import { licenseErrors } from '$lib/validations/license-validation';
+	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import { fade, slide } from 'svelte/transition';
 
 	let label: string = '';
@@ -26,7 +26,7 @@
 	$: {
 		label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
 	}
-	$: daysLeft = getRelativeDate($license.renewalDate);
+	$: daysLeft = getRelativeDate($license.expirationDate);
 	$: if (!$license.autoRenewal) {
 		$license.renewalInterval = 'None';
 	}
@@ -43,7 +43,7 @@
 			type="date"
 			required
 			name="applications"
-			bind:value={$license.renewalDate}
+			bind:value={$license.expirationDate}
 		/>
 		<div class="renewal-checkbox">
 			<input
@@ -56,9 +56,9 @@
 			<label for="renewal">Autorenewal</label>
 		</div>
 	</div>
-	<p class="secondary-text" class:warning-text={$licenseErrors.renewalDate}>
-		{#if $licenseErrors.renewalDate}
-			<span in:fade={{ duration: 120 }}>{$licenseErrors.renewalDate}</span>
+	<p class="secondary-text" class:warning-text={$licenseValidationErrors.expirationDate}>
+		{#if $licenseValidationErrors.expirationDate}
+			<span in:fade={{ duration: 120 }}>{$licenseValidationErrors.expirationDate}</span>
 		{:else}
 			<span in:fade={{ duration: 120 }}>{daysLeft.text}</span>
 		{/if}
@@ -71,7 +71,7 @@
 			secondaryText={`${costValue}`}
 			type="secondary"
 			placeholder="Enter cost of license"
-			errorMessage={$licenseErrors.cost}
+			errorMessage={$licenseValidationErrors.cost}
 		/>
 	</div>
 	{#if $license.autoRenewal}
@@ -83,7 +83,7 @@
 				defaultOption="None"
 				required
 				type="secondary"
-				errorMessage={$licenseErrors.renewalInterval}
+				errorMessage={$licenseValidationErrors.renewalInterval}
 			/>
 		</div>
 	{/if}

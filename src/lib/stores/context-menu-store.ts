@@ -1,8 +1,8 @@
-import { goto } from '$app/navigation';
 import type { License } from '$lib/stores/license-store';
+import { modal } from '$lib/stores/modal-store';
+import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
 import { licenseStore } from './license-store';
-import { showLicenseModal } from './modal-state';
 
 type ContextMenuState = {
 	position: { top: number; left: number } | null;
@@ -13,6 +13,13 @@ const initialState: ContextMenuState = {
 	position: null,
 	activeId: null,
 };
+
+export interface ContextMenuItem {
+	label: string;
+	action: () => void;
+	icon?: ComponentType;
+	class?: 'warning' | 'alert';
+}
 
 function createContextMenuStore() {
 	const { subscribe, set, update } = writable<ContextMenuState>(initialState);
@@ -45,12 +52,12 @@ function createContextMenuStore() {
 
 	function viewLicense(license: License) {
 		contextMenu.close();
-		goto(`/?modal=edit&id=${license.id}`);
+		modal.openLicense(license.id);
 	}
 
 	function copyLicenseLink(license: License) {
 		contextMenu.close();
-		navigator.clipboard.writeText(`${window.location.origin}/license/view/${license.id}`);
+		navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
 	}
 
 	function copyLicenseData(license: License) {
@@ -58,12 +65,9 @@ function createContextMenuStore() {
 		navigator.clipboard.writeText(JSON.stringify(license));
 	}
 
-	function deleteLicense(license: License) {
-		contextMenu.close();
-		showLicenseModal.set(false);
-		licenseStore.delete(license.id);
-		licenseStore.resetFields();
-		goto('/');
+	async function deleteLicense(license: License) {
+		modal.closeLicense();
+		await licenseStore.delete(license.id, license.applicationId);
 	}
 
 	return {

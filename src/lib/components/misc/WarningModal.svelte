@@ -1,22 +1,21 @@
 <script lang="ts">
-	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
-	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
-	import { license } from '$lib/stores/license-store.ts';
-	import { modal } from '$lib/stores/modal-store';
 	import { fade } from 'svelte/transition';
+	import ButtonCancel from './buttons/ButtonCancel.svelte';
+	import ButtonLarge from './buttons/ButtonLarge.svelte';
+
+	export let warningText = 'Are you sure you want to do this?';
+	export let onConfirm: () => void;
+	export let onCancel: () => void;
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
 		<div class="modal-header">
-			<h1 class="modal-title">Assigned<br />users</h1>
-			<CloseModalButton action={modal.closeAssignedUsers} />
+			<h3 class="modal-title">{warningText}</h3>
 		</div>
-		<h3>List of assigned users</h3>
-		<div class="badge-container">
-			{#each $license.users as user}
-				<UserBadge {user} />
-			{/each}
+		<div class="button-container">
+      <ButtonCancel action={onCancel} />
+			<ButtonLarge title="Confirm" action={onConfirm} />
 		</div>
 	</dialog>
 </div>
@@ -35,7 +34,7 @@
 
 	.modal-window {
 		width: 40vw;
-		max-width: 30rem;
+		max-width: 24rem;
 		max-height: 60vh;
 		padding: 3rem 4rem;
 		border: none;
@@ -54,13 +53,11 @@
 
 	.modal-title {
 		margin: 0;
-		font-size: 2rem;
 	}
 
-	.badge-container {
+	.button-container {
 		display: flex;
-		flex-wrap: wrap;
-		margin-bottom: 1rem;
+		justify-content: space-between;
 	}
 
 	h3 {

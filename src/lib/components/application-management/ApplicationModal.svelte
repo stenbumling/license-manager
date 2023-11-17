@@ -1,15 +1,29 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
-	import ApplicationItem from '$lib/components/application-management/ApplicationItem.svelte';
-	import { application, applicationStore } from '$lib/stores/application-store';
-	import { license } from '$lib/stores/license-store';
-	import { showApplicationModal } from '$lib/stores/modal-state';
-	import { applicationErrors, validateApplication } from '$lib/validations/application-validation';
+	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
+	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
+	import {
+		application,
+		applicationFetchError,
+		applicationStore,
+	} from '$lib/stores/application-store';
+	import { applicationFetchRequest } from '$lib/stores/loading-store';
+	import { modal } from '$lib/stores/modal-store';
+	import {
+		applicationValidationError,
+		validateApplication,
+	} from '$lib/validations/application-validation';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
-	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
+	import { onMount } from 'svelte';
+	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
+	import ApplicationItem from './ApplicationItem.svelte';
 
-	async function handleAdd(e: MouseEvent | KeyboardEvent) {
+	onMount(() => {
+		applicationStore.fetch();
+	});
+
+	async function handleAdd(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($application);
 		if (isValid) {
@@ -19,20 +33,13 @@
 			return;
 		}
 	}
-
-	function handleClose() {
-		showApplicationModal.set(false);
-		applicationStore.reset();
-	}
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window">
 		<div class="modal-header">
 			<h1 class="modal-title">Application<br />management</h1>
-			<a href="/" class="close-button" on:click|preventDefault={handleClose}>
-				<CloseLarge size={24} aria-label="CloseLarge" />
-			</a>
+			<CloseModalButton action={modal.closeApplication} />
 		</div>
 		<h3>Add new application</h3>
 		<div class="input-container">
@@ -43,21 +50,33 @@
 				required
 				on:keyup={handleAdd}
 			/>
-			<button class="add-button" on:click={handleAdd}>
-				<Add size={32} fill="white" aria-label="Add" />
-			</button>
+			<ButtonSmall icon={Add} iconSize={32} action={handleAdd} />
 		</div>
 		<p class="warning-text">
-			{#if $applicationErrors.name}
-				<span transition:fade={{ duration: 120 }}>{$applicationErrors.name}</span>
+			{#if $applicationValidationError.name}
+				<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>
 			{/if}
 		</p>
 		<h3>List of applications</h3>
-		<div class="application-list" use:scrollShadow>
-			{#each $applicationStore as application}
-				<ApplicationItem {application} />
-			{/each}
-		</div>
+		{#if $applicationFetchRequest.isLoading}
+			<div class="fallback-container" in:fade={{ duration: 300 }}>
+				<Circle color="var(--deep-purple)" />
+			</div>
+		{:else if $applicationFetchError}
+			<div class="fallback-container" in:fade={{ duration: 300 }}>
+				<h3>$applicationFetchError</h3>
+			</div>
+		{:else if $applicationStore.length === 0}
+			<div class="fallback-container" in:fade={{ duration: 300 }}>
+				<h3>No applications added yet</h3>
+			</div>
+		{:else}
+			<div class="application-list" use:scrollShadow in:fade={{ duration: 200 }}>
+				{#each $applicationStore as application}
+					<ApplicationItem {application} />
+				{/each}
+			</div>
+		{/if}
 	</dialog>
 </div>
 
@@ -76,7 +95,7 @@
 	.modal-window {
 		width: 40vw;
 		max-width: 30rem;
-		max-height: 60vh;
+		max-height: 70vh;
 		padding: 3rem 4rem;
 		border: none;
 		display: flex;
@@ -97,26 +116,6 @@
 		font-size: 2rem;
 	}
 
-	.close-button {
-		padding: 0.2rem;
-		display: flex;
-		border-radius: 6px;
-		color: black;
-		transition: color 0.25s ease;
-		transition: background-color 0.2s ease;
-		text-decoration: none;
-		font-size: 1rem;
-		&:hover {
-			background-color: #eeeeee;
-		}
-
-		&:active {
-			position: relative;
-			top: 1px;
-			left: 1px;
-		}
-	}
-
 	.warning-text {
 		font-size: 0.75rem;
 		color: red;
@@ -133,32 +132,18 @@
 		justify-content: space-between;
 	}
 
-	.add-button {
-		height: 2.2rem;
-		aspect-ratio: 1/1;
-		margin-left: 1.6rem;
-		border-radius: 6px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: black;
-		cursor: pointer;
-		transition: background-color 0.3s ease;
-
-		&:hover {
-			background-color: var(--deep-purple);
-		}
-
-		&:active {
-			position: relative;
-			top: 1px;
-			left: 1px;
-		}
-	}
-
 	.application-list {
 		overflow-y: auto;
 		padding-right: 2.8rem;
+	}
+
+	.fallback-container {
+		width: 100%;
+		height: 100%;
+		min-height: 16rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	h3 {
@@ -173,6 +158,7 @@
 		border-bottom: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
 		background-color: transparent;
+		margin-right: 1.4rem;
 	}
 
 	input:hover {

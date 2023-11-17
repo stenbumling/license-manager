@@ -1,4 +1,6 @@
+import { delay } from '$lib/utils/delay';
 import { writable } from 'svelte/store';
+import { loadingState, userFetchRequest } from './loading-store';
 
 export interface User {
 	id: string;
@@ -8,35 +10,83 @@ export interface User {
 function createUserStore() {
 	const { subscribe, set, update } = writable<User[]>([]);
 
-	async function findOrCreateUser(userName: string) {
+	async function fetchUsers() {
 		try {
-			const response = await fetch('/api/user/find-or-create', {
+			const response = await fetch('/api/users');
+			if (response.ok) {
+				const users = await response.json();
+				update(() => users);
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
+		} catch (error) {
+			console.error('Failed to fetch users:', error);
+			// toast
+		}
+	}
+
+	async function findOrCreateUser(userName: string) {
+		loadingState.start(userFetchRequest);
+		try {
+			const response = await fetch('/api/users', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ name: userName }),
 			});
-			if (!response.ok) {
-				throw new Error('Failed to add/find user');
+			if (response.ok) {
+				const data = await response.json();
+				if (data.created) {
+					update((users) => [data.user, ...users]);
+				}
+				return data.user;
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
 			}
-			const data = await response.json();
-			if (data.created) {
-				update((users) => [data.user, ...users]);
-			}
-			return data.user;
 		} catch (error) {
-			console.error('Failed to add user:', error);
+			console.error('Failed to add user:\n', error);
+			// toast
+		} finally {
+			loadingState.end(userFetchRequest);
 		}
 	}
 
 	async function deleteUserFromDatabase(id: string) {
 		try {
-			const response = await fetch(`/api/user/delete/${id}`, {
+			const response = await fetch(`/api/users/${id}`, {
 				method: 'DELETE',
 			});
-			if (!response.ok) throw new Error('Failed to delete user');
-			update((users) => users.filter((user) => user.id !== id));
+			if (response.ok) {
+				update((users) => users.filter((user) => user.id !== id));
+			} else {
+				const errorMessage = await response.json();
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+				console.error(errorMessage);
+			}
 		} catch (error) {
 			console.error('Failed to delete user:', error);
+			// toast
 		}
 	}
 
@@ -44,6 +94,7 @@ function createUserStore() {
 		subscribe,
 		set,
 		update,
+		fetch: fetchUsers,
 		findOrCreateUser,
 		delete: deleteUserFromDatabase,
 	};

@@ -1,15 +1,8 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
-	import { showLicenseModal } from '$lib/stores/modal-state';
-
-	$: if ($page.url.search.startsWith('?modal')) {
-		showLicenseModal.set(true);
-	} else {
-		showLicenseModal.set(false);
-	}
+	import { showLicenseModal } from '$lib/stores/modal-store';
 </script>
 
 <div class="main-container">

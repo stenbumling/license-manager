@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-	import { getElementRect } from '$lib/actions/getElementRect';
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
@@ -11,28 +8,36 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import ButtonLarge from '$lib/components/misc/ButtonLarge.svelte';
-	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
+	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
+	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
+	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
-	import { showApplicationModal, showLicenseModal } from '$lib/stores/modal-state';
-	import { licenseErrors, validateLicense } from '$lib/validations/license-validation';
+	import {
+		license,
+		licenseFetchError,
+		licenseMode,
+		licensePostError,
+		licenseStore,
+	} from '$lib/stores/license-store.ts';
+	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/loading-store';
+	import { modal, showApplicationModal } from '$lib/stores/modal-store';
+	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
-	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
-	import { onMount } from 'svelte';
+	import { Circle } from 'svelte-loading-spinners';
+	import { fade } from 'svelte/transition';
+	import WarningModal from '../misc/WarningModal.svelte';
+	import CloseModalButton from '../misc/buttons/CloseModalButton.svelte';
 
-	let loaded = false;
-	let menuButtonRect: DOMRect;
-	const urlId = $page.params.id || new URLSearchParams($page.url.search).get('id') || null;
+	let showWarningModal = false;
 
-	const contextMenuItems = [
+	const contextMenuItems: ContextMenuItem[] = [
 		{
-			label: 'Close without saving',
+			label: 'Close',
 			icon: CloseLarge,
-			action: () => handleClose(),
+			action: () => modal.closeLicense(),
 		},
 		{
 			label: 'Copy link',
@@ -47,55 +52,51 @@
 		{
 			label: 'Delete license',
 			icon: TrashCan,
-			action: () => contextMenu.deleteLicense($license),
-			classes: 'alert-text',
+			action: () => handleWarningModal(),
+			class: 'alert',
 		},
 	];
 
-	onMount(async () => {
-		if (urlId) {
-			licenseMode.set('edit');
-			licenseStore.fetch(urlId);
-		} else {
-			licenseMode.set('add');
-			licenseStore.resetFields();
-		}
-		loaded = true;
-	});
+	function handleWarningModal() {
+		contextMenu.close();
+		showWarningModal = true;
+	}
 
 	async function handleLicense() {
-		contextMenu.close();
 		const isValid = await validateLicense($license);
 		if (isValid) {
-			showLicenseModal.set(false);
-			goto('/');
-			if ($licenseMode === 'edit') {
-				licenseStore.updateLicense($license);
-			} else {
-				licenseStore.add($license);
+			if ($licenseMode === 'view') {
+				await licenseStore.updateLicense($license);
+			} else if ($licenseMode === 'add') {
+				await licenseStore.add($license);
 			}
-			licenseStore.resetFields();
+			if ($licensePostError) {
+				return;
+			}
+			modal.closeLicense();
 		} else {
 			return;
 		}
 	}
-
-	async function handleClose() {
-		contextMenu.close();
-		showLicenseModal.set(false);
-		goto('/');
-		licenseStore.resetFields();
-	}
 </script>
 
-{#if $showApplicationModal}
-	<ApplicationModal />
-{/if}
-
 <div class="license-container">
-	{#if loaded}
-		<LicenseHeader />
-		<div class="fields-grid" use:scrollShadow>
+	{#if $licenseFetchRequest.isLoading}
+		<div class="fallback-container">
+			<Circle color="var(--deep-purple)" />
+		</div>
+	{:else if $licenseFetchError}
+		<div class="fallback-container">
+			<div class="fallback-container-close-button">
+				<CloseModalButton action={modal.closeLicense} />
+			</div>
+			<h1>{$licenseFetchError}</h1>
+		</div>
+	{:else}
+		<div in:fade={{ duration: 300 }}>
+			<LicenseHeader />
+		</div>
+		<div class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
 			<ApplicationSelection />
 			<AssignedUsers />
 			<ExpirationField />
@@ -104,56 +105,58 @@
 				label="Category"
 				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 				defaultOption="Uncategorized"
-				errorMessage={$licenseErrors.category}
+				errorMessage={$licenseValidationErrors.category}
 			/>
 			<SelectField
 				bind:value={$license.status}
 				label="Status"
 				options={['Active', 'Inactive', 'Expired']}
 				defaultOption="Active"
-				errorMessage={$licenseErrors.status}
+				errorMessage={$licenseValidationErrors.status}
 			/>
 			<TextField
 				bind:value={$license.contactPerson}
 				label="Contact person"
-				errorMessage={$licenseErrors.contactPerson}
+				errorMessage={$licenseValidationErrors.contactPerson}
 			>
 				<TextField
 					slot="secondary"
 					bind:value={$license.additionalContactInfo}
 					label="Additional contact information"
 					type="secondary"
-					errorMessage={$licenseErrors.additionalContactInfo}
+					errorMessage={$licenseValidationErrors.additionalContactInfo}
 				/>
 			</TextField>
 			<TextAreaField
 				bind:value={$license.comment}
 				label="Comment"
-				errorMessage={$licenseErrors.comment}
+				errorMessage={$licenseValidationErrors.comment}
 			/>
 		</div>
 		<div class="bottom-container">
-			{#if $licenseMode === 'edit'}
-				<button
-					class="menu-button"
-					class:active={$contextMenu.activeId === 'license-view'}
-					on:click|stopPropagation|preventDefault={() => contextMenu.open('license-view')}
-					use:getElementRect={(element) => (menuButtonRect = element)}
-				>
-					<OverflowMenuHorizontal size={32} />
-				</button>
-				{#if $contextMenu.activeId === 'license-view'}
-					<ContextMenu bind:referenceElementRect={menuButtonRect} items={contextMenuItems} />
-				{/if}
+			{#if $licenseMode === 'view'}
+				<LicenseMenu items={contextMenuItems} />
 			{/if}
-			<button class="main-button" on:click|preventDefault={handleLicense}>
-				<ButtonLarge title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'} />
-			</button>
+			<ButtonLarge
+				title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'}
+				action={handleLicense}
+				pendingRequest={$licensePostRequest.isLoading}
+			/>
 		</div>
-	{:else}
-		<p>Loading...</p>
 	{/if}
 </div>
+
+{#if $showApplicationModal}
+	<ApplicationModal />
+{/if}
+
+{#if showWarningModal}
+	<WarningModal
+		warningText="Are you sure you want to delete this license?"
+		onConfirm={() => contextMenu.deleteLicense($license)}
+		onCancel={() => (showWarningModal = false)}
+	/>
+{/if}
 
 <style>
 	.license-container {
@@ -184,27 +187,17 @@
 		justify-content: flex-end;
 	}
 
-	.menu-button {
-		padding: 0.2rem;
-		border-radius: 6px;
+	.fallback-container {
 		display: flex;
-		align-self: center;
-		cursor: pointer;
-		margin: 0 2rem 0 0;
-		transition: color 0.25s ease;
-		transition: background-color 0.2s ease;
-
-		&:hover {
-			background-color: #eeeeee;
-		}
+		align-items: center;
+		justify-content: center;
+		height: 100%;
 	}
 
-	.menu-button.active {
-		background-color: #dddddd;
-	}
-
-	.main-button {
-		width: 16rem;
+	.fallback-container-close-button {
+		position: absolute;
+		top: 2rem;
+		right: 3rem;
 	}
 
 	@media (max-width: 1400px) {

@@ -1,14 +1,11 @@
 <script lang="ts">
+	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
 	import { applicationStore } from '$lib/stores/application-store';
 	import { license } from '$lib/stores/license-store';
-	import { showApplicationModal } from '$lib/stores/modal-state';
-	import { licenseErrors } from '$lib/validations/license-validation';
+	import { showApplicationModal } from '$lib/stores/modal-store';
+	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	import { fade } from 'svelte/transition';
-
-	function handleClick() {
-		showApplicationModal.set(true);
-	}
 
 	function handleApplicationChange(e: Event) {
 		const target = e.target as HTMLSelectElement;
@@ -32,13 +29,15 @@
 				<option value={application.id}>{application.name}</option>
 			{/each}
 		</select>
-		<button class="settings-button" on:click={handleClick}>
-			<SettingsAdjust size={20} fill="white" aria-label="SettingsAdjust" />
-		</button>
+		<ButtonSmall
+			icon={SettingsAdjust}
+			iconSize={20}
+			action={() => showApplicationModal.set(true)}
+		/>
 	</div>
 	<p class="warning-text">
-		{#if $licenseErrors.applicationId}
-			<span in:fade={{ duration: 120 }}>{$licenseErrors.applicationId}</span>
+		{#if $licenseValidationErrors.applicationId}
+			<span in:fade={{ duration: 120 }}>{$licenseValidationErrors.applicationId}</span>
 		{/if}
 	</p>
 </div>
@@ -61,6 +60,7 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	.warning-text {
@@ -74,29 +74,6 @@
 		color: red;
 	}
 
-	.settings-button {
-		height: 75%;
-		aspect-ratio: 1/1;
-		margin-left: 1.6rem;
-		border-radius: 6px;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: black;
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-
-		&:hover {
-			background-color: var(--deep-purple);
-		}
-
-		&:active {
-			position: relative;
-			top: 1px;
-			left: 1px;
-		}
-	}
-
 	select {
 		width: 100%;
 		height: 3rem;
@@ -106,6 +83,7 @@
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		background-color: transparent;
 		appearance: none;
+		margin-right: 1.4rem;
 	}
 
 	select:hover {
@@ -134,11 +112,5 @@
 	option {
 		font-style: normal;
 		color: black;
-	}
-
-	@media (max-width: 1000px) {
-		.settings-button {
-			margin-left: 0.6rem;
-		}
 	}
 </style>

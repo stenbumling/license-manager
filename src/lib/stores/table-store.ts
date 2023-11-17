@@ -1,36 +1,38 @@
 import { get, writable } from 'svelte/store';
-import type { License } from './license-store';
+import { licenseStore } from './license-store';
+import { loadingState, tableFetchRequest } from './loading-store';
 
-export const tableState = writable<License[]>([]);
+// Writable stores
+export const tableIsLoading = writable(false);
+export const tableFetchError = writable('');
 export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
 	contactPerson: 'DEFAULT',
 	users: 'DEFAULT',
-	renewalDate: 'DEFAULT',
+	expirationDate: 'DEFAULT',
 });
 export const searchQuery = writable('');
 
-export function createTableStore() {
-	const { subscribe } = writable<License[]>([]);
-
-	function updateFilterState(filter: string) {
+// Custom store for table state
+function createTableController() {
+	async function updateFilterState(filter: string) {
 		filterState.set(filter);
-		updateTableState();
+		await updateTableState();
 	}
 
-	function updateSortState(column: string) {
+	async function updateSortState(column: string) {
 		sortState.update((currentState) => {
 			updateSortOrder(column, currentState);
 			return currentState;
 		});
-		updateTableState();
+		await updateTableState();
 	}
 
-	function updateTableState() {
+	async function updateTableState() {
 		const { sortColumn, sortOrder } = getSortState();
 		const query = constructFilterQuery(get(filterState), get(searchQuery), sortOrder, sortColumn);
-		sendQueryToDatabase(query);
+		await sendQueryToDatabase(query);
 	}
 
 	function getSortState() {
@@ -98,21 +100,48 @@ export function createTableStore() {
 	}
 
 	async function sendQueryToDatabase(query: string) {
+		tableFetchError.set('');
+		loadingState.start(tableFetchRequest);
 		try {
-			const response = await fetch(`/api/license/query${query}`);
-			const licenses = await response.json();
-			tableState.set(licenses);
+			const response = await fetch(`/api/licenses/query${query}`);
+			if (response.ok) {
+				const licenses = await response.json();
+				licenseStore.set(licenses);
+			} else {
+				const errorMessage = await response.json();
+				tableFetchError.set(errorMessage);
+				console.error(errorMessage);
+
+				// Reset filter and sort state if query fails
+				filterState.set('All');
+				sortState.set({
+					application: 'DEFAULT',
+					contactPerson: 'DEFAULT',
+					users: 'DEFAULT',
+					expirationDate: 'DEFAULT',
+				});
+
+				if (response.status === 404) {
+					// toast
+				} else if (response.status === 401) {
+					// toast
+				} else {
+					// toast
+				}
+			}
 		} catch (error) {
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
+			// toast
+		} finally {
+			loadingState.end(tableFetchRequest);
 		}
 	}
 
 	return {
-		subscribe,
 		filterBy: updateFilterState,
 		sortBy: updateSortState,
 		updateState: updateTableState,
 	};
 }
 
-export const table = createTableStore();
+export const table = createTableController();
