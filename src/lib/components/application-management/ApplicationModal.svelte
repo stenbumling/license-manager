@@ -16,7 +16,7 @@
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { onMount } from 'svelte';
 	import { Circle } from 'svelte-loading-spinners';
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import ApplicationItem from './ApplicationItem.svelte';
 
 	onMount(() => {

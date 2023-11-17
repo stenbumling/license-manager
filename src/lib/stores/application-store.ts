@@ -27,7 +27,7 @@ function createApplicationStore() {
 
 	async function fetchApplications() {
 		applicationFetchError.set('');
-		loadingState.start(applicationFetchRequest, 0);
+		loadingState.start(applicationFetchRequest);
 		try {
 			// await delay(1000);
 			const response = await fetch('/api/applications');

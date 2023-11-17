@@ -2,11 +2,18 @@
 	import type { Application } from '$lib/stores/application-store';
 	import { applicationStore } from '$lib/stores/application-store';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
+	import WarningModal from '../misc/WarningModal.svelte';
 
 	export let application: Application;
+	let showWarningModal = false;
+
+	function handleWarningModal() {
+		showWarningModal = true;
+	}
 
 	function handleDelete() {
 		applicationStore.delete(application.id);
+		showWarningModal = false;
 	}
 </script>
 
@@ -16,12 +23,20 @@
 			<TrashCan size={24} fill="#cccccc" />
 		</button>
 	{:else}
-		<button class="trashcan-icon deletable" on:click={handleDelete}>
+		<button class="trashcan-icon deletable" on:click={handleWarningModal}>
 			<TrashCan size={24} fill="red" />
 		</button>
 	{/if}
 	<p class="application-name">{application.name}</p>
 </div>
+
+{#if showWarningModal}
+	<WarningModal
+		warningText="Are you sure you want to delete this application?"
+		onConfirm={handleDelete}
+		onCancel={() => (showWarningModal = false)}
+	/>
+{/if}
 
 <style>
 	.application-item {
