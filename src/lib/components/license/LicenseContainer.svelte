@@ -80,10 +80,6 @@
 	}
 </script>
 
-{#if $showApplicationModal}
-	<ApplicationModal />
-{/if}
-
 <div class="license-container">
 	{#if $licenseFetchRequest.isLoading}
 		<div class="fallback-container">
@@ -150,9 +146,13 @@
 	{/if}
 </div>
 
+{#if $showApplicationModal}
+	<ApplicationModal />
+{/if}
+
 {#if showWarningModal}
 	<WarningModal
-		warningText="Are you sure you want to close this license? All unsaved changes will be lost."
+		warningText="Are you sure you want to close this license?"
 		onConfirm={() => contextMenu.deleteLicense($license)}
 		onCancel={() => (showWarningModal = false)}
 	/>

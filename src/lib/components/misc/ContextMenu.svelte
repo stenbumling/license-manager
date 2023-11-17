@@ -5,7 +5,6 @@
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { style } from 'svelte-body';
 	import { fly } from 'svelte/transition';
-	import WarningModal from './WarningModal.svelte';
 
 	export let items: ContextMenuItem[];
 	export let referenceElementRect: DOMRect;

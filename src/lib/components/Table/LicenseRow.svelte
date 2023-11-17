@@ -10,11 +10,13 @@
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
+	import WarningModal from '../misc/WarningModal.svelte';
 
 	export let license: License;
 	export let index: number;
 
 	let hovered = false;
+	let showWarningModal = false;
 
 	$: expirationDate = getRelativeDate(license.expirationDate);
 
@@ -37,10 +39,15 @@
 		{
 			label: 'Delete license',
 			icon: TrashCan,
-			action: () => contextMenu.deleteLicense(license),
+			action: () => handleWarningModal(),
 			class: 'alert',
 		},
 	];
+
+	function handleWarningModal() {
+		contextMenu.close();
+		showWarningModal = true;
+	}
 
 	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
 		contextMenu.close();
@@ -126,6 +133,14 @@
 		<LicenseMenu items={licenseMenuItems} />
 	</div>
 </div>
+
+{#if showWarningModal}
+	<WarningModal
+		warningText="Are you sure you want to delete this license?"
+		onConfirm={() => contextMenu.deleteLicense(license)}
+		onCancel={() => (showWarningModal = false)}
+	/>
+{/if}
 
 <style>
 	* {
