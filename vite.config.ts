@@ -5,7 +5,7 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
 		proxy: {
-			'/api': 'https://nexer-orebro-license-app.azurewebsites.net',
+			'/api': 'localhost:3000',
 		},
 	},
 });
