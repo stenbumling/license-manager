@@ -13,9 +13,11 @@ function createUserStore() {
 	async function fetchUsers() {
 		try {
 			const response = await fetch('/api/users');
-			if (response.ok) {
+			if (response.ok && response.status !== 204) {
 				const users = await response.json();
 				update(() => users);
+			} else if (response.status === 204) {
+				update(() => []);
 			} else {
 				const errorMessage = await response.json();
 				if (response.status === 404) {

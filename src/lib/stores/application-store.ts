@@ -1,4 +1,3 @@
-import { delay } from '$lib/utils/delay';
 import { applicationValidationError } from '$lib/validations/application-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -30,9 +29,11 @@ function createApplicationStore() {
 		loadingState.start(applicationFetchRequest);
 		try {
 			const response = await fetch('/api/applications');
-			if (response.ok) {
+			if (response.ok && response.status !== 204) {
 				const applications = await response.json();
 				set(applications);
+			} else if (response.status === 204) {
+				set([]);
 			} else {
 				const errorMessage = await response.json();
 				if (response.status === 404) {
