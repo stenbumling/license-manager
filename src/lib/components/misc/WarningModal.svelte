@@ -14,7 +14,7 @@
 			<h3 class="modal-title">{warningText}</h3>
 		</div>
 		<div class="button-container">
-      <ButtonCancel action={onCancel} />
+			<ButtonCancel action={onCancel} />
 			<ButtonLarge title="Confirm" action={onConfirm} />
 		</div>
 	</dialog>

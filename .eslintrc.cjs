@@ -6,6 +6,15 @@ module.exports = {
 		'plugin:svelte/recommended',
 		'prettier',
 	],
+	overrides: [
+		{
+			files: ['*.svelte'],
+			parser: 'svelte-eslint-parser',
+			parserOptions: {
+				parser: '@typescript-eslint/parser',
+			},
+		},
+	],
 	parser: '@typescript-eslint/parser',
 	plugins: ['@typescript-eslint'],
 	parserOptions: {
@@ -18,13 +27,4 @@ module.exports = {
 		es2017: true,
 		node: true,
 	},
-	overrides: [
-		{
-			files: ['*.svelte'],
-			parser: 'svelte-eslint-parser',
-			parserOptions: {
-				parser: '@typescript-eslint/parser',
-			},
-		},
-	],
 };
