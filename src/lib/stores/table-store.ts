@@ -82,20 +82,20 @@ function createTableController() {
 	function determineBaseQuery(filterName: string, searchQueryParam: string): string {
 		switch (filterName) {
 			case 'All':
-				return '';
+				return '?filter=all';
 			case 'In use':
-				return '?users=true';
+				return '?filter=assigned';
 			case 'Unassigned':
-				return '?users=false';
+				return '?filter=unassigned';
 			case 'Near expiration':
-				return '?nearExpiration=true';
+				return '?filter=near-expiration';
 			case 'Expired':
-				return '?expired=true';
+				return '?filter=expired';
 			case 'Search':
 				return searchQueryParam === '' ? '' : `?search=${searchQueryParam}`;
 			default:
 				console.error(`Unknown filter: ${filterName}`);
-				return '';
+				return 'filter=all';
 		}
 	}
 
