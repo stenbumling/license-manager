@@ -4,15 +4,17 @@ import { writable } from 'svelte/store';
 function getInitialValues(defaultLoadingState = false) {
 	return {
 		isLoading: defaultLoadingState,
-		counter: 0,
+		pendingOperations: 0,
 		timerId: null,
+		error: '',
 	};
 }
 
 interface RequestState {
 	isLoading: boolean;
-	counter: number;
+	pendingOperations: number;
 	timerId: number | null;
+	error: string;
 }
 
 export const tableFetchRequest = writable<RequestState>(getInitialValues(true));
@@ -25,32 +27,48 @@ export const applicationPostRequest = writable<RequestState>(getInitialValues())
 function createLoadingController() {
 	function startLoadingState(loadingStore: Writable<RequestState>, delay = 100) {
 		loadingStore.update((state) => {
-			if (state.counter === 0) {
-				state.timerId = setTimeout(
+			const newState = {
+				...state,
+				error: '',
+				pendingOperations: state.pendingOperations + 1,
+			};
+			if (state.pendingOperations === 0) {
+				newState.timerId = setTimeout(
 					() => loadingStore.update((s) => ({ ...s, isLoading: true })),
 					delay,
 				);
 			}
-			return { ...state, counter: state.counter + 1 };
+			return newState;
 		});
 	}
 
 	function endLoadingState(loadingStore: Writable<RequestState>) {
 		loadingStore.update((state) => {
-			state.counter = state.counter - 1;
-			if (state.counter <= 0) {
+			state.pendingOperations = state.pendingOperations - 1;
+			if (state.pendingOperations <= 0) {
 				if (state.timerId !== null) {
 					clearTimeout(state.timerId);
 				}
-				return { isLoading: false, counter: 0, timerId: null };
+				return {
+					...state,
+					isLoading: false,
+					pendingOperations: 0,
+					timerId: null,
+					error: state.error,
+				};
 			}
 			return state;
 		});
 	}
 
+	function setError(loadingStore: Writable<RequestState>, errorMessage: string) {
+		loadingStore.update((state) => ({ ...state, error: errorMessage }));
+	}
+
 	return {
 		start: startLoadingState,
 		end: endLoadingState,
+		setError,
 	};
 }
 

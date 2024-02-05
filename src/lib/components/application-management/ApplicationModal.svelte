@@ -2,11 +2,7 @@
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
-	import {
-		application,
-		applicationFetchError,
-		applicationStore,
-	} from '$lib/stores/application-store';
+	import { application, applicationStore } from '$lib/stores/application-store';
 	import { applicationFetchRequest } from '$lib/stores/loading-store';
 	import { modal } from '$lib/stores/modal-store';
 	import {
@@ -62,9 +58,9 @@
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
 				<Circle color="var(--deep-purple)" />
 			</div>
-		{:else if $applicationFetchError}
+		{:else if $applicationFetchRequest.error}
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
-				<h3>$applicationFetchError</h3>
+				<h3>{$applicationFetchRequest.error}</h3>
 			</div>
 		{:else if $applicationStore.length === 0}
 			<div class="fallback-container" in:fade={{ duration: 300 }}>

@@ -2,7 +2,6 @@
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
 	import { licenseStore } from '$lib/stores/license-store.ts';
 	import { tableFetchRequest } from '$lib/stores/loading-store';
-	import { tableFetchError } from '$lib/stores/table-store';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
 </script>
@@ -12,9 +11,9 @@
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
-	{:else if $tableFetchError}
+	{:else if $tableFetchRequest.error}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
-			<h1>$tableFetchError</h1>
+			<h1>{$tableFetchRequest.error}</h1>
 		</div>
 	{:else if $licenseStore.length === 0}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>

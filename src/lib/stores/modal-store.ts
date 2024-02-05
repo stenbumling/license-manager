@@ -3,7 +3,7 @@ import { page } from '$app/stores';
 import { get, writable } from 'svelte/store';
 import { applicationStore } from './application-store';
 import { contextMenu } from './context-menu-store';
-import { licenseFetchError, licenseMode, licenseStore } from './license-store';
+import { licenseMode, licenseStore } from './license-store';
 
 export const showLicenseModal = writable(false);
 export const showApplicationModal = writable(false);
@@ -38,7 +38,6 @@ function createModalController() {
 		if (licenseId) {
 			await licenseStore.fetch(licenseId);
 		} else {
-			licenseFetchError.set('');
 			licenseStore.resetFields();
 		}
 		showLicenseModal.set(true);

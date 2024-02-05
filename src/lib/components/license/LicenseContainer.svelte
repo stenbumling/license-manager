@@ -14,9 +14,7 @@
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import {
 		license,
-		licenseFetchError,
 		licenseMode,
-		licensePostError,
 		licenseStore,
 	} from '$lib/stores/license-store.ts';
 	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/loading-store';
@@ -70,7 +68,7 @@
 			} else if ($licenseMode === 'add') {
 				await licenseStore.add($license);
 			}
-			if ($licensePostError) {
+			if ($licensePostRequest.error) {
 				return;
 			}
 			modal.closeLicense();
@@ -85,12 +83,12 @@
 		<div class="fallback-container">
 			<Circle color="var(--deep-purple)" />
 		</div>
-	{:else if $licenseFetchError}
+	{:else if $licenseFetchRequest.error}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
-			<h1>{$licenseFetchError}</h1>
+			<h1>{$licenseFetchRequest.error}</h1>
 		</div>
 	{:else}
 		<div in:fade={{ duration: 300 }}>

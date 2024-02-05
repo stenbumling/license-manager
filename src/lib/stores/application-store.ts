@@ -18,14 +18,11 @@ export interface Application {
 }
 
 export const application = writable<Application>(getInitialValues());
-export const applicationFetchError = writable('');
-export const applicationPostError = writable('');
 
 function createApplicationStore() {
 	const { subscribe, set, update } = writable<Application[]>([]);
 
 	async function fetchApplications() {
-		applicationFetchError.set('');
 		loadingState.start(applicationFetchRequest);
 		try {
 			const response = await fetch('/api/applications');

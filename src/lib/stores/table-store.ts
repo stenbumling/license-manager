@@ -3,8 +3,6 @@ import { licenseStore } from './license-store';
 import { loadingState, tableFetchRequest } from './loading-store';
 
 // Writable stores
-export const tableIsLoading = writable(false);
-export const tableFetchError = writable('');
 export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
@@ -100,7 +98,6 @@ function createTableController() {
 	}
 
 	async function sendQueryToDatabase(query: string) {
-		tableFetchError.set('');
 		loadingState.start(tableFetchRequest);
 		try {
 			const response = await fetch(`/api/licenses/query${query}`);
@@ -109,7 +106,7 @@ function createTableController() {
 				licenseStore.set(licenses);
 			} else {
 				const errorMessage = await response.json();
-				tableFetchError.set(errorMessage);
+				loadingState.setError(tableFetchRequest, errorMessage || 'Failed to fetch licenses');
 				console.error(errorMessage);
 
 				// Reset filter and sort state if query fails
@@ -130,6 +127,7 @@ function createTableController() {
 				}
 			}
 		} catch (error) {
+			loadingState.setError(tableFetchRequest, 'Failed to fetch licenses');
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			// toast
 		} finally {
