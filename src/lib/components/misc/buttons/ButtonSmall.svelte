@@ -3,7 +3,7 @@
 
 	export let icon: ComponentType;
 	export let iconSize: 16 | 20 | 24 | 32 | undefined = 20;
-	export let action: (e?: unknown) => void;
+	export let action: (e?: MouseEvent | KeyboardEvent) => void;
 </script>
 
 <button

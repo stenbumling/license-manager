@@ -2,7 +2,7 @@
 	import { Pulse } from 'svelte-loading-spinners';
 
 	export let title: string = 'Button title';
-	export let action: (e: unknown) => void;
+	export let action: (e: MouseEvent | KeyboardEvent) => void;
 	export let pendingRequest: boolean = false;
 </script>
 
