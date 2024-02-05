@@ -75,8 +75,10 @@ function createRequestStateController() {
 	function endRequestState(request: Writable<RequestState>) {
 		request.update((state) => {
 			state.pendingRequests = Math.max(0, state.pendingRequests - 1); // Prevent negative values
-			if (state.pendingRequests === 0 && state.delayTimer !== null) {
-				clearTimeout(state.delayTimer);
+			if (state.pendingRequests === 0) {
+				if (state.delayTimer) {
+					clearTimeout(state.delayTimer);
+				}
 				return {
 					...state,
 					isLoading: false,

@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import Header from '$lib/components/misc/Header.svelte';
 	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
 	import { applicationStore } from '$lib/stores/application-store';
 	import { licenseCounts, licenseStore } from '$lib/stores/license-store';
 	import { modal } from '$lib/stores/modal-store';
-	import { table } from '$lib/stores/table-store.js';
+	import { request, tableFetchRequest } from '$lib/stores/request-state-store';
 	import { userStore } from '$lib/stores/user-store';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
@@ -15,16 +17,20 @@
 	onMount(async () => {
 		if (data.error) {
 			console.error(`${data.error.code}: ${data.error.message}`);
-			// toast
 		} else {
+			// Set the initial data in the stores
 			licenseStore.set(data.licenses);
 			applicationStore.set(data.applications);
 			userStore.set(data.users);
 			licenseCounts.set(data.counts);
+			request.endLoading(tableFetchRequest);
 
-			table.updateState();
-
-			modal.openLicense();
+			// Open the license modal if the URL contains a license ID
+			if ($page.url.searchParams.has('id')) {
+				modal.openLicense();
+			} else {
+				await goto('/');
+			}
 		}
 	});
 </script>
@@ -34,10 +40,10 @@
 </header>
 
 {#if data.error}
-	<div class="fallback-container">
+	<main class="fallback-container">
 		<h1 style="font-size: 5rem">{data.error.code}</h1>
 		<h1>{data.error.message}</h1>
-	</div>
+	</main>
 {:else}
 	<main>
 		<slot />
@@ -54,8 +60,6 @@
 	}
 
 	.fallback-container {
-		display: flex;
-		justify-content: center;
 		align-items: center;
 		flex-grow: 1;
 		flex-direction: column;

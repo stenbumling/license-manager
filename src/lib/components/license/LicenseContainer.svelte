@@ -64,7 +64,7 @@
 			} else if ($licenseMode === 'add') {
 				await licenseStore.add($license);
 			}
-			if ($licensePostRequest.error) {
+			if ($licensePostRequest.error.message) {
 				return;
 			}
 			modal.closeLicense();
@@ -79,12 +79,12 @@
 		<div class="fallback-container">
 			<Circle color="var(--deep-purple)" />
 		</div>
-	{:else if $licenseFetchRequest.error}
+	{:else if $licenseFetchRequest.error.message}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
-			<h1>{$licenseFetchRequest.error}</h1>
+			<h1>{$licenseFetchRequest.error.message}</h1>
 		</div>
 	{:else}
 		<div in:fade={{ duration: 300 }}>

@@ -15,6 +15,7 @@ function createModalController() {
 		return regex.test(uuid);
 	}
 
+	// Decides which modal (if any) to open based on the URL
 	async function openLicense(licenseId?: string) {
 		const { url } = get(page);
 		const modal = url.searchParams.get('modal');

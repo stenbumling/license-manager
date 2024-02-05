@@ -3,8 +3,8 @@
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
 	import { application, applicationStore } from '$lib/stores/application-store';
-	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { modal } from '$lib/stores/modal-store';
+	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import {
 		applicationValidationError,
 		validateApplication,
@@ -58,9 +58,9 @@
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
 				<Circle color="var(--deep-purple)" />
 			</div>
-		{:else if $applicationFetchRequest.error}
+		{:else if $applicationFetchRequest.error.message}
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
-				<h3>{$applicationFetchRequest.error}</h3>
+				<h3>{$applicationFetchRequest.error.message}</h3>
 			</div>
 		{:else if $applicationStore.length === 0}
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
@@ -91,7 +91,7 @@
 	.modal-window {
 		width: 40vw;
 		max-width: 30rem;
-		max-height: 70vh;
+		height: 70vh;
 		padding: 3rem 4rem;
 		border: none;
 		display: flex;

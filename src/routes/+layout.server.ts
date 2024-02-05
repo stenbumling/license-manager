@@ -1,7 +1,18 @@
 import { error } from '@sveltejs/kit';
 
+interface HttpError {
+	body: {
+		message?: string;
+	};
+	status: number;
+}
+
+/*
+ * Load initial data for the application. This loaded data will be available
+ * to all pages through the "data" variable (currently only used in the +layout.svelte file to pass data to stores).
+ */
+
 export const load = async ({ fetch }) => {
-	let statusCode;
 	try {
 		const responses = await Promise.all([
 			fetch('/api/licenses'),
@@ -11,17 +22,15 @@ export const load = async ({ fetch }) => {
 		]);
 
 		const failedResponse = responses.find((response) => !response.ok);
-
 		if (failedResponse) {
+			const errorResponse = await failedResponse.json();
 			console.error(
 				`Failed to load data: ${failedResponse.url} responded with status ${failedResponse.status}`,
 			);
-			statusCode = failedResponse.status;
 			throw error(failedResponse.status, {
-				message: 'Failed to load all required data',
+				message: errorResponse.message || 'Failed to load data',
 			});
 		}
-
 		return {
 			licenses: await responses[0].json(),
 			applications: await responses[1].json(),
@@ -29,11 +38,12 @@ export const load = async ({ fetch }) => {
 			counts: await responses[3].json(),
 		};
 	} catch (err) {
+		const fetchError = err as HttpError;
 		console.error(err);
 		return {
 			error: {
-				message: 'An error occurred while loading data',
-				code: statusCode,
+				message: fetchError.body.message || 'An error occurred while loading initial data',
+				code: fetchError.status || 500,
 			},
 		};
 	}
