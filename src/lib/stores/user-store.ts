@@ -1,4 +1,3 @@
-import { delay } from '$lib/utils/delay';
 import { writable } from 'svelte/store';
 import { loadingState, userFetchRequest } from './loading-store';
 

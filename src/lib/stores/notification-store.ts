@@ -13,7 +13,7 @@ interface Notification extends NewNotification {
 }
 
 function createNotificationStore() {
-	const { subscribe, set, update } = writable<Notification[]>([]);
+	const { subscribe, update } = writable<Notification[]>([]);
 
 	function addNotification(notification: NewNotification) {
 		const id = uuidv4();

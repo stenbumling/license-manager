@@ -36,11 +36,11 @@ function createContextMenuStore() {
 	}
 
 	function setPosition(referenceElementRect: DOMRect, contextMenuRect: DOMRect) {
-		let top =
+		const top =
 			referenceElementRect.bottom > window.innerHeight - contextMenuRect.height - 40
 				? referenceElementRect.bottom - contextMenuRect.height
 				: referenceElementRect.top;
-		let left = referenceElementRect.left - contextMenuRect.width - 10;
+		const left = referenceElementRect.left - contextMenuRect.width - 10;
 
 		update((state) => ({
 			...state,

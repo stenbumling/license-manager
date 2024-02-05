@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let title: string = 'Cancel';
-	export let action: (e: any) => void;
+	export let action: (e: unknown) => void;
 </script>
 
 <div
