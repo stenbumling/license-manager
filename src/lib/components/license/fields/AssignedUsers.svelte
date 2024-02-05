@@ -2,7 +2,7 @@
 	import AssignedUsersModal from '$lib/components/license/AssignedUsersModal.svelte';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import { license } from '$lib/stores/license-store.ts';
-	import { userFetchRequest } from '$lib/stores/loading-store';
+	import { userFetchRequest } from '$lib/stores/request-state-store';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import type { User } from '$lib/stores/user-store';
 	import { userStore } from '$lib/stores/user-store';

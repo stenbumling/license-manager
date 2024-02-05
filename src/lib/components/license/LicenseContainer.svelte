@@ -12,12 +12,8 @@
 	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import {
-		license,
-		licenseMode,
-		licenseStore,
-	} from '$lib/stores/license-store.ts';
-	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/loading-store';
+	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
+	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
 	import { modal, showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';

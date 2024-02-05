@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import { loadingState, userFetchRequest } from './loading-store';
+import { request, userFetchRequest } from './request-state-store';
 
 export interface User {
 	id: string;
@@ -35,7 +35,7 @@ function createUserStore() {
 	}
 
 	async function findOrCreateUser(userName: string) {
-		loadingState.start(userFetchRequest);
+		request.startLoading(userFetchRequest);
 		try {
 			const response = await fetch('/api/users', {
 				method: 'POST',
@@ -63,7 +63,7 @@ function createUserStore() {
 			console.error('Failed to add user:\n', error);
 			// toast
 		} finally {
-			loadingState.end(userFetchRequest);
+			request.endLoading(userFetchRequest);
 		}
 	}
 

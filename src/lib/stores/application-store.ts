@@ -1,7 +1,7 @@
 import { applicationValidationError } from '$lib/validations/application-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { applicationFetchRequest, loadingState } from './loading-store';
+import { applicationFetchRequest, request } from './request-state-store';
 
 function getInitialValues() {
 	return {
@@ -23,7 +23,7 @@ function createApplicationStore() {
 	const { subscribe, set, update } = writable<Application[]>([]);
 
 	async function fetchApplications() {
-		loadingState.start(applicationFetchRequest);
+		request.startLoading(applicationFetchRequest);
 		try {
 			const response = await fetch('/api/applications');
 			if (response.ok && response.status !== 204) {
@@ -46,7 +46,7 @@ function createApplicationStore() {
 			console.error('Failed to fetch applications\n:', error);
 			// toast
 		} finally {
-			loadingState.end(applicationFetchRequest);
+			request.endLoading(applicationFetchRequest);
 		}
 	}
 

@@ -1,6 +1,6 @@
 import { get, writable } from 'svelte/store';
 import { licenseStore } from './license-store';
-import { loadingState, tableFetchRequest } from './loading-store';
+import { request, tableFetchRequest } from './request-state-store';
 
 // Writable stores
 export const filterState = writable('All');
@@ -98,7 +98,7 @@ function createTableController() {
 	}
 
 	async function sendQueryToDatabase(query: string) {
-		loadingState.start(tableFetchRequest);
+		request.startLoading(tableFetchRequest);
 		try {
 			const response = await fetch(`/api/licenses/query${query}`);
 			if (response.ok) {
@@ -106,7 +106,12 @@ function createTableController() {
 				licenseStore.set(licenses);
 			} else {
 				const errorMessage = await response.json();
-				loadingState.setError(tableFetchRequest, errorMessage || 'Failed to fetch licenses');
+				request.setError(
+					tableFetchRequest,
+					null,
+					'error',
+					errorMessage || 'Failed to fetch licenses',
+				);
 				console.error(errorMessage);
 
 				// Reset filter and sort state if query fails
@@ -127,11 +132,11 @@ function createTableController() {
 				}
 			}
 		} catch (error) {
-			loadingState.setError(tableFetchRequest, 'Failed to fetch licenses');
+			request.setError(tableFetchRequest, 500, 'error', 'Failed to fetch licenses');
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			// toast
 		} finally {
-			loadingState.end(tableFetchRequest);
+			request.endLoading(tableFetchRequest);
 		}
 	}
 

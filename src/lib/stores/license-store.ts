@@ -3,9 +3,9 @@ import type { User } from '$lib/stores/user-store';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { licenseFetchRequest, licensePostRequest, loadingState } from './loading-store';
-import { table } from './table-store';
 import { notifications } from './notification-store';
+import { licenseFetchRequest, licensePostRequest, request } from './request-state-store';
+import { table } from './table-store';
 
 function getInitialValues() {
 	return {
@@ -92,7 +92,7 @@ function createLicenseStore() {
 	}
 
 	async function getLicenseById(id: string) {
-		loadingState.start(licenseFetchRequest);
+		request.startLoading(licenseFetchRequest);
 		try {
 			const response = await fetch(`/api/licenses/${id}`);
 			if (response.ok) {
@@ -100,7 +100,12 @@ function createLicenseStore() {
 				license.set(fetchedLicense);
 			} else {
 				const errorMessage = await response.json();
-				loadingState.setError(licenseFetchRequest, errorMessage || 'Failed to fetch license');
+				request.setError(
+					licenseFetchRequest,
+					null,
+					'error',
+					errorMessage || 'Failed to fetch licenses',
+				);
 				if (response.status === 404) {
 					throw new Error(`License with id ${id} not found`);
 					// toast
@@ -112,11 +117,11 @@ function createLicenseStore() {
 				console.error(errorMessage);
 			}
 		} catch (error) {
-			loadingState.setError(licenseFetchRequest, 'Failed to fetch license');
+			request.setError(licenseFetchRequest, 500, 'error', 'Failed to fetch licenses');
 			console.error('Failed to fetch license:', (error as Error).message);
 			// toast
 		} finally {
-			loadingState.end(licenseFetchRequest);
+			request.endLoading(licenseFetchRequest);
 		}
 	}
 
@@ -144,7 +149,7 @@ function createLicenseStore() {
 	}
 
 	async function addLicense(license: License) {
-		loadingState.start(licensePostRequest);
+		request.startLoading(licensePostRequest);
 		try {
 			const response = await fetch('/api/licenses', {
 				method: 'POST',
@@ -174,12 +179,12 @@ function createLicenseStore() {
 			console.error('Failed to add license:', error);
 			// toast
 		} finally {
-			loadingState.end(licensePostRequest);
+			request.endLoading(licensePostRequest);
 		}
 	}
 
 	async function updateLicense(license: License) {
-		loadingState.start(licensePostRequest);
+		request.startLoading(licensePostRequest);
 		try {
 			const response = await fetch(`/api/licenses/${license.id}`, {
 				method: 'PUT',
@@ -215,7 +220,7 @@ function createLicenseStore() {
 			console.error('Failed to update license:', error);
 			// toast
 		} finally {
-			loadingState.end(licensePostRequest);
+			request.endLoading(licensePostRequest);
 		}
 	}
 
