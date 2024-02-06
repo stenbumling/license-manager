@@ -1,5 +1,6 @@
 import { get, writable } from 'svelte/store';
 import { licenseStore } from './license-store';
+import { notifications } from './notification-store';
 import { request, tableFetchRequest } from './request-state-store';
 
 /*
@@ -12,6 +13,7 @@ import { request, tableFetchRequest } from './request-state-store';
 
 // Stores for managing queries and state of the table
 export const searchQuery = writable('');
+//
 export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
@@ -19,6 +21,9 @@ export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	users: 'DEFAULT',
 	expirationDate: 'DEFAULT',
 });
+
+// Used to render the search query in the table if no results are found
+export const currentSearch = writable('');
 
 function createTableController() {
 	async function updateFilterState(filter: string) {
@@ -97,11 +102,25 @@ function createTableController() {
 			case 'Expired':
 				return '?filter=expired';
 			case 'Search':
+				currentSearch.set(searchQueryParam);
 				return searchQueryParam === '' ? '' : `?search=${searchQueryParam}`;
 			default:
 				console.error(`Unknown filter: ${filterName}`);
 				return 'filter=all';
 		}
+	}
+
+	function resetTableState() {
+		filterState.set('All');
+		sortState.set({
+			application: 'DEFAULT',
+			contactPerson: 'DEFAULT',
+			users: 'DEFAULT',
+			expirationDate: 'DEFAULT',
+		});
+		searchQuery.set('');
+		currentSearch.set('');
+		updateTableState();
 	}
 
 	async function sendQueryToDatabase(query: string) {
@@ -112,31 +131,26 @@ function createTableController() {
 				const licenses = await response.json();
 				licenseStore.set(licenses);
 			} else {
-				const errorMessage = await response.json();
-				request.setError(
-					tableFetchRequest,
-					null,
-					'error',
-					errorMessage || 'Failed to fetch licenses',
-				);
-				console.error(errorMessage);
+				const error = await response.json();
 
-				// Reset filter and sort state if query fails
-				filterState.set('All');
-				sortState.set({
-					application: 'DEFAULT',
-					contactPerson: 'DEFAULT',
-					users: 'DEFAULT',
-					expirationDate: 'DEFAULT',
-				});
-
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
+				if (response.status === 400) {
+					notifications.add({
+						message: error.message || 'The filt failed. Table state has been reset. Please try again.',
+						type: 'warning',
+					});
+					resetTableState();
+				} else if (response.status === 500) {
+					notifications.add({
+						message: error.message || 'Failed to update table. Please try again',
+						type: 'alert',
+					});
 				} else {
-					// toast
+					notifications.add({
+						message: error.message || 'Failed to update table. Please try again',
+						type: 'alert',
+					});
 				}
+				console.error(error);
 			}
 		} catch (error) {
 			request.setError(tableFetchRequest, 500, 'error', 'Failed to fetch licenses');

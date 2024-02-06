@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { filterState, searchQuery, table } from '$lib/stores/table-store';
+	import { searchQueryValidationError } from '$lib/validations/search-query-validation';
 	import { fade } from 'svelte/transition';
 
 	export let filter: {
@@ -10,6 +11,7 @@
 
 	function handleClick() {
 		searchQuery.set('');
+		searchQueryValidationError.set([]);
 		table.filterBy(filter.title);
 	}
 </script>
