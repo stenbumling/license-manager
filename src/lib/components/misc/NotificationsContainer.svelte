@@ -3,7 +3,7 @@
 	import { notifications } from '$lib/stores/notification-store';
 </script>
 
-{#if $notifications}
+{#if $notifications.length > 0}
 	<section>
 		{#each $notifications as notification (notification.id)}
 			<Notification
