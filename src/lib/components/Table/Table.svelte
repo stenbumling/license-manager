@@ -7,7 +7,7 @@
 </script>
 
 <div class="table-body-wrapper">
-	{#if $tableFetchRequest.isLoading}
+	{#if $tableFetchRequest.isLoading && !($tableFetchRequest.error.code === 418)}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
@@ -15,7 +15,7 @@
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
 			<h1>{$tableFetchRequest.error.message}</h1>
 		</div>
-	{:else if $licenseStore.length === 0}
+	{:else if $licenseStore.length === 0 && !$tableFetchRequest.isLoading}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
 			<h1>No licenses found</h1>
 		</div>

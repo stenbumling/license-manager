@@ -2,7 +2,16 @@ import { get, writable } from 'svelte/store';
 import { licenseStore } from './license-store';
 import { request, tableFetchRequest } from './request-state-store';
 
-// Writable stores
+/*
+ * This store is responsible for managing the state of the license table. That
+ * includes what filter is currently active, what the current sort order is,
+ * and what the current search query is. Everytime the state of the table
+ * changes in any way, the store will send a query to the database to fetch the
+ * licenses that match the current state of the table.
+ */
+
+// Stores for managing queries and state of the table
+export const searchQuery = writable('');
 export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
@@ -10,9 +19,7 @@ export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	users: 'DEFAULT',
 	expirationDate: 'DEFAULT',
 });
-export const searchQuery = writable('');
 
-// Custom store for table state
 function createTableController() {
 	async function updateFilterState(filter: string) {
 		filterState.set(filter);

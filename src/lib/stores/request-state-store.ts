@@ -20,7 +20,7 @@ function getInitialValues(defaultLoadingState = false) {
 		pendingRequests: 0,
 		delayTimer: null,
 		error: {
-			code: null,
+			code: 418, // Initialized with this to prevent "no licenses" message or instant loading spinner on app start
 			type: '',
 			message: '',
 		},

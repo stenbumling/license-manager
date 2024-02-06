@@ -19,6 +19,7 @@
 			console.error(`${data.error.code}: ${data.error.message}`);
 		} else {
 			// Set the initial data in the stores
+			request.startLoading(tableFetchRequest, 200);
 			licenseStore.set(data.licenses);
 			applicationStore.set(data.applications);
 			userStore.set(data.users);
