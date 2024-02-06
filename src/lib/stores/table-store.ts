@@ -134,28 +134,32 @@ function createTableController() {
 				const error = await response.json();
 
 				if (response.status === 400) {
-					notifications.add({
-						message: error.message || 'The filt failed. Table state has been reset. Please try again.',
-						type: 'warning',
-					});
 					resetTableState();
-				} else if (response.status === 500) {
 					notifications.add({
-						message: error.message || 'Failed to update table. Please try again',
-						type: 'alert',
+						message: error.message || 'The filter was invalid. Table state has been reset.',
+						type: 'warning',
 					});
 				} else {
 					notifications.add({
-						message: error.message || 'Failed to update table. Please try again',
+						message: error.message || 'A server error has occured. Please try refreshing the page.',
 						type: 'alert',
 					});
+					request.setError(
+						tableFetchRequest,
+						500,
+						'Internal Server Error',
+						'Failed to fetch licenses',
+					);
 				}
-				console.error(error);
+				console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			}
 		} catch (error) {
-			request.setError(tableFetchRequest, 500, 'error', 'Failed to fetch licenses');
+			notifications.add({
+				message: 'A server error has occured. Please try refreshing the page.',
+				type: 'alert',
+			});
+			request.setError(tableFetchRequest, 500, 'Internal Server Error', 'Failed to fetch licenses');
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
-			// toast
 		} finally {
 			request.endLoading(tableFetchRequest);
 		}
