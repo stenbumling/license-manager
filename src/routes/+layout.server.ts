@@ -16,10 +16,13 @@ export const load = async ({ fetch }) => {
 		]);
 
 		const failedResponse = responses.find((response) => !response.ok);
+		console.log(failedResponse);
 		if (failedResponse) {
 			statusCode = failedResponse.status;
 			console.error(
-				`Failed to load data: ${failedResponse.url} responded with status ${failedResponse.status}`,
+				`Failed to load data: ${
+					failedResponse.url ? failedResponse.url : 'The server'
+				} responded with status ${failedResponse.status}`,
 			);
 			throw error(failedResponse.status, {
 				message: 'Failed to load data',

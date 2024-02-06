@@ -117,7 +117,7 @@ function createLicenseStore() {
 				console.error(errorMessage);
 			}
 		} catch (error) {
-			request.setError(licenseFetchRequest, 500, 'error', 'Failed to fetch licenses');
+			request.setError(licenseFetchRequest, 500, 'error', 'Failed to fetch license');
 			console.error('Failed to fetch license:', (error as Error).message);
 			// toast
 		} finally {

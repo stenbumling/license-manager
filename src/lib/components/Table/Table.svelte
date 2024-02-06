@@ -70,9 +70,8 @@
 		justify-content: center;
 		text-align: center;
 		height: 100%;
-
 	}
-	
+
 	h1 {
 		max-width: 70%;
 		line-height: 1.7;
@@ -84,9 +83,8 @@
 	}
 
 	@media (max-width: 1600px) {
-			h1 {
-				max-width: 30rem;
-			}
+		h1 {
+			max-width: 30rem;
 		}
-	
+	}
 </style>

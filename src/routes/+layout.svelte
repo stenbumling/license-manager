@@ -18,12 +18,14 @@
 		if (data.error) {
 			console.error(`${data.error.code}: ${data.error.message}`);
 		} else {
-			// Set the initial data in the stores
 			request.startLoading(tableFetchRequest, 200);
+
+			// Set the initial data in the stores
 			licenseStore.set(data.licenses);
 			applicationStore.set(data.applications);
 			userStore.set(data.users);
 			licenseCounts.set(data.counts);
+
 			request.endLoading(tableFetchRequest);
 
 			// Open the license modal if the URL contains a license ID
@@ -38,7 +40,12 @@
 
 <Header />
 
-{#if data.error}
+{#if $page.status === 404}
+	<main class="fallback-container">
+		<h1 style="font-size: 5rem">{$page.status}</h1>
+		<h1>{$page.error?.message}</h1>
+	</main>
+{:else if data.error}
 	<main class="fallback-container">
 		<h1 style="font-size: 5rem">{data.error.code}</h1>
 		<h1>{data.error.message}</h1>

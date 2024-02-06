@@ -31,7 +31,7 @@
 	type="search"
 	class={`search-field ${isError ? 'error' : ''} ${isActiveSearch ? 'active' : ''}`}
 	placeholder="Search"
-	maxlength=50
+	maxlength="50"
 	on:keydown={handleSearch}
 />
 <div class="search-icon">
