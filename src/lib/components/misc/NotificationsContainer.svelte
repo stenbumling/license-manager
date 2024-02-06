@@ -22,9 +22,7 @@
 		left: 0;
 		bottom: 0;
 		display: flex;
-		margin-top: 1rem;
 		margin: 2rem 2.4rem;
-		justify-content: center;
 		flex-direction: column;
 		z-index: 1000;
 	}

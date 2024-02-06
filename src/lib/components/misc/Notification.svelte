@@ -31,50 +31,55 @@
 		<slot />
 	</div>
 
-	{#if dismissible}
-		<div>
-			<CloseModalButton action={handleDismiss} color="white" />
-		</div>
-	{/if}
+	<div style:margin-left={dismissible ? '1rem' : '2.9rem'}>
+		{#if dismissible}
+			<CloseModalButton action={handleDismiss} color={type === 'warning' ? 'black' : 'white'} />
+		{/if}
+	</div>
 </article>
 
 <style>
 	article {
 		color: white;
-		padding: 0.75rem 1.5rem;
-		border-radius: 0rem;
-		/* border: 1px solid black; */
+		padding: 0.75rem 0.5rem 0.75rem 1rem;
+		border-radius: 0.3rem;
+		box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.35);
 		display: flex;
 		align-items: center;
-		margin: 0 auto 0.5rem auto;
-		max-width: 22rem;
+		margin: 0 0 0.8rem 0;
+		min-height: 2rem;
+		max-width: 23rem;
 	}
 
 	.success {
 		background: rgb(97, 155, 92);
+		border: 2px solid rgba(0, 0, 0, 0.15);
 	}
 
 	.info {
-		background: rgb(154, 156, 158);
+		background: rgb(92, 92, 92);
+		border: 2px solid rgba(0, 0, 0, 0.15);
 	}
 
 	.warning {
 		background: #f0bf0e;
+		border: 2px solid rgba(0, 0, 0, 0.15);
+		color: black;
 	}
 
 	.alert {
 		background: rgb(203, 55, 55);
+		border: 2px solid rgba(0, 0, 0, 0.15);
 	}
 
 	.text {
-		margin-left: 1rem;
-		margin-right: 1rem;
+		margin-right: auto;
 		display: flex;
-		align-items: center;
+		word-break: break-word;
 	}
 
 	.icon-container {
 		display: flex;
-		align-content: flex-end;
+		margin-right: 1rem;
 	}
 </style>
