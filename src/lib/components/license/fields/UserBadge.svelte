@@ -15,7 +15,7 @@
 		<span class="badge-text">{user.name}</span>
 	</div>
 	<button class="badge-delete-button" on:click={() => handleRemoveUser(user)}>
-		<CloseFilled fill="#f4d7ff" size={16} />
+		<CloseFilled fill="white" size={16} />
 	</button>
 </div>
 
@@ -40,7 +40,7 @@
 	}
 
 	.badge-text {
-		color: #f4d7ff;
+		color: white;
 		font-size: 0.8rem;
 		white-space: nowrap;
 		padding-top: 1px;
