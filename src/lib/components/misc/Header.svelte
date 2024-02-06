@@ -2,39 +2,56 @@
 	import logo from '$lib/images/nexer-logo-white.png';
 </script>
 
-<div class="header-container">
+<header class="header-container">
 	<div class="header-content">
-		<img src={logo} alt="Nexer Logo" />
+		<img class="header-logo" src={logo} alt="Nexer Logo" />
+		<h2 class="header-department-name">Örebro</h2>
 	</div>
-</div>
+</header>
 
 <style>
 	.header-container {
-		height: 4.6rem;
-		padding: 0 4.9rem 0 5.1rem;
+		padding: 1rem 4.9rem 1rem 5.1rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		background-color: black;
 	}
 
-	.header-content {
-		width: 100%;
-		max-width: 116rem;
-		display: flex;
+	.header-logo {
+		height: 1.6rem;
 	}
 
-	img {
-		height: 1.6rem;
+	.header-content {
+		width: 100%;
+		height: 2.4rem;
+		gap: 1.6rem;
+		max-width: 116rem;
+		display: flex;
+		align-items: center;
+	}
+
+	.header-department-name {
+		display: flex;
+		margin-top: 2px;
+		color: #a3a3a3;
 	}
 
 	@media (max-height: 850px) {
 		.header-container {
-			height: 3.2rem;
+			padding: 0.3rem 4.9rem 0.3rem 5.1rem;
 		}
 
-		img {
+		.header-content {
+			gap: 1rem;
+		}
+
+		.header-logo {
 			height: 1rem;
+		}
+
+		.header-department-name {
+			font-size: 0.7rem;
 		}
 	}
 </style>

@@ -36,9 +36,7 @@
 	});
 </script>
 
-<header>
-	<Header />
-</header>
+<Header />
 
 {#if data.error}
 	<main class="fallback-container">
