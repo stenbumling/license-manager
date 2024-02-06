@@ -71,14 +71,22 @@
 		text-align: center;
 		height: 100%;
 
-		& > h1 {
-			max-width: 80%;
-			line-height: 1.7;
-			word-wrap: break-word;
-		}
+	}
+	
+	h1 {
+		max-width: 70%;
+		line-height: 1.7;
+		word-wrap: break-word;
 	}
 
 	.search-query-text {
 		color: var(--deep-purple);
 	}
+
+	@media (max-width: 1600px) {
+			h1 {
+				max-width: 30rem;
+			}
+		}
+	
 </style>
