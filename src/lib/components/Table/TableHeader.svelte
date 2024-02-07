@@ -3,10 +3,17 @@
 	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
 	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
+	import { browser } from '$app/environment';
+
+	// Firefox doesn't support scrollbar-width
+	let isFirefox = false;
+	if (browser) {
+		isFirefox = navigator.userAgent.includes('Firefox')
+	}
 </script>
 
 <div role="rowgroup">
-	<div role="row" class="table-header-row">
+	<div role="row" class="table-header-row" class:extra-margin={!isFirefox}>
 		<div role="columnheader" tabindex="-1" class="status-col">
 			<CircleDash size={20} />
 		</div>
@@ -84,12 +91,14 @@
 		box-sizing: border-box;
 	}
 
+	.extra-margin {
+		margin-right: 1rem;
+	}
+
 	.table-header-row {
-		overflow-y: scroll;
 		display: flex;
 		align-items: flex-end;
 		padding: 0 0rem 1rem 0;
-		scrollbar-width: none;
 	}
 
 	.table-header-row > * {
@@ -100,10 +109,6 @@
 
 	.table-header-row > * > * {
 		min-width: 0;
-	}
-
-	::-webkit-scrollbar {
-		background-color: transparent;
 	}
 
 	.column-label {

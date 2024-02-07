@@ -251,7 +251,7 @@
 		height: 60%;
 	}
 
-	@media (max-width: 1250px) {
+	@media (max-width: 1450px) {
 		.renewal-cell {
 			display: none;
 		}

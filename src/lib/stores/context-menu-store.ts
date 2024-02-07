@@ -81,7 +81,7 @@ function createContextMenuStore() {
 	async function copyLicenseData(license: License) {
 		contextMenu.close();
 		try {
-			await navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
+			await navigator.clipboard.writeText(JSON.stringify(license, null, 2));
 			notifications.add({
 				message: 'License link data to clipboard',
 				type: 'info',
