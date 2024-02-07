@@ -1,5 +1,5 @@
 /*
- * This is a Svelte action to add a shadow indicator to scrollable div elements.
+ * This adds a shadow indicator to scrollable div elements.
  * It keeps track of the scroll position and adds a shadow to the top and bottom of the div
  * where appropriate. Currently not used in the table, as the background color of even rows
  * obscure the shadow and makes it look glitchy.

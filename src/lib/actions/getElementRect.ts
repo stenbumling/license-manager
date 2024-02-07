@@ -1,5 +1,5 @@
 /*
- * This action will continously observe the element it is attached to and return
+ * This will continously observe the element it is attached to and return
  * its dimensions and position when they change. In addition it will listen for
  * window resize events and debounce them if too frequent.
  */

@@ -1,4 +1,4 @@
-// This is a simple action to handle clicks outside of the element it is attached to.
+// This simply handle clicks outside of the element it is attached to.
 
 export function clickOutside(node: HTMLElement, callback: (event: MouseEvent) => void) {
 	function handleClick(event: MouseEvent) {

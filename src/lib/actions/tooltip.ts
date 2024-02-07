@@ -3,7 +3,7 @@ import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 
 /*
- * This is a Svelte action that creates a tooltip for a given element. It uses
+ * This creates a tooltip for a given element. It uses
  * the tippy.js library – read more at https://atomiks.github.io/tippyjs/ on usage
  * and options.
  */
