@@ -12,7 +12,7 @@
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
+	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 	import { modal, showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';

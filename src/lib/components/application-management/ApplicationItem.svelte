@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { Application } from '$lib/stores/application-store';
-	import { applicationStore } from '$lib/stores/application-store';
+	import type { Application } from '$lib/stores/resources/application-store';
+	import { applicationStore } from '$lib/stores/resources/application-store';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import WarningModal from '../misc/WarningModal.svelte';
 

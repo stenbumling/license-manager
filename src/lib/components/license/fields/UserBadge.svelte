@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { license } from '$lib/stores/license-store.ts';
-	import type { User } from '$lib/stores/user-store';
+	import { license } from '$lib/stores/resources/license-store';
+	import type { User } from '$lib/stores/resources/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
 	import { fade } from 'svelte/transition';
 	export let user: User;

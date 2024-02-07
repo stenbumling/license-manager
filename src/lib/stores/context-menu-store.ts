@@ -1,8 +1,8 @@
-import type { License } from '$lib/stores/license-store';
+import type { License } from '$lib/stores/resources/license-store';
 import { modal } from '$lib/stores/modal-store';
 import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
-import { licenseStore } from './license-store';
+import { licenseStore } from './resources/license-store';
 import { notifications } from './notification-store';
 
 /*

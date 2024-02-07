@@ -1,8 +1,8 @@
 <script lang="ts">
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
-	import { licenseStore } from '$lib/stores/license-store.ts';
+	import { licenseStore } from '$lib/stores/resources/license-store';
 	import { tableFetchRequest } from '$lib/stores/request-state-store';
-	import { currentSearch, filterState } from '$lib/stores/table-store';
+	import { currentSearch, filterState } from '$lib/stores/resources/table-store';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
 

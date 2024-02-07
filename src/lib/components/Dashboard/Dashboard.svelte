@@ -2,7 +2,7 @@
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
 	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
-	import { licenseCounts } from '$lib/stores/license-store';
+	import { licenseCounts } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {

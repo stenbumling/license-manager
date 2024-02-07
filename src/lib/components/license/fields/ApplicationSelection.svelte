@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
-	import { applicationStore } from '$lib/stores/application-store';
-	import { license } from '$lib/stores/license-store';
+	import { applicationStore } from '$lib/stores/resources/application-store';
+	import { license } from '$lib/stores/resources/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';

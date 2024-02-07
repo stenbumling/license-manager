@@ -1,9 +1,9 @@
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { get, writable } from 'svelte/store';
-import { applicationStore } from './application-store';
+import { applicationStore } from './resources/application-store';
 import { contextMenu } from './context-menu-store';
-import { licenseMode, licenseStore } from './license-store';
+import { licenseMode, licenseStore } from './resources/license-store';
 
 export const showLicenseModal = writable(false);
 export const showApplicationModal = writable(false);

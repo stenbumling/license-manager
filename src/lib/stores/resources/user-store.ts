@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
-import { notifications } from './notification-store';
-import { request, userFetchRequest } from './request-state-store';
+import { notifications } from '../notification-store';
+import { request, userFetchRequest } from '../request-state-store';
 
 export interface User {
 	id: string;
@@ -58,7 +58,7 @@ function createUserStore() {
 				if (data.created) {
 					update((users) => [data.user, ...users]);
 					notifications.add({
-						message: 'New user was successfully added to the database',
+						message: `User '${userName}' was successfully added to the database`,
 						type: 'success',
 					});
 				}

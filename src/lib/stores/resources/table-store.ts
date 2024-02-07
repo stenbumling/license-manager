@@ -1,7 +1,7 @@
 import { get, writable } from 'svelte/store';
 import { licenseStore } from './license-store';
-import { notifications } from './notification-store';
-import { request, tableFetchRequest } from './request-state-store';
+import { notifications } from '../notification-store';
+import { request, tableFetchRequest } from '../request-state-store';
 
 /*
  * This store is responsible for managing the state of the license table. That

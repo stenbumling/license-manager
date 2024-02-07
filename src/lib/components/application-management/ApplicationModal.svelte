@@ -2,7 +2,7 @@
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
-	import { application, applicationStore } from '$lib/stores/application-store';
+	import { application, applicationStore } from '$lib/stores/resources/application-store';
 	import { modal } from '$lib/stores/modal-store';
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import {

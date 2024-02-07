@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
-	import { license, licenseMode } from '$lib/stores/license-store';
+	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
 </script>
 

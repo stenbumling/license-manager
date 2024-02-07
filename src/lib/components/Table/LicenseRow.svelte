@@ -2,7 +2,7 @@
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import type { License } from '$lib/stores/license-store';
+	import type { License } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';

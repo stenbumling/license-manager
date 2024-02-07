@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { sortState, table } from '$lib/stores/table-store';
+	import { sortState, table } from '$lib/stores/resources/table-store';
 	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
 	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';

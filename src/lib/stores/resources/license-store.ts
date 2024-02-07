@@ -1,10 +1,10 @@
-import { applicationStore, type Application } from '$lib/stores/application-store';
-import type { User } from '$lib/stores/user-store';
+import { applicationStore, type Application } from '$lib/stores/resources/application-store';
+import type { User } from '$lib/stores/resources/user-store';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { notifications } from './notification-store';
-import { licenseFetchRequest, licensePostRequest, request } from './request-state-store';
+import { notifications } from '../notification-store';
+import { licenseFetchRequest, licensePostRequest, request } from '../request-state-store';
 import { table } from './table-store';
 
 function getInitialValues() {

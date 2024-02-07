@@ -1,11 +1,11 @@
 <script lang="ts">
 	import AssignedUsersModal from '$lib/components/license/AssignedUsersModal.svelte';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
-	import { license } from '$lib/stores/license-store.ts';
+	import { license } from '$lib/stores/resources/license-store';
 	import { userFetchRequest } from '$lib/stores/request-state-store';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
-	import type { User } from '$lib/stores/user-store';
-	import { userStore } from '$lib/stores/user-store';
+	import type { User } from '$lib/stores/resources/user-store';
+	import { userStore } from '$lib/stores/resources/user-store';
 	import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { Pulse } from 'svelte-loading-spinners';

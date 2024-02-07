@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { filterState, searchQuery, table } from '$lib/stores/table-store';
+	import { filterState, searchQuery, table } from '$lib/stores/resources/table-store';
 	import {
 		searchQueryValidationError,
 		validateSearchQuery,

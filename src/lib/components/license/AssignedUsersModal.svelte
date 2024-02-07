@@ -1,7 +1,7 @@
 <script lang="ts">
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
-	import { license } from '$lib/stores/license-store.ts';
+	import { license } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
 	import { fade } from 'svelte/transition';
 </script>

@@ -1,8 +1,8 @@
 import { applicationValidationError } from '$lib/validations/application-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { notifications } from './notification-store';
-import { applicationFetchRequest, request } from './request-state-store';
+import { notifications } from '../notification-store';
+import { applicationFetchRequest, request } from '../request-state-store';
 
 function getInitialValues() {
 	return {

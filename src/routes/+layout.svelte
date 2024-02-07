@@ -3,11 +3,11 @@
 	import { page } from '$app/stores';
 	import Header from '$lib/components/misc/Header.svelte';
 	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
-	import { applicationStore } from '$lib/stores/application-store';
-	import { licenseCounts, licenseStore } from '$lib/stores/license-store';
+	import { applicationStore } from '$lib/stores/resources/application-store.js';
+	import { licenseCounts, licenseStore } from '$lib/stores/resources/license-store.js';
 	import { modal } from '$lib/stores/modal-store';
 	import { request, tableFetchRequest } from '$lib/stores/request-state-store';
-	import { userStore } from '$lib/stores/user-store';
+	import { userStore } from '$lib/stores/resources/user-store.js';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
 	import { onMount } from 'svelte';
