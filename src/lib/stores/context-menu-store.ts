@@ -3,6 +3,7 @@ import { modal } from '$lib/stores/modal-store';
 import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
 import { licenseStore } from './license-store';
+import { notifications } from './notification-store';
 
 /*
  * This store is responsible for managing the state of context menus for licenses.
@@ -60,14 +61,38 @@ function createContextMenuStore() {
 		modal.openLicense(license.id);
 	}
 
-	function copyLicenseLink(license: License) {
+	async function copyLicenseLink(license: License) {
 		contextMenu.close();
-		navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
+		try {
+			await navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
+			notifications.add({
+				message: 'License link copied to clipboard',
+				type: 'info',
+			});
+		} catch (error) {
+			console.error('Failed to copy license link to clipboard:', error);
+			notifications.add({
+				message: 'Failed to copy license link to clipboard',
+				type: 'warning',
+			});
+		}
 	}
 
-	function copyLicenseData(license: License) {
+	async function copyLicenseData(license: License) {
 		contextMenu.close();
-		navigator.clipboard.writeText(JSON.stringify(license, null, 2));
+		try {
+			await navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
+			notifications.add({
+				message: 'License link data to clipboard',
+				type: 'info',
+			});
+		} catch (error) {
+			console.error('Failed to copy license data to clipboard:', error);
+			notifications.add({
+				message: 'Failed to copy license data to clipboard',
+				type: 'warning',
+			});
+		}
 	}
 
 	async function deleteLicense(license: License) {
