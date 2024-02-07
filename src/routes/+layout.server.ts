@@ -16,7 +16,7 @@ export const load = async ({ fetch }) => {
 		]);
 
 		const failedResponse = responses.find((response) => !response.ok);
-		console.log(failedResponse);
+
 		if (failedResponse) {
 			statusCode = failedResponse.status;
 			console.error(

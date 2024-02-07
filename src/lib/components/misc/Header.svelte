@@ -4,7 +4,9 @@
 
 <header class="header-container">
 	<div class="header-content">
-		<img class="header-logo" src={logo} alt="Nexer Logo" />
+		<a style="line-height:0" href="/">
+			<img class="header-logo" src={logo} alt="Nexer Logo" />
+		</a>
 		<h2 class="header-department-name">Örebro</h2>
 	</div>
 </header>

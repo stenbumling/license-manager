@@ -7,8 +7,8 @@ import { request, tableFetchRequest } from './request-state-store';
  * This store is responsible for managing the state of the license table. That
  * includes what filter is currently active, what the current sort order is,
  * and what the current search query is. Everytime the state of the table
- * changes in any way, the store will send a query to the database to fetch the
- * licenses that match the current state of the table.
+ * changes in any way, the store will construct and send a query to the database
+ * to fetch the licenses that match the current state of the table.
  */
 
 // Stores for managing queries and state of the table
