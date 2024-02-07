@@ -1,6 +1,7 @@
 import { applicationValidationError } from '$lib/validations/application-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
+import { notifications } from './notification-store';
 import { applicationFetchRequest, request } from './request-state-store';
 
 function getInitialValues() {
@@ -26,25 +27,36 @@ function createApplicationStore() {
 		request.startLoading(applicationFetchRequest);
 		try {
 			const response = await fetch('/api/applications');
-			if (response.ok && response.status !== 204) {
+			if (response.ok) {
 				const applications = await response.json();
 				set(applications);
-			} else if (response.status === 204) {
-				set([]);
 			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
-				} else {
-					// toast
-				}
-				console.error(errorMessage);
+				const error = await response.json();
+				notifications.add({
+					message: error.message || 'An error has occured. Please try refreshing the page.',
+					type: 'alert',
+				});
+				request.setError(
+					applicationFetchRequest,
+					response.status,
+					error.error || 'Internal Server Error',
+					error.message || 'Failed to fetch applications',
+				);
+				console.error('Failed to fetch applications:', error);
 			}
 		} catch (error) {
-			console.error('Failed to fetch applications\n:', error);
-			// toast
+			notifications.add({
+				message:
+					'A server error has occured and applications could not be fetched. Please try refreshing the page.',
+				type: 'alert',
+			});
+			request.setError(
+				applicationFetchRequest,
+				500,
+				'Internal Server Error',
+				'Failed to fetch applications',
+			);
+			console.error('Failed to fetch applications:', error);
 		} finally {
 			request.endLoading(applicationFetchRequest);
 		}
@@ -59,20 +71,25 @@ function createApplicationStore() {
 			});
 			if (response.ok) {
 				await fetchApplications();
+				notifications.add({
+					message: 'Application created successfully',
+					type: 'success',
+				});
 			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
-				} else {
-					// toast
-				}
-				console.error(errorMessage);
+				const error = await response.json();
+				notifications.add({
+					message: error.message || 'Failed to create application. Please try again.',
+					type: 'alert',
+				});
+				console.error('Failed to create application:', error);
 			}
 		} catch (error) {
-			console.error('Failed to add application\n:', error);
-			// toast
+			notifications.add({
+				message:
+					'A server error has occured and application could not be created. Please try refreshing the page.',
+				type: 'alert',
+			});
+			console.error('Failed to create application:', error);
 		}
 	}
 
@@ -83,23 +100,49 @@ function createApplicationStore() {
 			});
 			if (response.ok) {
 				await fetchApplications();
+				notifications.add({
+					message: 'Application deleted successfully',
+					type: 'success',
+				});
 			} else {
-				const errorMessage = await response.json();
+				const error = await response.json();
 				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
+					notifications.add({
+						message:
+							error.message ||
+							'Failed to delete application because it could not be found. Try refreshing the page to get the latest data.',
+						type: 'alert',
+					});
+				} else if (response.status === 409) {
+					notifications.add({
+						message:
+							error.message ||
+							'Failed to delete application because of data conflict. Try refreshing the page to get the latest data.',
+						type: 'alert',
+					});
 				} else {
-					// toast
+					notifications.add({
+						message: error.message || 'Failed to delete application. Please try again.',
+						type: 'alert',
+					});
 				}
-				console.error(errorMessage);
+				console.error('Failed to delete application:', error);
 			}
 		} catch (error) {
-			console.error('Failed to delete application\n:', error);
-			// toast
+			notifications.add({
+				message:
+					'A server error has occured and application could not be deleted. Please try refreshing the page.',
+				type: 'alert',
+			});
+			console.error('Failed to delete application:', error);
 		}
 	}
 
+	/*
+	 * TODO: Consider moving this functionality to server side when adding, deleting
+	 * or updating license. There's a risk of associations data becoming out of sync
+	 * with the actual license data.
+	 */
 	async function updateLicenseAssociations(id: string, action: 'add' | 'remove') {
 		try {
 			// decide whether to add or remove a license association
@@ -119,19 +162,29 @@ function createApplicationStore() {
 			if (response.ok) {
 				await fetchApplications();
 			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
+				const error = await response.json();
+				if (response.status === 409) {
+					notifications.add({
+						message:
+							error.message ||
+							'Failed to updated license associations because of data conflict. Try refreshing the page to get the latest data.',
+						type: 'alert',
+					});
 				} else {
-					// toast
+					notifications.add({
+						message: error.message || 'Failed to update license associations. Please try again.',
+						type: 'alert',
+					});
 				}
-				console.error(errorMessage);
+				console.error('Failed to update license associations:', error);
 			}
 		} catch (error) {
-			console.error('Failed to update license associations\n:', error);
-			// toast
+			notifications.add({
+				message:
+					'A server error has occured and license associations could not be updated. Please try refreshing the page.',
+				type: 'alert',
+			});
+			console.error('Failed to update license associations:', error);
 		}
 	}
 

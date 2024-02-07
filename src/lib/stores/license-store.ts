@@ -68,29 +68,6 @@ export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
-	async function fetchLicenses() {
-		try {
-			const response = await fetch('/api/licenses');
-			if (response.ok) {
-				const { licenses } = await response.json();
-				set(licenses);
-			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
-				} else {
-					// toast
-				}
-				console.error(errorMessage);
-			}
-		} catch (error) {
-			console.error('Failed to fetch licenses:', error);
-			// toast
-		}
-	}
-
 	async function getLicenseById(id: string) {
 		request.startLoading(licenseFetchRequest);
 		try {
@@ -99,27 +76,37 @@ function createLicenseStore() {
 				const fetchedLicense = await response.json();
 				license.set(fetchedLicense);
 			} else {
-				const errorMessage = await response.json();
-				request.setError(
-					licenseFetchRequest,
-					null,
-					'error',
-					errorMessage || 'Failed to fetch licenses',
-				);
+				const error = await response.json();
 				if (response.status === 404) {
-					throw new Error(`License with id ${id} not found`);
-					// toast
-				} else if (response.status === 401) {
-					// toast
+					request.setError(
+						licenseFetchRequest,
+						response.status,
+						error.error || 'Not found',
+						error.message || 'Failed to fetch license',
+					);
 				} else {
-					// toast
+					request.setError(
+						licenseFetchRequest,
+						response.status,
+						error.error || 'Internal Server Error',
+						error.message || 'Failed to fetch license',
+					);
 				}
-				console.error(errorMessage);
+				console.error('Failed to fetch license:', error);
 			}
 		} catch (error) {
-			request.setError(licenseFetchRequest, 500, 'error', 'Failed to fetch license');
-			console.error('Failed to fetch license:', (error as Error).message);
-			// toast
+			notifications.add({
+				message:
+					'A server error has occured and license could not be fetched. Please try refreshing the page.',
+				type: 'alert',
+			});
+			request.setError(
+				licenseFetchRequest,
+				500,
+				'Internal Server Error',
+				'Failed to fetch license',
+			);
+			console.error('Failed to fetch license:', error);
 		} finally {
 			request.endLoading(licenseFetchRequest);
 		}
@@ -132,19 +119,20 @@ function createLicenseStore() {
 				const counts = await response.json();
 				licenseCounts.set(counts);
 			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
-				} else {
-					// toast
-				}
-				console.error(errorMessage);
+				const error = await response.json();
+				notifications.add({
+					message: error.message || 'An error has occured. Please try refreshing the page.',
+					type: 'alert',
+				});
+				console.error('Failed to update license counts:', error);
 			}
 		} catch (error) {
-			console.error('Failed to fetch license counts:', error);
-			// toast
+			notifications.add({
+				message:
+					'A server error has occured and license counts could not be updated. Please try refreshing the page.',
+				type: 'alert',
+			});
+			console.error('Failed to update license counts:', error);
 		}
 	}
 
@@ -161,23 +149,24 @@ function createLicenseStore() {
 				await applicationStore.updateAssociations(license.applicationId, 'add');
 				await table.updateState();
 				notifications.add({
-					message: 'License added successfully',
+					message: 'License created successfully',
 					type: 'success',
 				});
 			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
-				} else {
-					// toast
-				}
-				console.error(errorMessage);
+				const error = await response.json();
+				notifications.add({
+					message: error.message || 'Failed to create license. Please try again.',
+					type: 'alert',
+				});
+				console.error('Failed to create license:', error);
 			}
 		} catch (error) {
-			console.error('Failed to add license:', error);
-			// toast
+			notifications.add({
+				message:
+					'A server error has occured and license could not be created. Please try refreshing the page.',
+				type: 'alert',
+			});
+			console.error('Failed to create license:', error);
 		} finally {
 			request.endLoading(licensePostRequest);
 		}
@@ -206,19 +195,29 @@ function createLicenseStore() {
 					type: 'success',
 				});
 			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
+				const error = await response.json();
+				if (response.status === 409) {
+					notifications.add({
+						message:
+							error.message ||
+							'Failed to updated license because of data conflict. Try refreshing the page to get the latest data.',
+						type: 'alert',
+					});
 				} else {
-					// toast
+					notifications.add({
+						message: error.message || 'Failed to update license. Please try again.',
+						type: 'alert',
+					});
 				}
-				console.error(errorMessage);
+				console.error('Failed to update license:', error);
 			}
 		} catch (error) {
+			notifications.add({
+				message:
+					'A server error has occured and license could not be updated. Please try refreshing the page.',
+				type: 'alert',
+			});
 			console.error('Failed to update license:', error);
-			// toast
 		} finally {
 			request.endLoading(licensePostRequest);
 		}
@@ -238,19 +237,29 @@ function createLicenseStore() {
 					type: 'success',
 				});
 			} else {
-				const errorMessage = await response.json();
+				const error = await response.json();
 				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
+					notifications.add({
+						message:
+							error.message ||
+							'Failed to delete license because it could not be found. Try refreshing the page to get the latest data.',
+						type: 'alert',
+					});
 				} else {
-					// toast
+					notifications.add({
+						message: error.message || 'Failed to delete license. Please try again.',
+						type: 'alert',
+					});
 				}
-				console.error(errorMessage);
+				console.error('Failed to delete license:', error);
 			}
 		} catch (error) {
+			notifications.add({
+				message:
+					'A server error has occured and license could not be deleted. Please try refreshing the page.',
+				type: 'alert',
+			});
 			console.error('Failed to delete license:', error);
-			// toast
 		}
 	}
 
@@ -263,7 +272,6 @@ function createLicenseStore() {
 		subscribe,
 		set,
 		update,
-		fetchAll: fetchLicenses,
 		fetch: getLicenseById,
 		add: addLicense,
 		delete: deleteLicense,

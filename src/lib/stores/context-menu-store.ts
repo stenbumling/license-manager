@@ -83,7 +83,7 @@ function createContextMenuStore() {
 		try {
 			await navigator.clipboard.writeText(JSON.stringify(license, null, 2));
 			notifications.add({
-				message: 'License link data to clipboard',
+				message: 'License data copied to clipboard',
 				type: 'info',
 			});
 		} catch (error) {

@@ -60,11 +60,11 @@
 			</div>
 		{:else if $applicationFetchRequest.error.message}
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
-				<h3>{$applicationFetchRequest.error.message}</h3>
+				<h2>{$applicationFetchRequest.error.message}</h2>
 			</div>
 		{:else if $applicationStore.length === 0}
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
-				<h3>No applications added yet</h3>
+				<h2>No applications added yet</h2>
 			</div>
 		{:else}
 			<div class="application-list" use:scrollShadow in:fade={{ duration: 200 }}>
@@ -140,10 +140,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		text-align: center;
 	}
 
+	h2,
 	h3 {
 		margin-bottom: 0.4rem;
+		max-width: 80%;
 	}
 
 	input {

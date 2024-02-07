@@ -110,7 +110,7 @@ function createTableController() {
 		}
 	}
 
-	function resetTableState() {
+	async function resetTableState() {
 		filterState.set('All');
 		sortState.set({
 			application: 'DEFAULT',
@@ -120,7 +120,7 @@ function createTableController() {
 		});
 		searchQuery.set('');
 		currentSearch.set('');
-		updateTableState();
+		await updateTableState();
 	}
 
 	async function sendQueryToDatabase(query: string) {
@@ -132,33 +132,38 @@ function createTableController() {
 				licenseStore.set(licenses);
 			} else {
 				const error = await response.json();
-
 				if (response.status === 400) {
-					resetTableState();
+					await resetTableState();
 					notifications.add({
-						message: error.message || 'The filter was invalid. Table state has been reset.',
+						message: 'The filter was invalid. Table state has been reset.',
 						type: 'warning',
 					});
 				} else {
 					notifications.add({
-						message: error.message || 'A server error has occured. Please try refreshing the page.',
+						message: error.message || 'An error has occured. Please try refreshing the page.',
 						type: 'alert',
 					});
 					request.setError(
 						tableFetchRequest,
-						500,
-						'Internal Server Error',
-						'Failed to fetch licenses',
+						response.status,
+						error.error || 'Internal Server Error',
+						error.message || `Failed to fetch licenses with the query "${query}":`,
 					);
 				}
 				console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			}
 		} catch (error) {
 			notifications.add({
-				message: 'A server error has occured. Please try refreshing the page.',
+				message:
+					'A server error has occured and table state could not be updated. Please try refreshing the page.',
 				type: 'alert',
 			});
-			request.setError(tableFetchRequest, 500, 'Internal Server Error', 'Failed to fetch licenses');
+			request.setError(
+				tableFetchRequest,
+				500,
+				'Internal Server Error',
+				`Failed to fetch licenses with the query "${query}":`,
+			);
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 		} finally {
 			request.endLoading(tableFetchRequest);

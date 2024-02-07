@@ -28,7 +28,6 @@ export function getElementRect(node: Element, callback: (arg0: DOMRect) => void)
 		func: (...args: unknown[]) => void,
 		delay: number,
 	): (...args: unknown[]) => void {
-
 		return function (this: unknown, ...args: unknown[]) {
 			clearTimeout(debounceTimeout);
 			debounceTimeout = window.setTimeout(() => func(...args), delay);

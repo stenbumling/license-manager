@@ -8,7 +8,7 @@
 	// Firefox doesn't support scrollbar-width
 	let isFirefox = false;
 	if (browser) {
-		isFirefox = navigator.userAgent.includes('Firefox')
+		isFirefox = navigator.userAgent.includes('Firefox');
 	}
 </script>
 

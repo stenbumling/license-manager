@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { notifications } from './notification-store';
 import { request, userFetchRequest } from './request-state-store';
 
 export interface User {
@@ -9,28 +10,38 @@ export interface User {
 function createUserStore() {
 	const { subscribe, set, update } = writable<User[]>([]);
 
+	// Currently not used, but can be used in future user management features
 	async function fetchUsers() {
+		request.startLoading(userFetchRequest);
 		try {
 			const response = await fetch('/api/users');
-			if (response.ok && response.status !== 204) {
+			if (response.ok) {
 				const users = await response.json();
 				update(() => users);
-			} else if (response.status === 204) {
-				update(() => []);
 			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
-				} else {
-					// toast
-				}
-				console.error(errorMessage);
+				const error = await response.json();
+				notifications.add({
+					message: error.message || 'An error has occured. Please try refreshing the page.',
+					type: 'alert',
+				});
+				request.setError(
+					userFetchRequest,
+					response.status,
+					error.error || 'Internal Server Error',
+					error.message || 'Failed to fetch users',
+				);
+				console.error('Failed to fetch users:', error);
 			}
 		} catch (error) {
+			notifications.add({
+				message:
+					'A server error has occured and users could not be fetched. Please try refreshing the page.',
+				type: 'alert',
+			});
+			request.setError(userFetchRequest, 500, 'Internal Server Error', 'Failed to fetch users');
 			console.error('Failed to fetch users:', error);
-			// toast
+		} finally {
+			request.endLoading(userFetchRequest);
 		}
 	}
 
@@ -46,27 +57,39 @@ function createUserStore() {
 				const data = await response.json();
 				if (data.created) {
 					update((users) => [data.user, ...users]);
+					notifications.add({
+						message: 'New user was successfully added to the database',
+						type: 'success',
+					});
 				}
 				return data.user;
 			} else {
-				const errorMessage = await response.json();
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
-				} else {
-					// toast
-				}
-				console.error(errorMessage);
+				const error = await response.json();
+				notifications.add({
+					message: error.message || 'Failed to find or create user. Please try again.',
+					type: 'alert',
+				});
+				console.error('Failed to find or create user:', error);
 			}
 		} catch (error) {
-			console.error('Failed to add user:\n', error);
-			// toast
+			notifications.add({
+				message:
+					'A server error has occured and user could not be found or created. Please try refreshing the page.',
+				type: 'alert',
+			});
+			request.setError(
+				userFetchRequest,
+				500,
+				'Internal Server Error',
+				'Failed to find or create user',
+			);
+			console.error('Failed to find or create user:', error);
 		} finally {
 			request.endLoading(userFetchRequest);
 		}
 	}
 
+	// Currently not used, but can be used in future user management features
 	async function deleteUserFromDatabase(id: string) {
 		try {
 			const response = await fetch(`/api/users/${id}`, {
@@ -74,20 +97,34 @@ function createUserStore() {
 			});
 			if (response.ok) {
 				update((users) => users.filter((user) => user.id !== id));
+				notifications.add({
+					message: 'User deleted successfully',
+					type: 'success',
+				});
 			} else {
-				const errorMessage = await response.json();
+				const error = await response.json();
 				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
+					notifications.add({
+						message:
+							error.message ||
+							'Failed to delete user because it could not be found. Try refreshing the page to get the latest data.',
+						type: 'alert',
+					});
 				} else {
-					// toast
+					notifications.add({
+						message: error.message || 'Failed to delete user. Please try again.',
+						type: 'alert',
+					});
 				}
-				console.error(errorMessage);
+				console.error('Failed to delete user:', error);
 			}
 		} catch (error) {
+			notifications.add({
+				message:
+					'A server error has occured and user could not be deleted. Please try refreshing the page.',
+				type: 'alert',
+			});
 			console.error('Failed to delete user:', error);
-			// toast
 		}
 	}
 
