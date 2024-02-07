@@ -4,7 +4,7 @@
 
 <header class="header-container">
 	<div class="header-content">
-		<a style="line-height:0" href="/">
+		<a style="line-height:0" href="/" data-sveltekit-reload>
 			<img class="header-logo" src={logo} alt="Nexer Logo" />
 		</a>
 		<h2 class="header-department-name">Örebro</h2>

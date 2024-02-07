@@ -62,7 +62,7 @@ function createContextMenuStore() {
 
 	function copyLicenseData(license: License) {
 		contextMenu.close();
-		navigator.clipboard.writeText(JSON.stringify(license));
+		navigator.clipboard.writeText(JSON.stringify(license, null, 2));
 	}
 
 	async function deleteLicense(license: License) {
