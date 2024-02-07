@@ -1,9 +1,9 @@
-import type { License } from '$lib/stores/resources/license-store';
 import { modal } from '$lib/stores/modal-store';
+import type { License } from '$lib/stores/resources/license-store';
 import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
-import { licenseStore } from './resources/license-store';
 import { notifications } from './notification-store';
+import { licenseStore } from './resources/license-store';
 
 /*
  * This store is responsible for managing the state of context menus for licenses.
@@ -68,6 +68,8 @@ function createContextMenuStore() {
 			notifications.add({
 				message: 'License link copied to clipboard',
 				type: 'info',
+				timeout: 5000,
+				dismissible: false,
 			});
 		} catch (error) {
 			console.error('Failed to copy license link to clipboard:', error);
@@ -85,6 +87,8 @@ function createContextMenuStore() {
 			notifications.add({
 				message: 'License data copied to clipboard',
 				type: 'info',
+				timeout: 5000,
+				dismissible: false,
 			});
 		} catch (error) {
 			console.error('Failed to copy license data to clipboard:', error);

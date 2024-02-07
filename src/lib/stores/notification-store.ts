@@ -23,13 +23,13 @@ function createNotificationStore() {
 
 	function addNotification(notification: NewNotification) {
 		const id = uuidv4();
-		const maxMessageLength = 80;
+		const maxMessageLength = 160;
 
 		const defaultNotification = {
 			message: 'Default toast message',
 			type: 'info',
 			dismissible: true,
-			timeout: 5000,
+			timeout: 10000,
 		};
 
 		// Truncate the message if it's longer than the value of maxMessageLength
