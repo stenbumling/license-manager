@@ -34,9 +34,9 @@
 
 	.modal-window {
 		width: 40vw;
-		max-width: 24rem;
+		max-width: 26rem;
 		max-height: 60vh;
-		padding: 3rem 4rem;
+		padding: 3rem 4rem 2rem 4rem;
 		border: none;
 		display: flex;
 		flex-direction: column;
@@ -53,6 +53,7 @@
 
 	.modal-title {
 		margin: 0;
+		text-align: center;
 	}
 
 	.button-container {

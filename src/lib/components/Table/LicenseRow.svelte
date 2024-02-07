@@ -2,8 +2,8 @@
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import type { License } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
+	import type { License } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
@@ -136,7 +136,7 @@
 
 {#if showWarningModal}
 	<WarningModal
-		warningText="Are you sure you want to delete this license?"
+		warningText="Warning! This will delete the license and all its data. Are you sure?"
 		onConfirm={() => {
 			showWarningModal = false;
 			contextMenu.deleteLicense(license);

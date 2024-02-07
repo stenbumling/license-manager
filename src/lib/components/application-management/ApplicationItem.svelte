@@ -32,7 +32,7 @@
 
 {#if showWarningModal}
 	<WarningModal
-		warningText="Are you sure you want to delete this application?"
+		warningText="Warning! This will delete the application. Are you sure?"
 		onConfirm={handleDelete}
 		onCancel={() => (showWarningModal = false)}
 	/>

@@ -147,7 +147,7 @@
 
 {#if showWarningModal}
 	<WarningModal
-		warningText="Are you sure you want to delete this license?"
+		warningText="Warning! This will delete the license and all its data. Are you sure?"
 		onConfirm={() => contextMenu.deleteLicense($license)}
 		onCancel={() => (showWarningModal = false)}
 	/>

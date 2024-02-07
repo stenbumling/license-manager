@@ -19,7 +19,7 @@
 	</div>
 	<div
 		class="button-animated-hover"
-		style:background={`linear-gradient(to right, black 100%, transparent 100%`}
+		style:background={`linear-gradient(to right, var(--deep-purple) 100%, transparent 100%`}
 	/>
 </div>
 
@@ -36,6 +36,7 @@
 		border: 1px solid black;
 		height: 3rem;
 		min-width: 6rem;
+		width: 11rem;
 		padding: 1rem 1.3rem;
 		transition: border-color 0.25s ease, color 0.25s ease;
 	}
