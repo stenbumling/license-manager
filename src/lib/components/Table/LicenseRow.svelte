@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
+	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import type { License } from '$lib/stores/license-store';
@@ -130,14 +130,17 @@
 	<!-- Menu cell -->
 	<div class="cell menu-cell">
 		<div class="vertical-line" />
-		<LicenseMenu items={licenseMenuItems} />
+		<LicenseMenuButton items={licenseMenuItems} />
 	</div>
 </div>
 
 {#if showWarningModal}
 	<WarningModal
 		warningText="Are you sure you want to delete this license?"
-		onConfirm={() => contextMenu.deleteLicense(license)}
+		onConfirm={() => {
+			showWarningModal = false;
+			contextMenu.deleteLicense(license);
+		}}
 		onCancel={() => (showWarningModal = false)}
 	/>
 {/if}

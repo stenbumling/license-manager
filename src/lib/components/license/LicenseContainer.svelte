@@ -9,12 +9,12 @@
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
-	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
+	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/license-store.ts';
-	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
 	import { modal, showApplicationModal } from '$lib/stores/modal-store';
+	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
@@ -84,7 +84,8 @@
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
-			<h1>{$licenseFetchRequest.error.message}</h1>
+			<h1 style="font-size: 5rem">{$licenseFetchRequest.error.code}</h1>
+			<h2>{$licenseFetchRequest.error.message}</h2>
 		</div>
 	{:else}
 		<div in:fade={{ duration: 300 }}>
@@ -129,7 +130,7 @@
 		</div>
 		<div class="bottom-container">
 			{#if $licenseMode === 'view'}
-				<LicenseMenu items={contextMenuItems} />
+				<LicenseMenuButton items={contextMenuItems} />
 			{/if}
 			<ButtonLarge
 				title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'}
@@ -183,9 +184,17 @@
 
 	.fallback-container {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		text-align: center;
 		height: 100%;
+
+		& > h2 {
+			max-width: 80%;
+			line-height: 1.7;
+			word-wrap: break-word;
+		}
 	}
 
 	.fallback-container-close-button {

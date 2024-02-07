@@ -4,6 +4,12 @@ import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
 import { licenseStore } from './license-store';
 
+/*
+ * This store is responsible for managing the state of context menus for licenses.
+ * It keeps track of active context menus and their current position on the screen.
+ * It also provides a set of common functions to be called by items in the context menu.
+ */
+
 type ContextMenuState = {
 	position: { top: number; left: number } | null;
 	activeId: string | null;
@@ -49,7 +55,6 @@ function createContextMenuStore() {
 	}
 
 	// Assortment of functions to be called by items in the context menu
-
 	function viewLicense(license: License) {
 		contextMenu.close();
 		modal.openLicense(license.id);

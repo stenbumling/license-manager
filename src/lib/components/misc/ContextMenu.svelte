@@ -6,14 +6,20 @@
 	import { style } from 'svelte-body';
 	import { fly } from 'svelte/transition';
 
+	/*
+	 * This component is a context menu that is used together with the LicenseMenuButton component.
+	 */
+
 	export let items: ContextMenuItem[];
 	export let referenceElementRect: DOMRect;
 
+	// This function is used to dynamically position the context menu according to the reference element (menu button)
 	function renderContextMenu(contextMenuRect: DOMRect) {
 		contextMenu.setPosition(referenceElementRect, contextMenuRect);
 	}
 </script>
 
+<!-- This disables pointer events outside the context menu when the menu is open -->
 <svelte:body use:style={$contextMenu.activeId ? 'pointer-events: none' : ''} />
 
 <div
