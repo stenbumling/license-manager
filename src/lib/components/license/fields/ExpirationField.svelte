@@ -184,7 +184,7 @@
 		width: 1.1rem;
 		height: 1.1rem;
 		cursor: pointer;
-		outline: none;
+		accent-color: var(--deep-purple);
 		transition: background-color 0.2s ease;
 	}
 
