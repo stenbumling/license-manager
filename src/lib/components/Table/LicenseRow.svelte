@@ -95,12 +95,14 @@
 				class:expired={license.status === 'Expired'}
 			/>
 		</div>
+
 		<!-- Application cell -->
 		<div role="cell" tabindex="-1" class="cell application-cell">
 			<p class="cell-text" use:tooltip={{ content: applicationName, options: { delay: [500, 0] } }}>
 				{license.application.name}
 			</p>
 		</div>
+
 		<!-- Contact cell -->
 		<div role="cell" tabindex="-1" class="cell contact-person-cell">
 			<p use:tooltip={{ content: contactPerson, options: { delay: [500, 0] } }} class="cell-text">
@@ -111,6 +113,7 @@
 				{/if}
 			</p>
 		</div>
+
 		<!-- Users cell -->
 		<div role="cell" tabindex="-1" class="cell users-cell">
 			<p class="cell-text" use:tooltip={{ content: allUsers, options: { delay: [500, 0] } }}>
@@ -121,6 +124,7 @@
 				{/if}
 			</p>
 		</div>
+
 		<!-- Expiration cell -->
 		<div role="cell" tabindex="-1" class="cell expiration-cell">
 			<p
@@ -132,6 +136,7 @@
 				{expirationDate.text}
 			</p>
 		</div>
+
 		<!-- Renewal cell -->
 		<div role="cell" tabindex="-1" class="cell renewal-cell">
 			{#if license.autoRenewal}
@@ -144,6 +149,7 @@
 			{/if}
 		</div>
 	</a>
+
 	<!-- Menu cell -->
 	<div class="cell menu-cell">
 		<div class="vertical-line" />
@@ -151,6 +157,7 @@
 	</div>
 </div>
 
+<!-- Warning modal -->
 {#if showWarningModal}
 	<WarningModal
 		warningText="Warning! This will delete the license and all its data. Are you sure?"

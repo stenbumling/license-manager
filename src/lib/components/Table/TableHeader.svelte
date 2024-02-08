@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
 	import { sortState, table } from '$lib/stores/resources/table-store';
 	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
 	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
-	import { browser } from '$app/environment';
 
 	// Firefox doesn't support scrollbar-width
+	// instead we add a margin to the last column
 	let isFirefox = false;
 	if (browser) {
 		isFirefox = navigator.userAgent.includes('Firefox');
@@ -14,9 +15,12 @@
 
 <div role="rowgroup">
 	<div role="row" class="table-header-row" class:extra-margin={!isFirefox}>
+		<!-- Status column -->
 		<div role="columnheader" tabindex="-1" class="status-col">
 			<CircleDash size={20} />
 		</div>
+
+		<!-- Application column -->
 		<div class="application-col">
 			<div
 				role="columnheader"
@@ -33,6 +37,8 @@
 			{#if $sortState['application'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['application'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</div>
+
+		<!-- Contact person column -->
 		<div class="contact-col">
 			<div
 				role="columnheader"
@@ -49,6 +55,8 @@
 			{#if $sortState['contactPerson'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['contactPerson'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</div>
+
+		<!-- Users column -->
 		<div class="users-col">
 			<div
 				role="columnheader"
@@ -65,6 +73,8 @@
 			{#if $sortState['users'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['users'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
 		</div>
+
+		<!-- Expiration date column -->
 		<div class="expiration-col">
 			{#if $sortState['expirationDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
 			{#if $sortState['expirationDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
@@ -81,7 +91,11 @@
 				<h3 class="column-label">Expires in</h3>
 			</div>
 		</div>
+
+		<!-- Renewal column -->
 		<div role="columnheader" class="renewal-col" />
+
+		<!-- Menu column (currently empty) -->
 		<div class="menu-col" />
 	</div>
 </div>
@@ -124,6 +138,8 @@
 	.column-label:hover {
 		background-color: #eeeeee;
 	}
+
+	/*  Columns */
 
 	.status-col {
 		flex: 0 0 60px;

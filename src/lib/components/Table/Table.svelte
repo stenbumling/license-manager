@@ -16,10 +16,13 @@
 </script>
 
 <div class="table-body-wrapper">
+	<!-- Loading -->
 	{#if appIsLoading}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
+
+		<!-- Errors and no results -->
 	{:else if hasError}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
 			<h1>{$tableFetchRequest.error.message}</h1>
@@ -45,6 +48,8 @@
 			{/key}
 		</div>
 	{/if}
+
+	<!--  Render license rows -->
 	{#if hasLicenses && !hasError}
 		<div role="rowgroup" in:slide={{ duration: 120 }}>
 			{#each $licenseStore as license, index}
