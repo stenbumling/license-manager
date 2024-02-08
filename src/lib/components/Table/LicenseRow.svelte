@@ -108,8 +108,7 @@
 					{license.contactPerson}
 				{:else}
 					<span
-						use:tooltip={{ content: 'Unassigned', options: { delay: [500, 0] } }}
-						style="font-style: italic">Unassigned</span
+						style="font-style: italic">N/A</span
 					>
 				{/if}
 			</p>
