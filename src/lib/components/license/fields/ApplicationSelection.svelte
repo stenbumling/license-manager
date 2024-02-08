@@ -88,20 +88,20 @@
 	}
 
 	select:hover {
-		padding: 0 0 0.1rem 0.3rem;
+		padding: 0 0 0rem 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
 		appearance: auto;
 	}
 
 	.select-add-mode {
-		padding: 0 0 0.1rem 0.3rem;
+		padding: 0 0 0rem 0.3rem;
 		border: 1px dashed black;
 		appearance: auto;
 	}
 
 	select:focus {
-		padding: 0 0 0.1rem 0.3rem;
+		padding: 0 0 0rem 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
 		appearance: auto;

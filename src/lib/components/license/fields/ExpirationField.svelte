@@ -134,19 +134,19 @@
 	.date-picker:hover {
 		border: 1px dashed black;
 		cursor: pointer;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 	}
 
 	.date-picker-add-mode {
 		border: 1px dashed black;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 	}
 
 	.date-picker:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
 		appearance: auto;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 	}
 
 	.date-picker:required:invalid {
