@@ -4,10 +4,11 @@
 	import { license } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
 	import { fade } from 'svelte/transition';
+	import { focusTrap } from '$lib/actions/focusTrap';
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
-	<dialog open class="modal-window">
+	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
 			<h1 class="modal-title">Assigned<br />users</h1>
 			<CloseModalButton action={modal.closeAssignedUsers} />
