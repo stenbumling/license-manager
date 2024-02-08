@@ -1,18 +1,18 @@
 <script lang="ts">
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
-	import { licenseStore } from '$lib/stores/resources/license-store';
 	import { tableFetchRequest } from '$lib/stores/request-state-store';
+	import { licenseStore } from '$lib/stores/resources/license-store';
 	import { currentSearch, filterState } from '$lib/stores/resources/table-store';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
 
-	$: isLoading = $tableFetchRequest.isLoading;
-	$: hasError = $tableFetchRequest.error.message;
-	$: hasLicenses = $licenseStore.length > 0;
-	$: isSearching = $filterState === 'Search';
-	$: isAllFilter = $filterState === 'All';
-	$: noResults = $licenseStore.length === 0 && !isLoading;
 	$: appIsLoading = isLoading && !($tableFetchRequest.error.code === 418);
+	$: isLoading = $tableFetchRequest.isLoading;
+	$: hasError = $tableFetchRequest.error.message && !isLoading;
+	$: hasLicenses = $licenseStore.length > 0 && !isLoading;
+	$: noResults = $licenseStore.length === 0 && !isLoading;
+	$: isSearching = $filterState === 'Search' && !isLoading;
+	$: isAllFilter = $filterState === 'All' && !isLoading;
 </script>
 
 <div class="table-body-wrapper">
@@ -45,7 +45,7 @@
 			{/key}
 		</div>
 	{/if}
-	{#if hasLicenses}
+	{#if hasLicenses && !hasError}
 		<div role="rowgroup" in:slide={{ duration: 120 }}>
 			{#each $licenseStore as license, index}
 				<div transition:slide={{ duration: 120 }}>

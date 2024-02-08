@@ -1,7 +1,7 @@
 import { get, writable } from 'svelte/store';
-import { licenseStore } from './license-store';
 import { notifications } from '../notification-store';
 import { request, tableFetchRequest } from '../request-state-store';
+import { licenseStore } from './license-store';
 
 /*
  * This store is responsible for managing the state of the license table. That
@@ -147,8 +147,9 @@ function createTableController() {
 						tableFetchRequest,
 						response.status,
 						error.error || 'Internal Server Error',
-						error.message || `Failed to fetch licenses with the query "${query}":`,
+						error.message || `Failed to fetch licenses with the query "${query}"`,
 					);
+					licenseStore.set([]);
 				}
 				console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			}
@@ -162,8 +163,9 @@ function createTableController() {
 				tableFetchRequest,
 				500,
 				'Internal Server Error',
-				`Failed to fetch licenses with the query "${query}":`,
+				`Failed to fetch licenses with the query "${query}"`,
 			);
+			licenseStore.set([]);
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 		} finally {
 			request.endLoading(tableFetchRequest);
