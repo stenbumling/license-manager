@@ -1,34 +1,29 @@
 <script lang="ts">
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import { license } from '$lib/stores/license-store.ts';
+	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import { fade, slide } from 'svelte/transition';
 
 	let label: string = '';
-
 	$: costValue = calculateCost($license.renewalInterval, $license.cost);
+	$: label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
+	$: daysLeft = getRelativeDate($license.expirationDate);
+	$: if (!$license.autoRenewal) $license.renewalInterval = 'None';
 
+	// Calculate cost based on renewal interval
 	function calculateCost(renewalInterval: string, cost: number): string {
 		switch (renewalInterval) {
 			case 'None':
 				return '';
 			case 'Monthly':
-				return `${Math.floor(cost * 12).toString()} kr/year`;
+				return `${Math.floor(cost * 12).toString()} SEK/year`;
 			case 'Annually':
-				return `${Math.floor(cost / 12).toString()} kr/month`;
+				return `${Math.floor(cost / 12).toString()} SEK/month`;
 			default:
 				return '';
 		}
-	}
-
-	$: {
-		label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
-	}
-	$: daysLeft = getRelativeDate($license.expirationDate);
-	$: if (!$license.autoRenewal) {
-		$license.renewalInterval = 'None';
 	}
 </script>
 
@@ -38,13 +33,17 @@
 		<span class="required">*</span>
 	</h3>
 	<div class="expiration-row">
+		<!-- Date input -->
 		<input
 			class="date-picker"
+			class:date-picker-add-mode={$licenseMode === 'add'}
 			type="date"
 			required
 			name="applications"
 			bind:value={$license.expirationDate}
 		/>
+
+		<!-- Renewal checkbox -->
 		<div class="renewal-checkbox">
 			<input
 				type="checkbox"
@@ -52,6 +51,11 @@
 				name="renewal"
 				value="renewal"
 				bind:checked={$license.autoRenewal}
+				on:keydown={(e) => {
+					if (e.key === 'Enter') {
+						$license.autoRenewal = !$license.autoRenewal;
+					}
+				}}
 			/>
 			<label for="renewal">Autorenewal</label>
 		</div>
@@ -63,6 +67,8 @@
 			<span in:fade={{ duration: 120 }}>{daysLeft.text}</span>
 		{/if}
 	</p>
+
+	<!-- Cost input field -->
 	<div class="cost-field">
 		<TextField
 			bind:value={$license.cost}
@@ -74,6 +80,8 @@
 			errorMessage={$licenseValidationErrors.cost}
 		/>
 	</div>
+
+	<!-- Initially hidden autorenewal select field -->
 	{#if $license.autoRenewal}
 		<div transition:slide={{ duration: 80 }} class="interval-field">
 			<SelectField
@@ -127,15 +135,19 @@
 	.date-picker:hover {
 		border: 1px dashed black;
 		cursor: pointer;
-		appearance: auto;
-		padding: 0.3rem;
+		padding: 0 0 0 0.5rem;
+	}
+
+	.date-picker-add-mode {
+		border: 1px dashed black;
+		padding: 0 0 0 0.5rem;
 	}
 
 	.date-picker:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
 		appearance: auto;
-		padding: 0.3rem;
+		padding: 0 0 0 0.5rem;
 	}
 
 	.date-picker:required:invalid {
@@ -144,6 +156,7 @@
 	}
 
 	.renewal-checkbox {
+		margin-top: 0.2rem;
 		margin-left: 1rem;
 		display: flex;
 		justify-content: space-between;
@@ -179,12 +192,12 @@
 		width: 1.1rem;
 		height: 1.1rem;
 		cursor: pointer;
-		outline: none;
+		accent-color: var(--deep-purple);
 		transition: background-color 0.2s ease;
 	}
 
-	input[type='checkbox']:checked {
-		background-color: var(--light-purple);
+	input[type='checkbox']:focus-visible {
+		outline: 2px solid var(--light-purple);
 	}
 
 	@media (max-width: 1000px) {

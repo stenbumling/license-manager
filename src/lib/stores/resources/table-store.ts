@@ -1,10 +1,19 @@
 import { get, writable } from 'svelte/store';
+import { notifications } from '../notification-store';
+import { request, tableFetchRequest } from '../request-state-store';
 import { licenseStore } from './license-store';
-import { loadingState, tableFetchRequest } from './loading-store';
 
-// Writable stores
-export const tableIsLoading = writable(false);
-export const tableFetchError = writable('');
+/*
+ * This store is responsible for managing the state of the license table. That
+ * includes what filter is currently active, what the current sort order is,
+ * and what the current search query is. Everytime the state of the table
+ * changes in any way, the store will construct and send a query to the database
+ * to fetch the licenses that match the current state of the table.
+ */
+
+// Stores for managing queries and state of the table
+export const searchQuery = writable('');
+//
 export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',
@@ -12,9 +21,10 @@ export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	users: 'DEFAULT',
 	expirationDate: 'DEFAULT',
 });
-export const searchQuery = writable('');
 
-// Custom store for table state
+// Used to render the search query in the table if no results are found
+export const currentSearch = writable('');
+
 function createTableController() {
 	async function updateFilterState(filter: string) {
 		filterState.set(filter);
@@ -82,58 +92,84 @@ function createTableController() {
 	function determineBaseQuery(filterName: string, searchQueryParam: string): string {
 		switch (filterName) {
 			case 'All':
-				return '';
+				return '?filter=all';
 			case 'In use':
-				return '?users=true';
+				return '?filter=assigned';
 			case 'Unassigned':
-				return '?users=false';
+				return '?filter=unassigned';
 			case 'Near expiration':
-				return '?nearExpiration=true';
+				return '?filter=near-expiration';
 			case 'Expired':
-				return '?expired=true';
+				return '?filter=expired';
 			case 'Search':
+				currentSearch.set(searchQueryParam);
 				return searchQueryParam === '' ? '' : `?search=${searchQueryParam}`;
 			default:
 				console.error(`Unknown filter: ${filterName}`);
-				return '';
+				return 'filter=all';
 		}
 	}
 
+	async function resetTableState() {
+		filterState.set('All');
+		sortState.set({
+			application: 'DEFAULT',
+			contactPerson: 'DEFAULT',
+			users: 'DEFAULT',
+			expirationDate: 'DEFAULT',
+		});
+		searchQuery.set('');
+		currentSearch.set('');
+		await updateTableState();
+	}
+
 	async function sendQueryToDatabase(query: string) {
-		tableFetchError.set('');
-		loadingState.start(tableFetchRequest);
+		request.startLoading(tableFetchRequest);
 		try {
 			const response = await fetch(`/api/licenses/query${query}`);
 			if (response.ok) {
 				const licenses = await response.json();
 				licenseStore.set(licenses);
 			} else {
-				const errorMessage = await response.json();
-				tableFetchError.set(errorMessage);
-				console.error(errorMessage);
-
-				// Reset filter and sort state if query fails
-				filterState.set('All');
-				sortState.set({
-					application: 'DEFAULT',
-					contactPerson: 'DEFAULT',
-					users: 'DEFAULT',
-					expirationDate: 'DEFAULT',
-				});
-
-				if (response.status === 404) {
-					// toast
-				} else if (response.status === 401) {
-					// toast
+				const error = await response.json();
+				if (response.status === 400) {
+					await resetTableState();
+					notifications.add({
+						message: 'The filter was invalid. Table state has been reset.',
+						type: 'warning',
+					});
 				} else {
-					// toast
+					notifications.add({
+						message: error.message || 'An error has occured. Please try refreshing the page.',
+						type: 'alert',
+					});
+					request.setError(
+						tableFetchRequest,
+						response.status,
+						error.error || 'Internal Server Error',
+						error.message || `Failed to fetch licenses with the query "${query}"`,
+					);
+					licenseStore.set([]);
 				}
+				console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			}
 		} catch (error) {
+			notifications.add({
+				message:
+					'A server error has occured and table state could not be updated. Please try refreshing the page.',
+				type: 'alert',
+				timeout: false,
+			});
+			request.setError(
+				tableFetchRequest,
+				500,
+				'Internal Server Error',
+				`Failed to fetch licenses with the query "${query}"`,
+			);
+			licenseStore.set([]);
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
-			// toast
 		} finally {
-			loadingState.end(tableFetchRequest);
+			request.endLoading(tableFetchRequest);
 		}
 	}
 

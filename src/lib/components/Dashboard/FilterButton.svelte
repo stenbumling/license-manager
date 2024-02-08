@@ -1,5 +1,8 @@
 <script lang="ts">
-	import { filterState, searchQuery, table } from '$lib/stores/table-store';
+	import { filterState, searchQuery, table } from '$lib/stores/resources/table-store';
+	import { searchQueryValidationError } from '$lib/validations/search-query-validation';
+	import { fade } from 'svelte/transition';
+
 	export let filter: {
 		title: string;
 		amount: number;
@@ -8,6 +11,7 @@
 
 	function handleClick() {
 		searchQuery.set('');
+		searchQueryValidationError.set([]);
 		table.filterBy(filter.title);
 	}
 </script>
@@ -20,7 +24,13 @@
 >
 	<div class="filter-content">
 		<h4 class="filter-title">{filter.title}</h4>
-		<h4 class="filter-amount">{filter.amount}</h4>
+		<h4 class="filter-amount-container">
+			{#key filter.amount}
+				<div transition:fade={{ duration: 200 }} class="filter-amount">
+					{filter.amount}
+				</div>
+			{/key}
+		</h4>
 	</div>
 	<div
 		class="filter-animated-hover"
@@ -71,11 +81,19 @@
 		text-align: left;
 	}
 
-	.filter-amount {
+	.filter-amount-container {
 		margin: 2.5rem 0.8rem 0.1rem 0;
 		display: flex;
 		align-self: flex-end;
+		justify-content: flex-end;
+		min-width: 3rem;
 		font-size: 1.5rem;
+		background-color: green;
+	}
+
+	.filter-amount {
+		position: absolute;
+		top: 17px;
 	}
 
 	button:active {

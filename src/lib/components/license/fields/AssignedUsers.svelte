@@ -1,11 +1,11 @@
 <script lang="ts">
-	import AssignedUsersModal from '$lib/components/license/AssignedUsersModal.svelte';
+	import AssignedUsersModal from '$lib/components/resource-management/AssignedUsersModal.svelte';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
-	import { license } from '$lib/stores/license-store.ts';
-	import { userFetchRequest } from '$lib/stores/loading-store';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
-	import type { User } from '$lib/stores/user-store';
-	import { userStore } from '$lib/stores/user-store';
+	import { userFetchRequest } from '$lib/stores/request-state-store';
+	import { license, licenseMode } from '$lib/stores/resources/license-store';
+	import type { User } from '$lib/stores/resources/user-store';
+	import { userStore } from '$lib/stores/resources/user-store';
 	import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { Pulse } from 'svelte-loading-spinners';
@@ -61,6 +61,7 @@
 </script>
 
 <div class="component-container">
+	<!-- User badges -->
 	<h3 class="label">Assigned users</h3>
 	{#if $license.users.length || $userFetchRequest.isLoading}
 		<div class="badge-container">
@@ -84,8 +85,11 @@
 			{/if}
 		</div>
 	{/if}
+
+	<!-- User input -->
 	<div class="input-container">
 		<input
+			class:input-add-mode={$licenseMode === 'add'}
 			type="search"
 			placeholder="Select or add new user"
 			bind:value={userInput}
@@ -100,12 +104,14 @@
 				}
 			}}
 		/>
+
+		<!-- User suggestions dropdown -->
 		{#if userSuggestions.length}
 			<ul role="menu" class="suggestions-list" in:slide={{ duration: 100 }}>
 				{#each userSuggestions as suggestion}
 					<li
 						role="menuitem"
-						tabindex="0"
+						tabindex="-1"
 						on:mousedown|preventDefault
 						on:mouseup={() => handleAssignUser(suggestion.name)}
 					>
@@ -238,9 +244,16 @@
 		background-color: transparent;
 		border-bottom: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
+		appearance: none;
 	}
 
 	input:hover {
+		border: 1px dashed black;
+		padding-left: 0.5rem;
+		padding-bottom: 0.1rem;
+	}
+
+	.input-add-mode {
 		border: 1px dashed black;
 		padding-left: 0.5rem;
 		padding-bottom: 0.1rem;

@@ -1,26 +1,56 @@
 <script lang="ts">
 	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
-	import { licenseStore } from '$lib/stores/license-store.ts';
-	import { tableFetchRequest } from '$lib/stores/loading-store';
-	import { tableFetchError } from '$lib/stores/table-store';
+	import { tableFetchRequest } from '$lib/stores/request-state-store';
+	import { licenseStore } from '$lib/stores/resources/license-store';
+	import { currentSearch, filterState } from '$lib/stores/resources/table-store';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
+
+	$: appIsLoading = isLoading && !($tableFetchRequest.error.code === 418);
+	$: isLoading = $tableFetchRequest.isLoading;
+	$: hasError = $tableFetchRequest.error.message && !isLoading;
+	$: hasLicenses = $licenseStore.length > 0 && !isLoading;
+	$: noResults = $licenseStore.length === 0 && !isLoading;
+	$: isSearching = $filterState === 'Search' && !isLoading;
+	$: isAllFilter = $filterState === 'All' && !isLoading;
 </script>
 
 <div class="table-body-wrapper">
-	{#if $tableFetchRequest.isLoading}
+	<!-- Loading -->
+	{#if appIsLoading}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
-	{:else if $tableFetchError}
+
+		<!-- Errors and no results -->
+	{:else if hasError}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
-			<h1>$tableFetchError</h1>
+			<h1>{$tableFetchRequest.error.message}</h1>
 		</div>
-	{:else if $licenseStore.length === 0}
+	{:else if noResults && isSearching}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
-			<h1>No licenses found</h1>
+			{#key $currentSearch}
+				<h1 in:fade={{ duration: 300 }}>
+					Search for <span class="search-query-text">{$currentSearch}</span> returned no results
+				</h1>
+			{/key}
 		</div>
-	{:else}
+	{:else if noResults && isAllFilter}
+		<div class="fallback-container" in:fade={{ duration: 300 }}>
+			<h1>There are no licenses in the database</h1>
+		</div>
+	{:else if noResults && !isAllFilter}
+		<div class="fallback-container" in:fade={{ duration: 300 }}>
+			{#key $filterState}
+				<h1 in:fade={{ duration: 300 }}>
+					No licenses are {$filterState}
+				</h1>
+			{/key}
+		</div>
+	{/if}
+
+	<!--  Render license rows -->
+	{#if hasLicenses && !hasError}
 		<div role="rowgroup" in:slide={{ duration: 120 }}>
 			{#each $licenseStore as license, index}
 				<div transition:slide={{ duration: 120 }}>
@@ -43,6 +73,23 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		text-align: center;
 		height: 100%;
+	}
+
+	h1 {
+		max-width: 70%;
+		line-height: 1.7;
+		word-wrap: break-word;
+	}
+
+	.search-query-text {
+		color: var(--deep-purple);
+	}
+
+	@media (max-width: 1600px) {
+		h1 {
+			max-width: 30rem;
+		}
 	}
 </style>

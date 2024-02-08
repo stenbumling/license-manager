@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { focusTrap } from '$lib/actions/focusTrap';
+	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAlt.svelte';
 	import { fade } from 'svelte/transition';
 	import ButtonCancel from './buttons/ButtonCancel.svelte';
 	import ButtonLarge from './buttons/ButtonLarge.svelte';
@@ -9,12 +11,13 @@
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
-	<dialog open class="modal-window">
+	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
-			<h3 class="modal-title">{warningText}</h3>
+			<WarningAltFilled fill="red" size={32} />
+			<h2 class="modal-title">{warningText}</h2>
 		</div>
 		<div class="button-container">
-      <ButtonCancel action={onCancel} />
+			<ButtonCancel action={onCancel} />
 			<ButtonLarge title="Confirm" action={onConfirm} />
 		</div>
 	</dialog>
@@ -34,9 +37,9 @@
 
 	.modal-window {
 		width: 40vw;
-		max-width: 24rem;
+		max-width: 26rem;
 		max-height: 60vh;
-		padding: 3rem 4rem;
+		padding: 3rem 4rem 3rem 4rem;
 		border: none;
 		display: flex;
 		flex-direction: column;
@@ -47,12 +50,14 @@
 	.modal-header {
 		margin: 0 0 3rem 0;
 		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
+		flex-direction: column;
+		gap: 2rem;
+		align-items: center;
 	}
 
 	.modal-title {
 		margin: 0;
+		text-align: center;
 	}
 
 	.button-container {
@@ -60,7 +65,14 @@
 		justify-content: space-between;
 	}
 
-	h3 {
+	h2 {
 		margin-bottom: 0.4rem;
+	}
+
+	@media (max-width: 1000px) {
+		.modal-window {
+			width: 80vw;
+			padding: 2rem 2rem 2rem 2rem;
+		}
 	}
 </style>

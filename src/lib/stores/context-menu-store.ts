@@ -1,8 +1,15 @@
-import type { License } from '$lib/stores/license-store';
 import { modal } from '$lib/stores/modal-store';
+import type { License } from '$lib/stores/resources/license-store';
 import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
-import { licenseStore } from './license-store';
+import { notifications } from './notification-store';
+import { licenseStore } from './resources/license-store';
+
+/*
+ * This store is responsible for managing the state of context menus for licenses.
+ * It keeps track of active context menus and their current position on the screen.
+ * It also provides a set of common functions to be called by items in the context menu.
+ */
 
 type ContextMenuState = {
 	position: { top: number; left: number } | null;
@@ -36,11 +43,11 @@ function createContextMenuStore() {
 	}
 
 	function setPosition(referenceElementRect: DOMRect, contextMenuRect: DOMRect) {
-		let top =
+		const top =
 			referenceElementRect.bottom > window.innerHeight - contextMenuRect.height - 40
 				? referenceElementRect.bottom - contextMenuRect.height
 				: referenceElementRect.top;
-		let left = referenceElementRect.left - contextMenuRect.width - 10;
+		const left = referenceElementRect.left - contextMenuRect.width - 10;
 
 		update((state) => ({
 			...state,
@@ -49,20 +56,47 @@ function createContextMenuStore() {
 	}
 
 	// Assortment of functions to be called by items in the context menu
-
 	function viewLicense(license: License) {
 		contextMenu.close();
 		modal.openLicense(license.id);
 	}
 
-	function copyLicenseLink(license: License) {
+	async function copyLicenseLink(license: License) {
 		contextMenu.close();
-		navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
+		try {
+			await navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
+			notifications.add({
+				message: 'License link copied to clipboard',
+				type: 'info',
+				timeout: 5000,
+				dismissible: false,
+			});
+		} catch (error) {
+			console.error('Failed to copy license link to clipboard:', error);
+			notifications.add({
+				message: 'Failed to copy license link to clipboard',
+				type: 'warning',
+			});
+		}
 	}
 
-	function copyLicenseData(license: License) {
+	async function copyLicenseData(license: License) {
 		contextMenu.close();
-		navigator.clipboard.writeText(JSON.stringify(license));
+		try {
+			await navigator.clipboard.writeText(JSON.stringify(license, null, 2));
+			notifications.add({
+				message: 'License data copied to clipboard',
+				type: 'info',
+				timeout: 5000,
+				dismissible: false,
+			});
+		} catch (error) {
+			console.error('Failed to copy license data to clipboard:', error);
+			notifications.add({
+				message: 'Failed to copy license data to clipboard',
+				type: 'warning',
+			});
+		}
 	}
 
 	async function deleteLicense(license: License) {

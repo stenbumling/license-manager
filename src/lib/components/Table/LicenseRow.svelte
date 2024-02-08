@@ -1,9 +1,10 @@
 <script lang="ts">
-	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
+	import { tooltip } from '$lib/actions/tooltip';
+	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import type { License } from '$lib/stores/license-store';
 	import { modal } from '$lib/stores/modal-store';
+	import type { License } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
@@ -18,7 +19,12 @@
 	let hovered = false;
 	let showWarningModal = false;
 
+	$: status = license.status;
+	$: applicationName = license.application.name;
+	$: contactPerson = license.contactPerson;
+	$: allUsers = license.users.map((user) => user.name).join(', ');
 	$: expirationDate = getRelativeDate(license.expirationDate);
+	$: renewalInterval = license.renewalInterval;
 
 	export const licenseMenuItems: ContextMenuItem[] = [
 		{
@@ -77,30 +83,40 @@
 		on:click|stopPropagation={(e) => handleView(license, e)}
 	>
 		<!-- Icon cell -->
-		<div role="cell" tabindex="-1" class="cell status-cell">
+		<div
+			role="cell"
+			tabindex="-1"
+			class="cell status-cell"
+			use:tooltip={{ content: status, options: { delay: [500, 0], offset: [0, -10] } }}
+		>
 			<div
 				class="status-icon"
 				class:inactive={license.status === 'Inactive'}
 				class:expired={license.status === 'Expired'}
 			/>
 		</div>
+
 		<!-- Application cell -->
 		<div role="cell" tabindex="-1" class="cell application-cell">
-			<p class="cell-text">{license.application.name}</p>
+			<p class="cell-text" use:tooltip={{ content: applicationName, options: { delay: [500, 0] } }}>
+				{license.application.name}
+			</p>
 		</div>
+
 		<!-- Contact cell -->
 		<div role="cell" tabindex="-1" class="cell contact-person-cell">
-			<p class="cell-text">
+			<p use:tooltip={{ content: contactPerson, options: { delay: [500, 0] } }} class="cell-text">
 				{#if license.contactPerson}
 					{license.contactPerson}
 				{:else}
-					<span style="font-style: italic">Unassigned</span>
+					<span style="font-style: italic">N/A</span>
 				{/if}
 			</p>
 		</div>
+
 		<!-- Users cell -->
 		<div role="cell" tabindex="-1" class="cell users-cell">
-			<p class="cell-text">
+			<p class="cell-text" use:tooltip={{ content: allUsers, options: { delay: [500, 0] } }}>
 				{#if license.users.length === 0}
 					<span style="font-style: italic">None</span>
 				{:else}
@@ -108,9 +124,11 @@
 				{/if}
 			</p>
 		</div>
+
 		<!-- Expiration cell -->
 		<div role="cell" tabindex="-1" class="cell expiration-cell">
 			<p
+				use:tooltip={{ content: license.expirationDate, options: { delay: [500, 0] } }}
 				class="cell-text"
 				class:warning-text={expirationDate.status === 'warning'}
 				class:alert-text={expirationDate.status === 'alert'}
@@ -118,26 +136,35 @@
 				{expirationDate.text}
 			</p>
 		</div>
+
 		<!-- Renewal cell -->
 		<div role="cell" tabindex="-1" class="cell renewal-cell">
 			{#if license.autoRenewal}
-				<div style="margin-right: 4px; margin-top: 5px;">
+				<div
+					use:tooltip={{ content: renewalInterval, options: { delay: [500, 0] } }}
+					style="margin-right: 4px; margin-top: 5px;"
+				>
 					<Repeat size={16} />
 				</div>
 			{/if}
 		</div>
 	</a>
+
 	<!-- Menu cell -->
 	<div class="cell menu-cell">
 		<div class="vertical-line" />
-		<LicenseMenu items={licenseMenuItems} />
+		<LicenseMenuButton items={licenseMenuItems} />
 	</div>
 </div>
 
+<!-- Warning modal -->
 {#if showWarningModal}
 	<WarningModal
-		warningText="Are you sure you want to delete this license?"
-		onConfirm={() => contextMenu.deleteLicense(license)}
+		warningText="Warning! This will delete the license and all its data. Are you sure?"
+		onConfirm={() => {
+			showWarningModal = false;
+			contextMenu.deleteLicense(license);
+		}}
 		onCancel={() => (showWarningModal = false)}
 	/>
 {/if}
@@ -248,7 +275,7 @@
 		height: 60%;
 	}
 
-	@media (max-width: 1250px) {
+	@media (max-width: 1450px) {
 		.renewal-cell {
 			display: none;
 		}

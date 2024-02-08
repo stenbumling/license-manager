@@ -60,10 +60,7 @@ a {
 	text-decoration: none;
 }
 
-/* ::-webkit-scrollbar {
-	display: none;
-} */
-
+/*  Remove spinner buttons from number inputs */
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
 	-webkit-appearance: none;
@@ -71,4 +68,44 @@ input[type='number']::-webkit-outer-spin-button {
 }
 input[type='number'] {
 	-moz-appearance: textfield;
+	appearance: textfield;
+}
+
+/* Custom styling to date picker icon in date input fields */
+input[type='date']::-webkit-calendar-picker-indicator {
+	margin-right: 0.6rem;
+	padding: 0.3rem;
+	font-size: 1.15rem;
+	border-radius: 6px;
+	filter: invert(20%) sepia(55%) saturate(3257%) hue-rotate(256deg) brightness(83%) contrast(108%);
+	cursor: pointer;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Custom styling for search input fields */
+
+input[type='search']::-webkit-search-cancel-button,
+input[type='search']::-webkit-search-decoration,
+input[type='search']::-webkit-search-results-button,
+input[type='search']::-webkit-search-results-decoration {
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+/* Custom styling for focused elements */
+:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 3px var(--light-purple);
+	border-radius: 4px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 0px var(--light-purple);
+	border-radius: 4px;
 }

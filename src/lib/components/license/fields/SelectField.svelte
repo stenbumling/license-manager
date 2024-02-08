@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { licenseMode } from '$lib/stores/resources/license-store';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
@@ -14,6 +15,7 @@
 
 	const id = uuidv4();
 
+	// Sets the value to the default option if the value is empty and the default option is valid
 	$: value = !value && defaultOption && options.includes(defaultOption) ? defaultOption : value;
 	$: selectStyle = value ? '' : 'unselected';
 </script>
@@ -25,7 +27,14 @@
 			<span class="required">*</span>
 		{/if}
 	</h3>
-	<select class={selectStyle} bind:value name={label} {required} aria-labelledby={id}>
+	<select
+		class={selectStyle}
+		class:select-add-mode={$licenseMode === 'add'}
+		bind:value
+		name={label}
+		{required}
+		aria-labelledby={id}
+	>
 		<option hidden value="">{placeholder}</option>
 		{#each options as option}
 			<option value={option}>{option}</option>
@@ -106,15 +115,30 @@
 	select:hover {
 		border: 1px dashed black;
 		cursor: pointer;
-		appearance: auto;
-		padding: 0.3rem;
+		padding: 0 0 0.1rem 0.5rem;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
+	}
+
+	.select-add-mode {
+		border: 1px dashed black;
+		padding: 0 0 0.1rem 0.5rem;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	select:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		appearance: auto;
-		padding: 0.3rem;
+		padding: 0 0 0.1rem 0.5rem;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	option {

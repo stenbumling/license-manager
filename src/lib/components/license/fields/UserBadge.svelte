@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { license } from '$lib/stores/license-store.ts';
-	import type { User } from '$lib/stores/user-store';
+	import { license } from '$lib/stores/resources/license-store';
+	import type { User } from '$lib/stores/resources/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
 	import { fade } from 'svelte/transition';
 	export let user: User;
@@ -15,7 +15,7 @@
 		<span class="badge-text">{user.name}</span>
 	</div>
 	<button class="badge-delete-button" on:click={() => handleRemoveUser(user)}>
-		<CloseFilled fill="#f4d7ff" size={16} />
+		<CloseFilled fill="white" size={16} />
 	</button>
 </div>
 
@@ -40,7 +40,7 @@
 	}
 
 	.badge-text {
-		color: #f4d7ff;
+		color: white;
 		font-size: 0.8rem;
 		white-space: nowrap;
 		padding-top: 1px;
@@ -53,12 +53,17 @@
 		box-sizing: border-box;
 		cursor: pointer;
 		display: flex;
-		height: 100%;
+		height: 50%;
 		align-items: center;
 	}
 
 	.badge-delete-button:hover > :global(svg) {
 		transition: fill 0.4s ease;
 		fill: white;
+	}
+
+	.badge-delete-button:focus-within {
+		box-shadow: 0 0 0 2px white;
+		border-radius: 4px;
 	}
 </style>

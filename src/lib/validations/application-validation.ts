@@ -1,5 +1,5 @@
-import type { Application } from '$lib/stores/application-store';
-import { applicationStore } from '$lib/stores/application-store';
+import type { Application } from '$lib/stores/resources/application-store';
+import { applicationStore } from '$lib/stores/resources/application-store';
 import { get, writable } from 'svelte/store';
 import { z } from 'zod';
 

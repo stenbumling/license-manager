@@ -1,32 +1,35 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/actions/clickOutside';
+	import { focusTrap } from '$lib/actions/focusTrap';
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { style } from 'svelte-body';
 	import { fly } from 'svelte/transition';
 
+	/*
+	 * This component is a context menu that is used together with the LicenseMenuButton component.
+	 */
+
 	export let items: ContextMenuItem[];
 	export let referenceElementRect: DOMRect;
 
+	// This function is used to dynamically position the context menu according to the reference element (menu button)
 	function renderContextMenu(contextMenuRect: DOMRect) {
 		contextMenu.setPosition(referenceElementRect, contextMenuRect);
 	}
 </script>
 
+<!-- This disables pointer events outside the context menu when the menu is open -->
 <svelte:body use:style={$contextMenu.activeId ? 'pointer-events: none' : ''} />
 
 <div
 	role="menu"
 	tabindex="-1"
 	class="context-menu"
-	use:getElementRect={renderContextMenu}
 	use:clickOutside={() => contextMenu.close()}
-	on:keydown|stopPropagation={(e) => {
-		if (e.key === 'Escape') {
-			contextMenu.close();
-		}
-	}}
+	use:focusTrap
+	use:getElementRect={renderContextMenu}
 	in:fly={{
 		duration: 180,
 		y: '-15%',
@@ -44,6 +47,8 @@
 				on:keydown|stopPropagation={(e) => {
 					if (e.key === 'Enter') {
 						item.action();
+					} else if (e.key === 'Escape') {
+						contextMenu.close();
 					}
 				}}
 			>

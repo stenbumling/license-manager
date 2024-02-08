@@ -1,3 +1,9 @@
+/*
+ * This will continously observe the element it is attached to and return
+ * its dimensions and position when they change. In addition it will listen for
+ * window resize events and debounce them if too frequent.
+ */
+
 export function getElementRect(node: Element, callback: (arg0: DOMRect) => void) {
 	// Observes and returns the bounding rectangle of the given node when it changes
 	const observer = new ResizeObserver((entries) => {
@@ -22,13 +28,12 @@ export function getElementRect(node: Element, callback: (arg0: DOMRect) => void)
 		func: (...args: unknown[]) => void,
 		delay: number,
 	): (...args: unknown[]) => void {
-		let debounceTimeout: number | undefined;
-
 		return function (this: unknown, ...args: unknown[]) {
 			clearTimeout(debounceTimeout);
 			debounceTimeout = window.setTimeout(() => func(...args), delay);
 		};
 	}
+
 	const debouncedResize = debounce(() => {
 		callback(node.getBoundingClientRect());
 	}, 100);

@@ -25,7 +25,7 @@
 
 	@media (max-height: 850px) {
 		.main-container {
-			padding: 1rem 3rem;
+			padding: 1.5rem 3rem;
 		}
 	}
 </style>

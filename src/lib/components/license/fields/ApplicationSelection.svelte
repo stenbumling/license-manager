@@ -1,8 +1,8 @@
 <script lang="ts">
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
-	import { applicationStore } from '$lib/stores/application-store';
-	import { license } from '$lib/stores/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-store';
+	import { applicationStore } from '$lib/stores/resources/application-store';
+	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	import { fade } from 'svelte/transition';
@@ -21,6 +21,7 @@
 		<select
 			required
 			name="applications"
+			class:select-add-mode={$licenseMode === 'add'}
 			bind:value={$license.applicationId}
 			on:change={handleApplicationChange}
 		>
@@ -87,22 +88,36 @@
 	}
 
 	select:hover {
-		padding: 0.3rem;
+		padding: 0 0 0rem 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
-		appearance: auto;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
+	}
+
+	.select-add-mode {
+		padding: 0 0 0rem 0.3rem;
+		border: 1px dashed black;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	select:focus {
-		padding: 0.3rem;
+		padding: 0 0 0rem 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
-		appearance: auto;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	select:required:invalid {
 		color: gray;
-		appearance: auto;
 	}
 
 	option[value=''][disabled] {

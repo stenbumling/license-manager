@@ -1,11 +1,13 @@
 <script lang="ts">
-	import Header from '$lib/components/misc/Header.svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
-	import { applicationStore } from '$lib/stores/application-store';
-	import { licenseCounts, licenseStore } from '$lib/stores/license-store';
+	import PageHeader from '$lib/components/misc/PageHeader.svelte';
 	import { modal } from '$lib/stores/modal-store';
-	import { table } from '$lib/stores/table-store.js';
-	import { userStore } from '$lib/stores/user-store';
+	import { request, tableFetchRequest } from '$lib/stores/request-state-store';
+	import { applicationStore } from '$lib/stores/resources/application-store.js';
+	import { licenseCounts, licenseStore } from '$lib/stores/resources/license-store.js';
+	import { userStore } from '$lib/stores/resources/user-store.js';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
 	import { onMount } from 'svelte';
@@ -15,29 +17,50 @@
 	onMount(async () => {
 		if (data.error) {
 			console.error(`${data.error.code}: ${data.error.message}`);
-			// toast
 		} else {
+			request.startLoading(tableFetchRequest, 200);
+
+			// Set the initial data in the stores
 			licenseStore.set(data.licenses);
 			applicationStore.set(data.applications);
 			userStore.set(data.users);
 			licenseCounts.set(data.counts);
 
-			table.updateState();
+			request.endLoading(tableFetchRequest);
 
-			modal.openLicense();
+			// Open the license modal if the URL contains a license ID
+			if ($page.url.searchParams.has('id')) {
+				modal.openLicense();
+			} else {
+				await goto('/');
+			}
 		}
 	});
 </script>
 
-<header>
-	<Header />
-</header>
+<PageHeader />
 
-{#if data.error}
-	<div class="fallback-container">
+{#if $page.status === 404}
+	<main class="fallback-container">
+		<h1 style="font-size: 5rem">{$page.status}</h1>
+		<h2 class="fallback-error-message">
+			{$page.error?.message}: The requested resource
+			<span style="color:var(--deep-purple)">{$page.url.pathname}</span> was not found on this server.
+		</h2>
+		<p class="fallback-error-message">
+			Please check the URL for typos and try again. If you believe this is an error, please contact
+			support.
+		</p>
+	</main>
+{:else if data.error}
+	<main class="fallback-container">
 		<h1 style="font-size: 5rem">{data.error.code}</h1>
-		<h1>{data.error.message}</h1>
-	</div>
+		<h2 class="fallback-error-message">{data.error.message}</h2>
+		<p class="fallback-error-message">
+			The server encountered an internal error or misconfiguration and was unable to complete your
+			request. Please try again later, or contact support if the problem persists.
+		</p>
+	</main>
 {:else}
 	<main>
 		<slot />
@@ -54,16 +77,27 @@
 	}
 
 	.fallback-container {
-		display: flex;
-		justify-content: center;
 		align-items: center;
 		flex-grow: 1;
 		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.fallback-error-message {
+		max-width: 62ch;
+		word-wrap: break-word;
 	}
 
 	@media (max-height: 850px) {
 		main {
 			max-height: calc(100vh - 3.3rem);
+		}
+	}
+
+	@media (max-width: 850px) {
+		.fallback-error-message {
+			max-width: 80%;
 		}
 	}
 </style>

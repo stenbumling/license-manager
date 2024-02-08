@@ -6,6 +6,14 @@
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import { v4 as uuidv4 } from 'uuid';
 
+	/*
+	 * This component is a three-dots-button that opens a context menu when clicked.
+	 * Every button recieves a unique id to avoid conflicts with other context menus.
+	 * The buttons position is tracked by getElementRect and the context menu
+	 * is positioned accordingly. The items props is used to pass the menu items to the
+	 * context menu.
+	 */
+
 	let menuButtonRect: DOMRect;
 	const menuId = uuidv4();
 
@@ -23,14 +31,13 @@
 		on:keydown|stopPropagation={(e) => {
 			if (e.key === 'Enter') {
 				contextMenu.open(menuId);
-			} else if (e.key === 'Escape') {
-				contextMenu.close();
 			}
 		}}
 		use:getElementRect={(element) => (menuButtonRect = element)}
 	>
 		<OverflowMenuHorizontal size={32} />
 	</button>
+	<!-- This ensures that the context menu is closed when the button is unmounted -->
 	{#if $contextMenu.activeId === menuId}
 		<ContextMenu bind:referenceElementRect={menuButtonRect} {items} />
 	{/if}

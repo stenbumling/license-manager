@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { licenseMode } from '$lib/stores/resources/license-store';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
@@ -17,6 +18,7 @@
 	let textContainer: string =
 		type === 'secondary' ? 'text-field-secondary-container' : 'text-field-container';
 
+	// Enforce numeric input. Firefox does not prevent non-numeric input on number inputs by default.
 	function enforceNumeric(event: KeyboardEvent) {
 		const validKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'End', 'Home'];
 
@@ -33,19 +35,27 @@
 			<span class="required">*</span>
 		{/if}
 	</h3>
+
+	<!-- Number input -->
 	{#if number}
-		<input
-			bind:value
-			type="number"
-			aria-labelledby={id}
-			max="10000000"
-			{required}
-			{placeholder}
-			on:keydown={enforceNumeric}
-		/>
+		<div class="number-input-container">
+			<input
+				bind:value
+				class="number-input"
+				class:input-add-mode={$licenseMode === 'add'}
+				type="number"
+				aria-labelledby={id}
+				max="10000000"
+				{required}
+				{placeholder}
+				on:keydown={enforceNumeric}
+			/>
+		</div>
 	{:else}
+		<!-- Text input -->
 		<input
 			bind:value
+			class:input-add-mode={$licenseMode === 'add'}
 			type="text"
 			pattern="[0-9]*"
 			aria-labelledby={id}
@@ -119,6 +129,20 @@
 		color: #ff0000;
 	}
 
+	.number-input-container {
+		position: relative;
+		width: 100%;
+	}
+
+	.number-input-container::after {
+		content: 'SEK';
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		font-size: 0.75rem;
+		color: var(--text-placeholder);
+	}
+
 	input {
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		font-size: 0.83rem;
@@ -133,12 +157,17 @@
 
 	input:hover {
 		border: 1px dashed black;
-		padding-left: 0.3rem;
+		padding: 0 0 0.1rem 0.5rem;
+	}
+
+	.input-add-mode {
+		border: 1px dashed black;
+		padding: 0 0 0.1rem 0.5rem;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 0.3rem;
+		padding: 0 0 0.1rem 0.5rem;
 	}
 </style>

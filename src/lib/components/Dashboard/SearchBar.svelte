@@ -1,6 +1,9 @@
 <script lang="ts">
-	import { searchQuery, table } from '$lib/stores/table-store';
-	import { validateSearchQuery } from '$lib/validations/search-query-validation';
+	import { filterState, searchQuery, table } from '$lib/stores/resources/table-store';
+	import {
+		searchQueryValidationError,
+		validateSearchQuery,
+	} from '$lib/validations/search-query-validation';
 	import Search from 'carbon-icons-svelte/lib/Search.svelte';
 
 	let inputField: HTMLInputElement;
@@ -14,20 +17,20 @@
 				} else {
 					table.filterBy('Search');
 				}
-				inputField.blur();
-			} else {
-				inputField.focus();
 			}
 		}
 	}
+	$: isError = $searchQueryValidationError.length > 0;
+	$: isActiveSearch = $filterState === 'Search';
 </script>
 
 <input
 	bind:value={$searchQuery}
 	bind:this={inputField}
 	type="search"
-	class="search-field"
+	class={`search-field ${isError ? 'error' : ''} ${isActiveSearch ? 'active' : ''}`}
 	placeholder="Search"
+	maxlength="50"
 	on:keydown={handleSearch}
 />
 <div class="search-icon">
@@ -51,6 +54,28 @@
 		box-sizing: border-box;
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		background-color: transparent;
+	}
+
+	.active {
+		border-bottom: 2px solid var(--light-purple);
+		padding: 0 0 0px 50px;
+	}
+
+	.error {
+		border-bottom: 2px solid red;
+		padding: 0 0 0px 50px;
+	}
+
+	.error:hover {
+		border: 2px solid red;
+		border-bottom: 2px solid red;
+		padding: 0 0 1px 48px;
+	}
+
+	.error:focus {
+		border: 2px solid red;
+		border-bottom: 2px solid red;
+		padding: 0 0 1px 48px;
 	}
 
 	input:hover {

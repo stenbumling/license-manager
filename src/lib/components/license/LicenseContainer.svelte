@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
-	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
+	import ApplicationModal from '$lib/components/resource-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
 	import AssignedUsers from '$lib/components/license/fields/AssignedUsers.svelte';
@@ -9,18 +9,12 @@
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
-	import LicenseMenu from '$lib/components/misc/buttons/LicenseMenu.svelte';
+	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import {
-		license,
-		licenseFetchError,
-		licenseMode,
-		licensePostError,
-		licenseStore,
-	} from '$lib/stores/license-store.ts';
-	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/loading-store';
 	import { modal, showApplicationModal } from '$lib/stores/modal-store';
+	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
+	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
@@ -35,7 +29,7 @@
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
-			label: 'Close',
+			label: 'Close without saving',
 			icon: CloseLarge,
 			action: () => modal.closeLicense(),
 		},
@@ -70,7 +64,7 @@
 			} else if ($licenseMode === 'add') {
 				await licenseStore.add($license);
 			}
-			if ($licensePostError) {
+			if ($licensePostRequest.error.message) {
 				return;
 			}
 			modal.closeLicense();
@@ -81,22 +75,29 @@
 </script>
 
 <div class="license-container">
+	<!-- Loading -->
 	{#if $licenseFetchRequest.isLoading}
 		<div class="fallback-container">
 			<Circle color="var(--deep-purple)" />
 		</div>
-	{:else if $licenseFetchError}
+
+		<!-- Error fallback -->
+	{:else if $licenseFetchRequest.error.message}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
-			<h1>{$licenseFetchError}</h1>
+			<h1 style="font-size: 5rem">{$licenseFetchRequest.error.code}</h1>
+			<h2>{$licenseFetchRequest.error.message}</h2>
 		</div>
 	{:else}
+		<!-- License header -->
 		<div in:fade={{ duration: 300 }}>
 			<LicenseHeader />
 		</div>
-		<div class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
+
+		<!-- License fields -->
+		<div tabIndex="-1" class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
 			<ApplicationSelection />
 			<AssignedUsers />
 			<ExpirationField />
@@ -133,9 +134,11 @@
 				errorMessage={$licenseValidationErrors.comment}
 			/>
 		</div>
+
+		<!-- Container footer -->
 		<div class="bottom-container">
 			{#if $licenseMode === 'view'}
-				<LicenseMenu items={contextMenuItems} />
+				<LicenseMenuButton items={contextMenuItems} />
 			{/if}
 			<ButtonLarge
 				title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'}
@@ -146,13 +149,15 @@
 	{/if}
 </div>
 
+<!-- Modals -->
+
 {#if $showApplicationModal}
 	<ApplicationModal />
 {/if}
 
 {#if showWarningModal}
 	<WarningModal
-		warningText="Are you sure you want to delete this license?"
+		warningText="Warning! This will delete the license and all its data. Are you sure?"
 		onConfirm={() => contextMenu.deleteLicense($license)}
 		onCancel={() => (showWarningModal = false)}
 	/>
@@ -189,9 +194,17 @@
 
 	.fallback-container {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		text-align: center;
 		height: 100%;
+
+		& > h2 {
+			max-width: 80%;
+			line-height: 1.7;
+			word-wrap: break-word;
+		}
 	}
 
 	.fallback-container-close-button {

@@ -1,4 +1,4 @@
-import type { License } from '$lib/stores/license-store';
+import type { License } from '$lib/stores/resources/license-store';
 import moment from 'moment';
 import { writable } from 'svelte/store';
 import { z } from 'zod';

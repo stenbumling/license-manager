@@ -3,18 +3,10 @@
 
 	export let icon: ComponentType;
 	export let iconSize: 16 | 20 | 24 | 32 | undefined = 20;
-	export let action: (e?: any) => void;
+	export let action: (e?: MouseEvent | KeyboardEvent) => void;
 </script>
 
-<button
-	class="small-button"
-	on:click={action}
-	on:keydown={(e) => {
-		if (e.key === 'Enter') {
-			action();
-		}
-	}}
->
+<button class="small-button" on:click={action}>
 	<svelte:component this={icon} size={iconSize} fill="white" />
 </button>
 
