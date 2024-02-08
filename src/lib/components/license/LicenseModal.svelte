@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { focusTrap } from '$lib/actions/focusTrap';
 	import LicenseContainer from '$lib/components/license/LicenseContainer.svelte';
 	import { fade } from 'svelte/transition';
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
-	<dialog open class="modal-window">
+	<dialog open class="modal-window" use:focusTrap>
 		<LicenseContainer />
 	</dialog>
 </div>

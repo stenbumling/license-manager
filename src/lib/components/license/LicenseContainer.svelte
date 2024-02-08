@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { focusTrap } from '$lib/actions/focusTrap';
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
@@ -75,14 +74,14 @@
 	}
 </script>
 
-<div class="license-container" use:focusTrap>
+<div class="license-container">
 	{#if $licenseFetchRequest.isLoading}
 		<div class="fallback-container">
 			<Circle color="var(--deep-purple)" />
 		</div>
 	{:else if $licenseFetchRequest.error.message}
 		<div class="fallback-container">
-			<div tabIndex="0" class="fallback-container-close-button">
+			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
 			<h1 style="font-size: 5rem">{$licenseFetchRequest.error.code}</h1>
@@ -92,7 +91,7 @@
 		<div in:fade={{ duration: 300 }}>
 			<LicenseHeader />
 		</div>
-		<div class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
+		<div tabIndex="-1" class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
 			<ApplicationSelection />
 			<AssignedUsers />
 			<ExpirationField />

@@ -73,6 +73,14 @@ input[type='number'] {
 
 :focus-visible {
 	outline: none;
-	box-shadow: 0 0 0 2px var(--light-purple);
+	box-shadow: 0 0 0 3px var(--light-purple);
+	border-radius: 4px;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 0px var(--light-purple);
 	border-radius: 4px;
 }
