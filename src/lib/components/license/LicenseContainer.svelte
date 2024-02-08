@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
-	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
+	import ApplicationModal from '$lib/components/resource-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
 	import AssignedUsers from '$lib/components/license/fields/AssignedUsers.svelte';

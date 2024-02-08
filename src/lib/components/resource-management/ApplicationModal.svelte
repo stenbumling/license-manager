@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { focusTrap } from '$lib/actions/focusTrap';
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
-	import { application, applicationStore } from '$lib/stores/resources/application-store';
 	import { modal } from '$lib/stores/modal-store';
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
+	import { application, applicationStore } from '$lib/stores/resources/application-store';
 	import {
 		applicationValidationError,
 		validateApplication,
@@ -14,7 +15,6 @@
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
 	import ApplicationItem from './ApplicationItem.svelte';
-	import { focusTrap } from '$lib/actions/focusTrap';
 
 	onMount(() => {
 		applicationStore.fetch();
@@ -38,6 +38,8 @@
 			<h1 class="modal-title">Application<br />management</h1>
 			<CloseModalButton action={modal.closeApplication} />
 		</div>
+
+		<!-- Application creation -->
 		<h3>Add new application</h3>
 		<div class="input-container">
 			<input
@@ -55,10 +57,14 @@
 			{/if}
 		</p>
 		<h3>List of applications</h3>
+
+		<!-- Loading -->
 		{#if $applicationFetchRequest.isLoading}
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
 				<Circle color="var(--deep-purple)" />
 			</div>
+
+			<!-- Errors and no results -->
 		{:else if $applicationFetchRequest.error.message}
 			<div class="fallback-container" in:fade={{ duration: 300 }}>
 				<h2>{$applicationFetchRequest.error.message}</h2>
@@ -68,6 +74,7 @@
 				<h2>No applications added yet</h2>
 			</div>
 		{:else}
+			<!-- Render application items -->
 			<div class="application-list" use:scrollShadow in:fade={{ duration: 200 }}>
 				{#each $applicationStore as application}
 					<ApplicationItem {application} />

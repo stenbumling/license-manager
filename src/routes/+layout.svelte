@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
-	import Header from '$lib/components/misc/Header.svelte';
 	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
-	import { applicationStore } from '$lib/stores/resources/application-store.js';
-	import { licenseCounts, licenseStore } from '$lib/stores/resources/license-store.js';
+	import PageHeader from '$lib/components/misc/PageHeader.svelte';
 	import { modal } from '$lib/stores/modal-store';
 	import { request, tableFetchRequest } from '$lib/stores/request-state-store';
+	import { applicationStore } from '$lib/stores/resources/application-store.js';
+	import { licenseCounts, licenseStore } from '$lib/stores/resources/license-store.js';
 	import { userStore } from '$lib/stores/resources/user-store.js';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
@@ -38,7 +38,7 @@
 	});
 </script>
 
-<Header />
+<PageHeader />
 
 {#if $page.status === 404}
 	<main class="fallback-container">
