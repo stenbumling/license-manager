@@ -1,9 +1,9 @@
 <script lang="ts">
 	import AssignedUsersModal from '$lib/components/license/AssignedUsersModal.svelte';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
-	import { license } from '$lib/stores/resources/license-store';
-	import { userFetchRequest } from '$lib/stores/request-state-store';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
+	import { userFetchRequest } from '$lib/stores/request-state-store';
+	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import type { User } from '$lib/stores/resources/user-store';
 	import { userStore } from '$lib/stores/resources/user-store';
 	import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
@@ -86,6 +86,7 @@
 	{/if}
 	<div class="input-container">
 		<input
+			class:input-add-mode={$licenseMode === 'add'}
 			type="search"
 			placeholder="Select or add new user"
 			bind:value={userInput}
@@ -241,6 +242,12 @@
 	}
 
 	input:hover {
+		border: 1px dashed black;
+		padding-left: 0.5rem;
+		padding-bottom: 0.1rem;
+	}
+
+	.input-add-mode {
 		border: 1px dashed black;
 		padding-left: 0.5rem;
 		padding-bottom: 0.1rem;

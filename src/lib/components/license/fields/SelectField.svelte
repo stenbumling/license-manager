@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { licenseMode } from '$lib/stores/resources/license-store';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
@@ -25,7 +26,14 @@
 			<span class="required">*</span>
 		{/if}
 	</h3>
-	<select class={selectStyle} bind:value name={label} {required} aria-labelledby={id}>
+	<select
+		class={selectStyle}
+		class:select-add-mode={$licenseMode === 'add'}
+		bind:value
+		name={label}
+		{required}
+		aria-labelledby={id}
+	>
 		<option hidden value="">{placeholder}</option>
 		{#each options as option}
 			<option value={option}>{option}</option>
@@ -107,14 +115,20 @@
 		border: 1px dashed black;
 		cursor: pointer;
 		appearance: auto;
-		padding: 0.3rem;
+		padding: 0 0 0.1rem 0.3rem;
+	}
+
+	.select-add-mode {
+		border: 1px dashed black;
+		padding: 0 0 0.1rem 0.3rem;
+		appearance: auto;
 	}
 
 	select:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
 		appearance: auto;
-		padding: 0.3rem;
+		padding: 0 0 0.1rem 0.3rem;
 	}
 
 	option {

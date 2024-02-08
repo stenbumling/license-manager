@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { licenseMode } from '$lib/stores/resources/license-store';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
@@ -36,6 +37,7 @@
 	{#if number}
 		<input
 			bind:value
+			class:input-add-mode={$licenseMode === 'add'}
 			type="number"
 			aria-labelledby={id}
 			max="10000000"
@@ -46,6 +48,7 @@
 	{:else}
 		<input
 			bind:value
+			class:input-add-mode={$licenseMode === 'add'}
 			type="text"
 			pattern="[0-9]*"
 			aria-labelledby={id}
@@ -133,12 +136,16 @@
 
 	input:hover {
 		border: 1px dashed black;
-		padding-left: 0.3rem;
+		padding-left: 0.5rem;
+	}
+	.input-add-mode {
+		border: 1px dashed black;
+		padding-left: 0.5rem;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding-left: 0.3rem;
+		padding-left: 0.5rem;
 	}
 </style>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { licenseMode } from '$lib/stores/resources/license-store';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
@@ -29,6 +30,7 @@
 	<textarea
 		bind:value
 		bind:this={textarea}
+		class:textarea-add-mode={$licenseMode === 'add'}
 		{required}
 		{placeholder}
 		{autocomplete}
@@ -109,6 +111,10 @@
 	textarea:hover {
 		border: 1px dashed black;
 		overflow: auto;
+	}
+
+	.textarea-add-mode {
+		border: 1px dashed black;
 	}
 
 	textarea:focus {

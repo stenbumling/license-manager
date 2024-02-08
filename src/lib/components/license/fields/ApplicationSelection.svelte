@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
 	import { applicationStore } from '$lib/stores/resources/application-store';
-	import { license } from '$lib/stores/resources/license-store';
+	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import { showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
@@ -21,6 +21,7 @@
 		<select
 			required
 			name="applications"
+			class:select-add-mode={$licenseMode === 'add'}
 			bind:value={$license.applicationId}
 			on:change={handleApplicationChange}
 		>
@@ -87,14 +88,20 @@
 	}
 
 	select:hover {
-		padding: 0.3rem;
+		padding: 0 0 0.1rem 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
 		appearance: auto;
 	}
 
+	.select-add-mode {
+		padding: 0 0 0.1rem 0.3rem;
+		border: 1px dashed black;
+		appearance: auto;
+	}
+
 	select:focus {
-		padding: 0.3rem;
+		padding: 0 0 0.1rem 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
 		appearance: auto;

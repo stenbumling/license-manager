@@ -5,6 +5,7 @@
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import { fade, slide } from 'svelte/transition';
+	import { licenseMode } from '$lib/stores/resources/license-store';
 
 	let label: string = '';
 
@@ -40,6 +41,7 @@
 	<div class="expiration-row">
 		<input
 			class="date-picker"
+			class:date-picker-add-mode={$licenseMode === 'add'}
 			type="date"
 			required
 			name="applications"
@@ -132,15 +134,19 @@
 	.date-picker:hover {
 		border: 1px dashed black;
 		cursor: pointer;
-		appearance: auto;
-		padding: 0.3rem;
+		padding: 0 0 0.1rem 0.5rem;
+	}
+
+	.date-picker-add-mode {
+		border: 1px dashed black;
+		padding: 0 0 0.1rem 0.5rem;
 	}
 
 	.date-picker:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
 		appearance: auto;
-		padding: 0.3rem;
+		padding: 0 0 0.1rem 0.5rem;
 	}
 
 	.date-picker:required:invalid {
