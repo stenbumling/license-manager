@@ -71,6 +71,21 @@ input[type='number'] {
 	appearance: textfield;
 }
 
+/* Custom styling to date picker icon in date input fields */
+input[type='date']::-webkit-calendar-picker-indicator {
+	margin-right: 0.6rem;
+	padding: 0.3rem;
+	font-size: 1.15rem;
+	border-radius: 6px;
+	filter: invert(20%) sepia(55%) saturate(3257%) hue-rotate(256deg) brightness(83%) contrast(108%);
+	cursor: pointer;
+}
+
+input[type='date']::-webkit-calendar-picker-indicator:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Custom styling for focused elements */
 :focus-visible {
 	outline: none;
 	box-shadow: 0 0 0 3px var(--light-purple);
