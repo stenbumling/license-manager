@@ -7,28 +7,23 @@
 	import { fade, slide } from 'svelte/transition';
 
 	let label: string = '';
-
 	$: costValue = calculateCost($license.renewalInterval, $license.cost);
+	$: label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
+	$: daysLeft = getRelativeDate($license.expirationDate);
+	$: if (!$license.autoRenewal) $license.renewalInterval = 'None';
 
+	// Calculate cost based on renewal interval
 	function calculateCost(renewalInterval: string, cost: number): string {
 		switch (renewalInterval) {
 			case 'None':
 				return '';
 			case 'Monthly':
-				return `${Math.floor(cost * 12).toString()} kr/year`;
+				return `${Math.floor(cost * 12).toString()} SEK/year`;
 			case 'Annually':
-				return `${Math.floor(cost / 12).toString()} kr/month`;
+				return `${Math.floor(cost / 12).toString()} SEK/month`;
 			default:
 				return '';
 		}
-	}
-
-	$: {
-		label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
-	}
-	$: daysLeft = getRelativeDate($license.expirationDate);
-	$: if (!$license.autoRenewal) {
-		$license.renewalInterval = 'None';
 	}
 </script>
 
@@ -38,6 +33,7 @@
 		<span class="required">*</span>
 	</h3>
 	<div class="expiration-row">
+		<!-- Date input -->
 		<input
 			class="date-picker"
 			class:date-picker-add-mode={$licenseMode === 'add'}
@@ -46,6 +42,8 @@
 			name="applications"
 			bind:value={$license.expirationDate}
 		/>
+
+		<!-- Renewal checkbox -->
 		<div class="renewal-checkbox">
 			<input
 				type="checkbox"
@@ -69,6 +67,8 @@
 			<span in:fade={{ duration: 120 }}>{daysLeft.text}</span>
 		{/if}
 	</p>
+
+	<!-- Cost input field -->
 	<div class="cost-field">
 		<TextField
 			bind:value={$license.cost}
@@ -80,6 +80,8 @@
 			errorMessage={$licenseValidationErrors.cost}
 		/>
 	</div>
+
+	<!-- Initially hidden autorenewal select field -->
 	{#if $license.autoRenewal}
 		<div transition:slide={{ duration: 80 }} class="interval-field">
 			<SelectField

@@ -18,6 +18,7 @@
 	let textContainer: string =
 		type === 'secondary' ? 'text-field-secondary-container' : 'text-field-container';
 
+	// Enforce numeric input. Firefox does not prevent non-numeric input on number inputs by default.
 	function enforceNumeric(event: KeyboardEvent) {
 		const validKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'End', 'Home'];
 
@@ -34,6 +35,8 @@
 			<span class="required">*</span>
 		{/if}
 	</h3>
+
+	<!-- Number input -->
 	{#if number}
 		<div class="number-input-container">
 			<input
@@ -49,6 +52,7 @@
 			/>
 		</div>
 	{:else}
+		<!-- Text input -->
 		<input
 			bind:value
 			class:input-add-mode={$licenseMode === 'add'}

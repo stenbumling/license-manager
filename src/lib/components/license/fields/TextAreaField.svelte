@@ -15,6 +15,7 @@
 	const id = uuidv4();
 	let textarea: HTMLTextAreaElement;
 
+	// Scroll to top of textarea on blur
 	function scrollToTop() {
 		textarea.scrollTop = 0;
 	}

@@ -15,6 +15,7 @@
 
 	const id = uuidv4();
 
+	// Sets the value to the default option if the value is empty and the default option is valid
 	$: value = !value && defaultOption && options.includes(defaultOption) ? defaultOption : value;
 	$: selectStyle = value ? '' : 'unselected';
 </script>

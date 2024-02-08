@@ -75,10 +75,13 @@
 </script>
 
 <div class="license-container">
+	<!-- Loading -->
 	{#if $licenseFetchRequest.isLoading}
 		<div class="fallback-container">
 			<Circle color="var(--deep-purple)" />
 		</div>
+
+		<!-- Error fallback -->
 	{:else if $licenseFetchRequest.error.message}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
@@ -88,9 +91,12 @@
 			<h2>{$licenseFetchRequest.error.message}</h2>
 		</div>
 	{:else}
+		<!-- License header -->
 		<div in:fade={{ duration: 300 }}>
 			<LicenseHeader />
 		</div>
+
+		<!-- License fields -->
 		<div tabIndex="-1" class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
 			<ApplicationSelection />
 			<AssignedUsers />
@@ -128,6 +134,8 @@
 				errorMessage={$licenseValidationErrors.comment}
 			/>
 		</div>
+
+		<!-- Container footer -->
 		<div class="bottom-container">
 			{#if $licenseMode === 'view'}
 				<LicenseMenuButton items={contextMenuItems} />
@@ -140,6 +148,8 @@
 		</div>
 	{/if}
 </div>
+
+<!-- Modals -->
 
 {#if $showApplicationModal}
 	<ApplicationModal />

@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { focusTrap } from '$lib/actions/focusTrap';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
-	import { license } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
+	import { license } from '$lib/stores/resources/license-store';
 	import { fade } from 'svelte/transition';
-	import { focusTrap } from '$lib/actions/focusTrap';
 </script>
+
+<!-- This modal shows all assigned users when there are more than 8 users -->
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window" use:focusTrap>

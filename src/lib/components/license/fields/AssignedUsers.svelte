@@ -61,6 +61,7 @@
 </script>
 
 <div class="component-container">
+	<!-- User badges -->
 	<h3 class="label">Assigned users</h3>
 	{#if $license.users.length || $userFetchRequest.isLoading}
 		<div class="badge-container">
@@ -84,6 +85,8 @@
 			{/if}
 		</div>
 	{/if}
+
+	<!-- User input -->
 	<div class="input-container">
 		<input
 			class:input-add-mode={$licenseMode === 'add'}
@@ -101,6 +104,8 @@
 				}
 			}}
 		/>
+
+		<!-- User suggestions dropdown -->
 		{#if userSuggestions.length}
 			<ul role="menu" class="suggestions-list" in:slide={{ duration: 100 }}>
 				{#each userSuggestions as suggestion}
