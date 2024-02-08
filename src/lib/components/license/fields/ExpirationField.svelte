@@ -1,11 +1,10 @@
 <script lang="ts">
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import { license } from '$lib/stores/resources/license-store';
+	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import { fade, slide } from 'svelte/transition';
-	import { licenseMode } from '$lib/stores/resources/license-store';
 
 	let label: string = '';
 
@@ -155,6 +154,7 @@
 	}
 
 	.renewal-checkbox {
+		margin-top: 0.2rem;
 		margin-left: 1rem;
 		display: flex;
 		justify-content: space-between;
