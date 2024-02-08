@@ -107,9 +107,7 @@
 				{#if license.contactPerson}
 					{license.contactPerson}
 				{:else}
-					<span
-						style="font-style: italic">N/A</span
-					>
+					<span style="font-style: italic">N/A</span>
 				{/if}
 			</p>
 		</div>

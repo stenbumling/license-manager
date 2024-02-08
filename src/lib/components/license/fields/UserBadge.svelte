@@ -53,12 +53,17 @@
 		box-sizing: border-box;
 		cursor: pointer;
 		display: flex;
-		height: 100%;
+		height: 50%;
 		align-items: center;
 	}
 
 	.badge-delete-button:hover > :global(svg) {
 		transition: fill 0.4s ease;
 		fill: white;
+	}
+
+	.badge-delete-button:focus-within {
+		box-shadow: 0 0 0 2px white;
+		border-radius: 4px;
 	}
 </style>

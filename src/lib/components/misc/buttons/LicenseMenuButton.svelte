@@ -31,8 +31,6 @@
 		on:keydown|stopPropagation={(e) => {
 			if (e.key === 'Enter') {
 				contextMenu.open(menuId);
-			} else if (e.key === 'Escape') {
-				contextMenu.close();
 			}
 		}}
 		use:getElementRect={(element) => (menuButtonRect = element)}

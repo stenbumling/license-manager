@@ -52,6 +52,11 @@
 				name="renewal"
 				value="renewal"
 				bind:checked={$license.autoRenewal}
+				on:keydown={(e) => {
+					if (e.key === 'Enter') {
+						$license.autoRenewal = !$license.autoRenewal;
+					}
+				}}
 			/>
 			<label for="renewal">Autorenewal</label>
 		</div>
@@ -183,8 +188,8 @@
 		transition: background-color 0.2s ease;
 	}
 
-	input[type='checkbox']:checked {
-		background-color: var(--light-purple);
+	input[type='checkbox']:focus-visible {
+		outline: 2px solid var(--light-purple);
 	}
 
 	@media (max-width: 1000px) {

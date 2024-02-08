@@ -6,15 +6,7 @@
 	export let action: (e?: MouseEvent | KeyboardEvent) => void;
 </script>
 
-<button
-	class="small-button"
-	on:click={action}
-	on:keydown={(e) => {
-		if (e.key === 'Enter') {
-			action();
-		}
-	}}
->
+<button class="small-button" on:click={action}>
 	<svelte:component this={icon} size={iconSize} fill="white" />
 </button>
 

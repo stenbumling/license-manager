@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import { focusTrap } from '$lib/actions/focusTrap';
+	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
@@ -30,7 +30,7 @@
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
-			label: 'Close',
+			label: 'Close without saving',
 			icon: CloseLarge,
 			action: () => modal.closeLicense(),
 		},

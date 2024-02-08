@@ -70,3 +70,9 @@ input[type='number'] {
 	-moz-appearance: textfield;
 	appearance: textfield;
 }
+
+:focus-visible {
+	outline: none;
+	box-shadow: 0 0 0 2px var(--light-purple);
+	border-radius: 4px;
+}

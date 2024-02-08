@@ -18,7 +18,6 @@
 					table.filterBy('Search');
 				}
 			}
-			inputField.blur();
 		}
 	}
 	$: isError = $searchQueryValidationError.length > 0;

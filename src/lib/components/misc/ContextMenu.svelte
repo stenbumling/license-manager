@@ -27,14 +27,9 @@
 	role="menu"
 	tabindex="-1"
 	class="context-menu"
+	use:clickOutside={() => contextMenu.close()}
 	use:focusTrap
 	use:getElementRect={renderContextMenu}
-	use:clickOutside={() => contextMenu.close()}
-	on:keydown|stopPropagation={(e) => {
-		if (e.key === 'Escape') {
-			contextMenu.close();
-		}
-	}}
 	in:fly={{
 		duration: 180,
 		y: '-15%',
@@ -52,6 +47,8 @@
 				on:keydown|stopPropagation={(e) => {
 					if (e.key === 'Enter') {
 						item.action();
+					} else if (e.key === 'Escape') {
+						contextMenu.close();
 					}
 				}}
 			>
