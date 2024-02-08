@@ -239,6 +239,7 @@
 		background-color: transparent;
 		border-bottom: 1px solid var(--text-placeholder);
 		box-sizing: border-box;
+		appearance: none;
 	}
 
 	input:hover {

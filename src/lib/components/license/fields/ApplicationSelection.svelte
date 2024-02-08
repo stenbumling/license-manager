@@ -1,8 +1,8 @@
 <script lang="ts">
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
+	import { showApplicationModal } from '$lib/stores/modal-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { license, licenseMode } from '$lib/stores/resources/license-store';
-	import { showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	import { fade } from 'svelte/transition';
@@ -91,25 +91,33 @@
 		padding: 0 0 0rem 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
-		appearance: auto;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	.select-add-mode {
 		padding: 0 0 0rem 0.3rem;
 		border: 1px dashed black;
-		appearance: auto;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	select:focus {
 		padding: 0 0 0rem 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
-		appearance: auto;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	select:required:invalid {
 		color: gray;
-		appearance: auto;
 	}
 
 	option[value=''][disabled] {

@@ -114,21 +114,30 @@
 	select:hover {
 		border: 1px dashed black;
 		cursor: pointer;
-		appearance: auto;
-		padding: 0 0 0.1rem 0.3rem;
+		padding: 0 0 0.1rem 0.5rem;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	.select-add-mode {
 		border: 1px dashed black;
-		padding: 0 0 0.1rem 0.3rem;
-		appearance: auto;
+		padding: 0 0 0.1rem 0.5rem;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	select:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		appearance: auto;
-		padding: 0 0 0.1rem 0.3rem;
+		padding: 0 0 0.1rem 0.5rem;
+		background-image: url('dropdown-arrow.svg');
+		background-size: 1.5rem;
+		background-repeat: no-repeat;
+		background-position: right 10px center;
 	}
 
 	option {

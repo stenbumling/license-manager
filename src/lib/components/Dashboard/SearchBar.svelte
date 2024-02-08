@@ -56,14 +56,6 @@
 		background-color: transparent;
 	}
 
-	input[type='search']::-webkit-search-cancel-button,
-	input[type='search']::-webkit-search-decoration,
-	input[type='search']::-webkit-search-results-button,
-	input[type='search']::-webkit-search-results-decoration {
-		-webkit-appearance: none;
-		appearance: none;
-	}
-
 	.active {
 		border-bottom: 2px solid var(--light-purple);
 		padding: 0 0 0px 50px;
