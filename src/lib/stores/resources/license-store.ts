@@ -99,6 +99,7 @@ function createLicenseStore() {
 				message:
 					'A server error has occured and license could not be fetched. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			request.setError(
 				licenseFetchRequest,
@@ -131,6 +132,7 @@ function createLicenseStore() {
 				message:
 					'A server error has occured and license counts could not be updated. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			console.error('Failed to update license counts:', error);
 		}
@@ -165,6 +167,7 @@ function createLicenseStore() {
 				message:
 					'A server error has occured and license could not be created. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			console.error('Failed to create license:', error);
 		} finally {
@@ -216,6 +219,7 @@ function createLicenseStore() {
 				message:
 					'A server error has occured and license could not be updated. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			console.error('Failed to update license:', error);
 		} finally {
@@ -258,6 +262,7 @@ function createLicenseStore() {
 				message:
 					'A server error has occured and license could not be deleted. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			console.error('Failed to delete license:', error);
 		}

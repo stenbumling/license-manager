@@ -37,6 +37,7 @@ function createUserStore() {
 				message:
 					'A server error has occured and users could not be fetched. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			request.setError(userFetchRequest, 500, 'Internal Server Error', 'Failed to fetch users');
 			console.error('Failed to fetch users:', error);
@@ -76,6 +77,7 @@ function createUserStore() {
 				message:
 					'A server error has occured and user could not be found or created. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			request.setError(
 				userFetchRequest,
@@ -123,6 +125,7 @@ function createUserStore() {
 				message:
 					'A server error has occured and user could not be deleted. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			console.error('Failed to delete user:', error);
 		}

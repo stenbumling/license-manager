@@ -158,6 +158,7 @@ function createTableController() {
 				message:
 					'A server error has occured and table state could not be updated. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			request.setError(
 				tableFetchRequest,

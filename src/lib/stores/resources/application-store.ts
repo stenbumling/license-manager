@@ -49,6 +49,7 @@ function createApplicationStore() {
 				message:
 					'A server error has occured and applications could not be fetched. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			request.setError(
 				applicationFetchRequest,
@@ -88,6 +89,7 @@ function createApplicationStore() {
 				message:
 					'A server error has occured and application could not be created. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			console.error('Failed to create application:', error);
 		}
@@ -133,6 +135,7 @@ function createApplicationStore() {
 				message:
 					'A server error has occured and application could not be deleted. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			console.error('Failed to delete application:', error);
 		}
@@ -183,6 +186,7 @@ function createApplicationStore() {
 				message:
 					'A server error has occured and license associations could not be updated. Please try refreshing the page.',
 				type: 'alert',
+				timeout: false,
 			});
 			console.error('Failed to update license associations:', error);
 		}

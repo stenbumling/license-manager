@@ -11,7 +11,7 @@ interface NewNotification {
 	message: string;
 	type: 'success' | 'info' | 'warning' | 'alert';
 	dismissible?: boolean;
-	timeout?: number;
+	timeout?: number | false;
 }
 
 interface Notification extends NewNotification {
@@ -48,7 +48,7 @@ function createNotificationStore() {
 
 		// Add the new notification to the beginning of the array
 		update((all) => [newNotification, ...all]);
-		if (newNotification.timeout) {
+		if (typeof newNotification.timeout === 'number') {
 			setTimeout(() => dismissNotification(id), newNotification.timeout);
 		}
 	}
