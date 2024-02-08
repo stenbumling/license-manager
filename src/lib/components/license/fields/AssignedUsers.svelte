@@ -105,7 +105,7 @@
 				{#each userSuggestions as suggestion}
 					<li
 						role="menuitem"
-						tabindex="0"
+						tabindex="-1"
 						on:mousedown|preventDefault
 						on:mouseup={() => handleAssignUser(suggestion.name)}
 					>

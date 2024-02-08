@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/actions/clickOutside';
+	import { focusTrap } from '$lib/actions/focusTrap';
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
@@ -26,6 +27,7 @@
 	role="menu"
 	tabindex="-1"
 	class="context-menu"
+	use:focusTrap
 	use:getElementRect={renderContextMenu}
 	use:clickOutside={() => contextMenu.close()}
 	on:keydown|stopPropagation={(e) => {

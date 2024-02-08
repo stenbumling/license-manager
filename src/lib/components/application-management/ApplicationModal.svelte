@@ -14,6 +14,7 @@
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
 	import ApplicationItem from './ApplicationItem.svelte';
+	import { focusTrap } from '$lib/actions/focusTrap';
 
 	onMount(() => {
 		applicationStore.fetch();
@@ -32,7 +33,7 @@
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
-	<dialog open class="modal-window">
+	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
 			<h1 class="modal-title">Application<br />management</h1>
 			<CloseModalButton action={modal.closeApplication} />

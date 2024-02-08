@@ -32,6 +32,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"focus-trap": "^7.5.4",
 		"moment": "^2.29.4",
 		"svelte-body": "^1.4.0",
 		"svelte-loading-spinners": "^0.3.4",

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
+	import { focusTrap } from '$lib/actions/focusTrap';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
@@ -12,9 +13,9 @@
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 	import { modal, showApplicationModal } from '$lib/stores/modal-store';
 	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
+	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
@@ -74,14 +75,14 @@
 	}
 </script>
 
-<div class="license-container">
+<div class="license-container" use:focusTrap>
 	{#if $licenseFetchRequest.isLoading}
 		<div class="fallback-container">
 			<Circle color="var(--deep-purple)" />
 		</div>
 	{:else if $licenseFetchRequest.error.message}
 		<div class="fallback-container">
-			<div class="fallback-container-close-button">
+			<div tabIndex="0" class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
 			<h1 style="font-size: 5rem">{$licenseFetchRequest.error.code}</h1>

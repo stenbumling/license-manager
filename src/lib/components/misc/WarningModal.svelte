@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { focusTrap } from '$lib/actions/focusTrap';
 	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAlt.svelte';
 	import { fade } from 'svelte/transition';
 	import ButtonCancel from './buttons/ButtonCancel.svelte';
@@ -10,7 +11,7 @@
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
-	<dialog open class="modal-window">
+	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
 			<WarningAltFilled fill="red" size={32} />
 			<h2 class="modal-title">{warningText}</h2>
