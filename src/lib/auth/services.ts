@@ -4,7 +4,17 @@ import { ConfidentialClientApplication, CryptoProvider, ResponseMode } from '@az
 import type { RequestEvent } from '@sveltejs/kit';
 import { msalConfig } from './config';
 
-const msalInstance = new ConfidentialClientApplication(msalConfig);
+const provider = (function () {
+	let msalInstance: ConfidentialClientApplication | null = null;
+	console.log("msalConfig:", msalConfig);
+	return () => {
+		if (msalInstance === null) {
+			msalInstance = new ConfidentialClientApplication(msalConfig);
+		}
+		return msalInstance;
+	};
+})();
+
 const cryptoProvider = new CryptoProvider();
 
 const cookiesConfig = {
@@ -14,6 +24,7 @@ const cookiesConfig = {
 };
 
 export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
+	const msalInstance = provider();
 	const { verifier, challenge } = await cryptoProvider.generatePkceCodes();
 	const pkceCodes = {
 		challengeMethod: 'S256',
@@ -47,6 +58,7 @@ export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 };
 
 export const getTokens = async (event: RequestEvent) => {
+	const msalInstance = provider();
 	const state = event.url.searchParams.get('state');
 	if (state) {
 		const decodedState = JSON.parse(cryptoProvider.base64Decode(state));
@@ -62,6 +74,7 @@ export const getTokens = async (event: RequestEvent) => {
 					codeVerifier: event.cookies.get('pkceVerifier'),
 				};
 				try {
+					console.log('authCodeRequest: ', authCodeRequest);
 					const tokenResponse = await msalInstance.acquireTokenByCode(authCodeRequest);
 					event.cookies.set('accessToken', tokenResponse.accessToken, cookiesConfig);
 					event.cookies.set('idToken', tokenResponse.idToken, cookiesConfig);
