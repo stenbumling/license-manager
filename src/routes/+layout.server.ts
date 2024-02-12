@@ -9,10 +9,10 @@ export const load = async ({ fetch }) => {
 	let statusCode = 500;
 	try {
 		const responses = await Promise.all([
-			fetch('/api/licenses'),
-			fetch('/api/applications'),
-			fetch('/api/users'),
-			fetch('/api/licenses/counts'),
+			fetch('https://nexer-orebro-license-app-server.azurewebsites.net/api/licenses'),
+			fetch('https://nexer-orebro-license-app-server.azurewebsites.net/api/applications'),
+			fetch('https://nexer-orebro-license-app-server.azurewebsites.net/api/users'),
+			fetch('https://nexer-orebro-license-app-server.azurewebsites.net/api/licenses/counts'),
 		]);
 
 		const failedResponse = responses.find((response) => !response.ok);
