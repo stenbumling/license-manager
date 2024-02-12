@@ -31,8 +31,6 @@
 			// Open the license modal if the URL contains a license ID
 			if ($page.url.searchParams.has('id')) {
 				modal.openLicense();
-			} else {
-				await goto('/');
 			}
 		}
 	});
