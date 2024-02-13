@@ -24,7 +24,7 @@ export const load = async ({ fetch }) => {
 					failedResponse.url ? failedResponse.url : 'The server'
 				} responded with status ${failedResponse.status}`,
 			);
-			throw error(failedResponse.status, {
+			error(500, {
 				message: 'Failed to load data',
 			});
 		}
