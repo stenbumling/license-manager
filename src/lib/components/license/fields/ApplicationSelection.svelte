@@ -91,7 +91,7 @@
 		padding: 0 0 0rem 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
-		background-image: url('dropdown-arrow.svg');
+		background-image: url('/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;
 		background-position: right 10px center;
@@ -100,7 +100,7 @@
 	.select-add-mode {
 		padding: 0 0 0rem 0.3rem;
 		border: 1px dashed black;
-		background-image: url('dropdown-arrow.svg');
+		background-image: url('/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;
 		background-position: right 10px center;
@@ -110,7 +110,7 @@
 		padding: 0 0 0rem 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
-		background-image: url('dropdown-arrow.svg');
+		background-image: url('/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;
 		background-position: right 10px center;
