@@ -7,10 +7,10 @@ import {
 
 export const msalConfig = {
 	auth: {
-		clientId: process.env.AZURE_CLIENT_ID || AZURE_CLIENT_ID,
+		clientId: process.env.AZURE_CLIENT_ID || AZURE_CLIENT_ID || 'no-client-id-set',
 		authority:
-			(process.env.AZURE_CLOUD_INSTANCE || AZURE_CLOUD_INSTANCE) +
-			(process.env.AZURE_TENANT_ID || AZURE_TENANT_ID),
-		clientSecret: process.env.AZURE_CLIENT_SECRET || AZURE_CLIENT_SECRET,
+			(process.env.AZURE_CLOUD_INSTANCE || AZURE_CLOUD_INSTANCE || 'https://login.microsoftonline.com') +
+			(process.env.AZURE_TENANT_ID || AZURE_TENANT_ID || 'no-tenant-id-set'),
+		clientSecret: process.env.AZURE_CLIENT_SECRET || AZURE_CLIENT_SECRET || 'no-client-secret-set',
 	},
 };
