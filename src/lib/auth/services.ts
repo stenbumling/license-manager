@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { REDIRECT_URI } from '$env/static/private';
+import { PUBLIC_REDIRECT_URI } from '$env/static/public';
 import { ConfidentialClientApplication, CryptoProvider, ResponseMode } from '@azure/msal-node';
 import type { RequestEvent } from '@sveltejs/kit';
 import { msalConfig } from './config';
@@ -38,7 +38,7 @@ export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 		}),
 	);
 	const authCodeUrlRequest = {
-		redirectUri: process.env.REDIRECT_URI || REDIRECT_URI,
+		redirectUri: process.env.PUBLIC_REDIRECT_URI || PUBLIC_REDIRECT_URI,
 		responseMode: ResponseMode.QUERY,
 		codeChallenge: pkceCodes.challenge,
 		codeChallengeMethod: pkceCodes.challengeMethod,
@@ -67,7 +67,7 @@ export const getTokens = async (event: RequestEvent) => {
 			const error = event.url.searchParams.get('error');
 			if (code) {
 				const authCodeRequest = {
-					redirectUri: process.env.REDIRECT_URI || REDIRECT_URI,
+					redirectUri: process.env.PUBLIC_REDIRECT_URI || PUBLIC_REDIRECT_URI,
 					code,
 					scopes: [],
 					codeVerifier: event.cookies.get('pkceVerifier'),

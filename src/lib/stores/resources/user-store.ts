@@ -1,6 +1,7 @@
 import { writable } from 'svelte/store';
 import { notifications } from '../notification-store';
 import { request, userFetchRequest } from '../request-state-store';
+import { serverBaseUrl } from '../../../config/server-base-url';
 
 export interface User {
 	id: string;
@@ -14,7 +15,7 @@ function createUserStore() {
 	async function fetchUsers() {
 		request.startLoading(userFetchRequest);
 		try {
-			const response = await fetch('/api/users');
+			const response = await fetch(`${serverBaseUrl}/api/users`);
 			if (response.ok) {
 				const users = await response.json();
 				update(() => users);
@@ -49,7 +50,7 @@ function createUserStore() {
 	async function findOrCreateUser(userName: string) {
 		request.startLoading(userFetchRequest);
 		try {
-			const response = await fetch('/api/users', {
+			const response = await fetch(`${serverBaseUrl}/api/users`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ name: userName }),
@@ -94,7 +95,7 @@ function createUserStore() {
 	// Currently not used, but can be used in future user management features
 	async function deleteUserFromDatabase(id: string) {
 		try {
-			const response = await fetch(`/api/users/${id}`, {
+			const response = await fetch(`${serverBaseUrl}/api/users/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {

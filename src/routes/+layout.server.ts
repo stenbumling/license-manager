@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { serverBaseUrl } from '../config/server-base-url';
 
 /*
  * Load initial data for the application. This loaded data will be available
@@ -9,10 +10,10 @@ export const load = async ({ fetch }) => {
 	let statusCode = 500;
 	try {
 		const responses = await Promise.all([
-			fetch('https://nexer-orebro-license-app-server.azurewebsites.net/api/licenses'),
-			fetch('https://nexer-orebro-license-app-server.azurewebsites.net/api/applications'),
-			fetch('https://nexer-orebro-license-app-server.azurewebsites.net/api/users'),
-			fetch('https://nexer-orebro-license-app-server.azurewebsites.net/api/licenses/counts'),
+			fetch(`${serverBaseUrl}/api/licenses`),
+			fetch(`${serverBaseUrl}/api/applications`),
+			fetch(`${serverBaseUrl}/api/users`),
+			fetch(`${serverBaseUrl}/api/licenses/counts`),
 		]);
 
 		const failedResponse = responses.find((response) => !response.ok);
