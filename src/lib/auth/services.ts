@@ -1,6 +1,6 @@
 import { REDIRECT_URI } from '$env/static/private';
 import { ConfidentialClientApplication, CryptoProvider, ResponseMode } from '@azure/msal-node';
-import type { RequestEvent } from '@sveltejs/kit';
+import { error, type RequestEvent } from '@sveltejs/kit';
 import { cookiesConfig, msalConfig } from './config';
 
 /**
@@ -50,7 +50,10 @@ export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 		event.cookies.set('csrfToken', csrfToken, cookiesConfig);
 		return authCodeUrl;
 	} catch (err) {
-		console.log(err);
+		console.error(err);
+		error(500, {
+			message: 'Failed to get authentication URL',
+		});
 	}
 };
 
@@ -62,7 +65,6 @@ export const getTokens = async (event: RequestEvent) => {
 		const csrfToken = event.cookies.get('csrfToken');
 		if (decodedState.csrfToken === csrfToken) {
 			const code = event.url.searchParams.get('code');
-			const error = event.url.searchParams.get('error');
 			if (code) {
 				const authCodeRequest = {
 					redirectUri: process.env.REDIRECT_URI || REDIRECT_URI || 'no-redirect-uri-set',
@@ -77,15 +79,22 @@ export const getTokens = async (event: RequestEvent) => {
 					event.cookies.set('account', JSON.stringify(tokenResponse.account), cookiesConfig);
 					return decodedState.redirectTo;
 				} catch (err) {
-					console.log(error);
+					console.error(err);
+					error(401, {
+						message: 'Invalid authentication token',
+					});
 				}
-			} else if (error) {
-				throw new Error(error);
 			}
 		} else {
-			throw new Error('CSRF token mismatch');
+			console.error('Error: CSRF token mismatch');
+			error(400, {
+				message: 'There was an error trying to authenticate user',
+			});
 		}
 	} else {
-		throw new Error('State parameter missing');
+		console.error('Error: State parameter missing');
+		error(400, {
+			message: 'There was an error trying to authenticate user',
+		});
 	}
 };
