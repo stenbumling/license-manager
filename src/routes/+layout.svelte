@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
 	import PageHeader from '$lib/components/misc/PageHeader.svelte';
