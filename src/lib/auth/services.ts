@@ -1,8 +1,12 @@
-import { dev } from '$app/environment';
 import { REDIRECT_URI } from '$env/static/private';
 import { ConfidentialClientApplication, CryptoProvider, ResponseMode } from '@azure/msal-node';
 import type { RequestEvent } from '@sveltejs/kit';
-import { msalConfig } from './config';
+import { cookiesConfig, msalConfig } from './config';
+
+/**
+ * These functions are used to handle the authentication flow with Azure AD.
+ * See the config.ts file for the configuration of the MSAL library.
+ */
 
 const provider = (function () {
 	let msalInstance: ConfidentialClientApplication | null = null;
@@ -15,12 +19,6 @@ const provider = (function () {
 })();
 
 const cryptoProvider = new CryptoProvider();
-
-const cookiesConfig = {
-	httpOnly: true,
-	path: '/',
-	secure: !dev,
-};
 
 export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 	const msalInstance = provider();
