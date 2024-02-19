@@ -3,6 +3,7 @@ import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { notifications } from '../notification-store';
 import { applicationFetchRequest, request } from '../request-state-store';
+import { serverBaseUrl } from '../../../config/server-base-url';
 
 function getInitialValues() {
 	return {
@@ -26,7 +27,7 @@ function createApplicationStore() {
 	async function fetchApplications() {
 		request.startLoading(applicationFetchRequest);
 		try {
-			const response = await fetch('/api/applications');
+			const response = await fetch(`${serverBaseUrl}/api/applications`);
 			if (response.ok) {
 				const applications = await response.json();
 				set(applications);
@@ -65,7 +66,7 @@ function createApplicationStore() {
 
 	async function addApplication(application: Application) {
 		try {
-			const response = await fetch('/api/applications', {
+			const response = await fetch(`${serverBaseUrl}/api/applications`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
@@ -97,7 +98,7 @@ function createApplicationStore() {
 
 	async function deleteApplication(id: string) {
 		try {
-			const response = await fetch(`/api/applications/${id}`, {
+			const response = await fetch(`${serverBaseUrl}/api/applications/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {
@@ -157,7 +158,7 @@ function createApplicationStore() {
 					app.licenseAssociations--;
 				}
 			}
-			const response = await fetch(`/api/applications/${id}`, {
+			const response = await fetch(`${serverBaseUrl}/api/applications/${id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(app),

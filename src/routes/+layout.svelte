@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
 	import PageHeader from '$lib/components/misc/PageHeader.svelte';
@@ -31,8 +30,6 @@
 			// Open the license modal if the URL contains a license ID
 			if ($page.url.searchParams.has('id')) {
 				modal.openLicense();
-			} else {
-				await goto('/');
 			}
 		}
 	});

@@ -47,7 +47,7 @@ export const applicationFetchRequest = writable<RequestState>(getInitialValues()
 export const applicationPostRequest = writable<RequestState>(getInitialValues());
 
 function createRequestStateController() {
-	function setRequestState(request: Writable<RequestState>, delay = 100) {
+	function setRequestState(request: Writable<RequestState>, delay = 200) {
 		request.update((state) => {
 			if (state.pendingRequests === 0) {
 				// Create a delay before setting the loading state
