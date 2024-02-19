@@ -23,7 +23,7 @@ variables:
 steps:
   - task: NodeTool@0
     inputs:
-      versionSpec: '18.x'
+      versionSpec: '20.x'
     displayName: 'Install Node.js'
 
   - script: |
@@ -51,7 +51,7 @@ steps:
       ConnectionType: 'AzureRM'
       azureSubscription: 'SP-Licenseapp'
       appType: 'webAppLinux'
-      WebAppName: 'license-manager-license-app-test'
+      WebAppName: 'nexer-orebro-license-manager'
       packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-      RuntimeStack: 'NODE|18-lts'
+      RuntimeStack: 'NODE|20-lts'
       StartupCommand: 'node -r dotenv/config build'
