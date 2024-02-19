@@ -9,6 +9,17 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  # These placeholder values are only used for building the app
+  # They need to be configured in the Azure Portal with the actual values
+  # For more information, check the .env.local.example file
+  AZURE_CLOUD_INSTANCE: 'https://login.microsofonline.com/'
+  AZURE_TENANT_ID: 'azure-tenant-id'
+  AZURE_CLIENT_ID: 'azure-client-id'
+  AZURE_CLIENT_SECRET: 'azure-client-secret'
+  REDIRECT_URI: 'redirect-uri'
+  PUBLIC_SERVER_BASE_URL: 'server-base-url'
+
 steps:
   - task: NodeTool@0
     inputs:

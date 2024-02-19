@@ -1,6 +1,6 @@
-import { PUBLIC_SERVER_BASE_URL } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
 // This will dynamically set the server base url based on the environment
 export const serverBaseUrl = import.meta.env.PROD
-	? process.env.PUBLIC_SERVER_BASE_URL || PUBLIC_SERVER_BASE_URL || 'no-server-base-url-set'
+	? process.env.SERVER_BASE_URL || env.PUBLIC_SERVER_BASE_URL || 'no-server-base-url-set'
 	: '';
