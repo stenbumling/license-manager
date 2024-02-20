@@ -1,4 +1,4 @@
-import { applicationStore, type Application } from '$lib/stores/resources/application-store';
+import { type Application } from '$lib/stores/resources/application-store';
 import type { User } from '$lib/stores/resources/user-store';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
@@ -149,7 +149,6 @@ function createLicenseStore() {
 			});
 			if (response.ok) {
 				await updateLicenseCounts();
-				await applicationStore.updateAssociations(license.applicationId, 'add');
 				await table.updateState();
 				notifications.add({
 					message: 'License created successfully',
@@ -176,22 +175,19 @@ function createLicenseStore() {
 		}
 	}
 
-	async function updateLicense(license: License) {
+	async function updateLicense(updatedLicense: License) {
 		request.startLoading(licensePostRequest);
+		const currentLicense = get(licenseStore).find((l) => l.id === updatedLicense.id);
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/licenses/${license.id}`, {
+			const response = await fetch(`${serverBaseUrl}/api/licenses/${updatedLicense.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(license),
+				body: JSON.stringify({
+					updatedLicense: updatedLicense,
+					currentLicense: currentLicense,
+				}),
 			});
 			if (response.ok) {
-				const currentLicense = get(licenseStore).find((l) => l.id === license.id);
-				if (currentLicense) {
-					if (currentLicense.applicationId !== license.applicationId) {
-						await applicationStore.updateAssociations(currentLicense.applicationId, 'remove');
-						await applicationStore.updateAssociations(license.applicationId, 'add');
-					}
-				}
 				await updateLicenseCounts();
 				await table.updateState();
 				notifications.add({
@@ -228,14 +224,13 @@ function createLicenseStore() {
 		}
 	}
 
-	async function deleteLicense(id: string, applicationId: string) {
+	async function deleteLicense(id: string) {
 		try {
 			const response = await fetch(`${serverBaseUrl}/api/licenses/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {
 				await updateLicenseCounts();
-				await applicationStore.updateAssociations(applicationId, 'remove');
 				await table.updateState();
 				notifications.add({
 					message: 'License deleted successfully',
