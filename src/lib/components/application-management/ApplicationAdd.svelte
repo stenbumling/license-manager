@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
+	import IconButton from '$lib/components/misc/buttons/IconButton.svelte';
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { application, applicationStore } from '$lib/stores/resources/application-store';
 	import {
@@ -8,6 +8,7 @@
 	} from '$lib/validations/application-validation';
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { fade } from 'svelte/transition';
+	import SecondaryButton from '../misc/buttons/SecondaryButton.svelte';
 
 	async function handleAdd(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
@@ -22,24 +23,36 @@
 	}
 </script>
 
-<h3>Add new application</h3>
-<div class="input-container">
-	<input
-		bind:value={$application.name}
-		type="text"
-		placeholder="Application name"
-		required
-		on:keyup={handleAdd}
-	/>
-	<ButtonSmall icon={Add} iconSize={32} action={handleAdd} />
+<div class="application-add-container">
+	<h3 style="margin-bottom:0.5rem;">Add new application</h3>
+	<div class="input-container">
+		<input
+			bind:value={$application.name}
+			type="text"
+			placeholder="Application name"
+			required
+			on:keyup={handleAdd}
+		/>
+		<IconButton icon={Add} iconSize={32} action={handleAdd} />
+	</div>
+	<p class="warning-text">
+		{#if $applicationValidationError.name}
+			<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>
+		{/if}
+	</p>
+	<div class="button-container">
+		<SecondaryButton title={'Go back'} action={() => applicationModalMode.set('list')} />
+	</div>
 </div>
-<p class="warning-text">
-	{#if $applicationValidationError.name}
-		<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>
-	{/if}
-</p>
 
 <style>
+	.application-add-container {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+		max-height: inherit;
+	}
+
 	.input-container {
 		width: 100%;
 		display: flex;
@@ -54,6 +67,12 @@
 		height: 2.8rem;
 		margin-left: 1px;
 		margin-bottom: 2rem;
+	}
+
+	.button-container {
+		display: flex;
+		justify-content: flex-start;
+		margin-top: auto;
 	}
 
 	input {

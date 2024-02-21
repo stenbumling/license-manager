@@ -1,6 +1,6 @@
 <script>
 	import { scrollShadow } from '$lib/actions/scrollShadow';
-	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
+	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
@@ -10,7 +10,7 @@
 </script>
 
 <div class="application-list-container">
-	<h3>List of applications</h3>
+	<h3 style="margin-bottom:0.5rem;">List of applications</h3>
 
 	<!-- Loading -->
 	{#if $applicationFetchRequest.isLoading}
@@ -38,7 +38,7 @@
 		</div>
 	{/if}
 	<div class="button-container">
-		<ButtonLarge title={'Add new application'} action={() => applicationModalMode.set('add')} />
+		<PrimaryButton title="Add new application" action={() => applicationModalMode.set('add')} />
 	</div>
 </div>
 
@@ -46,8 +46,8 @@
 	.application-list-container {
 		display: flex;
 		flex-direction: column;
-		height: 100%;
-		max-height: 100%;
+		flex-grow: 1;
+		max-height: inherit;
 	}
 
 	.application-list {

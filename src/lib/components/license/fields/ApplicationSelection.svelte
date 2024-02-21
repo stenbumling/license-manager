@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
+	import IconButton from '$lib/components/misc/buttons/IconButton.svelte';
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { license, licenseMode } from '$lib/stores/resources/license-store';
@@ -30,7 +30,7 @@
 				<option value={application.id}>{application.name}</option>
 			{/each}
 		</select>
-		<ButtonSmall
+		<IconButton
 			icon={SettingsAdjust}
 			iconSize={20}
 			action={() => applicationModalMode.set('list')}

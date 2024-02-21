@@ -1,7 +1,7 @@
 <script lang="ts">
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
-	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
+	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
 	import { licenseCounts } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
 
@@ -52,7 +52,7 @@
 				<FilterButton {filter} />
 			{/each}
 		</div>
-		<ButtonLarge title="Add new license" action={(e) => handleClick(e)} />
+		<PrimaryButton title="Add new license" action={(e) => handleClick(e)} />
 	</div>
 </div>
 

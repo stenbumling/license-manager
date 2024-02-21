@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
-	export let action: () => void;
+	export let action: (e: MouseEvent | KeyboardEvent) => void;
 	export let color: string = 'black';
 </script>
 
@@ -12,7 +12,7 @@
 	on:click|preventDefault={action}
 	on:keydown={(e) => {
 		if (e.key === 'Enter') {
-			action();
+			action(e);
 		}
 	}}
 >

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { focusTrap } from '$lib/actions/focusTrap';
-	import CloseModalButton from '$lib/components/misc/buttons/CloseModalButton.svelte';
+	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { applicationModalMode, modal } from '$lib/stores/modal-store';
 	import { fade } from 'svelte/transition';
 	import ApplicationAdd from './ApplicationAdd.svelte';
@@ -66,7 +66,9 @@
 	}
 
 	.modal-content {
-		height: 60vh;
-		max-height: 60vh;
+		display: flex;
+		min-height: 40vh;
+		max-height: 50vh;
+		flex-direction: column;
 	}
 </style>

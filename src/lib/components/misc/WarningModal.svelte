@@ -2,8 +2,8 @@
 	import { focusTrap } from '$lib/actions/focusTrap';
 	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAlt.svelte';
 	import { fade } from 'svelte/transition';
-	import ButtonCancel from './buttons/ButtonCancel.svelte';
-	import ButtonLarge from './buttons/ButtonLarge.svelte';
+	import PrimaryButton from './buttons/PrimaryButton.svelte';
+	import SecondaryButton from './buttons/SecondaryButton.svelte';
 
 	export let warningText = 'Are you sure you want to do this?';
 	export let onConfirm: () => void;
@@ -17,8 +17,8 @@
 			<h2 class="modal-title">{warningText}</h2>
 		</div>
 		<div class="button-container">
-			<ButtonCancel action={onCancel} />
-			<ButtonLarge title="Confirm" action={onConfirm} />
+			<SecondaryButton title="Cancel" action={onCancel} />
+			<PrimaryButton title="Confirm" action={onConfirm} />
 		</div>
 	</dialog>
 </div>

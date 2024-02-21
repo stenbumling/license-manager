@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let title: string = 'Cancel';
+	export let title: string = 'Button title';
 	export let action: (e: MouseEvent | KeyboardEvent) => void;
 </script>
 
@@ -41,7 +41,6 @@
 		transition: border-color 0.25s ease, color 0.25s ease;
 	}
 
-	/* Styles for the Animated Hover Effect */
 	.button-container .button-animated-hover {
 		position: absolute;
 		top: 0;
