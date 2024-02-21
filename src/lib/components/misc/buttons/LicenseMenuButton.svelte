@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getElementRect } from '$lib/actions/getElementRect';
+	import { tooltip } from '$lib/actions/tooltip';
 	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
@@ -34,6 +35,10 @@
 			}
 		}}
 		use:getElementRect={(element) => (menuButtonRect = element)}
+		use:tooltip={{
+			content: 'License menu',
+			options: { delay: [1000, 0], offset: [0, 15] },
+		}}
 	>
 		<OverflowMenuHorizontal size={32} />
 	</button>

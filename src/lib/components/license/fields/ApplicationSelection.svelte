@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tooltip } from '$lib/actions/tooltip';
 	import IconButton from '$lib/components/misc/buttons/IconButton.svelte';
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
@@ -30,11 +31,18 @@
 				<option value={application.id}>{application.name}</option>
 			{/each}
 		</select>
-		<IconButton
-			icon={SettingsAdjust}
-			iconSize={20}
-			action={() => applicationModalMode.set('list')}
-		/>
+		<div
+			use:tooltip={{
+				content: 'Manage applications',
+				options: { delay: [1000, 0], offset: [0, 15] },
+			}}
+		>
+			<IconButton
+				icon={SettingsAdjust}
+				iconSize={20}
+				action={() => applicationModalMode.set('list')}
+			/>
+		</div>
 	</div>
 	<p class="warning-text">
 		{#if $licenseValidationErrors.applicationId}
