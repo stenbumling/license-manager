@@ -5,7 +5,7 @@
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { Circle } from 'svelte-loading-spinners';
-	import { fade, slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
 	import ApplicationItem from './ApplicationListItem.svelte';
 </script>
 
@@ -31,9 +31,7 @@
 		<!-- Render application items -->
 		<div class="application-list" use:scrollShadow in:fade={{ duration: 200 }}>
 			{#each $applicationStore as application}
-				<div transition:slide={{ duration: 200 }}>
-					<ApplicationItem {application} />
-				</div>
+				<ApplicationItem {application} />
 			{/each}
 		</div>
 	{/if}

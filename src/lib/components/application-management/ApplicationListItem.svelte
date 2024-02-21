@@ -2,6 +2,7 @@
 	import type { Application } from '$lib/stores/resources/application-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
+	import { slide } from 'svelte/transition';
 	import WarningModal from '../misc/WarningModal.svelte';
 
 	export let application: Application;
@@ -17,7 +18,7 @@
 	}
 </script>
 
-<div class="application-item">
+<div class="application-item" transition:slide={{ duration: 300 }}>
 	{#if application.licenseAssociations > 0}
 		<button class="trashcan-icon">
 			<TrashCan size={24} fill="#cccccc" />

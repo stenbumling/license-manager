@@ -4,11 +4,12 @@
 	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { modal } from '$lib/stores/modal-store';
 	import { license } from '$lib/stores/resources/license-store';
+	import { receive, send } from '$lib/utils/animation-utils.ts';
+	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 </script>
 
 <!-- This modal shows all assigned users when there are more than 8 users -->
-
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
@@ -17,9 +18,18 @@
 		</div>
 		<h3>List of assigned users</h3>
 		<div class="badge-container">
-			{#each $license.users as user}
-				<UserBadge {user} />
+			{#each $license.users as user (user.id)}
+				<div
+					in:receive={{ key: user.id }}
+					out:send={{ key: user.id }}
+					animate:flip={{ duration: 200 }}
+				>
+					<UserBadge {user} />
+				</div>
 			{/each}
+			{#if $license.users.length === 0}
+				<p>No users assigned.</p>
+			{/if}
 		</div>
 	</dialog>
 </div>
@@ -39,7 +49,8 @@
 	.modal-window {
 		width: 40vw;
 		max-width: 30rem;
-		max-height: 60vh;
+		min-height: 25vh;
+		max-height: 50vh;
 		padding: 3rem 4rem;
 		border: none;
 		display: flex;
