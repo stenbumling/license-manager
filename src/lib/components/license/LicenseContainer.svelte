@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
-	import ApplicationModal from '$lib/components/resource-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
 	import AssignedUsers from '$lib/components/license/fields/AssignedUsers.svelte';
@@ -10,9 +9,10 @@
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
+	import ApplicationModal from '$lib/components/resource-management/ApplicationModal.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { modal, showApplicationModal } from '$lib/stores/modal-store';
+	import { applicationModalMode, modal } from '$lib/stores/modal-store';
 	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
@@ -151,7 +151,7 @@
 
 <!-- Modals -->
 
-{#if $showApplicationModal}
+{#if $applicationModalMode !== 'closed'}
 	<ApplicationModal />
 {/if}
 

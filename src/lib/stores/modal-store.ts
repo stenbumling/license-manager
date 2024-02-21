@@ -1,12 +1,12 @@
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { get, writable } from 'svelte/store';
-import { applicationStore } from './resources/application-store';
 import { contextMenu } from './context-menu-store';
+import { applicationStore } from './resources/application-store';
 import { licenseMode, licenseStore } from './resources/license-store';
 
 export const showLicenseModal = writable(false);
-export const showApplicationModal = writable(false);
+export const applicationModalMode = writable<'closed' | 'list' | 'add' | 'edit'>('closed');
 export const showAssignedUsersModal = writable(false);
 
 function createModalController() {
@@ -55,7 +55,7 @@ function createModalController() {
 	}
 
 	function closeApplication() {
-		showApplicationModal.set(false);
+		applicationModalMode.set('closed');
 		// Reset after closing animation is done
 		setTimeout(() => {
 			applicationStore.reset();

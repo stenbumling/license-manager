@@ -1,6 +1,6 @@
 <script lang="ts">
 	import ButtonSmall from '$lib/components/misc/buttons/ButtonSmall.svelte';
-	import { showApplicationModal } from '$lib/stores/modal-store';
+	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
@@ -33,7 +33,7 @@
 		<ButtonSmall
 			icon={SettingsAdjust}
 			iconSize={20}
-			action={() => showApplicationModal.set(true)}
+			action={() => applicationModalMode.set('list')}
 		/>
 	</div>
 	<p class="warning-text">
