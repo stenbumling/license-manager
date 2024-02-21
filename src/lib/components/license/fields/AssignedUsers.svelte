@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AssignedUsersModal from '$lib/components/resource-management/AssignedUsersModal.svelte';
+	import AssignedUsersModal from '$lib/components/license/fields/AssignedUsersModal.svelte';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import { userFetchRequest } from '$lib/stores/request-state-store';

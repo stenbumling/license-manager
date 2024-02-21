@@ -11,8 +11,8 @@
 		showWarningModal = true;
 	}
 
-	function handleDelete() {
-		applicationStore.delete(application.id);
+	async function handleDelete() {
+		await applicationStore.delete(application.id);
 		showWarningModal = false;
 	}
 </script>
@@ -40,9 +40,10 @@
 
 <style>
 	.application-item {
-		width: 100%;
+		width: calc(100% - 0.2rem);
 		height: 4rem;
 		margin: 0 0 0.2rem 0;
+		padding: 0 0 0 0.2rem;
 		border-bottom: 1px solid #e6e6e6;
 		display: flex;
 		align-items: center;

@@ -9,7 +9,7 @@
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
-	import ApplicationModal from '$lib/components/resource-management/ApplicationModal.svelte';
+	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { applicationModalMode, modal } from '$lib/stores/modal-store';
@@ -24,6 +24,8 @@
 	import { fade } from 'svelte/transition';
 	import WarningModal from '../misc/WarningModal.svelte';
 	import CloseModalButton from '../misc/buttons/CloseModalButton.svelte';
+	import { onMount } from 'svelte';
+	import { applicationStore } from '$lib/stores/resources/application-store';
 
 	let showWarningModal = false;
 
@@ -50,6 +52,10 @@
 			class: 'alert',
 		},
 	];
+
+	onMount(async () => {
+		await applicationStore.fetch();
+	});
 
 	function handleWarningModal() {
 		contextMenu.close();

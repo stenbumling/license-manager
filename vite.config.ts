@@ -7,7 +7,7 @@ export default defineConfig({
 		// Proxy will only work in development mode
 		proxy: {
 			// '/api': 'https://nexer-orebro-license-app-server.azurewebsites.net',
-			'/api': 'http://localhost:3000'
+			'/api': 'http://localhost:3000',
 		},
 	},
 });

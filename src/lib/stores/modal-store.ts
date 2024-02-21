@@ -54,7 +54,7 @@ function createModalController() {
 		}, 120);
 	}
 
-	function closeApplication() {
+	function closeApplicationModal() {
 		applicationModalMode.set('closed');
 		// Reset after closing animation is done
 		setTimeout(() => {
@@ -69,7 +69,7 @@ function createModalController() {
 	return {
 		openLicense,
 		closeLicense,
-		closeApplication,
+		closeApplication: closeApplicationModal,
 		closeAssignedUsers,
 	};
 }
