@@ -8,7 +8,7 @@ import { createFocusTrap } from 'focus-trap';
 
 export function focusTrap(
 	node: HTMLElement,
-	options: Options = { fallbackFocus: node, escapeDeactivates: false },
+	options: Options = { fallbackFocus: node, escapeDeactivates: false, allowOutsideClick: true},
 ) {
 	const focusTrappedElement = createFocusTrap(node, options);
 	focusTrappedElement.activate();
