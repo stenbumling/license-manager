@@ -2,6 +2,7 @@
 	import { tooltip } from '$lib/actions/tooltip';
 	import type { Application } from '$lib/stores/resources/application-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
+	import { license } from '$lib/stores/resources/license-store';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { slide } from 'svelte/transition';
 	import WarningModal from '../misc/WarningModal.svelte';
@@ -24,7 +25,17 @@
 		<button
 			class="trashcan-icon"
 			use:tooltip={{
-				content: `${application.name} has ${application.licenseAssociations} license(s) associated with it and can therefore not be deleted. Delete the associated licenses before trying to delete the application.`,
+				content: `${application.name} has ${application.licenseAssociations} license(s) associated with it and can therefore not be deleted. Delete the associated licenses before trying to delete the application`,
+				options: { delay: [500, 0], offset: [0, 10] },
+			}}
+		>
+			<TrashCan size={24} fill="#cccccc" />
+		</button>
+	{:else if application.name === $license.application.name}
+		<button
+			class="trashcan-icon"
+			use:tooltip={{
+				content: `${application.name} is currently selected and cannot be deleted. Try unselecting it before deleting`,
 				options: { delay: [500, 0], offset: [0, 10] },
 			}}
 		>
