@@ -109,3 +109,8 @@ textarea:focus-visible {
 	box-shadow: 0 0 0 0px var(--light-purple);
 	border-radius: 4px;
 }
+
+/* Custom styling for tippy tooltips */
+.tippy-box {
+	overflow-wrap: break-word;
+}

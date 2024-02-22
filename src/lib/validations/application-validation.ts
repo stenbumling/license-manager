@@ -3,6 +3,8 @@ import { applicationStore } from '$lib/stores/resources/application-store';
 import { get, writable } from 'svelte/store';
 import { z } from 'zod';
 
+let appId: string | undefined;
+
 export const applicationSchema = z.object({
 	id: z.string().uuid({ message: 'Invalid application ID. Try refreshing the site' }),
 	name: z
@@ -13,7 +15,9 @@ export const applicationSchema = z.object({
 		.refine(
 			(val) => {
 				const applications = get(applicationStore);
-				return !applications.some((application) => application.name === val);
+				return !applications.some(
+					(application) => application.name === val && application.id !== appId,
+				);
 			},
 			{ message: 'Application already exists' },
 		),
@@ -34,6 +38,7 @@ interface ApplicationValidationError {
 
 export async function validateApplication(application: Application): Promise<boolean> {
 	try {
+		appId = application.id;
 		applicationSchema.parse(application);
 		applicationValidationError.set({});
 		return true;

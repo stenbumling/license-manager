@@ -13,7 +13,7 @@
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($application);
 		if (isValid) {
-			applicationStore.add($application);
+			await applicationStore.add($application);
 			applicationStore.reset();
 			applicationModalMode.set('list');
 		} else {

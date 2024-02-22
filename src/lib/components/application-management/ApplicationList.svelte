@@ -30,8 +30,8 @@
 	{:else}
 		<!-- Render application items -->
 		<div class="application-list" use:scrollShadow in:fade={{ duration: 200 }}>
-			{#each $applicationStore as application}
-				<ApplicationItem {application} />
+			{#each $applicationStore as applicationItem}
+				<ApplicationItem {applicationItem} />
 			{/each}
 		</div>
 	{/if}
@@ -50,7 +50,8 @@
 
 	.application-list {
 		overflow-y: auto;
-		margin-bottom: 2rem;
+		margin: 1rem 0 2rem 0;
+		border-top: 1px solid #e6e6e6;
 	}
 
 	.fallback-container {
@@ -69,7 +70,8 @@
 		margin-top: auto;
 	}
 
-	h2, h3 {
+	h2,
+	h3 {
 		margin-bottom: 0.4rem;
 		max-width: 80%;
 	}
