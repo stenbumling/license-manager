@@ -9,6 +9,7 @@
 	import Add from 'carbon-icons-svelte/lib/Add.svelte';
 	import { fade } from 'svelte/transition';
 	import SecondaryButton from '../misc/buttons/SecondaryButton.svelte';
+	import PrimaryButton from '../misc/buttons/PrimaryButton.svelte';
 
 	async function handleAdd(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
@@ -33,7 +34,6 @@
 			required
 			on:keyup={handleAdd}
 		/>
-		<IconButton icon={Add} iconSize={32} action={handleAdd} />
 	</div>
 	<p class="warning-text">
 		{#if $applicationValidationError.name}
@@ -42,6 +42,7 @@
 	</p>
 	<div class="button-container">
 		<SecondaryButton title={'Go back'} action={() => applicationModalMode.set('list')} />
+		<PrimaryButton title={'Add application'} action={handleAdd} />
 	</div>
 </div>
 
@@ -71,7 +72,8 @@
 
 	.button-container {
 		display: flex;
-		justify-content: flex-start;
+		justify-content: flex-end;
+		gap: 1rem;
 		margin-top: auto;
 	}
 

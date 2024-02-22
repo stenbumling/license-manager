@@ -147,7 +147,7 @@
 				<LicenseMenuButton items={contextMenuItems} />
 			{/if}
 			<PrimaryButton
-				title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'}
+				title={$licenseMode === 'add' ? 'Add license' : 'Save changes'}
 				action={handleLicense}
 				pendingRequest={$licensePostRequest.isLoading}
 			/>

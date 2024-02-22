@@ -24,6 +24,9 @@
 		height: 1.6rem;
 	}
 
+	.header-logo:active {
+		transform: scale(0.95);
+	}
 	.header-content {
 		width: 100%;
 		height: 2.4rem;

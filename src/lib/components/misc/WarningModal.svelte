@@ -62,7 +62,14 @@
 
 	.button-container {
 		display: flex;
-		justify-content: space-between;
+		flex-grow: 2;
+		width: 100%;
+		gap: 2rem;
+	}
+
+	.button-container > :global(*) {
+		flex-grow: 1;
+		width: 50%;
 	}
 
 	h2 {
