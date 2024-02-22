@@ -9,6 +9,7 @@ function getInitialValues() {
 	return {
 		id: uuidv4(),
 		name: '',
+		link: '',
 		licenseAssociations: 0,
 	};
 }
@@ -16,6 +17,7 @@ function getInitialValues() {
 export interface Application {
 	id: string;
 	name: string;
+	link: string;
 	licenseAssociations: number;
 }
 

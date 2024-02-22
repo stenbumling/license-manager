@@ -10,7 +10,7 @@
 </script>
 
 <div class="application-list-container">
-	<h3 style="margin-bottom:0.5rem;">List of applications</h3>
+	<h2>List of applications</h2>
 
 	<!-- Loading -->
 	{#if $applicationFetchRequest.isLoading}
@@ -25,7 +25,7 @@
 		</div>
 	{:else if $applicationStore.length === 0}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
-			<h2>No applications added yet</h2>
+			<h3>No applications added yet</h3>
 		</div>
 	{:else}
 		<!-- Render application items -->
@@ -69,8 +69,7 @@
 		margin-top: auto;
 	}
 
-	h2,
-	h3 {
+	h2, h3 {
 		margin-bottom: 0.4rem;
 		max-width: 80%;
 	}

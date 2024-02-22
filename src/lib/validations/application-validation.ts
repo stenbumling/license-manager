@@ -4,7 +4,7 @@ import { get, writable } from 'svelte/store';
 import { z } from 'zod';
 
 export const applicationSchema = z.object({
-	id: z.string().uuid({ message: 'Invalid application ID' }),
+	id: z.string().uuid({ message: 'Invalid application ID. Try refreshing the site' }),
 	name: z
 		.string()
 		.trim()
@@ -17,12 +17,19 @@ export const applicationSchema = z.object({
 			},
 			{ message: 'Application already exists' },
 		),
+	link: z
+		.string()
+		.max(500, { message: 'Link can be at most 500 characters long' })
+		.refine((data) => data === '' || z.string().url().safeParse(data).success, {
+			message: 'Please enter a valid URL',
+		}),
 });
 
 export const applicationValidationError = writable<ApplicationValidationError>({});
 
 interface ApplicationValidationError {
 	name?: { message: string };
+	link?: { message: string };
 }
 
 export async function validateApplication(application: Application): Promise<boolean> {

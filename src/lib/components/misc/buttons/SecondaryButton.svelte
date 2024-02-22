@@ -52,7 +52,7 @@
 	.button-container:hover .button-title {
 		color: white;
 	}
-	
+
 	.button-container:hover .button-animated-hover {
 		width: 100%;
 	}

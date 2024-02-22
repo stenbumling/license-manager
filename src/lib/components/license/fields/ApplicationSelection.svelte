@@ -13,6 +13,7 @@
 		const selectedAppId = target.value;
 		const foundApp = $applicationStore.find((app) => app.id === selectedAppId);
 		$license.application.name = foundApp ? foundApp.name : '';
+		$license.application.link = foundApp ? foundApp.link : '';
 	}
 </script>
 
@@ -44,9 +45,17 @@
 			/>
 		</div>
 	</div>
-	<p class="warning-text">
+	<p class="application-secondary-text">
 		{#if $licenseValidationErrors.applicationId}
-			<span in:fade={{ duration: 120 }}>{$licenseValidationErrors.applicationId}</span>
+			<span class="warning-text" transition:fade={{ duration: 120 }}
+				>{$licenseValidationErrors.applicationId}</span
+			>
+		{:else if $license.application.link}
+			<a class="application-link" href={$license.application.link} target="_blank"
+				>{$license.application.link.length > 100
+					? $license.application.link.slice(0, 100) + '...'
+					: $license.application.link}</a
+			>
 		{/if}
 	</p>
 </div>
@@ -72,14 +81,23 @@
 		justify-content: space-between;
 	}
 
-	.warning-text {
+	.application-secondary-text {
 		font-size: 0.75rem;
-		color: red;
-		height: 2.8rem;
+		min-height: 2.8rem;
+		width: 90%;
 		margin-left: 1px;
 	}
 
-	.required {
+	.application-link {
+		color: var(--deep-purple);
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	.required,
+	.warning-text {
 		color: red;
 	}
 
@@ -93,10 +111,14 @@
 		background-color: transparent;
 		appearance: none;
 		margin-right: 1.4rem;
+		padding-right: 1rem;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 
 	select:hover {
-		padding: 0 0 0rem 0.3rem;
+		padding: 0 2.5rem 0rem 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
 		background-image: url('/dropdown-arrow.svg');
@@ -106,7 +128,7 @@
 	}
 
 	.select-add-mode {
-		padding: 0 0 0rem 0.3rem;
+		padding: 0 2.5rem 0rem 0.3rem;
 		border: 1px dashed black;
 		background-image: url('/dropdown-arrow.svg');
 		background-size: 1.5rem;
@@ -115,7 +137,7 @@
 	}
 
 	select:focus {
-		padding: 0 0 0rem 0.3rem;
+		padding: 0 2.5rem 0rem 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
 		background-image: url('/dropdown-arrow.svg');
