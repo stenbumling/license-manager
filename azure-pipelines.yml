@@ -13,6 +13,7 @@ variables:
   # These placeholder values are only used for building the app
   # They need to be configured in the Azure Portal with the actual values
   # For more information, check the .env.local.example file
+  SKIP_AUTH: 'false'
   AZURE_CLOUD_INSTANCE: 'https://login.microsofonline.com/'
   AZURE_TENANT_ID: 'azure-tenant-id'
   AZURE_CLIENT_ID: 'azure-client-id'
