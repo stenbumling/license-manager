@@ -2,7 +2,6 @@
 	import { license } from '$lib/stores/resources/license-store';
 	import type { User } from '$lib/stores/resources/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
-	import { fade } from 'svelte/transition';
 
 	export let user: User;
 
