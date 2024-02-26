@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
-	import ApplicationModal from '$lib/components/resource-management/ApplicationModal.svelte';
+	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
 	import AssignedUsers from '$lib/components/license/fields/AssignedUsers.svelte';
@@ -8,22 +8,24 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import ButtonLarge from '$lib/components/misc/buttons/ButtonLarge.svelte';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
+	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { modal, showApplicationModal } from '$lib/stores/modal-store';
+	import { applicationModalMode, modal } from '$lib/stores/modal-store';
 	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
+	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
+	import { onMount } from 'svelte';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
 	import WarningModal from '../misc/WarningModal.svelte';
-	import CloseModalButton from '../misc/buttons/CloseModalButton.svelte';
+	import CloseModalButton from '../misc/buttons/CloseButton.svelte';
 
 	let showWarningModal = false;
 
@@ -50,6 +52,10 @@
 			class: 'alert',
 		},
 	];
+
+	onMount(async () => {
+		await applicationStore.fetch();
+	});
 
 	function handleWarningModal() {
 		contextMenu.close();
@@ -140,8 +146,8 @@
 			{#if $licenseMode === 'view'}
 				<LicenseMenuButton items={contextMenuItems} />
 			{/if}
-			<ButtonLarge
-				title={$licenseMode === 'add' ? 'Add new license' : 'Save changes'}
+			<PrimaryButton
+				title={$licenseMode === 'add' ? 'Add license' : 'Save changes'}
 				action={handleLicense}
 				pendingRequest={$licensePostRequest.isLoading}
 			/>
@@ -151,7 +157,7 @@
 
 <!-- Modals -->
 
-{#if $showApplicationModal}
+{#if $applicationModalMode !== 'closed'}
 	<ApplicationModal />
 {/if}
 

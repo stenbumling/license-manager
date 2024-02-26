@@ -14,6 +14,7 @@ function getInitialValues() {
 		application: {
 			id: uuidv4(),
 			name: '',
+			link: '',
 			licenseAssociations: 0,
 		},
 		applicationId: '',

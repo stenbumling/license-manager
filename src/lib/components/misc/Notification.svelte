@@ -2,7 +2,7 @@
 	import { CheckmarkOutline, Information, Warning, WarningFilled } from 'carbon-icons-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
-	import CloseModalButton from './buttons/CloseModalButton.svelte';
+	import CloseModalButton from './buttons/CloseButton.svelte';
 
 	const dispatch = createEventDispatcher();
 

@@ -3,8 +3,10 @@ import { applicationStore } from '$lib/stores/resources/application-store';
 import { get, writable } from 'svelte/store';
 import { z } from 'zod';
 
+let appId: string | undefined;
+
 export const applicationSchema = z.object({
-	id: z.string().uuid({ message: 'Invalid application ID' }),
+	id: z.string().uuid({ message: 'Invalid application ID. Try refreshing the site' }),
 	name: z
 		.string()
 		.trim()
@@ -13,20 +15,30 @@ export const applicationSchema = z.object({
 		.refine(
 			(val) => {
 				const applications = get(applicationStore);
-				return !applications.some((application) => application.name === val);
+				return !applications.some(
+					(application) => application.name === val && application.id !== appId,
+				);
 			},
 			{ message: 'Application already exists' },
 		),
+	link: z
+		.string()
+		.max(500, { message: 'Link can be at most 500 characters long' })
+		.refine((data) => data === '' || z.string().url().safeParse(data).success, {
+			message: 'Please enter a valid URL',
+		}),
 });
 
 export const applicationValidationError = writable<ApplicationValidationError>({});
 
 interface ApplicationValidationError {
 	name?: { message: string };
+	link?: { message: string };
 }
 
 export async function validateApplication(application: Application): Promise<boolean> {
 	try {
+		appId = application.id;
 		applicationSchema.parse(application);
 		applicationValidationError.set({});
 		return true;

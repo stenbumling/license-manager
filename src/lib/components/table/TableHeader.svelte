@@ -4,6 +4,8 @@
 	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
 	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
 	import CircleDash from 'carbon-icons-svelte/lib/CircleDash.svelte';
+	import { quintOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 
 	// Firefox doesn't support scrollbar-width
 	// instead we add a margin to the last column
@@ -22,6 +24,7 @@
 
 		<!-- Application column -->
 		<div class="application-col">
+			<!-- Column label -->
 			<div
 				role="columnheader"
 				tabindex="0"
@@ -34,12 +37,30 @@
 			>
 				<h3 class="column-label">Application</h3>
 			</div>
-			{#if $sortState['application'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if $sortState['application'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+
+			<!-- Sort direction symbol -->
+			{#if $sortState['application'] === 'ASC'}
+				<div
+					style="line-height:0.5; margin-bottom: 0px;"
+					in:fly={{ duration: 160, y: 20, easing: quintOut }}
+				>
+					<CaretUp size={24} fill="#5a1ea0" />
+				</div>
+			{/if}
+			{#if $sortState['application'] === 'DESC'}
+				<div
+					style="line-height:0.5; margin-bottom: 2px;"
+					in:fly={{ duration: 160, y: -20, easing: quintOut }}
+					out:fly={{ duration: 160, y: 10, easing: quintOut }}
+				>
+					<CaretDown size={24} fill="#5a1ea0" />
+				</div>
+			{/if}
 		</div>
 
 		<!-- Contact person column -->
 		<div class="contact-col">
+			<!-- Column label -->
 			<div
 				role="columnheader"
 				tabindex="0"
@@ -52,12 +73,30 @@
 			>
 				<h3 class="column-label">Contact person</h3>
 			</div>
-			{#if $sortState['contactPerson'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if $sortState['contactPerson'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+
+			<!-- Sort direction symbol -->
+			{#if $sortState['contactPerson'] === 'ASC'}
+				<div
+					style="line-height:0.5; margin-bottom: 0px;"
+					in:fly={{ duration: 160, y: 20, easing: quintOut }}
+				>
+					<CaretUp size={24} fill="#5a1ea0" />
+				</div>
+			{/if}
+			{#if $sortState['contactPerson'] === 'DESC'}
+				<div
+					style="line-height:0.5; margin-bottom: 2px;"
+					in:fly={{ duration: 160, y: -20, easing: quintOut }}
+					out:fly={{ duration: 160, y: 10, easing: quintOut }}
+				>
+					<CaretDown size={24} fill="#5a1ea0" />
+				</div>
+			{/if}
 		</div>
 
 		<!-- Users column -->
 		<div class="users-col">
+			<!-- Column label -->
 			<div
 				role="columnheader"
 				tabindex="0"
@@ -70,14 +109,49 @@
 			>
 				<h3 class="column-label">Users</h3>
 			</div>
-			{#if $sortState['users'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if $sortState['users'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+
+			<!-- Sort direction symbol -->
+			{#if $sortState['users'] === 'ASC'}
+				<div
+					style="line-height:0.5; margin-bottom: 0px;"
+					in:fly={{ duration: 160, y: 20, easing: quintOut }}
+				>
+					<CaretUp size={24} fill="#5a1ea0" />
+				</div>
+			{/if}
+			{#if $sortState['users'] === 'DESC'}
+				<div
+					style="line-height:0.5; margin-bottom: 2px;"
+					in:fly={{ duration: 160, y: -20, easing: quintOut }}
+					out:fly={{ duration: 160, y: 10, easing: quintOut }}
+				>
+					<CaretDown size={24} fill="#5a1ea0" />
+				</div>
+			{/if}
 		</div>
 
 		<!-- Expiration date column -->
 		<div class="expiration-col">
-			{#if $sortState['expirationDate'] === 'ASC'}<CaretUp size={24} fill="#5a1ea0" />{/if}
-			{#if $sortState['expirationDate'] === 'DESC'}<CaretDown size={24} fill="#5a1ea0" />{/if}
+			<!-- Sort direction symbol -->
+			{#if $sortState['expirationDate'] === 'ASC'}
+				<div
+					style="line-height:0.5; margin-bottom: 0px;"
+					in:fly={{ duration: 160, y: 20, easing: quintOut }}
+				>
+					<CaretUp size={24} fill="#5a1ea0" />
+				</div>
+			{/if}
+			{#if $sortState['expirationDate'] === 'DESC'}
+				<div
+					style="line-height:0.5; margin-bottom: 2px;"
+					in:fly={{ duration: 160, y: -20, easing: quintOut }}
+					out:fly={{ duration: 160, y: 10, easing: quintOut }}
+				>
+					<CaretDown size={24} fill="#5a1ea0" />
+				</div>
+			{/if}
+
+			<!-- Column label -->
 			<div
 				role="columnheader"
 				tabindex="0"

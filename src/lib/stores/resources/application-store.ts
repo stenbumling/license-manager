@@ -4,11 +4,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { serverBaseUrl } from '../../../config/server-base-url';
 import { notifications } from '../notification-store';
 import { applicationFetchRequest, request } from '../request-state-store';
+import { table } from './table-store';
 
 function getInitialValues() {
 	return {
 		id: uuidv4(),
 		name: '',
+		link: '',
 		licenseAssociations: 0,
 	};
 }
@@ -16,6 +18,7 @@ function getInitialValues() {
 export interface Application {
 	id: string;
 	name: string;
+	link: string;
 	licenseAssociations: number;
 }
 
@@ -96,6 +99,48 @@ function createApplicationStore() {
 		}
 	}
 
+	async function editApplication(application: Application) {
+		try {
+			const response = await fetch(`${serverBaseUrl}/api/applications/${application.id}`, {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(application),
+			});
+			if (response.ok) {
+				await fetchApplications();
+				await table.updateState();
+				notifications.add({
+					message: 'Application was edited successfully',
+					type: 'success',
+				});
+			} else {
+				const error = await response.json();
+				if (response.status === 409) {
+					notifications.add({
+						message:
+							error.message ||
+							'Failed to edit application because of data conflict. Try refreshing the page to get the latest data.',
+						type: 'alert',
+					});
+				} else {
+					notifications.add({
+						message: error.message || 'Failed to edit application. Please try again.',
+						type: 'alert',
+					});
+				}
+				console.error('Failed to edit application:', error);
+			}
+		} catch (error) {
+			notifications.add({
+				message:
+					'A server error has occured and application could not be edited. Please try refreshing the page.',
+				type: 'alert',
+				timeout: false,
+			});
+			console.error('Failed to edit application:', error);
+		}
+	}
+
 	async function deleteApplication(id: string) {
 		try {
 			const response = await fetch(`${serverBaseUrl}/api/applications/${id}`, {
@@ -142,7 +187,7 @@ function createApplicationStore() {
 		}
 	}
 
-	function resetField() {
+	function resetFields() {
 		application.set(getInitialValues());
 		applicationValidationError.set({});
 	}
@@ -153,8 +198,9 @@ function createApplicationStore() {
 		update,
 		fetch: fetchApplications,
 		add: addApplication,
+		edit: editApplication,
 		delete: deleteApplication,
-		reset: resetField,
+		reset: resetFields,
 	};
 }
 

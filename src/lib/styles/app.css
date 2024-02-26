@@ -26,7 +26,7 @@ h2 {
 	margin: 0;
 	font-family: 'BW Gradual Bold', Arial, Helvetica, sans-serif;
 	padding: 0;
-	font-size: 1.2rem;
+	font-size: 1.3rem;
 	text-transform: uppercase;
 	cursor: default;
 }
@@ -108,4 +108,9 @@ textarea:focus-visible {
 	outline: none;
 	box-shadow: 0 0 0 0px var(--light-purple);
 	border-radius: 4px;
+}
+
+/* Custom styling for tippy tooltips */
+.tippy-box {
+	overflow-wrap: break-word;
 }

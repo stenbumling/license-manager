@@ -1,14 +1,16 @@
 <script lang="ts">
-	import AssignedUsersModal from '$lib/components/resource-management/AssignedUsersModal.svelte';
+	import AssignedUsersModal from '$lib/components/license/fields/AssignedUsersModal.svelte';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import { userFetchRequest } from '$lib/stores/request-state-store';
 	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import type { User } from '$lib/stores/resources/user-store';
 	import { userStore } from '$lib/stores/resources/user-store';
+	import { receive, send } from '$lib/utils/animation-utils.ts';
 	import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import { Pulse } from 'svelte-loading-spinners';
+	import { flip } from 'svelte/animate';
 	import { fade, slide } from 'svelte/transition';
 
 	let userInput = '';
@@ -66,7 +68,13 @@
 	{#if $license.users.length || $userFetchRequest.isLoading}
 		<div class="badge-container">
 			{#each $license.users.slice(0, 8) as user (user.id)}
-				<UserBadge {user} />
+				<div
+					in:receive={{ key: user.id }}
+					out:send={{ key: user.id }}
+					animate:flip={{ duration: 200 }}
+				>
+					<UserBadge {user} />
+				</div>
 			{/each}
 			{#if $license.users.length > 8}
 				<button class="view-all-button" on:click={() => showAssignedUsersModal.set(true)}>

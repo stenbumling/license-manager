@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { filterState, searchQuery, table } from '$lib/stores/resources/table-store';
 	import { searchQueryValidationError } from '$lib/validations/search-query-validation';
-	import { fade } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
+	import { fly } from 'svelte/transition';
 
 	export let filter: {
 		title: string;
@@ -26,7 +27,7 @@
 		<h4 class="filter-title">{filter.title}</h4>
 		<h4 class="filter-amount-container">
 			{#key filter.amount}
-				<div transition:fade={{ duration: 200 }} class="filter-amount">
+				<div in:fly={{ duration: 500, x: -20, easing: quintOut }} class="filter-amount">
 					{filter.amount}
 				</div>
 			{/key}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let title: string = 'Cancel';
+	export let title: string = 'Button title';
 	export let action: (e: MouseEvent | KeyboardEvent) => void;
 </script>
 
@@ -35,13 +35,11 @@
 		background-color: transparent;
 		border: 1px solid black;
 		height: 3rem;
-		min-width: 6rem;
-		width: 11rem;
+		min-width: 8rem;
 		padding: 1rem 1.3rem;
 		transition: border-color 0.25s ease, color 0.25s ease;
 	}
 
-	/* Styles for the Animated Hover Effect */
 	.button-container .button-animated-hover {
 		position: absolute;
 		top: 0;
@@ -54,6 +52,7 @@
 	.button-container:hover .button-title {
 		color: white;
 	}
+
 	.button-container:hover .button-animated-hover {
 		width: 100%;
 	}
