@@ -1,7 +1,9 @@
+/// <reference types="vitest" />
+
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
 	plugins: [sveltekit()],
 	server: {
 		// Proxy will only work in development mode
@@ -10,4 +12,11 @@ export default defineConfig({
 			'/api': 'http://localhost:3000',
 		},
 	},
-});
+	resolve: {
+		conditions: mode === 'test' ? ['browser'] : [],
+	},
+	test: {
+		environment: 'jsdom',
+		setupFiles: ['./vitest-setup.ts'],
+	},
+}));
