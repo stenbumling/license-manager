@@ -1,8 +1,8 @@
 import { get, writable } from 'svelte/store';
+import { serverBaseUrl } from '../../../config/server-base-url';
 import { notifications } from '../notification-store';
 import { request, tableFetchRequest } from '../request-state-store';
 import { licenseStore } from './license-store';
-import { serverBaseUrl } from '../../../config/server-base-url';
 
 /*
  * This store is responsible for managing the state of the license table. That
@@ -14,7 +14,6 @@ import { serverBaseUrl } from '../../../config/server-base-url';
 
 // Stores for managing queries and state of the table
 export const searchQuery = writable('');
-//
 export const filterState = writable('All');
 export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
 	application: 'DEFAULT',

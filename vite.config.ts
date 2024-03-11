@@ -3,7 +3,7 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(() => ({
 	plugins: [sveltekit()],
 	server: {
 		// Proxy will only work in development mode
@@ -11,9 +11,6 @@ export default defineConfig(({ mode }) => ({
 			// '/api': 'https://nexer-orebro-license-app-server.azurewebsites.net',
 			'/api': 'http://localhost:3000',
 		},
-	},
-	resolve: {
-		conditions: mode === 'test' ? ['browser'] : [],
 	},
 	test: {
 		environment: 'jsdom',

@@ -9,9 +9,7 @@ import { error, redirect, type Handle } from '@sveltejs/kit';
  * will not be accessible to the client, so it will always be 'false'.
  */
 export const handle: Handle = async ({ event, resolve }) => {
-	if (SKIP_AUTH === 'true') {
-		return await resolve(event);
-	} else if (!(event.route.id && event.route.id.includes('callback'))) {
+	if (SKIP_AUTH !== 'true' && !(event.route.id && event.route.id.includes('callback'))) {
 		if (!event.cookies.get('idToken') || !event.cookies.get('accessToken')) {
 			const authCodeUrl = await redirectToAuthCodeUrl(event);
 			if (authCodeUrl) {
@@ -23,5 +21,9 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	}
 
-	return await resolve(event);
+	const response = await resolve(event, {
+		preload: ({ type }) => type === 'font' || type === 'css' || type === 'js',
+	});
+
+	return response;
 };
