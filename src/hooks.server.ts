@@ -25,6 +25,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 	}
 
+	// Used to preload fonts (only css and js are preloaded by default otherwise)
 	const response = await resolve(event, {
 		preload: ({ type }) => type === 'font' || type === 'css' || type === 'js',
 	});
