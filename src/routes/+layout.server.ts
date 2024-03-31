@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { serverBaseUrl } from '../config/server-base-url';
+// import { serverBaseUrl } from '../config/server-base-url';
 
 /*
  * Load initial data for the application. This loaded data will be available
@@ -10,10 +10,10 @@ export const load = async ({ fetch }) => {
 	let statusCode = 500;
 	try {
 		const responses = await Promise.all([
-			fetch(`${serverBaseUrl}/api/licenses`),
-			fetch(`${serverBaseUrl}/api/applications`),
-			fetch(`${serverBaseUrl}/api/users`),
-			fetch(`${serverBaseUrl}/api/licenses/counts`),
+			fetch(`/api/licenses`),
+			fetch(`/api/applications`),
+			fetch(`/api/users`),
+			fetch(`/api/licenses/counts`),
 		]);
 
 		const failedResponse = responses.find((response) => !response.ok);
