@@ -1,7 +1,6 @@
 import { HttpResponse, http } from 'msw';
 import { get } from 'svelte/store';
 import { describe, expect, it } from 'vitest';
-import { serverBaseUrl } from '../../../config/server-base-url';
 import { fetchedUsers, foundUser } from '../../../mocks/data/user';
 import { server } from '../../../mocks/setup/node';
 import { triggerMockError } from '../../../mocks/utils/handler-helpers';
@@ -18,7 +17,7 @@ describe('User Store', () => {
 		});
 		it('should not update store if a server request fails', async () => {
 			server.use(
-				http.get(`${serverBaseUrl}/api/users`, () => {
+				http.get('/api/users', () => {
 					return triggerMockError();
 				}),
 			);
@@ -39,7 +38,7 @@ describe('User Store', () => {
 		});
 		it('should successfully find an existing user to the server without creating duplicates', async () => {
 			server.use(
-				http.post(`${serverBaseUrl}/api/users`, () => {
+				http.post('/api/users', () => {
 					return HttpResponse.json(foundUser);
 				}),
 			);
@@ -55,7 +54,7 @@ describe('User Store', () => {
 		});
 		it('should not update store if server request fails and display an error message', async () => {
 			server.use(
-				http.post(`${serverBaseUrl}/api/users`, () => {
+				http.post('/api/users', () => {
 					return triggerMockError();
 				}),
 			);
@@ -81,7 +80,7 @@ describe('User Store', () => {
 		});
 		it('should not update store if server request fails and display an error message', async () => {
 			server.use(
-				http.delete(`${serverBaseUrl}/api/users/:id`, () => {
+				http.delete(`/api/users/:id`, () => {
 					return triggerMockError();
 				}),
 			);

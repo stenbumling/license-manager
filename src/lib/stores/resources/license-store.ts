@@ -3,7 +3,6 @@ import type { User } from '$lib/stores/resources/user-store';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { serverBaseUrl } from '../../../config/server-base-url';
 import { notifications } from '../notification-store';
 import { licenseFetchRequest, licensePostRequest, request } from '../request-state-store';
 import { table } from './table-store';
@@ -73,7 +72,7 @@ function createLicenseStore() {
 	async function getLicenseById(id: string) {
 		request.startLoading(licenseFetchRequest);
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/licenses/${id}`);
+			const response = await fetch(`/api/licenses/${id}`);
 			if (response.ok) {
 				const fetchedLicense = await response.json();
 				license.set(fetchedLicense);
@@ -117,7 +116,7 @@ function createLicenseStore() {
 
 	async function updateLicenseCounts() {
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/licenses/counts`);
+			const response = await fetch('/api/licenses/counts');
 			if (response.ok) {
 				const counts = await response.json();
 				licenseCounts.set(counts);
@@ -143,7 +142,7 @@ function createLicenseStore() {
 	async function addLicense(license: License) {
 		request.startLoading(licensePostRequest);
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/licenses`, {
+			const response = await fetch('/api/licenses', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
@@ -180,7 +179,7 @@ function createLicenseStore() {
 		request.startLoading(licensePostRequest);
 		const currentLicense = get(licenseStore).find((l) => l.id === updatedLicense.id);
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/licenses/${updatedLicense.id}`, {
+			const response = await fetch(`/api/licenses/${updatedLicense.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -227,7 +226,7 @@ function createLicenseStore() {
 
 	async function deleteLicense(id: string) {
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/licenses/${id}`, {
+			const response = await fetch(`/api/licenses/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {

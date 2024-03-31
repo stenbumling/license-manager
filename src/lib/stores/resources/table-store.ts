@@ -1,5 +1,4 @@
 import { get, writable } from 'svelte/store';
-import { serverBaseUrl } from '../../../config/server-base-url';
 import { notifications } from '../notification-store';
 import { request, tableFetchRequest } from '../request-state-store';
 import { licenseStore } from './license-store';
@@ -126,7 +125,7 @@ function createTableController() {
 	async function sendQueryToDatabase(query: string) {
 		request.startLoading(tableFetchRequest);
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/licenses/query${query}`);
+			const response = await fetch(`/api/licenses/query${query}`);
 			if (response.ok) {
 				const licenses = await response.json();
 				licenseStore.set(licenses);

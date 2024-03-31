@@ -1,7 +1,6 @@
 import { applicationValidationError } from '$lib/validations/application-validation';
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
-import { serverBaseUrl } from '../../../config/server-base-url';
 import { notifications } from '../notification-store';
 import { applicationFetchRequest, request } from '../request-state-store';
 import { table } from './table-store';
@@ -30,7 +29,7 @@ function createApplicationStore() {
 	async function fetchApplications() {
 		request.startLoading(applicationFetchRequest);
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/applications`);
+			const response = await fetch('/api/applications');
 			if (response.ok) {
 				const applications = await response.json();
 				set(applications);
@@ -69,7 +68,7 @@ function createApplicationStore() {
 
 	async function addApplication(application: Application) {
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/applications`, {
+			const response = await fetch('/api/applications', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
@@ -101,7 +100,7 @@ function createApplicationStore() {
 
 	async function editApplication(application: Application) {
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/applications/${application.id}`, {
+			const response = await fetch(`/api/applications/${application.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
@@ -143,7 +142,7 @@ function createApplicationStore() {
 
 	async function deleteApplication(id: string) {
 		try {
-			const response = await fetch(`${serverBaseUrl}/api/applications/${id}`, {
+			const response = await fetch(`/api/applications/${id}`, {
 				method: 'DELETE',
 			});
 			if (response.ok) {
