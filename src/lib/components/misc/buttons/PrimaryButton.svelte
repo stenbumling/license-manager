@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Pulse } from 'svelte-loading-spinners';
+	import buttonArrow from '../../../images/icons/button-arrow.svg';
 
 	export let title: string = 'Button title';
 	export let action: (e: MouseEvent | KeyboardEvent) => void;
@@ -23,7 +24,7 @@
 	{:else}
 		<div class="button-content">
 			<h3 class="button-title">{title}</h3>
-			<img src={'/button-arrow.svg'} alt="arrow" />
+			<img src={buttonArrow} alt="arrow" />
 		</div>
 		<div
 			class="button-animated-hover"
