@@ -1,12 +1,16 @@
 import { SKIP_AUTH } from '$env/static/private';
 import { redirectToAuthCodeUrl } from '$lib/auth/services';
+import { initDb } from '$lib/server/db';
 import { error, redirect, type Handle } from '@sveltejs/kit';
 
+// Initialize the database connection
+await initDb();
+
 /**
- * This hook is used to check if the user is authenticated before allowing access
- * to the route (which currently is the whole application). Set SKIP_AUTH to 'true'
- * in the env.local file to skip authentication. In production, the SKIP_AUTH variable
- * will not be accessible to the client, so it will always be 'false'.
+ * Check if the user is authenticated before allowing access to the app.
+ * Set SKIP_AUTH to 'true' in the env.local file to skip authentication.
+ * In production, the SKIP_AUTH variable will not be accessible to the client, so
+ * it will always be set to 'false'.
  */
 export const handle: Handle = async ({ event, resolve }) => {
 	if (SKIP_AUTH !== 'true' && !(event.route.id && event.route.id.includes('callback'))) {
