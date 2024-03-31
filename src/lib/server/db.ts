@@ -27,7 +27,7 @@ export async function initDb() {
 		await authenticateDb();
 		await syncDbModels();
 	} catch (error) {
-    console.error('Unable to connect to the database: ', error);
+		console.error('Unable to connect to the database: ', error);
 		// TODO: Handle database connection errors in a more graceful and user-friendly way
 	}
 }

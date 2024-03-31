@@ -1,8 +1,6 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db';
 
-console.log('aaa');
-
 const Application = sequelize.define('application', {
 	id: {
 		type: DataTypes.UUID,
