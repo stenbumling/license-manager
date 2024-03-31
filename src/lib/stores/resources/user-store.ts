@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
+import { serverBaseUrl } from '../../../config/server-base-url';
 import { notifications } from '../notification-store';
 import { request, userFetchRequest } from '../request-state-store';
-import { serverBaseUrl } from '../../../config/server-base-url';
 
 export interface User {
 	id: string;
