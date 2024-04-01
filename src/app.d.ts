@@ -3,7 +3,7 @@
 declare global {
 	namespace App {
 		interface Error {
-			status: number;
+			status: number | null;
 			type: string;
 			message: string;
 			details?: string | string[];
