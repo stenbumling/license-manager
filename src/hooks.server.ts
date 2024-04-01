@@ -1,11 +1,13 @@
+import { building } from '$app/environment';
+import { SKIP_AUTH } from '$env/static/private';
 import { redirectToAuthCodeUrl } from '$lib/auth/services';
 import { initDb } from '$lib/server/db';
 import { error, redirect, type Handle } from '@sveltejs/kit';
 
-const { SKIP_AUTH } = process.env;
-
-// Initialize the database connection
-await initDb();
+// Initialize the database connection on startup
+if (!building) {
+	await initDb();
+}
 
 /**
  * Check if the user is authenticated before allowing access to the app.
