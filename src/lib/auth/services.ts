@@ -53,6 +53,8 @@ export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 	} catch (err) {
 		console.error(err);
 		error(500, {
+			status: 500,
+			type: 'Authentication Error',
 			message: 'Failed to get authentication URL',
 		});
 	}
@@ -82,6 +84,8 @@ export const getTokens = async (event: RequestEvent) => {
 				} catch (err) {
 					console.error(err);
 					error(401, {
+						status: 401,
+						type: 'Authentication Error',
 						message: 'Invalid authentication token',
 					});
 				}
@@ -89,12 +93,16 @@ export const getTokens = async (event: RequestEvent) => {
 		} else {
 			console.error('Error: CSRF token mismatch');
 			error(400, {
+				status: 400,
+				type: 'Authentication Error',
 				message: 'There was an error trying to authenticate user',
 			});
 		}
 	} else {
 		console.error('Error: State parameter missing');
 		error(400, {
+			status: 400,
+			type: 'Authentication Error',
 			message: 'There was an error trying to authenticate user',
 		});
 	}

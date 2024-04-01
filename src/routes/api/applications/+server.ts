@@ -1,5 +1,5 @@
 import Application from '$lib/server/models/application-model';
-import { json } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 
 export async function GET() {
 	const applications = await Application.findAll({
@@ -12,8 +12,11 @@ export async function GET() {
 export async function POST({ request }) {
 	const app = await request.json();
 	if (!app.name) {
-		// throw new APIError(400, 'DataCreationError', 'A valid application name is required.');
-		throw new Error('A valid application name is required.');
+		error(400, {
+			status: 400,
+			type: 'DataCreationError',
+			message: 'A valid application name is required.',
+		});
 	}
 	const newApplication = await Application.create(app);
 

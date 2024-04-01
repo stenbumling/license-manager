@@ -8,6 +8,8 @@ export const GET: RequestHandler = async (event) => {
 		redirect(302, redirectTo);
 	} else {
 		error(400, {
+			status: 400,
+			type: 'Authentication Error',
 			message: 'There was an error trying to authenticate user',
 		});
 	}

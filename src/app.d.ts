@@ -6,7 +6,7 @@ declare global {
 			status: number;
 			type: string;
 			message: string;
-			detail?: string;
+			details?: string | string[];
 		}
 		// interface Locals {}
 		// interface PageData {}

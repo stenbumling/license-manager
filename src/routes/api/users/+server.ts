@@ -1,6 +1,6 @@
 import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
-import { json } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 
 export async function GET() {
 	const users = await User.findAll({
@@ -20,8 +20,11 @@ export async function GET() {
 export async function POST({ request }) {
 	const { name } = await request.json();
 	if (!name) {
-		// throw new APIError(400, 'InvalidRequestError', 'A valid user name is required.');
-		throw new Error('A valid user name is required.');
+		error(400, {
+			status: 400,
+			type: 'InvalidRequestError',
+			message: 'A valid user name is required.',
+		});
 	}
 	const [user, created] = await User.findOrCreate({
 		attributes: { exclude: ['createdAt'] },

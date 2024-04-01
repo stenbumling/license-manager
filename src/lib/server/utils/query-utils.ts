@@ -1,6 +1,6 @@
 import { Op, type Order } from 'sequelize';
 import { sequelize } from '../db';
-// import { APIError } from '../middlewares/errors/api-error';
+import { error } from '@sveltejs/kit';
 import Application from '../models/application-model';
 import type { Filter, SortBy, SortDirection, WhereOptionsWithSymbols } from '../types/query-types';
 import { getFormattedDate } from '../utils/date-utils';
@@ -33,11 +33,11 @@ export function constructWhereClause(filter: string, search: string): WhereOptio
 			where.expirationDate = { [Op.lt]: tomorrow };
 			break;
 		default:
-		// throw new APIError(
-		// 	400,
-		// 	'InvalidQueryParameter',
-		// 	'Invalid filter was provided and the request was aborted.',
-		// );
+			error(400, {
+				status: 400,
+				type: 'InvalidQueryParameter',
+				message: 'Invalid filter was provided and the request was aborted.',
+			});
 	}
 
 	// Search logic
