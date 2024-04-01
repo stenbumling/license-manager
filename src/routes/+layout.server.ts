@@ -25,6 +25,8 @@ export const load = async ({ fetch }) => {
 				} responded with status ${failedResponse.status}`,
 			);
 			error(500, {
+				status: 500,
+				type: 'Internal Error',
 				message: 'Failed to load data',
 			});
 		}
