@@ -19,6 +19,7 @@ function createSequelizeInstance() {
 				dateFirst: 1,
 			},
 		},
+		logging: (query) => console.log(new Date(), query),
 	});
 }
 
