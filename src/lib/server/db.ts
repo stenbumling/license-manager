@@ -1,25 +1,25 @@
 import { ConnectionError, ConnectionTimedOutError, Sequelize, TimeoutError } from 'sequelize';
 import type { ConnectionConfiguration } from 'tedious';
 
-function createSequelizeInstance() {
+export const sequelize = (() => {
 	const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
 	if (!DB_HOST || !DB_NAME || !DB_USER || !DB_PASSWORD) {
 		throw new Error(
 			'Missing database configuration! Make sure you have set the following environment variables: DB_HOST, DB_NAME, DB_USER and DB_PASSWORD. Check the .env.locals.example file for reference.',
 		);
 		// TODO: Handle this error in a more graceful and user-friendly way
-	} else {
-		return new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
-			host: DB_HOST,
-			dialect: 'mssql',
-			dialectOptions: {
-				options: getTediousConnectionOptions(),
-			},
-			logging: (query) => console.log(new Date(), query),
-			retry: getRetryOptions(),
-		});
 	}
-}
+
+	return new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+		host: DB_HOST,
+		dialect: 'mssql',
+		dialectOptions: {
+			options: getTediousConnectionOptions(),
+		},
+		logging: (query) => console.log(new Date(), query),
+		retry: getRetryOptions(),
+	});
+})();
 
 function getTediousConnectionOptions() {
 	const options: ConnectionConfiguration['options'] = {
@@ -64,5 +64,3 @@ async function syncDbModels() {
 	await sequelize.sync();
 	console.log('Database schemas synchronized with the models');
 }
-
-export const sequelize = createSequelizeInstance();
