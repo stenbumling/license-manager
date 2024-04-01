@@ -1,7 +1,8 @@
-import { SKIP_AUTH } from '$env/static/private';
 import { redirectToAuthCodeUrl } from '$lib/auth/services';
 import { initDb } from '$lib/server/db';
 import { error, redirect, type Handle } from '@sveltejs/kit';
+
+const { SKIP_AUTH } = process.env;
 
 // Initialize the database connection
 await initDb();

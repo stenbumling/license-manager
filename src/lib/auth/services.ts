@@ -1,7 +1,8 @@
-import { REDIRECT_URI } from '$env/static/private';
 import { ConfidentialClientApplication, CryptoProvider, ResponseMode } from '@azure/msal-node';
 import { error, type RequestEvent } from '@sveltejs/kit';
 import { cookiesConfig, msalConfig } from './config';
+
+const { REDIRECT_URI } = process.env;
 
 /**
  * These functions are used to handle the authentication flow with Azure AD.
@@ -36,7 +37,7 @@ export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 		}),
 	);
 	const authCodeUrlRequest = {
-		redirectUri: process.env.REDIRECT_URI || REDIRECT_URI || 'no-redirect-uri-set',
+		redirectUri: REDIRECT_URI || 'no-redirect-uri-set',
 		responseMode: ResponseMode.QUERY,
 		codeChallenge: pkceCodes.challenge,
 		codeChallengeMethod: pkceCodes.challengeMethod,
@@ -67,7 +68,7 @@ export const getTokens = async (event: RequestEvent) => {
 			const code = event.url.searchParams.get('code');
 			if (code) {
 				const authCodeRequest = {
-					redirectUri: process.env.REDIRECT_URI || REDIRECT_URI || 'no-redirect-uri-set',
+					redirectUri: REDIRECT_URI || 'no-redirect-uri-set',
 					code,
 					scopes: [],
 					codeVerifier: event.cookies.get('pkceVerifier'),
