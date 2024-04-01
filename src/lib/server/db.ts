@@ -11,7 +11,7 @@ export const sequelize = (() => {
 		const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
 		if (!DB_HOST || !DB_NAME || !DB_USER || !DB_PASSWORD) {
 			throw new Error(
-				'Missing database configuration! Make sure you have set the following environment variables: DB_HOST, DB_NAME, DB_USER and DB_PASSWORD. Check the .env.locals.example file for reference.',
+				'Missing database configuration! Make sure you have set the following environment variables: DB_HOST, DB_NAME, DB_USER and DB_PASSWORD. Check the .env.example file for reference.',
 			);
 			// TODO: Handle this error in a more graceful and user-friendly way
 		}

@@ -11,7 +11,7 @@ pool:
 
 variables:
   # This needs to be set during build time, as it will be statically compiled into the app
-  # For more information, check the .env.local.example file
+  # For more information, check the .env.example file
   SKIP_AUTH: 'false'
 
 steps:
