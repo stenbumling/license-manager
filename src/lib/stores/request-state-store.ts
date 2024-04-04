@@ -18,9 +18,9 @@ function getInitialValues(defaultLoadingState = false) {
 	return {
 		isLoading: defaultLoadingState,
 		pendingRequests: 0,
-		delayTimer: null,
+		delayTimer: undefined,
 		error: {
-			code: 418, // Initialized with this to prevent "no licenses" message or instant loading spinner on app start
+			status: 418, // Initialized with this to prevent "no licenses" message or instant loading spinner on app start
 			type: '',
 			message: '',
 		},
@@ -30,12 +30,8 @@ function getInitialValues(defaultLoadingState = false) {
 interface RequestState {
 	isLoading: boolean;
 	pendingRequests: number;
-	delayTimer: number | null;
-	error: {
-		code: number | null;
-		type: string;
-		message: string;
-	};
+	delayTimer: NodeJS.Timeout | undefined;
+	error: App.Error;
 }
 
 // Stores for different types of requests.
@@ -56,7 +52,7 @@ function createRequestStateController() {
 					...state,
 					// Reset error state when loading starts
 					error: {
-						code: null,
+						status: null,
 						type: '',
 						message: '',
 					},
@@ -82,7 +78,7 @@ function createRequestStateController() {
 				return {
 					...state,
 					isLoading: false,
-					delayTimer: null,
+					delayTimer: undefined,
 				};
 			}
 			return state;
@@ -97,7 +93,7 @@ function createRequestStateController() {
 	) {
 		request.update((state) => ({
 			...state,
-			error: { code: errorCode, type: errorType, message: errorMessage },
+			error: { status: errorCode, type: errorType, message: errorMessage },
 		}));
 	}
 

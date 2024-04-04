@@ -1,5 +1,9 @@
 import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import dotenv from 'dotenv';
+
+// Load environment variables depending on the environment
+dotenv.config({ path: ['.env.local', '.env'] });
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {

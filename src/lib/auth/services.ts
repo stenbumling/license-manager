@@ -1,7 +1,8 @@
-import { REDIRECT_URI } from '$env/static/private';
 import { ConfidentialClientApplication, CryptoProvider, ResponseMode } from '@azure/msal-node';
 import { error, type RequestEvent } from '@sveltejs/kit';
 import { cookiesConfig, msalConfig } from './config';
+
+const { REDIRECT_URI } = process.env;
 
 /**
  * These functions are used to handle the authentication flow with Azure AD.
@@ -36,7 +37,7 @@ export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 		}),
 	);
 	const authCodeUrlRequest = {
-		redirectUri: process.env.REDIRECT_URI || REDIRECT_URI || 'no-redirect-uri-set',
+		redirectUri: REDIRECT_URI || 'no-redirect-uri-set',
 		responseMode: ResponseMode.QUERY,
 		codeChallenge: pkceCodes.challenge,
 		codeChallengeMethod: pkceCodes.challengeMethod,
@@ -52,6 +53,8 @@ export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 	} catch (err) {
 		console.error(err);
 		error(500, {
+			status: 500,
+			type: 'Authentication Error',
 			message: 'Failed to get authentication URL',
 		});
 	}
@@ -67,7 +70,7 @@ export const getTokens = async (event: RequestEvent) => {
 			const code = event.url.searchParams.get('code');
 			if (code) {
 				const authCodeRequest = {
-					redirectUri: process.env.REDIRECT_URI || REDIRECT_URI || 'no-redirect-uri-set',
+					redirectUri: REDIRECT_URI || 'no-redirect-uri-set',
 					code,
 					scopes: [],
 					codeVerifier: event.cookies.get('pkceVerifier'),
@@ -81,6 +84,8 @@ export const getTokens = async (event: RequestEvent) => {
 				} catch (err) {
 					console.error(err);
 					error(401, {
+						status: 401,
+						type: 'Authentication Error',
 						message: 'Invalid authentication token',
 					});
 				}
@@ -88,12 +93,16 @@ export const getTokens = async (event: RequestEvent) => {
 		} else {
 			console.error('Error: CSRF token mismatch');
 			error(400, {
+				status: 400,
+				type: 'Authentication Error',
 				message: 'There was an error trying to authenticate user',
 			});
 		}
 	} else {
 		console.error('Error: State parameter missing');
 		error(400, {
+			status: 400,
+			type: 'Authentication Error',
 			message: 'There was an error trying to authenticate user',
 		});
 	}
