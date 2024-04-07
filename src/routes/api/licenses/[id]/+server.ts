@@ -3,6 +3,7 @@ import Application from '$lib/server/models/application-model';
 import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
 import type { LicenseInstance } from '$lib/server/types/license-types.js';
+import type { UserInstance } from '$lib/server/types/user-types.js';
 import { error, json } from '@sveltejs/kit';
 import type { Transaction } from 'sequelize';
 
@@ -60,11 +61,8 @@ export async function PUT({ params, request }) {
 			});
 		}
 
-		// Update the license and associate it with the provided users
-		const fetchedLicense = await License.findByPk(id, { transaction });
 		if (users && Array.isArray(users)) {
-			const userIds = users.map((user) => user.id);
-			await fetchedLicense?.setUsers(userIds, { transaction });
+			await updateUserAssociations(users, id, transaction);
 		}
 
 		if (currentLicenseData.applicationId !== updatedLicenseData.applicationId) {
@@ -105,6 +103,16 @@ export async function DELETE({ params }) {
 		await transaction.rollback();
 		throw error;
 	}
+}
+
+async function updateUserAssociations(
+	users: UserInstance[],
+	licenseId: string,
+	transaction: Transaction,
+) {
+	const fetchedLicense = await License.findByPk(licenseId, { transaction });
+	const userIds = users.map((user) => user.id);
+	await fetchedLicense?.setUsers(userIds, { transaction });
 }
 
 async function updateLicenseAssociations(
