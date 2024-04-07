@@ -2,10 +2,11 @@ import { sequelize } from '$lib/server/db.js';
 import Application from '$lib/server/models/application-model';
 import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
-import type { LicenseInstance } from '$lib/server/types/license-types.js';
-import type { UserInstance } from '$lib/server/types/user-types.js';
+import {
+	updateLicenseAssociations,
+	updateUserAssociations,
+} from '$lib/server/utils/associations-utils';
 import { error, json } from '@sveltejs/kit';
-import type { Transaction } from 'sequelize';
 
 export async function GET({ params }) {
 	const id = params.id;
@@ -62,7 +63,8 @@ export async function PUT({ params, request }) {
 		}
 
 		if (users && Array.isArray(users)) {
-			await updateUserAssociations(users, id, transaction);
+			const fetchedLicense = await License.findByPk(id, { transaction });
+			if (fetchedLicense) await updateUserAssociations(users, fetchedLicense, transaction);
 		}
 
 		if (currentLicenseData.applicationId !== updatedLicenseData.applicationId) {
@@ -103,30 +105,4 @@ export async function DELETE({ params }) {
 		await transaction.rollback();
 		throw error;
 	}
-}
-
-async function updateUserAssociations(
-	users: UserInstance[],
-	licenseId: string,
-	transaction: Transaction,
-) {
-	const fetchedLicense = await License.findByPk(licenseId, { transaction });
-	const userIds = users.map((user) => user.id);
-	await fetchedLicense?.setUsers(userIds, { transaction });
-}
-
-async function updateLicenseAssociations(
-	license: LicenseInstance,
-	transaction: Transaction,
-	change: '+' | '-' = '+',
-) {
-	return await Application.update(
-		{
-			licenseAssociations: sequelize.literal(`licenseAssociations ${change} 1`),
-		},
-		{
-			where: { id: license.applicationId },
-			transaction,
-		},
-	);
 }
