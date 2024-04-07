@@ -14,7 +14,7 @@ function createUserStore() {
 	async function fetchUsers() {
 		request.startLoading(userFetchRequest);
 		try {
-			const response = await fetch('$/api/users');
+			const response = await fetch('/api/users');
 			if (response.ok) {
 				const users = await response.json();
 				update(() => users);
