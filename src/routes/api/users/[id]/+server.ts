@@ -1,5 +1,5 @@
 import User from '$lib/server/models/user-model';
-import { error, json } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 
 export async function DELETE({ params }) {
 	const id = params.id;
@@ -14,5 +14,5 @@ export async function DELETE({ params }) {
 		});
 	}
 	await user.destroy();
-	return json({ status: 204 });
+	return new Response(null, { status: 204 });
 }
