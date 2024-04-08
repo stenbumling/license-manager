@@ -19,6 +19,5 @@ export async function POST({ request }) {
 		});
 	}
 	const newApplication = await Application.create(app);
-
 	return json(newApplication.dataValues, { status: 201 });
 }

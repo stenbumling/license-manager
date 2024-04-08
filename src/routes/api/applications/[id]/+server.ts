@@ -1,5 +1,5 @@
 import Application from '$lib/server/models/application-model';
-import { error, json } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 
 export async function PUT({ params, request }) {
 	const id = params.id;
@@ -17,8 +17,7 @@ export async function PUT({ params, request }) {
 				'Failed to update application. Application data may have been modified since it was last retrieved. Please retrieve the latest version and try again.',
 		});
 	}
-
-	return json({ status: 204 });
+	return new Response(null, { status: 204 });
 }
 
 export async function DELETE({ params }) {
@@ -40,7 +39,6 @@ export async function DELETE({ params }) {
 				'Cannot delete application. There are licenses associated with this application. Please delete the licenses first.',
 		});
 	}
-
 	await app.destroy();
-	return json({ status: 204 });
+	return new Response(null, { status: 204 });
 }
