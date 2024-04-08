@@ -73,7 +73,7 @@ export async function PUT({ params, request }) {
 		}
 
 		await transaction.commit();
-		return json({ status: 204 });
+		return new Response(null, { status: 204 });
 	} catch (error) {
 		await transaction.rollback();
 		throw error;
@@ -100,7 +100,7 @@ export async function DELETE({ params }) {
 		await license.destroy({ transaction });
 
 		await transaction.commit();
-		return json({ status: 204 });
+		return new Response(null, { status: 204 });
 	} catch (error) {
 		await transaction.rollback();
 		throw error;

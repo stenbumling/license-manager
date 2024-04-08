@@ -11,6 +11,7 @@ export async function updateUserAssociations(
 ) {
 	const userIds = users.map((user) => user.id);
 	await license.setUsers(userIds, { transaction });
+	return null;
 }
 
 export async function updateLicenseAssociations(
@@ -18,7 +19,7 @@ export async function updateLicenseAssociations(
 	transaction: Transaction,
 	change: '+' | '-' = '+',
 ) {
-	return await Application.update(
+	await Application.update(
 		{
 			licenseAssociations: sequelize.literal(`licenseAssociations ${change} 1`),
 		},
@@ -27,4 +28,5 @@ export async function updateLicenseAssociations(
 			transaction,
 		},
 	);
+	return null;
 }
