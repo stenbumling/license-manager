@@ -50,14 +50,16 @@ describe('PUT /applications/:id', () => {
 
 describe('DELETE /applications/:id', () => {
 	it('should return 204 on successful deletion', async () => {
+		const mockDestroy = vi.fn();
 		vi.mocked(Application.findByPk).mockResolvedValue({
-			destroy: vi.fn(),
+			destroy: mockDestroy,
 			dataValues: { licenseAssociations: 0 },
 		} as unknown as Model);
 
 		const response = await DELETE({ params: { id: uuidv4() } });
 
 		expect(response.status).toBe(204);
+		expect(mockDestroy).toHaveBeenCalled();
 	});
 
 	it('should return 404 when application is not found', async () => {
