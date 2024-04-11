@@ -3,9 +3,6 @@ import { constructOrderClause, constructWhereClause } from '$lib/server/utils/qu
 import { describe, expect, it, vi } from 'vitest';
 import { GET } from './+server';
 
-vi.mock('$lib/server/utils/query-utils');
-vi.mock('$lib/server/models/license-model');
-
 describe('GET /licenses/query', () => {
 	it('should return 200 on successful fetch', async () => {
 		const mockURL = {

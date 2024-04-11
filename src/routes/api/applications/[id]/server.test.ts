@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
 import { DELETE, PUT } from './+server';
 
-vi.mock('$lib/server/models/application-model');
-
 describe('PUT /applications/:id', () => {
 	it('should return 204 on successful update', async () => {
 		vi.mocked(Application.update).mockResolvedValue([1]);

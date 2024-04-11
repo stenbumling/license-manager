@@ -7,9 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
 import { GET, POST } from './+server';
 
-vi.mock('$lib/server/models/license-model');
-vi.mock('$lib/server/utils/associations-utils');
-
 describe('GET /licenses', () => {
 	it('should return 200 on successful fetch', async () => {
 		vi.mocked(License.findAll).mockResolvedValue([]);

@@ -4,8 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
 import { DELETE } from './+server';
 
-vi.mock('$lib/server/models/user-model');
-
 describe('DELETE /users/:id', () => {
 	it('should return 204 on successful fetch', async () => {
 		const mockDestroy = vi.fn();

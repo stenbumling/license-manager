@@ -3,8 +3,6 @@ import { describe, expect, it, vi } from 'vitest';
 import { GET, POST } from './+server';
 import Application from '$lib/server/models/application-model';
 
-vi.mock('$lib/server/models/application-model');
-
 describe('GET /applications/', () => {
 	vi.mocked(Application.findAll).mockResolvedValue([]);
 

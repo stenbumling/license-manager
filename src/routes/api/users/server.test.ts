@@ -3,8 +3,6 @@ import type { Model } from 'sequelize';
 import { describe, expect, it, vi } from 'vitest';
 import { GET, POST } from './+server';
 
-vi.mock('$lib/server/models/user-model');
-
 describe('GET /users', () => {
 	it('should return 200 on successful fetch', async () => {
 		vi.mocked(User.findAll).mockResolvedValue([]);
