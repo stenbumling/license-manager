@@ -7,7 +7,6 @@
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
-		// Open the license modal if the URL contains a license ID
 		await modal.handleBrowserHistoryChange();
 	});
 </script>

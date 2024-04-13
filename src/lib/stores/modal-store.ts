@@ -30,14 +30,12 @@ function createModalController() {
 			showLicenseModal.set(true);
 		} else if (url.searchParams.size > 0) {
 			await goto('/');
+		} else if (url.searchParams.size === 0) {
+			licenseStore.resetFields();
 		}
 	}
 
 	async function openViewLicense(licenseId: string) {
-		const url = new URL(window.location.href);
-		url.searchParams.set('modal', 'view');
-		url.searchParams.set('id', licenseId);
-
 		if (validateLicenseId(licenseId)) {
 			await goto(`?modal=view&id=${licenseId}`);
 			licenseMode.set('view');
@@ -50,36 +48,20 @@ function createModalController() {
 	}
 
 	async function openAddLicense() {
-		const url = new URL(window.location.href);
-		url.searchParams.set('modal', 'add');
-		url.searchParams.delete('id');
-
 		await goto(`?modal=add`);
 		licenseMode.set('add');
 		showLicenseModal.set(true);
 	}
 
 	async function closeLicense() {
-		const url = new URL(window.location.href);
-		url.searchParams.delete('modal');
-		url.searchParams.delete('id');
-
 		await goto('/');
 		closeAllModals();
-
-		// Reset after closing animation is done
-		setTimeout(() => {
-			licenseStore.resetFields();
-		}, 120);
+		licenseStore.resetFields();
 	}
 
 	function closeApplicationModal() {
 		applicationModalMode.set('closed');
-
-		// Reset after closing animation is done
-		setTimeout(() => {
-			applicationStore.reset();
-		}, 120);
+		applicationStore.reset();
 	}
 
 	function closeAssignedUsers() {

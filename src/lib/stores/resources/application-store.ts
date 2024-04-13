@@ -187,8 +187,11 @@ function createApplicationStore() {
 	}
 
 	function resetFields() {
-		application.set(getInitialValues());
-		applicationValidationError.set({});
+		// Reset after closing animation is done
+		setTimeout(() => {
+			application.set(getInitialValues());
+			applicationValidationError.set({});
+		}, 120);
 	}
 
 	return {

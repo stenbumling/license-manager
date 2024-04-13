@@ -265,8 +265,11 @@ function createLicenseStore() {
 	}
 
 	function resetFields() {
-		license.set(getInitialValues());
-		licenseValidationErrors.set({});
+		// Reset after closing animation is done
+		setTimeout(() => {
+			license.set(getInitialValues());
+			licenseValidationErrors.set({});
+		}, 120);
 	}
 
 	return {
