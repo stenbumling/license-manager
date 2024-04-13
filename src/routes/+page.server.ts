@@ -7,6 +7,11 @@ import { error } from '@sveltejs/kit';
 
 export const load = async ({ fetch }) => {
 	let statusCode = 500;
+	error(500, {
+		status: 500,
+		type: 'Internal Error',
+		message: 'Failed to load data',
+	});
 	try {
 		const responses = await Promise.all([
 			fetch('/api/licenses'),

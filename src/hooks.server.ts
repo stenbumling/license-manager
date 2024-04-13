@@ -46,13 +46,20 @@ export const handle: Handle = async ({ event, resolve }) => {
 };
 
 export const handleError: HandleServerError = async ({ error, event, status, message }) => {
-	console.error(`An error has occurred on ${event.route.id}:\n`, error);
+	console.error(`An error has occurred on ${event.url.pathname}:\n`, error);
 
 	const errorResponse: App.Error = {
-		status: status,
+		status: status || 500,
 		type: 'Internal Error',
-		message: message,
+		message: message || 'An unexpected error occurred',
 	};
+
+	if (status === 404) {
+		errorResponse.status = 404;
+		errorResponse.type = 'Not Found';
+		errorResponse.message = 'The requested page or resource could not be found.';
+		return errorResponse;
+	}
 
 	if (error instanceof ValidationError) {
 		errorResponse.status = 400;
