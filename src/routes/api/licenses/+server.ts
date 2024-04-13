@@ -1,7 +1,11 @@
-import { sequelize } from '$lib/server/db.js';
+import { sequelize } from '$lib/server/db';
 import Application from '$lib/server/models/application-model';
 import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
+import {
+	updateLicenseAssociations,
+	updateUserAssociations,
+} from '$lib/server/utils/associations-utils';
 import { json } from '@sveltejs/kit';
 
 export async function GET() {
@@ -28,26 +32,16 @@ export async function POST({ request }) {
 	try {
 		const { users, ...licenseData } = await request.json();
 
-		// Create the license and associate it with the provided users
 		const createdLicense = await License.create(licenseData, { transaction });
-		if (users && Array.isArray(users)) {
-			const userIds = users.map((user) => user.id);
-			await createdLicense.setUsers(userIds, { transaction });
+
+		if (users && Array.isArray(users) && createdLicense) {
+			await updateUserAssociations(users, createdLicense, transaction);
 		}
 
-		// Update application license associations
-		await Application.update(
-			{
-				licenseAssociations: sequelize.literal('licenseAssociations + 1'),
-			},
-			{
-				where: { id: createdLicense.applicationId },
-				transaction,
-			},
-		);
+		await updateLicenseAssociations(createdLicense, transaction, '+');
 
 		await transaction.commit();
-		return json({ status: 204 });
+		return new Response(null, { status: 204 });
 	} catch (error) {
 		await transaction.rollback();
 		throw error;

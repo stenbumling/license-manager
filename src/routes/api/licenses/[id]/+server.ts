@@ -2,6 +2,10 @@ import { sequelize } from '$lib/server/db.js';
 import Application from '$lib/server/models/application-model';
 import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
+import {
+	updateLicenseAssociations,
+	updateUserAssociations,
+} from '$lib/server/utils/associations-utils';
 import { error, json } from '@sveltejs/kit';
 
 export async function GET({ params }) {
@@ -58,37 +62,18 @@ export async function PUT({ params, request }) {
 			});
 		}
 
-		// Update the license and associate it with the provided users
-		const fetchedLicense = await License.findByPk(id, { transaction });
 		if (users && Array.isArray(users)) {
-			const userIds = users.map((user) => user.id);
-			await fetchedLicense?.setUsers(userIds, { transaction });
+			const fetchedLicense = await License.findByPk(id, { transaction });
+			if (fetchedLicense) await updateUserAssociations(users, fetchedLicense, transaction);
 		}
 
-		// Update applications license associations
 		if (currentLicenseData.applicationId !== updatedLicenseData.applicationId) {
-			await Application.update(
-				{
-					licenseAssociations: sequelize.literal('licenseAssociations - 1'),
-				},
-				{
-					where: { id: currentLicenseData.applicationId },
-					transaction,
-				},
-			);
-			await Application.update(
-				{
-					licenseAssociations: sequelize.literal('licenseAssociations + 1'),
-				},
-				{
-					where: { id: updatedLicenseData.applicationId },
-					transaction,
-				},
-			);
+			await updateLicenseAssociations(currentLicenseData, transaction, '-');
+			await updateLicenseAssociations(updatedLicenseData, transaction, '+');
 		}
 
 		await transaction.commit();
-		return json({ status: 204 });
+		return new Response(null, { status: 204 });
 	} catch (error) {
 		await transaction.rollback();
 		throw error;
@@ -110,21 +95,12 @@ export async function DELETE({ params }) {
 			});
 		}
 
-		// Update application license associations
-		await Application.update(
-			{
-				licenseAssociations: sequelize.literal('licenseAssociations - 1'),
-			},
-			{
-				where: { id: license.applicationId },
-				transaction,
-			},
-		);
+		await updateLicenseAssociations(license, transaction, '-');
 
 		await license.destroy({ transaction });
 
 		await transaction.commit();
-		return json({ status: 204 });
+		return new Response(null, { status: 204 });
 	} catch (error) {
 		await transaction.rollback();
 		throw error;
