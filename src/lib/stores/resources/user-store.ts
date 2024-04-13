@@ -10,7 +10,6 @@ export interface User {
 function createUserStore() {
 	const { subscribe, set, update } = writable<User[]>([]);
 
-	// Currently not used, but can be used in future user management features
 	async function fetchUsers() {
 		request.startLoading(userFetchRequest);
 		try {

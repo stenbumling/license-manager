@@ -1,28 +1,18 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
 	import { modal, showLicenseModal } from '$lib/stores/modal-store';
-	import { request, tableFetchRequest } from '$lib/stores/request-state-store';
-	import { applicationStore } from '$lib/stores/resources/application-store';
-	import { licenseCounts, licenseStore } from '$lib/stores/resources/license-store';
-	import { userStore } from '$lib/stores/resources/user-store';
 	import { onMount } from 'svelte';
 
-	export let data;
-
 	onMount(async () => {
-		request.startLoading(tableFetchRequest, 200);
-		licenseStore.set(data.licenses);
-		applicationStore.set(data.applications);
-		userStore.set(data.users);
-		licenseCounts.set(data.counts);
-		request.endLoading(tableFetchRequest);
-
 		// Open the license modal if the URL contains a license ID
 		if ($page.url.searchParams.has('id')) {
 			modal.openLicense();
+		} else {
+			await goto('/');
 		}
 	});
 </script>

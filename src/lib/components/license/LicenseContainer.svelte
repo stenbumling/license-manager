@@ -26,6 +26,7 @@
 	import { fade } from 'svelte/transition';
 	import WarningModal from '../misc/WarningModal.svelte';
 	import CloseModalButton from '../misc/buttons/CloseButton.svelte';
+	import { userStore } from '$lib/stores/resources/user-store';
 
 	let showWarningModal = false;
 
@@ -54,6 +55,7 @@
 	];
 
 	onMount(async () => {
+		await userStore.fetch();
 		await applicationStore.fetch();
 	});
 
@@ -93,7 +95,7 @@
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
-			<h1 style="font-size: 5rem">{$licenseFetchRequest.error.code}</h1>
+			<h1 style="font-size: 5rem">{$licenseFetchRequest.error.status}</h1>
 			<h2>{$licenseFetchRequest.error.message}</h2>
 		</div>
 	{:else}

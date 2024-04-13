@@ -2,8 +2,9 @@
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
 	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
-	import { licenseCounts } from '$lib/stores/resources/license-store';
+	import { licenseCounts, licenseStore } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
+	import { onMount } from 'svelte';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
@@ -40,6 +41,10 @@
 			color: 'var(--alert)',
 		},
 	];
+
+	onMount(async () => {
+		await licenseStore.updateCounts();
+	})
 </script>
 
 <div class="dashboard-container">

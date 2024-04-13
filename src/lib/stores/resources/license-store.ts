@@ -277,6 +277,7 @@ function createLicenseStore() {
 		add: addLicense,
 		delete: deleteLicense,
 		updateLicense: updateLicense,
+		updateCounts: updateLicenseCounts,
 		resetFields: resetFields,
 	};
 }
