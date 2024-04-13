@@ -1,8 +1,7 @@
 import { building } from '$app/environment';
-import { SKIP_AUTH } from '$env/static/private';
-import { redirectToAuthCodeUrl } from '$lib/auth/services';
+import { authenticateUser } from '$lib/auth/services';
 import { initDb } from '$lib/server/db';
-import { error, redirect, type Handle, type HandleServerError } from '@sveltejs/kit';
+import { type Handle, type HandleServerError } from '@sveltejs/kit';
 import {
 	AccessDeniedError,
 	ConnectionError,
@@ -18,26 +17,7 @@ if (!building) {
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	/*
-	 * Check if the user is authenticated before allowing access to the app.
-	 * Set SKIP_AUTH to 'true' in the env.local file to skip authentication.
-	 * In production, the SKIP_AUTH variable will not be accessible to the client, so
-	 * it will always be set to 'false'.
-	 */
-	if (SKIP_AUTH !== 'true' && !(event.route.id && event.route.id.includes('callback'))) {
-		if (!event.cookies.get('idToken') || !event.cookies.get('accessToken')) {
-			const authCodeUrl = await redirectToAuthCodeUrl(event);
-			if (authCodeUrl) {
-				redirect(302, authCodeUrl);
-			} else {
-				error(500, {
-					status: 500,
-					type: 'Authentication Error',
-					message: 'Failed to redirect to authentication page',
-				});
-			}
-		}
-	}
+	await authenticateUser(event);
 
 	// Used to preload fonts (only css and js are preloaded by default otherwise)
 	return await resolve(event, {
