@@ -11,7 +11,7 @@
 			return;
 		}
 		e.preventDefault();
-		modal.openLicense('add');
+		modal.openAddLicense();
 	}
 
 	$: filters = [

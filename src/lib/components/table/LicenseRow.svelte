@@ -61,7 +61,7 @@
 			return;
 		}
 		e.preventDefault();
-		modal.openLicense(license.id);
+		modal.openViewLicense(license.id);
 	}
 </script>
 
