@@ -9,8 +9,9 @@ export async function DELETE({ params }) {
 		error(404, {
 			status: 404,
 			type: 'NotFound',
-			message:
-				'User not found. Please verify the provided ID is correct. If correct, the user might have been deleted or does not exist.',
+			message: 'User could not be found.',
+			details:
+				'Please verify the provided ID is correct. If correct, the user might have been deleted or does not exist.',
 		});
 	}
 	await user.destroy();

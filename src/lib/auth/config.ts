@@ -7,7 +7,6 @@ const { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_CLOUD_INSTANCE, AZURE_TENANT
  * Client ID, Tenant ID, and Client Secret should be set in the environment variables.
  * The client secret in particular should be kept in a key vault or other secure location.
  */
-
 export const msalConfig = {
 	auth: {
 		clientId: AZURE_CLIENT_ID || 'no-client-id-set',

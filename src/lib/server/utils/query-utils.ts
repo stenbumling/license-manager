@@ -7,8 +7,7 @@ import { getFormattedDate } from '../utils/date-utils';
 
 /*
  * These utility functions are used to construct the WHERE and ORDER BY clauses for
- * the License model. More specifically, it's used in the fetchByQuery function
- * inside the license-controller.ts file.
+ * the License model. More specifically, it's used for the GET /api/licenses/query endpoint.
  */
 
 export function constructWhereClause(filter: string, search: string): WhereOptionsWithSymbols {
@@ -72,7 +71,7 @@ export function constructOrderClause(sortBy: SortBy, sortDirection: SortDirectio
 		case 'contactPerson':
 			order = [['contactPerson', sortDirection]];
 			break;
-		// Sort by the *number* of users associated with the license, not the users themselves
+		// Sorts by the *number* of users associated with the license, not by user name
 		case 'users':
 			order = [
 				[

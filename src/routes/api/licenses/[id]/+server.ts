@@ -30,8 +30,9 @@ export async function GET({ params }) {
 		error(404, {
 			status: 404,
 			type: 'NotFound',
-			message:
-				'License not found. Please verify the provided ID is correct. If correct, the license might have been deleted or does not exist.',
+			message: 'License could not be found.',
+			details:
+				'Please verify the provided ID is correct. If correct, the license might have been deleted or does not exist.',
 		});
 	}
 	return json(license, { status: 200 });
@@ -57,8 +58,9 @@ export async function PUT({ params, request }) {
 			error(409, {
 				status: 409,
 				type: 'UpdateConflict',
-				message:
-					'Failed to update license. License data may have been modified since it was last retrieved. Please retrieve the latest version and try again.',
+				message: 'Failed to update license because of data conflict.',
+				details:
+					'License data may have been modified since it was last retrieved. Please retrieve the latest version and try again.',
 			});
 		}
 
@@ -90,8 +92,9 @@ export async function DELETE({ params }) {
 			error(404, {
 				status: 404,
 				type: 'NotFound',
-				message:
-					'License not found. Please verify the provided ID is correct. If correct, the license might have been deleted or does not exist.',
+				message: 'License could not be found.',
+				details:
+					'Please verify the provided ID is correct. If correct, the license might have been deleted or does not exist.',
 			});
 		}
 
