@@ -1,9 +1,11 @@
-import { getTokens, shouldAuthenticate } from '$lib/auth/services';
+import { getTokens } from '$lib/auth/services';
 import { error, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async (event) => {
-	if (shouldAuthenticate(event)) {
+	if (event.cookies.get('idToken') && event.cookies.get('accessToken')) {
+		redirect(302, '/');
+	} else {
 		const redirectTo = await getTokens(event);
 		if (redirectTo) {
 			redirect(302, redirectTo);
@@ -14,7 +16,5 @@ export const GET: RequestHandler = async (event) => {
 				message: 'There was an error trying to authenticate user',
 			});
 		}
-	} else {
-		redirect(302, '/');
 	}
 };
