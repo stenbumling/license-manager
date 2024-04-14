@@ -1,5 +1,6 @@
 import { building } from '$app/environment';
-import { ConnectionError, ConnectionTimedOutError, Sequelize, TimeoutError } from 'sequelize';
+import { error } from '@sveltejs/kit';
+import { ConnectionError, ConnectionTimedOutError, Sequelize, TimeoutError, AccessDeniedError } from 'sequelize';
 import type { ConnectionConfiguration } from 'tedious';
 
 export const sequelize = (() => {
@@ -8,13 +9,7 @@ export const sequelize = (() => {
 			dialect: 'mssql',
 		});
 	} else {
-		const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
-		if (!DB_HOST || !DB_NAME || !DB_USER || !DB_PASSWORD) {
-			throw new Error(
-				'Missing database configuration! Make sure you have set the following environment variables: DB_HOST, DB_NAME, DB_USER and DB_PASSWORD. Check the .env.example file for reference.',
-			);
-			// TODO: Handle this error in a more graceful and user-friendly way
-		}
+		const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = checkEnvVariables();
 
 		return new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
 			host: DB_HOST,
@@ -28,6 +23,22 @@ export const sequelize = (() => {
 	}
 })();
 
+function checkEnvVariables() {
+	const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
+	if (!DB_HOST || !DB_NAME || !DB_USER || !DB_PASSWORD) {
+		console.error(
+			'Missing database configurations! Make sure you have set the following environment variables: DB_HOST, DB_NAME, DB_USER and DB_PASSWORD. Check the .env.example file for reference.',
+		);
+		error(500, {
+			status: 500,
+			type: 'Database Error',
+			message: 'Database configurations are missing',
+		});
+	} else {
+		return { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD };
+	}
+}
+
 function getTediousConnectionOptions() {
 	const options: ConnectionConfiguration['options'] = {
 		connectTimeout: 60000,
@@ -39,35 +50,42 @@ function getTediousConnectionOptions() {
 
 function getRetryOptions() {
 	return {
-		max: 3,
+		max: 5,
 		timeout: 60000,
 		match: [
 			ConnectionError,
 			ConnectionTimedOutError,
 			TimeoutError,
-			'SequelizeConnectionError',
+			AccessDeniedError,
 			'SQLITE_BUSY',
 		],
+		backoffBase: 1000,
+		backoffExponent: 1.6,
+		report: (message?: string) => {
+			if (message?.includes('Retrying')) {
+				console.log('Retrying database connection...');
+			}
+		},
 	};
 }
 
 export async function initDb() {
 	try {
-		await authenticateDb();
+		console.log('Connecting to the database...');
+		await sequelize.authenticate();
 		await syncDbModels();
-	} catch (error) {
-		console.error('Unable to connect to the database: ', error);
-		// TODO: Handle this in a more graceful and user-friendly way
+		console.log('Connection to the database has been successfully established.');
+	} catch (err) {
+		console.error('An error occurred while connecting to the database: ', err);
+		error(500, {
+			status: 500,
+			type: 'Database Error',
+			message: 'An error occurred while connecting to the database',
+		});
 	}
-}
-
-async function authenticateDb() {
-	await sequelize.authenticate();
-	console.log('Connection to the database has been established successfully.');
 }
 
 async function syncDbModels() {
 	await import('./models/model-associations');
 	await sequelize.sync();
-	console.log('Database schemas synchronized with the models');
 }

@@ -46,6 +46,7 @@ export const handleError: HandleServerError = async ({ error, event, status, mes
 		errorResponse.type = 'Validation Error';
 		errorResponse.message = 'There was an error in validating the data provided';
 		errorResponse.details = error.errors.map((err) => `${err.path}: ${err.message}`);
+		return errorResponse;
 	}
 
 	if (error instanceof UniqueConstraintError) {
@@ -53,36 +54,35 @@ export const handleError: HandleServerError = async ({ error, event, status, mes
 		errorResponse.type = 'Unique Constraint Error';
 		errorResponse.message = 'The following fields have duplicate values';
 		errorResponse.details = Object.keys(error.fields).join(', ');
+		return errorResponse;
 	}
 
 	if (error instanceof ForeignKeyConstraintError) {
 		errorResponse.status = 400;
 		errorResponse.type = 'Foreign Key Constraint Error';
 		errorResponse.message = error.message;
+		return errorResponse;
+	}
+	
+	if (error instanceof AccessDeniedError) {
+		errorResponse.status = 403;
+		errorResponse.type = 'Database Access Denied';
+		errorResponse.message = "You don't have permission to access the database";
+		return errorResponse;
 	}
 
 	if (error instanceof DatabaseError) {
 		errorResponse.status = 500;
 		errorResponse.type = 'Database Error';
-		errorResponse.message = error.message;
+		errorResponse.message = "An error occurred while processing the database request";
+		return errorResponse;
 	}
 
 	if (error instanceof ConnectionError) {
 		errorResponse.status = 500;
 		errorResponse.type = 'Database Connection Error';
-		errorResponse.message = error.message;
-	}
-
-	if (error instanceof AccessDeniedError) {
-		errorResponse.status = 403;
-		errorResponse.type = 'Database Access Denied';
-		errorResponse.message = error.message;
-	}
-
-	if (error instanceof Error) {
-		errorResponse.status = 500;
-		errorResponse.type = 'Internal Server Error';
-		errorResponse.message = error.message;
+		errorResponse.message = "An error occurred while connecting to the database";
+		return errorResponse;
 	}
 
 	return errorResponse;
