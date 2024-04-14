@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { urlListener } from '$lib/actions/urlListener';
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
@@ -11,7 +10,9 @@
 	});
 </script>
 
-<div use:urlListener class="app-container">
+<svelte:window on:popstate={async () => await modal.handleBrowserHistoryChange()} />
+
+<div class="app-container">
 	<Dashboard />
 	<TableContainer />
 
