@@ -15,8 +15,7 @@
 				<span style="color:var(--deep-purple)">{$page.url.pathname}</span> could not be found.
 			</h2>
 			<p>
-				The page you are looking for might have been removed, had its name changed, or is
-				temporarily unavailable.
+				{$page.error?.details}
 			</p>
 		{:else}
 			<h2>{$page.error?.message}</h2>

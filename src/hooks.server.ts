@@ -3,7 +3,6 @@ import { authenticateUser } from '$lib/auth/services';
 import { initDb } from '$lib/server/db';
 import { type Handle, type HandleServerError } from '@sveltejs/kit';
 import {
-	AccessDeniedError,
 	ConnectionError,
 	DatabaseError,
 	ForeignKeyConstraintError,
@@ -26,7 +25,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 };
 
 export const handleError: HandleServerError = async ({ error, event, status, message }) => {
-	console.error(`An error has occurred on ${event.url.pathname}:\n`, error);
+	const err = error as Error;
+	console.error(`An error has occurred`, {
+		path: event.url.pathname,
+		error: err.message,
+		stack: err.stack,
+	});
 
 	const errorResponse: App.Error = {
 		status: status || 500,
@@ -38,51 +42,30 @@ export const handleError: HandleServerError = async ({ error, event, status, mes
 		errorResponse.status = 404;
 		errorResponse.type = 'Not Found';
 		errorResponse.message = 'The requested page or resource could not be found.';
-		return errorResponse;
-	}
-
-	if (error instanceof ValidationError) {
+		errorResponse.details =
+			'The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.';
+	} else if (error instanceof ValidationError) {
 		errorResponse.status = 400;
 		errorResponse.type = 'Validation Error';
 		errorResponse.message = 'There was an error in validating the data provided';
 		errorResponse.details = error.errors.map((err) => `${err.path}: ${err.message}`);
-		return errorResponse;
-	}
-
-	if (error instanceof UniqueConstraintError) {
+	} else if (error instanceof UniqueConstraintError) {
 		errorResponse.status = 409;
 		errorResponse.type = 'Unique Constraint Error';
 		errorResponse.message = 'The following fields have duplicate values';
 		errorResponse.details = Object.keys(error.fields).join(', ');
-		return errorResponse;
-	}
-
-	if (error instanceof ForeignKeyConstraintError) {
+	} else if (error instanceof ForeignKeyConstraintError) {
 		errorResponse.status = 400;
 		errorResponse.type = 'Foreign Key Constraint Error';
 		errorResponse.message = error.message;
-		return errorResponse;
-	}
-	
-	if (error instanceof AccessDeniedError) {
-		errorResponse.status = 403;
-		errorResponse.type = 'Database Access Denied';
-		errorResponse.message = "You don't have permission to access the database";
-		return errorResponse;
-	}
-
-	if (error instanceof DatabaseError) {
+	} else if (error instanceof DatabaseError) {
 		errorResponse.status = 500;
 		errorResponse.type = 'Database Error';
-		errorResponse.message = "An error occurred while processing the database request";
-		return errorResponse;
-	}
-
-	if (error instanceof ConnectionError) {
+		errorResponse.message = 'An error occurred while processing the database request';
+	} else if (error instanceof ConnectionError) {
 		errorResponse.status = 500;
 		errorResponse.type = 'Database Connection Error';
-		errorResponse.message = "An error occurred while connecting to the database";
-		return errorResponse;
+		errorResponse.message = 'An error occurred while connecting to the database';
 	}
 
 	return errorResponse;
