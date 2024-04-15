@@ -26,6 +26,7 @@
 	{:else if hasError}
 		<div class="fallback-container" in:fade={{ delay: 200, duration: 300 }}>
 			<h1>{$tableFetchRequest.error.message}</h1>
+			<p>{$tableFetchRequest.error.details}</p>
 		</div>
 	{:else if noResults && isSearching}
 		<div class="fallback-container" in:fade={{ delay: 200, duration: 300 }}>
@@ -74,13 +75,14 @@
 		align-items: center;
 		justify-content: center;
 		text-align: center;
+		flex-direction: column;
 		height: 100%;
-	}
 
-	h1 {
-		max-width: 70%;
-		line-height: 1.7;
-		word-wrap: break-word;
+		& > * {
+			max-width: 70%;
+			line-height: 1.7;
+			word-wrap: break-word;
+		}
 	}
 
 	.search-query-text {

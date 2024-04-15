@@ -16,6 +16,7 @@
 	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
+	import { userStore } from '$lib/stores/resources/user-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
@@ -26,7 +27,6 @@
 	import { fade } from 'svelte/transition';
 	import WarningModal from '../misc/WarningModal.svelte';
 	import CloseModalButton from '../misc/buttons/CloseButton.svelte';
-	import { userStore } from '$lib/stores/resources/user-store';
 
 	let showWarningModal = false;
 
@@ -95,8 +95,11 @@
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
-			<h1 style="font-size: 5rem">{$licenseFetchRequest.error.status}</h1>
-			<h2>{$licenseFetchRequest.error.message}</h2>
+			<h1>{$licenseFetchRequest.error.status}</h1>
+			<div class="fallback-error-details">
+				<h2>{$licenseFetchRequest.error.message}</h2>
+				<p>{$licenseFetchRequest.error.details}</p>
+			</div>
 		</div>
 	{:else}
 		<!-- License header -->
@@ -208,11 +211,14 @@
 		text-align: center;
 		height: 100%;
 
-		& > h2 {
-			max-width: 80%;
-			line-height: 1.7;
-			word-wrap: break-word;
+		& > h1 {
+			font-size: 5rem;
 		}
+	}
+
+	.fallback-error-details {
+		max-width: 62ch;
+		word-wrap: break-word;
 	}
 
 	.fallback-container-close-button {
