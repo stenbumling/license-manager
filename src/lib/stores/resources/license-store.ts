@@ -77,37 +77,17 @@ function createLicenseStore() {
 				const fetchedLicense = await response.json();
 				license.set(fetchedLicense);
 			} else {
-				const error = await response.json();
-				if (response.status === 404) {
-					request.setError(
-						licenseFetchRequest,
-						response.status,
-						error.error || 'Not found',
-						error.message || 'Failed to fetch license',
-					);
-				} else {
-					request.setError(
-						licenseFetchRequest,
-						response.status,
-						error.error || 'Internal Server Error',
-						error.message || 'Failed to fetch license',
-					);
-				}
+				const error: App.Error = await response.json();
+				request.setError(licenseFetchRequest, error);
 				console.error('Failed to fetch license:', error);
 			}
 		} catch (error) {
-			notifications.add({
-				message:
-					'A server error has occured and license could not be fetched. Please try refreshing the page.',
-				type: 'alert',
-				timeout: false,
+			request.setError(licenseFetchRequest, {
+				status: 500,
+				type: 'Internal Server Error',
+				message: 'Failed to fetch license due to a server error.',
+				details: 'Please try refreshing the page. If the problem persists, contact support.',
 			});
-			request.setError(
-				licenseFetchRequest,
-				500,
-				'Internal Server Error',
-				'Failed to fetch license',
-			);
 			console.error('Failed to fetch license:', error);
 		} finally {
 			request.endLoading(licenseFetchRequest);
@@ -121,9 +101,9 @@ function createLicenseStore() {
 				const counts = await response.json();
 				licenseCounts.set(counts);
 			} else {
-				const error = await response.json();
+				const error: App.Error = await response.json();
 				notifications.add({
-					message: error.message || 'An error has occured. Please try refreshing the page.',
+					message: error.message,
 					type: 'alert',
 				});
 				console.error('Failed to update license counts:', error);
@@ -155,9 +135,9 @@ function createLicenseStore() {
 					type: 'success',
 				});
 			} else {
-				const error = await response.json();
+				const error: App.Error = await response.json();
 				notifications.add({
-					message: error.message || 'Failed to create license. Please try again.',
+					message: error.message,
 					type: 'alert',
 				});
 				console.error('Failed to create license:', error);
@@ -195,20 +175,12 @@ function createLicenseStore() {
 					type: 'success',
 				});
 			} else {
-				const error = await response.json();
-				if (response.status === 409) {
-					notifications.add({
-						message:
-							error.message ||
-							'Failed to updated license because of data conflict. Try refreshing the page to get the latest data.',
-						type: 'alert',
-					});
-				} else {
-					notifications.add({
-						message: error.message || 'Failed to update license. Please try again.',
-						type: 'alert',
-					});
-				}
+				const error: App.Error = await response.json();
+				notifications.add({
+					message: error.message,
+					type: 'alert',
+				});
+
 				console.error('Failed to update license:', error);
 			}
 		} catch (error) {
@@ -237,20 +209,12 @@ function createLicenseStore() {
 					type: 'success',
 				});
 			} else {
-				const error = await response.json();
-				if (response.status === 404) {
-					notifications.add({
-						message:
-							error.message ||
-							'Failed to delete license because it could not be found. Try refreshing the page to get the latest data.',
-						type: 'alert',
-					});
-				} else {
-					notifications.add({
-						message: error.message || 'Failed to delete license. Please try again.',
-						type: 'alert',
-					});
-				}
+				const error: App.Error = await response.json();
+				notifications.add({
+					message: error.message,
+					type: 'alert',
+				});
+
 				console.error('Failed to delete license:', error);
 			}
 		} catch (error) {

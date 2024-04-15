@@ -130,41 +130,26 @@ function createTableController() {
 				const licenses = await response.json();
 				licenseStore.set(licenses);
 			} else {
-				const error = await response.json();
+				const error: App.Error = await response.json();
 				if (response.status === 400) {
-					await resetTableState();
 					notifications.add({
 						message: 'The filter was invalid. Table state has been reset.',
 						type: 'warning',
 					});
+					await resetTableState();
 				} else {
-					notifications.add({
-						message: error.message || 'An error has occured. Please try refreshing the page.',
-						type: 'alert',
-					});
-					request.setError(
-						tableFetchRequest,
-						response.status,
-						error.error || 'Internal Server Error',
-						error.message || `Failed to fetch licenses with the query "${query}"`,
-					);
+					request.setError(tableFetchRequest, error);
 					licenseStore.set([]);
 				}
 				console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			}
 		} catch (error) {
-			notifications.add({
-				message:
-					'A server error has occured and table state could not be updated. Please try refreshing the page.',
-				type: 'alert',
-				timeout: false,
+			request.setError(tableFetchRequest, {
+				status: 500,
+				type: 'Internal Server Error',
+				message: `Failed to fetch licenses`,
+				details: 'Please try refreshing the page. If the problem persists, contact support.',
 			});
-			request.setError(
-				tableFetchRequest,
-				500,
-				'Internal Server Error',
-				`Failed to fetch licenses with the query "${query}"`,
-			);
 			licenseStore.set([]);
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 		} finally {

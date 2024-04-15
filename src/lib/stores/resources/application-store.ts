@@ -34,32 +34,17 @@ function createApplicationStore() {
 				const applications = await response.json();
 				set(applications);
 			} else {
-				const error = await response.json();
-				notifications.add({
-					message: error.message || 'An error has occured. Please try refreshing the page.',
-					type: 'alert',
-				});
-				request.setError(
-					applicationFetchRequest,
-					response.status,
-					error.error || 'Internal Server Error',
-					error.message || 'Failed to fetch applications',
-				);
+				const error: App.Error = await response.json();
+				request.setError(applicationFetchRequest, error);
 				console.error('Failed to fetch applications:', error);
 			}
 		} catch (error) {
-			notifications.add({
-				message:
-					'A server error has occured and applications could not be fetched. Please try refreshing the page.',
-				type: 'alert',
-				timeout: false,
+			request.setError(applicationFetchRequest, {
+				status: 500,
+				type: 'Internal Server Error',
+				message: 'Failed to fetch applications due to a server error.',
+				details: 'Please try refreshing the page. If the problem persists, contact support.',
 			});
-			request.setError(
-				applicationFetchRequest,
-				500,
-				'Internal Server Error',
-				'Failed to fetch applications',
-			);
 			console.error('Failed to fetch applications:', error);
 		} finally {
 			request.endLoading(applicationFetchRequest);
@@ -80,9 +65,9 @@ function createApplicationStore() {
 					type: 'success',
 				});
 			} else {
-				const error = await response.json();
+				const error: App.Error = await response.json();
 				notifications.add({
-					message: error.message || 'Failed to create application. Please try again.',
+					message: error.message,
 					type: 'alert',
 				});
 				console.error('Failed to create application:', error);
@@ -113,20 +98,11 @@ function createApplicationStore() {
 					type: 'success',
 				});
 			} else {
-				const error = await response.json();
-				if (response.status === 409) {
-					notifications.add({
-						message:
-							error.message ||
-							'Failed to edit application because of data conflict. Try refreshing the page to get the latest data.',
-						type: 'alert',
-					});
-				} else {
-					notifications.add({
-						message: error.message || 'Failed to edit application. Please try again.',
-						type: 'alert',
-					});
-				}
+				const error: App.Error = await response.json();
+				notifications.add({
+					message: error.message,
+					type: 'alert',
+				});
 				console.error('Failed to edit application:', error);
 			}
 		} catch (error) {
@@ -152,27 +128,11 @@ function createApplicationStore() {
 					type: 'success',
 				});
 			} else {
-				const error = await response.json();
-				if (response.status === 404) {
-					notifications.add({
-						message:
-							error.message ||
-							'Failed to delete application because it could not be found. Try refreshing the page to get the latest data.',
-						type: 'alert',
-					});
-				} else if (response.status === 409) {
-					notifications.add({
-						message:
-							error.message ||
-							'Failed to delete application because of data conflict. Try refreshing the page to get the latest data.',
-						type: 'alert',
-					});
-				} else {
-					notifications.add({
-						message: error.message || 'Failed to delete application. Please try again.',
-						type: 'alert',
-					});
-				}
+				const error: App.Error = await response.json();
+				notifications.add({
+					message: error.message,
+					type: 'alert',
+				});
 				console.error('Failed to delete application:', error);
 			}
 		} catch (error) {
