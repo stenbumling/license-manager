@@ -14,6 +14,12 @@ import { writable } from 'svelte/store';
  * with, for a more cohesive state management.
  */
 
+const defaultError = {
+	status: null,
+	type: '',
+	message: '',
+};
+
 function getInitialValues(defaultLoadingState = false) {
 	return {
 		isLoading: defaultLoadingState,
@@ -51,11 +57,7 @@ function createRequestStateController() {
 				return {
 					...state,
 					// Reset error state when loading starts
-					error: {
-						status: null,
-						type: '',
-						message: '',
-					},
+					error: defaultError,
 					pendingRequests: state.pendingRequests + 1,
 					delayTimer: timer,
 				};
@@ -85,15 +87,10 @@ function createRequestStateController() {
 		});
 	}
 
-	function setError(
-		request: Writable<RequestState>,
-		errorCode: number | null,
-		errorType: string,
-		errorMessage: string,
-	) {
+	function setError(request: Writable<RequestState>, error: App.Error) {
 		request.update((state) => ({
 			...state,
-			error: { status: errorCode, type: errorType, message: errorMessage },
+			error: error,
 		}));
 	}
 

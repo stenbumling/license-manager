@@ -1,6 +1,5 @@
 import { goto } from '$app/navigation';
-import { page } from '$app/stores';
-import { get, writable } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { contextMenu } from './context-menu-store';
 import { applicationStore } from './resources/application-store';
 import { licenseMode, licenseStore } from './resources/license-store';
@@ -15,62 +14,74 @@ function createModalController() {
 		return regex.test(uuid);
 	}
 
-	// Decides which modal (if any) to open based on the URL
-	async function openLicense(licenseId?: string) {
-		const { url } = get(page);
-		const modal = url.searchParams.get('modal');
-		const paramId = url.searchParams.get('id');
+	async function handleBrowserHistoryChange() {
+		const url = new URL(window.location.href);
+		const mode = url.searchParams.get('modal');
+		const licenseId = url.searchParams.get('id');
 
-		if (licenseId && licenseId !== 'add') {
-			await setModal('view', `/?modal=view&id=${licenseId}`, licenseId);
-		} else if (modal === 'add' || licenseId === 'add') {
-			await setModal('add', '/?modal=add');
-		} else if (modal === 'view' && paramId && validateLicenseId(paramId)) {
-			await setModal('view', `/?modal=view&id=${paramId}`, paramId);
-		} else {
-			showLicenseModal.set(false);
+		closeAllModals();
+
+		if (mode === 'add' && !licenseId) {
+			licenseMode.set(mode);
+			showLicenseModal.set(true);
+		} else if (mode === 'view' && licenseId && validateLicenseId(licenseId)) {
+			licenseMode.set(mode);
+			await licenseStore.fetch(licenseId);
+			showLicenseModal.set(true);
+		} else if (url.searchParams.size > 0) {
 			await goto('/');
+		} else if (url.searchParams.size === 0) {
+			licenseStore.resetFields();
 		}
 	}
 
-	async function setModal(mode: 'add' | 'view', path: string, licenseId?: string) {
-		await goto(path);
-		licenseMode.set(mode);
-		if (licenseId) {
+	async function openViewLicense(licenseId: string) {
+		if (validateLicenseId(licenseId)) {
+			await goto(`?modal=view&id=${licenseId}`);
+			licenseMode.set('view');
 			await licenseStore.fetch(licenseId);
+			showLicenseModal.set(true);
 		} else {
-			licenseStore.resetFields();
+			await goto('/');
+			closeAllModals();
 		}
+	}
+
+	async function openAddLicense() {
+		await goto(`?modal=add`);
+		licenseMode.set('add');
 		showLicenseModal.set(true);
 	}
 
 	async function closeLicense() {
-		contextMenu.close();
-		showLicenseModal.set(false);
 		await goto('/');
-		// Reset after closing animation is done
-		setTimeout(() => {
-			licenseStore.resetFields();
-		}, 120);
+		closeAllModals();
+		licenseStore.resetFields();
 	}
 
 	function closeApplicationModal() {
 		applicationModalMode.set('closed');
-		// Reset after closing animation is done
-		setTimeout(() => {
-			applicationStore.reset();
-		}, 120);
+		applicationStore.reset();
 	}
 
 	function closeAssignedUsers() {
 		showAssignedUsersModal.set(false);
 	}
 
+	function closeAllModals() {
+		contextMenu.close();
+		closeApplicationModal();
+		closeAssignedUsers();
+		showLicenseModal.set(false);
+	}
+
 	return {
-		openLicense,
+		openViewLicense,
+		openAddLicense,
 		closeLicense,
 		closeApplication: closeApplicationModal,
 		closeAssignedUsers,
+		handleBrowserHistoryChange,
 	};
 }
 

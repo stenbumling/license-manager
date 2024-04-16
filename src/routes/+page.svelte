@@ -2,10 +2,17 @@
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
-	import { showLicenseModal } from '$lib/stores/modal-store';
+	import { modal, showLicenseModal } from '$lib/stores/modal-store';
+	import { onMount } from 'svelte';
+
+	onMount(async () => {
+		await modal.handleBrowserHistoryChange();
+	});
 </script>
 
-<div class="main-container">
+<svelte:window on:popstate={async () => await modal.handleBrowserHistoryChange()} />
+
+<div class="app-container">
 	<Dashboard />
 	<TableContainer />
 
@@ -15,7 +22,7 @@
 </div>
 
 <style>
-	.main-container {
+	.app-container {
 		display: flex;
 		flex-direction: row;
 		width: 100%;
@@ -24,7 +31,7 @@
 	}
 
 	@media (max-height: 850px) {
-		.main-container {
+		.app-container {
 			padding: 1.5rem 3rem;
 		}
 	}

@@ -18,6 +18,6 @@ export async function POST({ request }) {
 			message: 'A valid application name is required.',
 		});
 	}
-	const newApplication = await Application.create(app);
-	return json(newApplication.dataValues, { status: 201 });
+	const { dataValues } = await Application.create(app);
+	return json(dataValues, { status: 201 });
 }

@@ -58,7 +58,7 @@ function createContextMenuStore() {
 	// Assortment of functions to be called by items in the context menu
 	function viewLicense(license: License) {
 		contextMenu.close();
-		modal.openLicense(license.id);
+		modal.openViewLicense(license.id);
 	}
 
 	async function copyLicenseLink(license: License) {

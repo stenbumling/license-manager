@@ -1,15 +1,43 @@
 import { ConfidentialClientApplication, CryptoProvider, ResponseMode } from '@azure/msal-node';
-import { error, type RequestEvent } from '@sveltejs/kit';
+import { error, redirect, type RequestEvent } from '@sveltejs/kit';
 import { cookiesConfig, msalConfig } from './config';
 
 const { REDIRECT_URI } = process.env;
 
-/**
- * These functions are used to handle the authentication flow with Azure AD.
+/*
+ * These service functions are used to handle the authentication flow with Azure AD.
  * See the config.ts file for the configuration of the MSAL library.
  */
 
-const provider = (function () {
+export async function authenticateUser(event: RequestEvent) {
+	if (shouldAuthenticate(event)) {
+		const authCodeUrl = await redirectToAuthCodeUrl(event);
+		if (authCodeUrl) {
+			redirect(302, authCodeUrl);
+		} else {
+			error(500, {
+				status: 500,
+				type: 'Authentication Error',
+				message: 'Failed to redirect to authentication page',
+			});
+		}
+	}
+}
+
+/**
+ * Set SKIP_AUTH to 'true' in the env.local file to skip authentication.
+ * In production, the SKIP_AUTH variable will not be accessible to the client, so
+ * it will always be set to 'false'.
+ */
+export function shouldAuthenticate(event: RequestEvent) {
+	const isSkipAuth = process.env.SKIP_AUTH === 'true';
+	const isCallbackRoute = event.route.id && event.route.id.includes('callback');
+	const isAuthenticated = event.cookies.get('idToken') && event.cookies.get('accessToken');
+
+	return !isSkipAuth && !isCallbackRoute && !isAuthenticated;
+}
+
+const msalInstanceProvider = (() => {
 	let msalInstance: ConfidentialClientApplication | null = null;
 	return () => {
 		if (msalInstance === null) {
@@ -21,8 +49,8 @@ const provider = (function () {
 
 const cryptoProvider = new CryptoProvider();
 
-export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
-	const msalInstance = provider();
+export async function redirectToAuthCodeUrl(event: RequestEvent) {
+	const msalInstance = msalInstanceProvider();
 	const { verifier, challenge } = await cryptoProvider.generatePkceCodes();
 	const pkceCodes = {
 		challengeMethod: 'S256',
@@ -45,23 +73,14 @@ export const redirectToAuthCodeUrl = async (event: RequestEvent) => {
 		state,
 	};
 
-	try {
-		const authCodeUrl = await msalInstance.getAuthCodeUrl(authCodeUrlRequest);
-		event.cookies.set('pkceVerifier', verifier, cookiesConfig);
-		event.cookies.set('csrfToken', csrfToken, cookiesConfig);
-		return authCodeUrl;
-	} catch (err) {
-		console.error(err);
-		error(500, {
-			status: 500,
-			type: 'Authentication Error',
-			message: 'Failed to get authentication URL',
-		});
-	}
-};
+	const authCodeUrl = await msalInstance.getAuthCodeUrl(authCodeUrlRequest);
+	event.cookies.set('pkceVerifier', verifier, cookiesConfig);
+	event.cookies.set('csrfToken', csrfToken, cookiesConfig);
+	return authCodeUrl;
+}
 
-export const getTokens = async (event: RequestEvent) => {
-	const msalInstance = provider();
+export async function getTokens(event: RequestEvent) {
+	const msalInstance = msalInstanceProvider();
 	const state = event.url.searchParams.get('state');
 	if (state) {
 		const decodedState = JSON.parse(cryptoProvider.base64Decode(state));
@@ -75,35 +94,12 @@ export const getTokens = async (event: RequestEvent) => {
 					scopes: [],
 					codeVerifier: event.cookies.get('pkceVerifier'),
 				};
-				try {
-					const tokenResponse = await msalInstance.acquireTokenByCode(authCodeRequest);
-					event.cookies.set('accessToken', tokenResponse.accessToken, cookiesConfig);
-					event.cookies.set('idToken', tokenResponse.idToken, cookiesConfig);
-					event.cookies.set('account', JSON.stringify(tokenResponse.account), cookiesConfig);
-					return decodedState.redirectTo;
-				} catch (err) {
-					console.error(err);
-					error(401, {
-						status: 401,
-						type: 'Authentication Error',
-						message: 'Invalid authentication token',
-					});
-				}
+				const tokenResponse = await msalInstance.acquireTokenByCode(authCodeRequest);
+				event.cookies.set('accessToken', tokenResponse.accessToken, cookiesConfig);
+				event.cookies.set('idToken', tokenResponse.idToken, cookiesConfig);
+				event.cookies.set('account', JSON.stringify(tokenResponse.account), cookiesConfig);
+				return decodedState.redirectTo;
 			}
-		} else {
-			console.error('Error: CSRF token mismatch');
-			error(400, {
-				status: 400,
-				type: 'Authentication Error',
-				message: 'There was an error trying to authenticate user',
-			});
 		}
-	} else {
-		console.error('Error: State parameter missing');
-		error(400, {
-			status: 400,
-			type: 'Authentication Error',
-			message: 'There was an error trying to authenticate user',
-		});
 	}
-};
+}

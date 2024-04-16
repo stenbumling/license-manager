@@ -35,10 +35,6 @@
 			}
 		}}
 		use:getElementRect={(element) => (menuButtonRect = element)}
-		use:tooltip={{
-			content: 'License menu',
-			options: { delay: [1000, 0], offset: [0, 15] },
-		}}
 	>
 		<OverflowMenuHorizontal size={32} />
 	</button>

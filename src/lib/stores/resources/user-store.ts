@@ -10,7 +10,6 @@ export interface User {
 function createUserStore() {
 	const { subscribe, set, update } = writable<User[]>([]);
 
-	// Currently not used, but can be used in future user management features
 	async function fetchUsers() {
 		request.startLoading(userFetchRequest);
 		try {
@@ -19,17 +18,11 @@ function createUserStore() {
 				const users = await response.json();
 				update(() => users);
 			} else {
-				const error = await response.json();
+				const error: App.Error = await response.json();
 				notifications.add({
-					message: error.message || 'An error has occured. Please try refreshing the page.',
+					message: error.message,
 					type: 'alert',
 				});
-				request.setError(
-					userFetchRequest,
-					response.status,
-					error.error || 'Internal Server Error',
-					error.message || 'Failed to fetch users',
-				);
 				console.error('Failed to fetch users:', error);
 			}
 		} catch (error) {
@@ -39,7 +32,6 @@ function createUserStore() {
 				type: 'alert',
 				timeout: false,
 			});
-			request.setError(userFetchRequest, 500, 'Internal Server Error', 'Failed to fetch users');
 			console.error('Failed to fetch users:', error);
 		} finally {
 			request.endLoading(userFetchRequest);
@@ -65,9 +57,9 @@ function createUserStore() {
 				}
 				return data.user;
 			} else {
-				const error = await response.json();
+				const error: App.Error = await response.json();
 				notifications.add({
-					message: error.message || 'Failed to find or create user. Please try again.',
+					message: error.message,
 					type: 'alert',
 				});
 				console.error('Failed to find or create user:', error);
@@ -79,12 +71,6 @@ function createUserStore() {
 				type: 'alert',
 				timeout: false,
 			});
-			request.setError(
-				userFetchRequest,
-				500,
-				'Internal Server Error',
-				'Failed to find or create user',
-			);
 			console.error('Failed to find or create user:', error);
 		} finally {
 			request.endLoading(userFetchRequest);
@@ -104,20 +90,11 @@ function createUserStore() {
 					type: 'success',
 				});
 			} else {
-				const error = await response.json();
-				if (response.status === 404) {
-					notifications.add({
-						message:
-							error.message ||
-							'Failed to delete user because it could not be found. Try refreshing the page to get the latest data.',
-						type: 'alert',
-					});
-				} else {
-					notifications.add({
-						message: error.message || 'Failed to delete user. Please try again.',
-						type: 'alert',
-					});
-				}
+				const error: App.Error = await response.json();
+				notifications.add({
+					message: error.message,
+					type: 'alert',
+				});
 				console.error('Failed to delete user:', error);
 			}
 		} catch (error) {
