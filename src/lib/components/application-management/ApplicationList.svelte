@@ -5,7 +5,7 @@
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { Circle } from 'svelte-loading-spinners';
-	import { fade, fly, slide } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import ApplicationItem from './ApplicationListItem.svelte';
 
 	$: hasStartedRequest = $applicationFetchRequest.pendingRequests > 0 && !isLoading;
@@ -41,7 +41,7 @@
 
 	<!-- Render application items -->
 	{#if hasApplications && !hasError && !isLoading && !hasStartedRequest}
-		<div class="application-list" use:scrollShadow in:fly={{ duration: 80, y: -50 }}>
+		<div class="application-list" use:scrollShadow>
 			{#each $applicationStore as applicationItem}
 				<div transition:slide={{ duration: 120 }}>
 					<ApplicationItem {applicationItem} />

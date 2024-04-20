@@ -4,6 +4,7 @@
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { modal } from '$lib/stores/modal-store';
+	import { licenseDeleteRequest } from '$lib/stores/request-state-store';
 	import type { License } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
@@ -53,6 +54,11 @@
 	function handleWarningModal() {
 		contextMenu.close();
 		showWarningModal = true;
+	}
+
+	async function handleDelete() {
+		await contextMenu.deleteLicense(license);
+		showWarningModal = false;
 	}
 
 	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
@@ -161,11 +167,9 @@
 {#if showWarningModal}
 	<WarningModal
 		warningText="Warning! This will delete the license and all its data. Are you sure?"
-		onConfirm={() => {
-			showWarningModal = false;
-			contextMenu.deleteLicense(license);
-		}}
+		onConfirm={handleDelete}
 		onCancel={() => (showWarningModal = false)}
+		requestState={licenseDeleteRequest}
 	/>
 {/if}
 

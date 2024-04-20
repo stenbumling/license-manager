@@ -15,7 +15,7 @@ import { get, writable } from 'svelte/store';
  * with, for a more cohesive state management.
  */
 
-interface RequestState {
+export interface RequestState {
 	isLoading: boolean;
 	pendingRequests: number;
 	startTime: number;
@@ -40,9 +40,11 @@ const defaultError: App.Error = { status: null, type: '', message: '' };
 export const tableFetchRequest = writable<RequestState>(getInitialStateValues(true));
 export const licenseFetchRequest = writable<RequestState>(getInitialStateValues());
 export const licensePostRequest = writable<RequestState>(getInitialStateValues());
+export const licenseDeleteRequest = writable<RequestState>(getInitialStateValues());
 export const userFetchRequest = writable<RequestState>(getInitialStateValues());
 export const applicationFetchRequest = writable<RequestState>(getInitialStateValues());
 export const applicationPostRequest = writable<RequestState>(getInitialStateValues());
+export const applicationDeleteRequest = writable<RequestState>(getInitialStateValues());
 
 function createRequestStateController() {
 	/**
@@ -80,8 +82,6 @@ function createRequestStateController() {
 	async function endRequestState(request: Writable<RequestState>, minLoadingTime: number = 0) {
 		const elapsedTime = Date.now() - get(request).startTime;
 		const delayedTime = elapsedTime < get(request).delay ? 0 : minLoadingTime - elapsedTime;
-		console.log('minLoadingTime:', minLoadingTime, ', get(request).startTime:', get(request).startTime);
-		console.log('Elapsed:', elapsedTime, ', Delayed:', delayedTime);
 		await delay(delayedTime);
 
 		request.update((state) => {

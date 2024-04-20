@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
 	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { applicationDeleteRequest } from '$lib/stores/request-state-store';
 	import type { Application } from '$lib/stores/resources/application-store';
 	import { application, applicationStore } from '$lib/stores/resources/application-store';
 	import { license } from '$lib/stores/resources/license-store';
@@ -11,10 +12,6 @@
 
 	export let applicationItem: Application;
 	let showWarningModal = false;
-
-	function handleWarningModal() {
-		showWarningModal = true;
-	}
 
 	function handleEdit() {
 		const appCopy = JSON.parse(JSON.stringify(applicationItem));
@@ -63,7 +60,7 @@
 				<TrashCan size={24} fill="#cccccc" />
 			</button>
 		{:else}
-			<button class="trashcan-icon deletable" on:click={handleWarningModal}>
+			<button class="trashcan-icon deletable" on:click={() => (showWarningModal = true)}>
 				<TrashCan size={24} fill="red" />
 			</button>
 		{/if}
@@ -75,6 +72,7 @@
 		warningText="Warning! This will delete the application. Are you sure?"
 		onConfirm={handleDelete}
 		onCancel={() => (showWarningModal = false)}
+		requestState={applicationDeleteRequest}
 	/>
 {/if}
 

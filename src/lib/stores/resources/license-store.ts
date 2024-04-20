@@ -4,7 +4,12 @@ import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { notifications } from '../notification-store';
-import { licenseFetchRequest, licensePostRequest, request } from '../request-state-store';
+import {
+	licenseDeleteRequest,
+	licenseFetchRequest,
+	licensePostRequest,
+	request,
+} from '../request-state-store';
 import { table } from './table-store';
 
 function getInitialValues() {
@@ -197,9 +202,11 @@ function createLicenseStore() {
 
 	async function deleteLicense(id: string) {
 		try {
+			await request.startLoading(licenseDeleteRequest, 0);
 			const response = await fetch(`/api/licenses/${id}`, {
 				method: 'DELETE',
 			});
+			await request.endLoading(licenseDeleteRequest, 1000);
 			if (response.ok) {
 				await updateLicenseCounts();
 				await table.updateState();
@@ -213,10 +220,10 @@ function createLicenseStore() {
 					message: error.message,
 					type: 'alert',
 				});
-
 				console.error('Failed to delete license:', error);
 			}
 		} catch (error) {
+			await request.endLoading(licenseDeleteRequest);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be deleted. Please try refreshing the page.',

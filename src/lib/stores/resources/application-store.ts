@@ -2,7 +2,12 @@ import { applicationValidationError } from '$lib/validations/application-validat
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { notifications } from '../notification-store';
-import { applicationFetchRequest, applicationPostRequest, request } from '../request-state-store';
+import {
+	applicationDeleteRequest,
+	applicationFetchRequest,
+	applicationPostRequest,
+	request,
+} from '../request-state-store';
 
 function getInitialValues() {
 	return {
@@ -124,9 +129,11 @@ function createApplicationStore() {
 
 	async function deleteApplication(id: string) {
 		try {
+			await request.startLoading(applicationDeleteRequest, 0);
 			const response = await fetch(`/api/applications/${id}`, {
 				method: 'DELETE',
 			});
+			await request.endLoading(applicationDeleteRequest, 1000);
 			if (response.ok) {
 				await fetchApplications();
 				notifications.add({
@@ -142,6 +149,7 @@ function createApplicationStore() {
 				console.error('Failed to delete application:', error);
 			}
 		} catch (error) {
+			await request.endLoading(applicationDeleteRequest);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be deleted. Please try refreshing the page.',

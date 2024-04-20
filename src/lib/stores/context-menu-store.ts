@@ -100,8 +100,8 @@ function createContextMenuStore() {
 	}
 
 	async function deleteLicense(license: License) {
-		modal.closeLicense();
 		await licenseStore.delete(license.id);
+		modal.closeLicense();
 	}
 
 	return {

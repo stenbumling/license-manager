@@ -13,7 +13,11 @@
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { applicationModalMode, modal } from '$lib/stores/modal-store';
-	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
+	import {
+		licenseDeleteRequest,
+		licenseFetchRequest,
+		licensePostRequest,
+	} from '$lib/stores/request-state-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
@@ -75,6 +79,11 @@
 		} else {
 			return;
 		}
+	}
+
+	async function handleDelete() {
+		await contextMenu.deleteLicense($license);
+		showWarningModal = false;
 	}
 </script>
 
@@ -175,8 +184,9 @@
 {#if showWarningModal}
 	<WarningModal
 		warningText="Warning! This will delete the license and all its data. Are you sure?"
-		onConfirm={() => contextMenu.deleteLicense($license)}
+		onConfirm={handleDelete}
 		onCancel={() => (showWarningModal = false)}
+		requestState={licenseDeleteRequest}
 	/>
 {/if}
 
