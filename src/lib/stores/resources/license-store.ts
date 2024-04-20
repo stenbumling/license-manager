@@ -32,6 +32,7 @@ function getInitialValues() {
 		contactPerson: '',
 		additionalContactInfo: '',
 		comment: '',
+		updatedAt: '',
 	};
 }
 
@@ -57,6 +58,7 @@ export interface License {
 	contactPerson: string;
 	additionalContactInfo: string;
 	comment: string;
+	updatedAt: string;
 }
 
 export interface LicenseCounts {

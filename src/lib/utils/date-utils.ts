@@ -5,6 +5,11 @@ export function getTodaysDate(): string {
 	return currentDate;
 }
 
+export function cleanUpDateString(unformattedDate: string): string {
+	const date = new Date(unformattedDate);
+	return date.toLocaleString('sv-SE');
+}
+
 export function daysUntil(date: string): number {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
