@@ -66,7 +66,7 @@ function createRequestStateController() {
 	async function endRequestState(request: Writable<RequestState>, minLoadingTime = 1000) {
 		// If loading spinner is shown, wait for a minimum time before removing it
 		const elapsedTime = Date.now() - get(loadingSpinner).startTime;
-		const delayedTime = elapsedTime < get(loadingSpinner).delay ? 0 : minLoadingTime;
+		const delayedTime = elapsedTime < get(loadingSpinner).delay ? 0 : minLoadingTime - elapsedTime;
 		await delay(delayedTime);
 
 		request.update((state) => {
