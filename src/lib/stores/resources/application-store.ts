@@ -6,6 +6,7 @@ import {
 	applicationDeleteRequest,
 	applicationFetchRequest,
 	applicationPostRequest,
+	disabledButtons,
 	request,
 } from '../request-state-store';
 
@@ -61,6 +62,7 @@ function createApplicationStore() {
 
 	async function addApplication(application: Application) {
 		try {
+			disabledButtons.set(true);
 			await request.startLoading(applicationPostRequest, 0);
 			const response = await fetch('/api/applications', {
 				method: 'POST',
@@ -68,6 +70,7 @@ function createApplicationStore() {
 				body: JSON.stringify(application),
 			});
 			await request.endLoading(applicationPostRequest, 1000);
+			disabledButtons.set(false);
 			if (response.ok) {
 				notifications.add({
 					message: 'Application created successfully',
@@ -85,6 +88,7 @@ function createApplicationStore() {
 			}
 		} catch (error) {
 			await request.endLoading(applicationPostRequest);
+			disabledButtons.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be created. Please try refreshing the page.',
@@ -98,6 +102,7 @@ function createApplicationStore() {
 
 	async function editApplication(application: Application) {
 		try {
+			disabledButtons.set(true);
 			await request.startLoading(applicationPostRequest, 0);
 			const response = await fetch(`/api/applications/${application.id}`, {
 				method: 'PUT',
@@ -105,6 +110,7 @@ function createApplicationStore() {
 				body: JSON.stringify(application),
 			});
 			await request.endLoading(applicationPostRequest, 1000);
+			disabledButtons.set(false);
 			if (response.ok) {
 				notifications.add({
 					message: 'Application was edited successfully',
@@ -122,6 +128,7 @@ function createApplicationStore() {
 			}
 		} catch (error) {
 			await request.endLoading(applicationPostRequest);
+			disabledButtons.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be edited. Please try refreshing the page.',
@@ -135,11 +142,13 @@ function createApplicationStore() {
 
 	async function deleteApplication(id: string) {
 		try {
+			disabledButtons.set(true);
 			await request.startLoading(applicationDeleteRequest, 0);
 			const response = await fetch(`/api/applications/${id}`, {
 				method: 'DELETE',
 			});
 			await request.endLoading(applicationDeleteRequest, 1000);
+			disabledButtons.set(false);
 			if (response.ok) {
 				await fetchApplications();
 				notifications.add({
@@ -158,6 +167,7 @@ function createApplicationStore() {
 			}
 		} catch (error) {
 			await request.endLoading(applicationDeleteRequest);
+			disabledButtons.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be deleted. Please try refreshing the page.',

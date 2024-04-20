@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isRequestActive } from '$lib/stores/request-state-store';
+	import { disabledButtons } from '$lib/stores/request-state-store';
 
 	export let title: string = 'Button title';
 	export let action: (e: MouseEvent | KeyboardEvent) => void;
@@ -14,7 +14,7 @@
 <div
 	role="button"
 	tabindex="0"
-	class:disabled={$isRequestActive}
+	class:disabled={$disabledButtons}
 	class="button-container"
 	on:click|preventDefault={action}
 	on:keydown={handleKeyDown}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { isRequestActive } from '$lib/stores/request-state-store';
+	import { disabledButtons } from '$lib/stores/request-state-store';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	export let action: (e: MouseEvent | KeyboardEvent) => void;
@@ -16,7 +16,7 @@
 <div
 	role="button"
 	tabindex="0"
-	class:disabled={$isRequestActive && parentType === 'modal'}
+	class:disabled={$disabledButtons && parentType === 'modal'}
 	class="close-button"
 	on:click|preventDefault={action}
 	on:keydown={handleKeyDown}

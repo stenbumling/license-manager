@@ -1,13 +1,13 @@
 <script lang="ts">
+	import { disabledButtons } from '$lib/stores/request-state-store';
 	import type { ComponentType } from 'svelte';
-	import { isRequestActive } from '$lib/stores/request-state-store';
 
 	export let icon: ComponentType;
 	export let iconSize: 16 | 20 | 24 | 32 | undefined = 20;
 	export let action: (e?: MouseEvent | KeyboardEvent) => void;
 </script>
 
-<button class="icon-button" disabled={$isRequestActive} on:click={action}>
+<button class="icon-button" disabled={$disabledButtons} on:click={action}>
 	<svelte:component this={icon} size={iconSize} fill="white" />
 </button>
 

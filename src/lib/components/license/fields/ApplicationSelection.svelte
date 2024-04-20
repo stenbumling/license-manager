@@ -16,7 +16,7 @@
 
 	$: isLoading = $applicationFetchRequest.pendingRequests > 0 || $applicationFetchRequest.isLoading;
 	$: hasError = $applicationFetchRequest.error?.message;
-	$: noResults = $applicationStore.length === 0;
+	$: noResults = $applicationStore.length === 0 && !isLoading;
 	$: hasApplications = $applicationStore.length > 0 && !isLoading && !hasError && !noResults;
 
 	function handleApplicationChange(e: Event) {
@@ -40,11 +40,15 @@
 			on:change={handleApplicationChange}
 		>
 			{#if isLoading}
-				<option disabled selected value="">Loading...</option>
+				<option disabled selected value={$currentLicense.applicationId}>Loading...</option>
 			{:else if hasError}
-				<option disabled selected value="">Error loading applications</option>
+				<option disabled selected value={$currentLicense.applicationId}
+					>Error loading applications</option
+				>
 			{:else if noResults}
-				<option disabled selected value="">No applications added yet</option>
+				<option disabled selected value={$currentLicense.applicationId}
+					>No applications added yet</option
+				>
 			{:else if hasApplications}
 				{#if $licenseMode === 'add'}
 					<option disabled selected value="">Select an application</option>

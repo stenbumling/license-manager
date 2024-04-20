@@ -3,9 +3,9 @@
 	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
+	import { disabledButtons } from '$lib/stores/request-state-store';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import { v4 as uuidv4 } from 'uuid';
-	import { isRequestActive } from '$lib/stores/request-state-store';
 
 	/*
 	 * This component is a three-dots-button that opens a context menu when clicked.
@@ -26,7 +26,7 @@
 		tabindex="0"
 		class="menu-button"
 		class:active={$contextMenu.activeId === menuId}
-		class:disabled={$isRequestActive}
+		class:disabled={$disabledButtons}
 		on:click|stopPropagation|preventDefault={() => {
 			contextMenu.open(menuId);
 		}}
