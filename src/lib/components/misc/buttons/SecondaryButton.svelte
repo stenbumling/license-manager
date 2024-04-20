@@ -1,18 +1,23 @@
 <script lang="ts">
+	import { isRequestActive } from '$lib/stores/request-state-store';
+
 	export let title: string = 'Button title';
 	export let action: (e: MouseEvent | KeyboardEvent) => void;
+
+	function handleKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			action(e);
+		}
+	}
 </script>
 
 <div
 	role="button"
 	tabindex="0"
+	class:disabled={$isRequestActive}
 	class="button-container"
 	on:click|preventDefault={action}
-	on:keydown={(e) => {
-		if (e.key === 'Enter') {
-			action(e);
-		}
-	}}
+	on:keydown={handleKeyDown}
 >
 	<div class="button-content">
 		<h3 class="button-title">{title}</h3>
@@ -80,5 +85,10 @@
 		position: relative;
 		top: 1px;
 		left: 1px;
+	}
+
+	.disabled {
+		pointer-events: none;
+		opacity: 0.5;
 	}
 </style>

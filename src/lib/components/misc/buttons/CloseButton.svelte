@@ -1,20 +1,25 @@
 <script lang="ts">
+	import { isRequestActive } from '$lib/stores/request-state-store';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 
 	export let action: (e: MouseEvent | KeyboardEvent) => void;
 	export let color: string = 'black';
+	export let parentType: 'notification' | 'modal' = 'modal';
+
+	function handleKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			action(e);
+		}
+	}
 </script>
 
 <div
 	role="button"
 	tabindex="0"
+	class:disabled={$isRequestActive && parentType === 'modal'}
 	class="close-button"
 	on:click|preventDefault={action}
-	on:keydown={(e) => {
-		if (e.key === 'Enter') {
-			action(e);
-		}
-	}}
+	on:keydown={handleKeyDown}
 >
 	<CloseLarge size={24} fill={color} aria-label="Close" />
 </div>
@@ -41,5 +46,20 @@
 		position: relative;
 		top: 1px;
 		left: 1px;
+	}
+
+	.disabled {
+		pointer-events: none;
+		opacity: 0.5;
+
+		&:hover {
+			background-color: transparent;
+		}
+
+		&:active {
+			position: relative;
+			top: 0;
+			left: 0;
+		}
 	}
 </style>

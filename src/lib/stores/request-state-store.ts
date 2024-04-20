@@ -45,6 +45,8 @@ export const applicationFetchRequest = writable<RequestState>(getInitialStateVal
 export const applicationPostRequest = writable<RequestState>(getInitialStateValues());
 export const applicationDeleteRequest = writable<RequestState>(getInitialStateValues());
 
+export const isRequestActive = writable<boolean>(false);
+
 function createRequestStateController() {
 	/**
 	 * Set the loading state to true and show the loading spinner after a optional delay
@@ -58,7 +60,10 @@ function createRequestStateController() {
 					...state,
 					pendingRequests: state.pendingRequests + 1,
 					startTime: Date.now(),
-					delayTimer: setTimeout(() => request.update((s) => ({ ...s, isLoading: true })), delay),
+					delayTimer: setTimeout(() => {
+						request.update((s) => ({ ...s, isLoading: true }));
+						isRequestActive.set(true);
+					}, delay),
 					delay: delay,
 					error: null,
 				};
@@ -87,6 +92,7 @@ function createRequestStateController() {
 			state.pendingRequests = Math.max(0, state.pendingRequests - 1); // Prevent negative values
 			if (state.pendingRequests === 0) {
 				if (state.delayTimer) {
+					isRequestActive.set(false);
 					clearTimeout(state.delayTimer);
 				}
 				return {

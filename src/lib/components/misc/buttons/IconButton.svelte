@@ -1,12 +1,13 @@
 <script lang="ts">
 	import type { ComponentType } from 'svelte';
+	import { isRequestActive } from '$lib/stores/request-state-store';
 
 	export let icon: ComponentType;
 	export let iconSize: 16 | 20 | 24 | 32 | undefined = 20;
 	export let action: (e?: MouseEvent | KeyboardEvent) => void;
 </script>
 
-<button class="icon-button" on:click={action}>
+<button class="icon-button" disabled={$isRequestActive} on:click={action}>
 	<svelte:component this={icon} size={iconSize} fill="white" />
 </button>
 
@@ -33,5 +34,10 @@
 		position: relative;
 		top: 1px;
 		left: 1px;
+	}
+
+	.icon-button:disabled {
+		pointer-events: none;
+		opacity: 0.5;
 	}
 </style>

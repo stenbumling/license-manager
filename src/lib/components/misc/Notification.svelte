@@ -33,7 +33,11 @@
 
 	<div style:margin-left={dismissible ? '1rem' : '2.9rem'}>
 		{#if dismissible}
-			<CloseModalButton action={handleDismiss} color={type === 'warning' ? 'black' : 'white'} />
+			<CloseModalButton
+				action={handleDismiss}
+				color={type === 'warning' ? 'black' : 'white'}
+				parentType="notification"
+			/>
 		{/if}
 	</div>
 </article>
