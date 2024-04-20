@@ -39,8 +39,8 @@ function createModalController() {
 		if (validateLicenseId(licenseId)) {
 			await goto(`?modal=view&id=${licenseId}`);
 			licenseMode.set('view');
-			await licenseStore.fetch(licenseId);
 			showLicenseModal.set(true);
+			await licenseStore.fetch(licenseId);
 		} else {
 			await goto('/');
 			closeAllModals();

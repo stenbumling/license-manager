@@ -9,9 +9,14 @@
 	import { receive, send } from '$lib/utils/animation-utils.ts';
 	import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
+	import { onMount } from 'svelte';
 	import { Pulse } from 'svelte-loading-spinners';
 	import { flip } from 'svelte/animate';
 	import { fade, slide } from 'svelte/transition';
+
+	onMount(async () => {
+		await userStore.fetch();
+	});
 
 	let userInput = '';
 	let userSuggestions: User[] = [];

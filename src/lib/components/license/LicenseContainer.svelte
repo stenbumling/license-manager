@@ -14,21 +14,22 @@
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { applicationModalMode, modal } from '$lib/stores/modal-store';
 	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
-	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
-	import { userStore } from '$lib/stores/resources/user-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
-	import { onMount } from 'svelte';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
 	import WarningModal from '../misc/WarningModal.svelte';
 	import CloseModalButton from '../misc/buttons/CloseButton.svelte';
 
 	let showWarningModal = false;
+	$: hasStartedRequest = $licenseFetchRequest.pendingRequests > 0 && !isLoading;
+	$: isLoading = $licenseFetchRequest.isLoading;
+	$: hasError = $licenseFetchRequest.error.message && !isLoading;
+	$: hasLicense = $license.id && !isLoading;
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
@@ -53,11 +54,6 @@
 			class: 'alert',
 		},
 	];
-
-	onMount(async () => {
-		await userStore.fetch();
-		await applicationStore.fetch();
-	});
 
 	function handleWarningModal() {
 		contextMenu.close();
@@ -84,13 +80,23 @@
 
 <div class="license-container">
 	<!-- Loading -->
-	{#if $licenseFetchRequest.isLoading}
+	{#if hasStartedRequest}
 		<div class="fallback-container">
+			<div class="fallback-container-close-button">
+				<CloseModalButton action={modal.closeLicense} />
+			</div>
+			<!-- Prevents default state being active if loading spinner has a delay-->
+		</div>
+	{:else if isLoading}
+		<div class="fallback-container">
+			<div class="fallback-container-close-button">
+				<CloseModalButton action={modal.closeLicense} />
+			</div>
 			<Circle color="var(--deep-purple)" />
 		</div>
 
 		<!-- Error fallback -->
-	{:else if $licenseFetchRequest.error.message}
+	{:else if hasError}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
@@ -101,14 +107,14 @@
 				<p>{$licenseFetchRequest.error.details}</p>
 			</div>
 		</div>
-	{:else}
+	{:else if hasLicense}
 		<!-- License header -->
-		<div in:fade={{ duration: 300 }}>
+		<div in:fade={{ duration: 120 }}>
 			<LicenseHeader />
 		</div>
 
 		<!-- License fields -->
-		<div tabIndex="-1" class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
+		<div tabIndex="-1" class="fields-grid" use:scrollShadow in:fade={{ duration: 120 }}>
 			<ApplicationSelection />
 			<AssignedUsers />
 			<ExpirationField />
