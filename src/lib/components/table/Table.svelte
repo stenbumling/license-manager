@@ -6,7 +6,6 @@
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
 
-	$: appIsLoading = isLoading && !($tableFetchRequest.error.status === 418);
 	$: isLoading = $tableFetchRequest.isLoading;
 	$: hasError = $tableFetchRequest.error.message && !isLoading;
 	$: hasLicenses = $licenseStore.length > 0 && !isLoading;
@@ -17,7 +16,7 @@
 
 <div class="table-body-wrapper">
 	<!-- Loading -->
-	{#if appIsLoading}
+	{#if isLoading}
 		<div class="fallback-container" in:fade={{ duration: 300 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
