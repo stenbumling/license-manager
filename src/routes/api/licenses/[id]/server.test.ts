@@ -78,7 +78,7 @@ describe('PUT /licenses/:id', () => {
 
 		expect(response.status).toBe(204);
 	});
-	
+
 	it('should return 409 when license has been modified since last retrieval', async () => {
 		vi.mocked(License.update).mockResolvedValue([0]);
 		vi.mocked(License.findByPk).mockResolvedValue({ id: uuidv4() } as LicenseInstance);

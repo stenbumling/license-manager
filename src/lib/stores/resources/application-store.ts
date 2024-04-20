@@ -35,6 +35,10 @@ function createApplicationStore() {
 				set(applications);
 			} else {
 				const error: App.Error = await response.json();
+				notifications.add({
+					message: error.message,
+					type: 'alert',
+				});
 				request.setError(applicationFetchRequest, error);
 				console.error('Failed to fetch applications:', error);
 			}

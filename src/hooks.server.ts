@@ -24,7 +24,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	});
 };
 
-export const handleError: HandleServerError = async ({ error, event, status, message }) => {
+export const handleError: HandleServerError = async ({ error, event, status }) => {
 	const err = error as Error;
 	console.error(`An error has occurred`, {
 		path: event.url.pathname,
@@ -35,7 +35,7 @@ export const handleError: HandleServerError = async ({ error, event, status, mes
 	const errorResponse: App.Error = {
 		status: status || 500,
 		type: 'Internal Error',
-		message: message || 'An unexpected error occurred',
+		message: 'An unexpected error occurred',
 	};
 
 	if (status === 404) {

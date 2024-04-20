@@ -1,6 +1,12 @@
 import { building } from '$app/environment';
 import { error } from '@sveltejs/kit';
-import { ConnectionError, ConnectionTimedOutError, Sequelize, TimeoutError, AccessDeniedError } from 'sequelize';
+import {
+	ConnectionError,
+	ConnectionTimedOutError,
+	Sequelize,
+	TimeoutError,
+	AccessDeniedError,
+} from 'sequelize';
 import type { ConnectionConfiguration } from 'tedious';
 
 export const sequelize = (() => {

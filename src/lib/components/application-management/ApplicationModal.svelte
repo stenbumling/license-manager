@@ -2,17 +2,11 @@
 	import { focusTrap } from '$lib/actions/focusTrap';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { applicationModalMode, modal } from '$lib/stores/modal-store';
-	import { applicationStore } from '$lib/stores/resources/application-store';
-	import { onMount } from 'svelte';
 	import { quintOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
 	import ApplicationAdd from './ApplicationAdd.svelte';
 	import ApplicationEdit from './ApplicationEdit.svelte';
 	import ApplicationList from './ApplicationList.svelte';
-
-	onMount(async () => {
-		await applicationStore.fetch();
-	});
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
