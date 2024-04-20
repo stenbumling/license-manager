@@ -61,7 +61,7 @@ function createModalController() {
 
 	function closeApplicationModal() {
 		applicationModalMode.set('closed');
-		applicationStore.reset();
+		applicationStore.resetFields();
 	}
 
 	function closeAssignedUsers() {

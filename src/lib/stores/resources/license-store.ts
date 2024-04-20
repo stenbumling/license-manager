@@ -140,6 +140,7 @@ function createLicenseStore() {
 					message: 'License created successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -147,6 +148,7 @@ function createLicenseStore() {
 					type: 'alert',
 				});
 				console.error('Failed to create license:', error);
+				return false;
 			}
 		} catch (error) {
 			await request.endLoading(licensePostRequest);
@@ -157,6 +159,7 @@ function createLicenseStore() {
 				timeout: false,
 			});
 			console.error('Failed to create license:', error);
+			return false;
 		}
 	}
 
@@ -180,6 +183,7 @@ function createLicenseStore() {
 					message: 'License updated successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -187,6 +191,7 @@ function createLicenseStore() {
 					type: 'alert',
 				});
 				console.error('Failed to update license:', error);
+				return false;
 			}
 		} catch (error) {
 			await request.endLoading(licensePostRequest);
@@ -197,6 +202,7 @@ function createLicenseStore() {
 				timeout: false,
 			});
 			console.error('Failed to update license:', error);
+			return false;
 		}
 	}
 
@@ -214,6 +220,7 @@ function createLicenseStore() {
 					message: 'License deleted successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -221,6 +228,7 @@ function createLicenseStore() {
 					type: 'alert',
 				});
 				console.error('Failed to delete license:', error);
+				return false;
 			}
 		} catch (error) {
 			await request.endLoading(licenseDeleteRequest);
@@ -231,6 +239,7 @@ function createLicenseStore() {
 				timeout: false,
 			});
 			console.error('Failed to delete license:', error);
+			return false;
 		}
 	}
 
@@ -254,7 +263,7 @@ function createLicenseStore() {
 		delete: deleteLicense,
 		updateLicense: updateLicense,
 		updateCounts: updateLicenseCounts,
-		resetFields: resetFields,
+		resetFields,
 	};
 }
 

@@ -5,7 +5,7 @@
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { modal } from '$lib/stores/modal-store';
 	import { licenseDeleteRequest } from '$lib/stores/request-state-store';
-	import type { License } from '$lib/stores/resources/license-store';
+	import { licenseStore, type License } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
@@ -46,28 +46,24 @@
 		{
 			label: 'Delete license',
 			icon: TrashCan,
-			action: () => handleWarningModal(),
+			action: () => {
+				contextMenu.close();
+				showWarningModal = true;
+			},
 			class: 'alert',
 		},
 	];
 
-	function handleWarningModal() {
+	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
 		contextMenu.close();
-		showWarningModal = true;
+		if (e.metaKey || e.ctrlKey) return;
+		e.preventDefault();
+		modal.openViewLicense(license.id);
 	}
 
 	async function handleDelete() {
-		await contextMenu.deleteLicense(license);
+		await licenseStore.delete(license.id);
 		showWarningModal = false;
-	}
-
-	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
-		contextMenu.close();
-		if (e.metaKey || e.ctrlKey) {
-			return;
-		}
-		e.preventDefault();
-		modal.openViewLicense(license.id);
 	}
 </script>
 

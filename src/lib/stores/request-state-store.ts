@@ -21,7 +21,7 @@ export interface RequestState {
 	startTime: number;
 	delayTimer: NodeJS.Timeout | undefined;
 	delay: number;
-	error: App.Error;
+	error: App.Error | null;
 }
 
 function getInitialStateValues(defaultLoadingState = false) {
@@ -31,10 +31,9 @@ function getInitialStateValues(defaultLoadingState = false) {
 		startTime: 100,
 		delayTimer: undefined,
 		delay: 0,
-		error: defaultError,
+		error: null,
 	};
 }
-const defaultError: App.Error = { status: null, type: '', message: '' };
 
 // Stores for different types of requests.
 export const tableFetchRequest = writable<RequestState>(getInitialStateValues(true));
@@ -61,7 +60,7 @@ function createRequestStateController() {
 					startTime: Date.now(),
 					delayTimer: setTimeout(() => request.update((s) => ({ ...s, isLoading: true })), delay),
 					delay: delay,
-					error: defaultError,
+					error: null,
 				};
 			} else {
 				return {

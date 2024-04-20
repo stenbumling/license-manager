@@ -59,30 +59,30 @@
 		},
 	];
 
+	async function handleLicense() {
+		const isValid = await validateLicense($license);
+		if (isValid) {
+			let success = false;
+			switch ($licenseMode) {
+				case 'view':
+					success = await licenseStore.updateLicense($license);
+					break;
+				case 'add':
+					success = await licenseStore.add($license);
+					break;
+			}
+			if (success) modal.closeLicense();
+		}
+	}
+
 	function handleWarningModal() {
 		contextMenu.close();
 		showWarningModal = true;
 	}
 
-	async function handleLicense() {
-		const isValid = await validateLicense($license);
-		if (isValid) {
-			if ($licenseMode === 'view') {
-				await licenseStore.updateLicense($license);
-			} else if ($licenseMode === 'add') {
-				await licenseStore.add($license);
-			}
-			if ($licensePostRequest.error?.message) {
-				return;
-			}
-			modal.closeLicense();
-		} else {
-			return;
-		}
-	}
-
 	async function handleDelete() {
-		await contextMenu.deleteLicense($license);
+		const success = await licenseStore.delete($license.id);
+		if (success) modal.closeLicense();
 		showWarningModal = false;
 	}
 </script>

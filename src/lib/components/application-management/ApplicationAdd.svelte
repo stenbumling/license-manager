@@ -14,20 +14,17 @@
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($application);
 		if (isValid) {
-			await applicationStore.add($application);
-			if ($applicationPostRequest.error) {
-				return;
+			const success = await applicationStore.add($application);
+			if (success) {
+				applicationStore.resetFields();
+				applicationModalMode.set('list');
+				await applicationStore.fetch();
 			}
-			await applicationStore.fetch();
-			applicationStore.reset();
-			applicationModalMode.set('list');
-		} else {
-			return;
 		}
 	}
 
 	function handleCancel() {
-		applicationStore.reset();
+		applicationStore.resetFields();
 		applicationModalMode.set('list');
 	}
 </script>

@@ -49,6 +49,7 @@
 			{/each}
 		</div>
 	{/if}
+
 	<div class="button-container">
 		<PrimaryButton title="Add new application" action={() => applicationModalMode.set('add')} />
 	</div>

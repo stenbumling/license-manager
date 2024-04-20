@@ -17,24 +17,27 @@
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($application);
 		if (isValid) {
-			await applicationStore.edit($application);
-			await applicationStore.fetch();
-			// Updates the application name in license header if the changed application is currently selected
-			if ($license.application.name === oldAppName && $licenseMode === 'view') {
-				license.set({
-					...$license,
-					application: { ...$license.application, name: $application.name },
-				});
+			const success = await applicationStore.edit($application);
+			if (success) {
+				applicationStore.resetFields();
+				applicationModalMode.set('list');
+				await applicationStore.fetch();
+				updateApplicationNameInLicenseModalHeader();
 			}
-			applicationStore.reset();
-			applicationModalMode.set('list');
-		} else {
-			return;
+		}
+	}
+
+	function updateApplicationNameInLicenseModalHeader() {
+		if ($license.application.name === oldAppName && $licenseMode === 'view') {
+			license.set({
+				...$license,
+				application: { ...$license.application, name: $application.name },
+			});
 		}
 	}
 
 	function handleCancel() {
-		applicationStore.reset();
+		applicationStore.resetFields();
 		applicationModalMode.set('list');
 	}
 </script>

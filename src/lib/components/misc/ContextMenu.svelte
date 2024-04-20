@@ -14,7 +14,9 @@
 	export let items: ContextMenuItem[];
 	export let referenceElementRect: DOMRect;
 
-	// This function is used to dynamically position the context menu according to the reference element (menu button)
+	/**
+	 * This function is used to dynamically position the context menu according to the reference element (menu button)
+	 */
 	function renderContextMenu(contextMenuRect: DOMRect) {
 		contextMenu.setPosition(referenceElementRect, contextMenuRect);
 	}

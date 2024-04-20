@@ -73,6 +73,7 @@ function createApplicationStore() {
 					message: 'Application created successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -80,6 +81,7 @@ function createApplicationStore() {
 					type: 'alert',
 				});
 				console.error('Failed to create application:', error);
+				return false;
 			}
 		} catch (error) {
 			await request.endLoading(applicationPostRequest);
@@ -90,6 +92,7 @@ function createApplicationStore() {
 				timeout: false,
 			});
 			console.error('Failed to create application:', error);
+			return false;
 		}
 	}
 
@@ -107,6 +110,7 @@ function createApplicationStore() {
 					message: 'Application was edited successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -114,6 +118,7 @@ function createApplicationStore() {
 					type: 'alert',
 				});
 				console.error('Failed to edit application:', error);
+				return false;
 			}
 		} catch (error) {
 			await request.endLoading(applicationPostRequest);
@@ -124,6 +129,7 @@ function createApplicationStore() {
 				timeout: false,
 			});
 			console.error('Failed to edit application:', error);
+			return false;
 		}
 	}
 
@@ -140,6 +146,7 @@ function createApplicationStore() {
 					message: 'Application deleted successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -147,6 +154,7 @@ function createApplicationStore() {
 					type: 'alert',
 				});
 				console.error('Failed to delete application:', error);
+				return false;
 			}
 		} catch (error) {
 			await request.endLoading(applicationDeleteRequest);
@@ -157,6 +165,7 @@ function createApplicationStore() {
 				timeout: false,
 			});
 			console.error('Failed to delete application:', error);
+			return false;
 		}
 	}
 
@@ -179,7 +188,7 @@ function createApplicationStore() {
 		add: addApplication,
 		edit: editApplication,
 		delete: deleteApplication,
-		reset: resetFields,
+		resetFields,
 	};
 }
 
