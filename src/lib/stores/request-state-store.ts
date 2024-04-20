@@ -18,7 +18,9 @@ import { get, writable } from 'svelte/store';
 interface RequestState {
 	isLoading: boolean;
 	pendingRequests: number;
+	startTime: number;
 	delayTimer: NodeJS.Timeout | undefined;
+	delay: number;
 	error: App.Error;
 }
 
@@ -26,7 +28,9 @@ function getInitialStateValues(defaultLoadingState = false) {
 	return {
 		isLoading: defaultLoadingState,
 		pendingRequests: 0,
+		startTime: 100,
 		delayTimer: undefined,
+		delay: 0,
 		error: defaultError,
 	};
 }
@@ -40,33 +44,44 @@ export const userFetchRequest = writable<RequestState>(getInitialStateValues());
 export const applicationFetchRequest = writable<RequestState>(getInitialStateValues());
 export const applicationPostRequest = writable<RequestState>(getInitialStateValues());
 
-const loadingSpinner = writable<{ startTime: number; delay: number }>({ startTime: 0, delay: 0 });
-
 function createRequestStateController() {
-	function setRequestState(request: Writable<RequestState>, delay = 200) {
-		loadingSpinner.set({ startTime: Date.now(), delay: delay });
-
+	/**
+	 * Set the loading state to true and show the loading spinner after a optional delay
+	 * @param request A request state store to update
+	 * @param {number} [delay] The minimum time to wait before showing the loading spinner
+	 */
+	async function setRequestState(request: Writable<RequestState>, delay: number = 200) {
 		request.update((state) => {
 			if (state.pendingRequests === 0) {
 				return {
 					...state,
 					pendingRequests: state.pendingRequests + 1,
+					startTime: Date.now(),
 					delayTimer: setTimeout(() => request.update((s) => ({ ...s, isLoading: true })), delay),
+					delay: delay,
 					error: defaultError,
 				};
 			} else {
 				return {
 					...state,
 					pendingRequests: state.pendingRequests + 1,
+					startTime: Date.now(),
+					delay: delay,
 				};
 			}
 		});
 	}
 
-	async function endRequestState(request: Writable<RequestState>, minLoadingTime = 1000) {
-		// If loading spinner is shown, wait for a minimum time before removing it
-		const elapsedTime = Date.now() - get(loadingSpinner).startTime;
-		const delayedTime = elapsedTime < get(loadingSpinner).delay ? 0 : minLoadingTime - elapsedTime;
+	/**
+	 * Set the loading state to false and remove the loading spinner
+	 * @param request - A request state store to update
+	 * @param {number} [minLoadingTime=0] - The minimum time the loading spinner should be shown, if it was shown
+	 */
+	async function endRequestState(request: Writable<RequestState>, minLoadingTime: number = 0) {
+		const elapsedTime = Date.now() - get(request).startTime;
+		const delayedTime = elapsedTime < get(request).delay ? 0 : minLoadingTime - elapsedTime;
+		console.log('minLoadingTime:', minLoadingTime, ', get(request).startTime:', get(request).startTime);
+		console.log('Elapsed:', elapsedTime, ', Delayed:', delayedTime);
 		await delay(delayedTime);
 
 		request.update((state) => {
@@ -79,6 +94,8 @@ function createRequestStateController() {
 					...state,
 					isLoading: false,
 					delayTimer: undefined,
+					startTime: 0,
+					delay: 0,
 				};
 			}
 			return state;

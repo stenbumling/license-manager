@@ -2,8 +2,7 @@ import { applicationValidationError } from '$lib/validations/application-validat
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { notifications } from '../notification-store';
-import { applicationFetchRequest, request } from '../request-state-store';
-import { table } from './table-store';
+import { applicationFetchRequest, applicationPostRequest, request } from '../request-state-store';
 
 function getInitialValues() {
 	return {
@@ -27,9 +26,10 @@ function createApplicationStore() {
 	const { subscribe, set, update } = writable<Application[]>([]);
 
 	async function fetchApplications() {
-		request.startLoading(applicationFetchRequest);
 		try {
+			await request.startLoading(applicationFetchRequest);
 			const response = await fetch('/api/applications');
+			await request.endLoading(applicationFetchRequest, 1000);
 			if (response.ok) {
 				const applications = await response.json();
 				set(applications);
@@ -43,6 +43,7 @@ function createApplicationStore() {
 				console.error('Failed to fetch applications:', error);
 			}
 		} catch (error) {
+			await request.endLoading(applicationFetchRequest);
 			request.setError(applicationFetchRequest, {
 				status: 500,
 				type: 'Internal Server Error',
@@ -50,20 +51,19 @@ function createApplicationStore() {
 				details: 'Please try refreshing the page. If the problem persists, contact support.',
 			});
 			console.error('Failed to fetch applications:', error);
-		} finally {
-			request.endLoading(applicationFetchRequest);
 		}
 	}
 
 	async function addApplication(application: Application) {
 		try {
+			await request.startLoading(applicationPostRequest, 0);
 			const response = await fetch('/api/applications', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
 			});
+			await request.endLoading(applicationPostRequest, 1000);
 			if (response.ok) {
-				await fetchApplications();
 				notifications.add({
 					message: 'Application created successfully',
 					type: 'success',
@@ -77,6 +77,7 @@ function createApplicationStore() {
 				console.error('Failed to create application:', error);
 			}
 		} catch (error) {
+			await request.endLoading(applicationPostRequest);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be created. Please try refreshing the page.',
@@ -89,14 +90,14 @@ function createApplicationStore() {
 
 	async function editApplication(application: Application) {
 		try {
+			await request.startLoading(applicationPostRequest, 0);
 			const response = await fetch(`/api/applications/${application.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
 			});
+			await request.endLoading(applicationPostRequest, 1000);
 			if (response.ok) {
-				await fetchApplications();
-				await table.updateState();
 				notifications.add({
 					message: 'Application was edited successfully',
 					type: 'success',
@@ -110,6 +111,7 @@ function createApplicationStore() {
 				console.error('Failed to edit application:', error);
 			}
 		} catch (error) {
+			await request.endLoading(applicationPostRequest);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be edited. Please try refreshing the page.',
@@ -150,8 +152,11 @@ function createApplicationStore() {
 		}
 	}
 
+	/**
+	 * Reset the application store to its initial values.
+	 * `setTimeout` is used to wait for the closing animation to finish
+	 */
 	function resetFields() {
-		// Reset after closing animation is done
 		setTimeout(() => {
 			application.set(getInitialValues());
 			applicationValidationError.set({});

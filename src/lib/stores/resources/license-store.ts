@@ -70,9 +70,10 @@ function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
 	async function getLicenseById(id: string) {
-		request.startLoading(licenseFetchRequest);
 		try {
+			await request.startLoading(licenseFetchRequest);
 			const response = await fetch(`/api/licenses/${id}`);
+			await request.endLoading(licenseFetchRequest, 1000);
 			if (response.ok) {
 				const fetchedLicense = await response.json();
 				license.set(fetchedLicense);
@@ -82,6 +83,7 @@ function createLicenseStore() {
 				console.error('Failed to fetch license:', error);
 			}
 		} catch (error) {
+			await request.endLoading(licenseFetchRequest);
 			request.setError(licenseFetchRequest, {
 				status: 500,
 				type: 'Internal Server Error',
@@ -89,8 +91,6 @@ function createLicenseStore() {
 				details: 'Please try refreshing the page. If the problem persists, contact support.',
 			});
 			console.error('Failed to fetch license:', error);
-		} finally {
-			request.endLoading(licenseFetchRequest);
 		}
 	}
 
@@ -120,13 +120,14 @@ function createLicenseStore() {
 	}
 
 	async function addLicense(license: License) {
-		request.startLoading(licensePostRequest);
 		try {
+			await request.startLoading(licensePostRequest, 0);
 			const response = await fetch('/api/licenses', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
 			});
+			await request.endLoading(licensePostRequest, 1000);
 			if (response.ok) {
 				await updateLicenseCounts();
 				await table.updateState();
@@ -143,6 +144,7 @@ function createLicenseStore() {
 				console.error('Failed to create license:', error);
 			}
 		} catch (error) {
+			await request.endLoading(licensePostRequest);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be created. Please try refreshing the page.',
@@ -150,15 +152,13 @@ function createLicenseStore() {
 				timeout: false,
 			});
 			console.error('Failed to create license:', error);
-		} finally {
-			request.endLoading(licensePostRequest);
 		}
 	}
 
 	async function updateLicense(updatedLicense: License) {
-		request.startLoading(licensePostRequest);
 		const currentLicense = get(licenseStore).find((l) => l.id === updatedLicense.id);
 		try {
+			await request.startLoading(licensePostRequest, 0);
 			const response = await fetch(`/api/licenses/${updatedLicense.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
@@ -167,6 +167,7 @@ function createLicenseStore() {
 					currentLicense: currentLicense,
 				}),
 			});
+			await request.endLoading(licensePostRequest, 1000);
 			if (response.ok) {
 				await updateLicenseCounts();
 				await table.updateState();
@@ -180,10 +181,10 @@ function createLicenseStore() {
 					message: error.message,
 					type: 'alert',
 				});
-
 				console.error('Failed to update license:', error);
 			}
 		} catch (error) {
+			await request.endLoading(licensePostRequest);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be updated. Please try refreshing the page.',
@@ -191,8 +192,6 @@ function createLicenseStore() {
 				timeout: false,
 			});
 			console.error('Failed to update license:', error);
-		} finally {
-			request.endLoading(licensePostRequest);
 		}
 	}
 
@@ -228,8 +227,11 @@ function createLicenseStore() {
 		}
 	}
 
+	/**
+	 * Reset the license store to its initial values.
+	 * `setTimeout` is used to wait for the closing animation to finish
+	 */
 	function resetFields() {
-		// Reset after closing animation is done
 		setTimeout(() => {
 			license.set(getInitialValues());
 			licenseValidationErrors.set({});

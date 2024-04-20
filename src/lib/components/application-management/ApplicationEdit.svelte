@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { applicationPostRequest } from '$lib/stores/request-state-store';
 	import { application, applicationStore } from '$lib/stores/resources/application-store';
 	import { license, licenseMode } from '$lib/stores/resources/license-store';
 	import {
@@ -17,6 +18,7 @@
 		const isValid = await validateApplication($application);
 		if (isValid) {
 			await applicationStore.edit($application);
+			await applicationStore.fetch();
 			// Updates the application name in license header if the changed application is currently selected
 			if ($license.application.name === oldAppName && $licenseMode === 'view') {
 				license.set({
@@ -62,7 +64,11 @@
 	</div>
 	<div class="button-container">
 		<SecondaryButton title={'Cancel'} action={handleCancel} />
-		<PrimaryButton title={'Edit application'} action={handleEdit} />
+		<PrimaryButton
+			title={'Edit application'}
+			action={handleEdit}
+			pendingRequest={$applicationPostRequest.isLoading}
+		/>
 	</div>
 </div>
 

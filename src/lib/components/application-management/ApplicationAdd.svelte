@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { applicationPostRequest } from '$lib/stores/request-state-store';
 	import { application, applicationStore } from '$lib/stores/resources/application-store';
 	import {
 		applicationValidationError,
@@ -14,6 +15,7 @@
 		const isValid = await validateApplication($application);
 		if (isValid) {
 			await applicationStore.add($application);
+			await applicationStore.fetch();
 			applicationStore.reset();
 			applicationModalMode.set('list');
 		} else {
@@ -52,7 +54,11 @@
 	</div>
 	<div class="button-container">
 		<SecondaryButton title={'Cancel'} action={handleCancel} />
-		<PrimaryButton title={'Add application'} action={handleAdd} />
+		<PrimaryButton
+			title={'Add application'}
+			action={handleAdd}
+			pendingRequest={$applicationPostRequest.isLoading}
+		/>
 	</div>
 </div>
 
