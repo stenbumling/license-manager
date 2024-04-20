@@ -15,6 +15,9 @@
 		const isValid = await validateApplication($application);
 		if (isValid) {
 			await applicationStore.add($application);
+			if ($applicationPostRequest.error) {
+				return;
+			}
 			await applicationStore.fetch();
 			applicationStore.reset();
 			applicationModalMode.set('list');

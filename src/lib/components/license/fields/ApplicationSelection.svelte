@@ -15,7 +15,7 @@
 	});
 
 	$: isLoading = $applicationFetchRequest.pendingRequests > 0 || $applicationFetchRequest.isLoading;
-	$: hasError = $applicationFetchRequest.error.message;
+	$: hasError = $applicationFetchRequest.error?.message;
 	$: noResults = $applicationStore.length === 0;
 	$: hasApplications = $applicationStore.length > 0 && !isLoading && !hasError && !noResults;
 

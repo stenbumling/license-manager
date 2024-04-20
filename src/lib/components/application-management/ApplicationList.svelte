@@ -10,7 +10,7 @@
 
 	$: hasStartedRequest = $applicationFetchRequest.pendingRequests > 0 && !isLoading;
 	$: isLoading = $applicationFetchRequest.isLoading;
-	$: hasError = $applicationFetchRequest.error.message;
+	$: hasError = $applicationFetchRequest.error?.message;
 	$: noResults = $applicationStore.length === 0;
 	$: hasApplications = $applicationStore.length > 0;
 </script>
@@ -31,7 +31,7 @@
 		<!-- Errors and no results -->
 	{:else if hasError}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>
-			<h2>{$applicationFetchRequest.error.message}</h2>
+			<h2>{$applicationFetchRequest.error?.message}</h2>
 		</div>
 	{:else if noResults}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>

@@ -7,7 +7,7 @@
 	import { fade, slide } from 'svelte/transition';
 
 	$: isLoading = $tableFetchRequest.isLoading;
-	$: hasError = $tableFetchRequest.error.message && !isLoading;
+	$: hasError = $tableFetchRequest.error?.message && !isLoading;
 	$: hasLicenses = $licenseStore.length > 0 && !isLoading;
 	$: noResults = $licenseStore.length === 0 && !isLoading;
 	$: isSearching = $filterState === 'Search' && !isLoading;
@@ -24,8 +24,8 @@
 		<!-- Errors and no results -->
 	{:else if hasError}
 		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>
-			<h1>{$tableFetchRequest.error.message}</h1>
-			<p>{$tableFetchRequest.error.details}</p>
+			<h1>{$tableFetchRequest.error?.message}</h1>
+			<p>{$tableFetchRequest.error?.details}</p>
 		</div>
 	{:else if noResults && isSearching}
 		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>

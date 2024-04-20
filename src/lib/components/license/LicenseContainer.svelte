@@ -32,7 +32,7 @@
 	let showWarningModal = false;
 	$: hasStartedRequest = $licenseFetchRequest.pendingRequests > 0 && !isLoading;
 	$: isLoading = $licenseFetchRequest.isLoading;
-	$: hasError = $licenseFetchRequest.error.message && !isLoading;
+	$: hasError = $licenseFetchRequest.error?.message && !isLoading;
 	$: hasLicense = $license.id && !isLoading;
 
 	const contextMenuItems: ContextMenuItem[] = [
@@ -72,7 +72,7 @@
 			} else if ($licenseMode === 'add') {
 				await licenseStore.add($license);
 			}
-			if ($licensePostRequest.error.message) {
+			if ($licensePostRequest.error?.message) {
 				return;
 			}
 			modal.closeLicense();
@@ -110,10 +110,10 @@
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
-			<h1>{$licenseFetchRequest.error.status}</h1>
+			<h1>{$licenseFetchRequest.error?.status}</h1>
 			<div class="fallback-error-details">
-				<h2>{$licenseFetchRequest.error.message}</h2>
-				<p>{$licenseFetchRequest.error.details}</p>
+				<h2>{$licenseFetchRequest.error?.message}</h2>
+				<p>{$licenseFetchRequest.error?.details}</p>
 			</div>
 		</div>
 	{:else if hasLicense}
