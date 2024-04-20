@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { applicationPostRequest } from '$lib/stores/request-state-store';
-	import { application, applicationStore } from '$lib/stores/resources/application-store';
-	import { license, licenseMode } from '$lib/stores/resources/license-store';
+	import { applicationStore, currentApplication } from '$lib/stores/resources/application-store';
+	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import {
 		applicationValidationError,
 		validateApplication,
@@ -11,13 +11,13 @@
 	import PrimaryButton from '../misc/buttons/PrimaryButton.svelte';
 	import SecondaryButton from '../misc/buttons/SecondaryButton.svelte';
 
-	const oldAppName = $application.name;
+	const oldAppName = $currentApplication.name;
 
 	async function handleEdit(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
-		const isValid = await validateApplication($application);
+		const isValid = await validateApplication($currentApplication);
 		if (isValid) {
-			const success = await applicationStore.edit($application);
+			const success = await applicationStore.edit($currentApplication);
 			if (success) {
 				applicationStore.resetFields();
 				applicationModalMode.set('list');
@@ -28,10 +28,10 @@
 	}
 
 	function updateApplicationNameInLicenseModalHeader() {
-		if ($license.application.name === oldAppName && $licenseMode === 'view') {
-			license.set({
-				...$license,
-				application: { ...$license.application, name: $application.name },
+		if ($currentLicense.application.name === oldAppName && $licenseMode === 'view') {
+			currentLicense.set({
+				...$currentLicense,
+				application: { ...$currentLicense.application, name: $currentApplication.name },
 			});
 		}
 	}
@@ -46,7 +46,12 @@
 	<h2 class="title">Editing <span style="color: var(--deep-purple)">{oldAppName}</span></h2>
 	<div class="input-container">
 		<h3 style="margin-bottom:0.5rem;">Name<span class="required">*</span></h3>
-		<input bind:value={$application.name} type="text" placeholder="Application name" required />
+		<input
+			bind:value={$currentApplication.name}
+			type="text"
+			placeholder="Application name"
+			required
+		/>
 		<p class="warning-text">
 			{#if $applicationValidationError.name}
 				<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>
@@ -54,7 +59,7 @@
 		</p>
 		<h3 style="margin-bottom:0.5rem;">Link to application website</h3>
 		<input
-			bind:value={$application.link}
+			bind:value={$currentApplication.link}
 			type="text"
 			placeholder="https://www.example.com"
 			required

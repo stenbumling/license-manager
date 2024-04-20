@@ -25,7 +25,7 @@ export interface Application {
 	licenseAssociations: number;
 }
 
-export const application = writable<Application>(getInitialValues());
+export const currentApplication = writable<Application>(getInitialValues());
 
 function createApplicationStore() {
 	const { subscribe, set, update } = writable<Application[]>([]);
@@ -175,7 +175,7 @@ function createApplicationStore() {
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			application.set(getInitialValues());
+			currentApplication.set(getInitialValues());
 			applicationValidationError.set({});
 		}, 120);
 	}

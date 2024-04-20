@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { applicationPostRequest } from '$lib/stores/request-state-store';
-	import { application, applicationStore } from '$lib/stores/resources/application-store';
+	import { currentApplication, applicationStore } from '$lib/stores/resources/application-store';
 	import {
 		applicationValidationError,
 		validateApplication,
@@ -12,9 +12,9 @@
 
 	async function handleAdd(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
-		const isValid = await validateApplication($application);
+		const isValid = await validateApplication($currentApplication);
 		if (isValid) {
-			const success = await applicationStore.add($application);
+			const success = await applicationStore.add($currentApplication);
 			if (success) {
 				applicationStore.resetFields();
 				applicationModalMode.set('list');
@@ -33,7 +33,7 @@
 	<h2 style="margin-bottom:1.6rem;">Adding new application</h2>
 	<div class="input-container">
 		<h3 style="margin-bottom:0.5rem;">Name<span class="required">*</span></h3>
-		<input bind:value={$application.name} type="text" placeholder="Application name" required />
+		<input bind:value={$currentApplication.name} type="text" placeholder="Application name" required />
 		<p class="warning-text">
 			{#if $applicationValidationError.name}
 				<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>
@@ -41,7 +41,7 @@
 		</p>
 		<h3 style="margin-bottom:0.5rem;">Link to application website</h3>
 		<input
-			bind:value={$application.link}
+			bind:value={$currentApplication.link}
 			type="text"
 			placeholder="https://www.example.com"
 			required

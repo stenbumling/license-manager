@@ -3,8 +3,8 @@
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { applicationDeleteRequest } from '$lib/stores/request-state-store';
 	import type { Application } from '$lib/stores/resources/application-store';
-	import { application, applicationStore } from '$lib/stores/resources/application-store';
-	import { license } from '$lib/stores/resources/license-store';
+	import { applicationStore, currentApplication } from '$lib/stores/resources/application-store';
+	import { currentLicense } from '$lib/stores/resources/license-store';
 	import SettingsEdit from 'carbon-icons-svelte/lib/Settings.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { slide } from 'svelte/transition';
@@ -15,7 +15,7 @@
 
 	function handleEdit() {
 		const appCopy = JSON.parse(JSON.stringify(applicationItem));
-		application.set(appCopy);
+		currentApplication.set(appCopy);
 		applicationModalMode.set('edit');
 	}
 
@@ -49,7 +49,7 @@
 			>
 				<TrashCan size={24} fill="#cccccc" />
 			</button>
-		{:else if applicationItem.name === $license.application.name}
+		{:else if applicationItem.name === $currentLicense.application.name}
 			<button
 				class="trashcan-icon"
 				use:tooltip={{

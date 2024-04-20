@@ -4,7 +4,7 @@
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
-	import { license, licenseMode } from '$lib/stores/resources/license-store';
+	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	import { onMount } from 'svelte';
@@ -23,8 +23,8 @@
 		const target = e.target as HTMLSelectElement;
 		const selectedAppId = target.value;
 		const foundApp = $applicationStore.find((app) => app.id === selectedAppId);
-		$license.application.name = foundApp ? foundApp.name : '';
-		$license.application.link = foundApp ? foundApp.link : '';
+		$currentLicense.application.name = foundApp ? foundApp.name : '';
+		$currentLicense.application.link = foundApp ? foundApp.link : '';
 	}
 </script>
 
@@ -36,7 +36,7 @@
 			disabled={!hasApplications}
 			name="applications"
 			class:select-add-mode={$licenseMode === 'add'}
-			bind:value={$license.applicationId}
+			bind:value={$currentLicense.applicationId}
 			on:change={handleApplicationChange}
 		>
 			{#if isLoading}
@@ -50,7 +50,7 @@
 					<option disabled selected value="">Select an application</option>
 				{/if}
 				{#each $applicationStore as application}
-					<option selected={application.id === $license.applicationId} value={application.id}
+					<option selected={application.id === $currentLicense.applicationId} value={application.id}
 						>{application.name}</option
 					>
 				{/each}
@@ -74,11 +74,11 @@
 			<span class="warning-text" transition:fade={{ duration: 120 }}
 				>{$licenseValidationErrors.applicationId}</span
 			>
-		{:else if $license.application.link && !isLoading && !hasError && !noResults}
-			<a class="application-link" href={$license.application.link} target="_blank"
-				>{$license.application.link.length > 100
-					? $license.application.link.slice(0, 100) + '...'
-					: $license.application.link}</a
+		{:else if $currentLicense.application.link && !isLoading && !hasError && !noResults}
+			<a class="application-link" href={$currentLicense.application.link} target="_blank"
+				>{$currentLicense.application.link.length > 100
+					? $currentLicense.application.link.slice(0, 100) + '...'
+					: $currentLicense.application.link}</a
 			>
 		{/if}
 	</p>

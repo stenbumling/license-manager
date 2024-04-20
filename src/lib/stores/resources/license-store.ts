@@ -67,7 +67,7 @@ export interface LicenseCounts {
 	expired: number;
 }
 
-export const license = writable<License>(getInitialValues());
+export const currentLicense = writable<License>(getInitialValues());
 export const licenseMode = writable<'add' | 'view'>('add');
 export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
 
@@ -81,7 +81,7 @@ function createLicenseStore() {
 			await request.endLoading(licenseFetchRequest, 1000);
 			if (response.ok) {
 				const fetchedLicense = await response.json();
-				license.set(fetchedLicense);
+				currentLicense.set(fetchedLicense);
 			} else {
 				const error: App.Error = await response.json();
 				request.setError(licenseFetchRequest, error);
@@ -249,7 +249,7 @@ function createLicenseStore() {
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			license.set(getInitialValues());
+			currentLicense.set(getInitialValues());
 			licenseValidationErrors.set({});
 		}, 120);
 	}

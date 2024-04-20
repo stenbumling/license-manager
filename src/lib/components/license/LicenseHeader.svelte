@@ -1,13 +1,13 @@
 <script lang="ts">
 	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { modal } from '$lib/stores/modal-store';
-	import { license, licenseMode } from '$lib/stores/resources/license-store';
+	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 </script>
 
 <div class="header-container">
 	<div class="header-content">
-		{#if $license.application.name && $licenseMode === 'view'}
-			<h1 class="title">{$license.application.name}</h1>
+		{#if $currentLicense.application.name && $licenseMode === 'view'}
+			<h1 class="title">{$currentLicense.application.name}</h1>
 		{:else}
 			<h1 class="title new-license">New license</h1>
 		{/if}

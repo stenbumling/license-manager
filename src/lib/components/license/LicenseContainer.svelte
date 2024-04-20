@@ -18,7 +18,7 @@
 		licenseFetchRequest,
 		licensePostRequest,
 	} from '$lib/stores/request-state-store';
-	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
+	import { currentLicense, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
@@ -33,7 +33,7 @@
 	$: hasStartedRequest = $licenseFetchRequest.pendingRequests > 0 && !isLoading;
 	$: isLoading = $licenseFetchRequest.isLoading;
 	$: hasError = $licenseFetchRequest.error?.message && !isLoading;
-	$: hasLicense = $license.id && !isLoading;
+	$: hasLicense = $currentLicense.id && !isLoading;
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
@@ -44,12 +44,12 @@
 		{
 			label: 'Copy link',
 			icon: CopyLink,
-			action: () => contextMenu.copyLicenseLink($license),
+			action: () => contextMenu.copyLicenseLink($currentLicense),
 		},
 		{
 			label: 'Copy license data',
 			icon: Copy,
-			action: () => contextMenu.copyLicenseData($license),
+			action: () => contextMenu.copyLicenseData($currentLicense),
 		},
 		{
 			label: 'Delete license',
@@ -60,15 +60,15 @@
 	];
 
 	async function handleLicense() {
-		const isValid = await validateLicense($license);
+		const isValid = await validateLicense($currentLicense);
 		if (isValid) {
 			let success = false;
 			switch ($licenseMode) {
 				case 'view':
-					success = await licenseStore.updateLicense($license);
+					success = await licenseStore.updateLicense($currentLicense);
 					break;
 				case 'add':
-					success = await licenseStore.add($license);
+					success = await licenseStore.add($currentLicense);
 					break;
 			}
 			if (success) modal.closeLicense();
@@ -81,7 +81,7 @@
 	}
 
 	async function handleDelete() {
-		const success = await licenseStore.delete($license.id);
+		const success = await licenseStore.delete($currentLicense.id);
 		if (success) modal.closeLicense();
 		showWarningModal = false;
 	}
@@ -128,34 +128,34 @@
 			<AssignedUsers />
 			<ExpirationField />
 			<SelectField
-				bind:value={$license.category}
+				bind:value={$currentLicense.category}
 				label="Category"
 				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 				defaultOption="Uncategorized"
 				errorMessage={$licenseValidationErrors.category}
 			/>
 			<SelectField
-				bind:value={$license.status}
+				bind:value={$currentLicense.status}
 				label="Status"
 				options={['Active', 'Inactive', 'Expired']}
 				defaultOption="Active"
 				errorMessage={$licenseValidationErrors.status}
 			/>
 			<TextField
-				bind:value={$license.contactPerson}
+				bind:value={$currentLicense.contactPerson}
 				label="Contact person"
 				errorMessage={$licenseValidationErrors.contactPerson}
 			>
 				<TextField
 					slot="secondary"
-					bind:value={$license.additionalContactInfo}
+					bind:value={$currentLicense.additionalContactInfo}
 					label="Additional contact information"
 					type="secondary"
 					errorMessage={$licenseValidationErrors.additionalContactInfo}
 				/>
 			</TextField>
 			<TextAreaField
-				bind:value={$license.comment}
+				bind:value={$currentLicense.comment}
 				label="Comment"
 				errorMessage={$licenseValidationErrors.comment}
 			/>

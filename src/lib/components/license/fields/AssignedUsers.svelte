@@ -3,7 +3,7 @@
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import { userFetchRequest } from '$lib/stores/request-state-store';
-	import { license, licenseMode } from '$lib/stores/resources/license-store';
+	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import type { User } from '$lib/stores/resources/user-store';
 	import { userStore } from '$lib/stores/resources/user-store';
 	import { receive, send } from '$lib/utils/animation-utils.ts';
@@ -25,7 +25,7 @@
 
 	// Renders user suggestions based on the input value and assigned users
 	$: {
-		const assignedUsers = new Set($license.users.map((user) => user.id));
+		const assignedUsers = new Set($currentLicense.users.map((user) => user.id));
 		if (userInput.trim()) {
 			userSuggestions = $userStore
 				.filter(
@@ -50,12 +50,12 @@
 			try {
 				const foundUser = await userStore.findOrCreateUser(addedUserName);
 
-				const isAlreadyAssigned = $license.users.some((u) => u.id === foundUser.id);
+				const isAlreadyAssigned = $currentLicense.users.some((u) => u.id === foundUser.id);
 
 				if (isAlreadyAssigned) {
 					userValidationErrors.set(['User is already assigned']);
 				} else {
-					$license.users = [...$license.users, foundUser];
+					$currentLicense.users = [...$currentLicense.users, foundUser];
 					userInput = '';
 					inputField.blur();
 					userValidationErrors.set([]);
@@ -70,9 +70,9 @@
 <div class="component-container">
 	<!-- User badges -->
 	<h3 class="label">Assigned users</h3>
-	{#if $license.users.length || $userFetchRequest.isLoading}
+	{#if $currentLicense.users.length || $userFetchRequest.isLoading}
 		<div class="badge-container">
-			{#each $license.users.slice(0, 8) as user (user.id)}
+			{#each $currentLicense.users.slice(0, 8) as user (user.id)}
 				<div
 					in:receive={{ key: user.id }}
 					out:send={{ key: user.id }}
@@ -81,13 +81,13 @@
 					<UserBadge {user} />
 				</div>
 			{/each}
-			{#if $license.users.length > 8}
+			{#if $currentLicense.users.length > 8}
 				<button class="view-all-button" on:click={() => showAssignedUsersModal.set(true)}>
 					<div class="badge-view-icon">
 						<ViewFilled size={16} />
 					</div>
 					<h4 class="view-all-button-text" in:fade={{ duration: 120 }}>
-						View all {$license.users.length}
+						View all {$currentLicense.users.length}
 					</h4>
 				</button>
 			{/if}
