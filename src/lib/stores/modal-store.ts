@@ -33,6 +33,7 @@ function createModalController() {
 		} else if (url.searchParams.size === 0) {
 			licenseStore.resetFields();
 		}
+
 	}
 
 	async function openViewLicense(licenseId: string) {
