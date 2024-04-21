@@ -7,7 +7,7 @@
 	const dispatch = createEventDispatcher();
 
 	export let type = 'info';
-	export let dismissible = true;
+	export let dismissable = true;
 
 	function handleDismiss() {
 		dispatch('dismiss');
@@ -31,8 +31,8 @@
 		<slot />
 	</div>
 
-	<div style:margin-left={dismissible ? '1rem' : '2.9rem'}>
-		{#if dismissible}
+	<div style:margin-left={dismissable ? '1rem' : '2.9rem'}>
+		{#if dismissable}
 			<CloseModalButton
 				action={handleDismiss}
 				color={type === 'warning' ? 'black' : 'white'}

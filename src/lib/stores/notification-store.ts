@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 interface NewNotification {
 	message: string;
 	type: 'success' | 'info' | 'warning' | 'alert';
-	dismissible?: boolean;
+	dismissable?: boolean;
 	timeout?: number | false;
 }
 
@@ -28,7 +28,7 @@ function createNotificationStore() {
 		const defaultNotification = {
 			message: 'Default toast message',
 			type: 'info',
-			dismissible: true,
+			dismissable: true,
 			timeout: 10000,
 		};
 
@@ -51,6 +51,8 @@ function createNotificationStore() {
 		if (typeof newNotification.timeout === 'number') {
 			setTimeout(() => dismissNotification(id), newNotification.timeout);
 		}
+
+		return id;
 	}
 
 	function dismissNotification(id: string) {

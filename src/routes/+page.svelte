@@ -2,15 +2,8 @@
 	import Dashboard from '$lib/components/dashboard/Dashboard.svelte';
 	import LicenseModal from '$lib/components/license/LicenseModal.svelte';
 	import TableContainer from '$lib/components/table/TableContainer.svelte';
-	import { modal, showLicenseModal } from '$lib/stores/modal-store';
-	import { onMount } from 'svelte';
-
-	onMount(async () => {
-		await modal.handleBrowserHistoryChange();
-	});
+	import { showLicenseModal } from '$lib/stores/modal-store';
 </script>
-
-<svelte:window on:popstate={async () => await modal.handleBrowserHistoryChange()} />
 
 <div class="app-container">
 	<Dashboard />

@@ -71,7 +71,7 @@ function createContextMenuStore() {
 				message: 'License link copied to clipboard',
 				type: 'info',
 				timeout: 5000,
-				dismissible: false,
+				dismissable: false,
 			});
 		} catch (error) {
 			console.error('Failed to copy license link to clipboard:', error);
@@ -90,7 +90,7 @@ function createContextMenuStore() {
 				message: 'License data copied to clipboard',
 				type: 'info',
 				timeout: 5000,
-				dismissible: false,
+				dismissable: false,
 			});
 		} catch (error) {
 			console.error('Failed to copy license data to clipboard:', error);
