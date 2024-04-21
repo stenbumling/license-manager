@@ -21,8 +21,8 @@
 			if (success) {
 				applicationStore.resetFields();
 				applicationModalMode.set('list');
-				await applicationStore.fetch();
 				updateApplicationNameInLicenseModalHeader();
+				applicationStore.fetch();
 			}
 		}
 	}

@@ -150,7 +150,6 @@ function createApplicationStore() {
 			await request.endLoading(applicationDeleteRequest, 1000);
 			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await fetchApplications();
 				notifications.add({
 					message: 'Application deleted successfully',
 					type: 'success',

@@ -19,6 +19,7 @@
 		licensePostRequest,
 	} from '$lib/stores/request-state-store';
 	import { currentLicense, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
+	import { table } from '$lib/stores/resources/table-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
@@ -71,7 +72,11 @@
 					success = await licenseStore.add($currentLicense);
 					break;
 			}
-			if (success) modal.closeLicense();
+			if (success) {
+				modal.closeLicense();
+				table.updateState();
+				licenseStore.updateCounts();
+			}
 		}
 	}
 
@@ -82,7 +87,11 @@
 
 	async function handleDelete() {
 		const success = await licenseStore.delete($currentLicense.id);
-		if (success) modal.closeLicense();
+		if (success) {
+			modal.closeLicense();
+			licenseStore.updateCounts();
+			table.updateState();
+		}
 		showWarningModal = false;
 	}
 </script>

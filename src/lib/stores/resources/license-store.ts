@@ -11,7 +11,6 @@ import {
 	licensePostRequest,
 	request,
 } from '../request-state-store';
-import { table } from './table-store';
 
 function getInitialValues() {
 	return {
@@ -139,8 +138,6 @@ function createLicenseStore() {
 			await request.endLoading(licensePostRequest, 1000);
 			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await updateLicenseCounts();
-				await table.updateState();
 				notifications.add({
 					message: 'License created successfully',
 					type: 'success',
@@ -185,8 +182,6 @@ function createLicenseStore() {
 			await request.endLoading(licensePostRequest, 1000);
 			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await updateLicenseCounts();
-				await table.updateState();
 				notifications.add({
 					message: 'License updated successfully',
 					type: 'success',
@@ -225,8 +220,6 @@ function createLicenseStore() {
 			await request.endLoading(licenseDeleteRequest, 1000);
 			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await updateLicenseCounts();
-				await table.updateState();
 				notifications.add({
 					message: 'License deleted successfully',
 					type: 'success',

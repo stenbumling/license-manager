@@ -18,7 +18,7 @@
 			if (success) {
 				applicationStore.resetFields();
 				applicationModalMode.set('list');
-				await applicationStore.fetch();
+				applicationStore.fetch();
 			}
 		}
 	}

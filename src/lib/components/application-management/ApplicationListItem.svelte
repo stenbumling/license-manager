@@ -40,7 +40,8 @@
 	}
 
 	async function handleDelete() {
-		await applicationStore.delete(applicationItem.id);
+		const success = await applicationStore.delete(applicationItem.id);
+		if (success) applicationStore.fetch();
 		showWarningModal = false;
 	}
 </script>
