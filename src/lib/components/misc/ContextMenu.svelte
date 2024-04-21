@@ -4,6 +4,7 @@
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
+	import { isOnline } from '$lib/stores/network-store';
 	import { style } from 'svelte-body';
 	import { fly } from 'svelte/transition';
 
@@ -45,6 +46,7 @@
 				role="menuitem"
 				tabindex="0"
 				class={item.class}
+				class:disabled={item.class === 'alert' && !$isOnline}
 				on:click|stopPropagation={() => item.action()}
 				on:keydown|stopPropagation={(e) => {
 					if (e.key === 'Enter') {
@@ -113,5 +115,10 @@
 
 	.warning {
 		color: #ff9736;
+	}
+
+	.disabled {
+		pointer-events: none;
+		color: #ccc;
 	}
 </style>

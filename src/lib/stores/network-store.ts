@@ -1,13 +1,13 @@
-import { writable } from 'svelte/store';
 import { notifications } from '$lib/stores/notification-store';
 import { table } from '$lib/stores/resources/table-store';
+import { writable } from 'svelte/store';
 
 export const isOnline = writable(true);
 
 function createNetworkController() {
-  let offlineNotificationId: string;
+	let offlineNotificationId: string;
 
-  function handleOffline() {
+	function handleOffline() {
 		isOnline.set(false);
 		offlineNotificationId = notifications.add({
 			message:
@@ -18,7 +18,7 @@ function createNetworkController() {
 		});
 	}
 
-  async function handleOnline() {
+	async function handleOnline() {
 		isOnline.set(true);
 		notifications.dismiss(offlineNotificationId);
 		notifications.add({
@@ -30,10 +30,10 @@ function createNetworkController() {
 		await table.updateState();
 	}
 
-  return {
-    handleOffline,
-    handleOnline,
-  };
+	return {
+		handleOffline,
+		handleOnline,
+	};
 }
 
 export const network = createNetworkController();
