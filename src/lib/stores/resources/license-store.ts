@@ -5,7 +5,7 @@ import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { notifications } from '../notification-store';
 import {
-	disabledButtons,
+	disableButtonsDuringRequests,
 	licenseDeleteRequest,
 	licenseFetchRequest,
 	licensePostRequest,
@@ -129,7 +129,7 @@ function createLicenseStore() {
 
 	async function addLicense(license: License) {
 		try {
-			disabledButtons.set(true);
+			disableButtonsDuringRequests.set(true);
 			await request.startLoading(licensePostRequest, 0);
 			const response = await fetch('/api/licenses', {
 				method: 'POST',
@@ -137,7 +137,7 @@ function createLicenseStore() {
 				body: JSON.stringify(license),
 			});
 			await request.endLoading(licensePostRequest, 1000);
-			disabledButtons.set(false);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
 				await updateLicenseCounts();
 				await table.updateState();
@@ -157,7 +157,7 @@ function createLicenseStore() {
 			}
 		} catch (error) {
 			await request.endLoading(licensePostRequest);
-			disabledButtons.set(false);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be created. Please try refreshing the page.',
@@ -172,7 +172,7 @@ function createLicenseStore() {
 	async function updateLicense(updatedLicense: License) {
 		const currentLicense = get(licenseStore).find((l) => l.id === updatedLicense.id);
 		try {
-			disabledButtons.set(true);
+			disableButtonsDuringRequests.set(true);
 			await request.startLoading(licensePostRequest, 0);
 			const response = await fetch(`/api/licenses/${updatedLicense.id}`, {
 				method: 'PUT',
@@ -183,7 +183,7 @@ function createLicenseStore() {
 				}),
 			});
 			await request.endLoading(licensePostRequest, 1000);
-			disabledButtons.set(false);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
 				await updateLicenseCounts();
 				await table.updateState();
@@ -203,7 +203,7 @@ function createLicenseStore() {
 			}
 		} catch (error) {
 			await request.endLoading(licensePostRequest);
-			disabledButtons.set(false);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be updated. Please try refreshing the page.',
@@ -217,13 +217,13 @@ function createLicenseStore() {
 
 	async function deleteLicense(id: string) {
 		try {
-			disabledButtons.set(true);
+			disableButtonsDuringRequests.set(true);
 			await request.startLoading(licenseDeleteRequest, 0);
 			const response = await fetch(`/api/licenses/${id}`, {
 				method: 'DELETE',
 			});
 			await request.endLoading(licenseDeleteRequest, 1000);
-			disabledButtons.set(false);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
 				await updateLicenseCounts();
 				await table.updateState();
@@ -243,7 +243,7 @@ function createLicenseStore() {
 			}
 		} catch (error) {
 			await request.endLoading(licenseDeleteRequest);
-			disabledButtons.set(false);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be deleted. Please try refreshing the page.',

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { disabledButtons } from '$lib/stores/request-state-store';
+	import { disableButtonsDuringRequests } from '$lib/stores/request-state-store';
 	import type { ComponentType } from 'svelte';
 
 	export let icon: ComponentType;
@@ -7,7 +7,7 @@
 	export let action: (e?: MouseEvent | KeyboardEvent) => void;
 </script>
 
-<button class="icon-button" disabled={$disabledButtons} on:click={action}>
+<button class="icon-button" disabled={$disableButtonsDuringRequests} on:click={action}>
 	<svelte:component this={icon} size={iconSize} fill="white" />
 </button>
 

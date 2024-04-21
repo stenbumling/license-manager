@@ -45,7 +45,7 @@ export const applicationFetchRequest = writable<RequestState>(getInitialStateVal
 export const applicationPostRequest = writable<RequestState>(getInitialStateValues());
 export const applicationDeleteRequest = writable<RequestState>(getInitialStateValues());
 
-export const disabledButtons = writable<boolean>(false);
+export const disableButtonsDuringRequests = writable<boolean>(false);
 
 function createRequestStateController() {
 	/**
