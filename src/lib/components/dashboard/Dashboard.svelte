@@ -44,7 +44,7 @@
 
 	onMount(async () => {
 		await licenseStore.updateCounts();
-	})
+	});
 </script>
 
 <div class="dashboard-container">

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { focusTrap } from '$lib/actions/focusTrap';
+	import type { RequestState } from '$lib/stores/request-state-store';
 	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAlt.svelte';
+	import type { Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
 	import PrimaryButton from './buttons/PrimaryButton.svelte';
 	import SecondaryButton from './buttons/SecondaryButton.svelte';
@@ -8,6 +10,7 @@
 	export let warningText = 'Are you sure you want to do this?';
 	export let onConfirm: () => void;
 	export let onCancel: () => void;
+	export let requestState: Writable<RequestState>;
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
@@ -18,7 +21,7 @@
 		</div>
 		<div class="button-container">
 			<SecondaryButton title="Cancel" action={onCancel} />
-			<PrimaryButton title="Confirm" action={onConfirm} />
+			<PrimaryButton title="Confirm" action={onConfirm} pendingRequest={$requestState.isLoading} />
 		</div>
 	</dialog>
 </div>

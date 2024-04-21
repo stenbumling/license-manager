@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
 	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { isOnline } from '$lib/stores/network-store';
+	import { applicationDeleteRequest } from '$lib/stores/request-state-store';
 	import type { Application } from '$lib/stores/resources/application-store';
-	import { application, applicationStore } from '$lib/stores/resources/application-store';
-	import { license } from '$lib/stores/resources/license-store';
+	import { applicationStore, currentApplication } from '$lib/stores/resources/application-store';
+	import { currentLicense } from '$lib/stores/resources/license-store';
 	import SettingsEdit from 'carbon-icons-svelte/lib/Settings.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { slide } from 'svelte/transition';
@@ -11,19 +13,35 @@
 
 	export let applicationItem: Application;
 	let showWarningModal = false;
+	let trashcanTooltip = '';
+	let isTrashcanDisabled = false;
 
-	function handleWarningModal() {
-		showWarningModal = true;
+	$: {
+		if (!$isOnline) {
+			trashcanTooltip =
+				"You're currently offline and cannot delete applications. Try again when you're online";
+			isTrashcanDisabled = true;
+		} else if (applicationItem.licenseAssociations > 0) {
+			trashcanTooltip = `${applicationItem.name} has ${applicationItem.licenseAssociations} license(s) associated with it and cannot be deleted. Delete the associated licenses before trying to delete the application`;
+			isTrashcanDisabled = true;
+		} else if (applicationItem.name === $currentLicense.application.name) {
+			trashcanTooltip = `${applicationItem.name} is currently selected and cannot be deleted. Try unselecting it before deleting`;
+			isTrashcanDisabled = true;
+		} else {
+			trashcanTooltip = 'Click to delete this application';
+			isTrashcanDisabled = false;
+		}
 	}
 
 	function handleEdit() {
 		const appCopy = JSON.parse(JSON.stringify(applicationItem));
-		application.set(appCopy);
+		currentApplication.set(appCopy);
 		applicationModalMode.set('edit');
 	}
 
 	async function handleDelete() {
-		await applicationStore.delete(applicationItem.id);
+		const success = await applicationStore.delete(applicationItem.id);
+		if (success) applicationStore.fetch();
 		showWarningModal = false;
 	}
 </script>
@@ -42,31 +60,17 @@
 		<button class="edit-icon" on:click={handleEdit}>
 			<SettingsEdit size={24} fill="black" />
 		</button>
-		{#if applicationItem.licenseAssociations > 0}
-			<button
-				class="trashcan-icon"
-				use:tooltip={{
-					content: `${applicationItem.name} has ${applicationItem.licenseAssociations} license(s) associated with it and can therefore not be deleted. Delete the associated licenses before trying to delete the application`,
-					options: { delay: [500, 0], offset: [0, 10] },
-				}}
-			>
-				<TrashCan size={24} fill="#cccccc" />
-			</button>
-		{:else if applicationItem.name === $license.application.name}
-			<button
-				class="trashcan-icon"
-				use:tooltip={{
-					content: `${applicationItem.name} is currently selected and cannot be deleted. Try unselecting it before deleting`,
-					options: { delay: [500, 0], offset: [0, 10] },
-				}}
-			>
-				<TrashCan size={24} fill="#cccccc" />
-			</button>
-		{:else}
-			<button class="trashcan-icon deletable" on:click={handleWarningModal}>
-				<TrashCan size={24} fill="red" />
-			</button>
-		{/if}
+		<button
+			class="trashcan-icon"
+			class:deletable={!isTrashcanDisabled}
+			use:tooltip={{
+				content: trashcanTooltip,
+				options: { delay: [500, 0], offset: [0, 10] },
+			}}
+			on:click={() => (isTrashcanDisabled ? null : (showWarningModal = true))}
+		>
+			<TrashCan size={24} fill={isTrashcanDisabled ? '#cccccc' : 'red'} />
+		</button>
 	</div>
 </div>
 
@@ -75,6 +79,7 @@
 		warningText="Warning! This will delete the application. Are you sure?"
 		onConfirm={handleDelete}
 		onCancel={() => (showWarningModal = false)}
+		requestState={applicationDeleteRequest}
 	/>
 {/if}
 

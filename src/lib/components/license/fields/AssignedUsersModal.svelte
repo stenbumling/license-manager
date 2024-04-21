@@ -3,7 +3,7 @@
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { modal } from '$lib/stores/modal-store';
-	import { license } from '$lib/stores/resources/license-store';
+	import { currentLicense } from '$lib/stores/resources/license-store';
 	import { receive, send } from '$lib/utils/animation-utils.ts';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
@@ -18,7 +18,7 @@
 		</div>
 		<h3>List of assigned users</h3>
 		<div class="badge-container">
-			{#each $license.users as user (user.id)}
+			{#each $currentLicense.users as user (user.id)}
 				<div
 					in:receive={{ key: user.id }}
 					out:send={{ key: user.id }}
@@ -27,7 +27,7 @@
 					<UserBadge {user} />
 				</div>
 			{/each}
-			{#if $license.users.length === 0}
+			{#if $currentLicense.users.length === 0}
 				<p>No users assigned.</p>
 			{/if}
 		</div>

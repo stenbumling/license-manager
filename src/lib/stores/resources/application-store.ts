@@ -2,8 +2,13 @@ import { applicationValidationError } from '$lib/validations/application-validat
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { notifications } from '../notification-store';
-import { applicationFetchRequest, request } from '../request-state-store';
-import { table } from './table-store';
+import {
+	applicationDeleteRequest,
+	applicationFetchRequest,
+	applicationPostRequest,
+	disableButtonsDuringRequests,
+	request,
+} from '../request-state-store';
 
 function getInitialValues() {
 	return {
@@ -21,24 +26,30 @@ export interface Application {
 	licenseAssociations: number;
 }
 
-export const application = writable<Application>(getInitialValues());
+export const currentApplication = writable<Application>(getInitialValues());
 
 function createApplicationStore() {
 	const { subscribe, set, update } = writable<Application[]>([]);
 
 	async function fetchApplications() {
-		request.startLoading(applicationFetchRequest);
 		try {
+			await request.startLoading(applicationFetchRequest);
 			const response = await fetch('/api/applications');
+			await request.endLoading(applicationFetchRequest, 1000);
 			if (response.ok) {
 				const applications = await response.json();
 				set(applications);
 			} else {
 				const error: App.Error = await response.json();
+				notifications.add({
+					message: error.message,
+					type: 'alert',
+				});
 				request.setError(applicationFetchRequest, error);
 				console.error('Failed to fetch applications:', error);
 			}
 		} catch (error) {
+			await request.endLoading(applicationFetchRequest);
 			request.setError(applicationFetchRequest, {
 				status: 500,
 				type: 'Internal Server Error',
@@ -46,24 +57,26 @@ function createApplicationStore() {
 				details: 'Please try refreshing the page. If the problem persists, contact support.',
 			});
 			console.error('Failed to fetch applications:', error);
-		} finally {
-			request.endLoading(applicationFetchRequest);
 		}
 	}
 
 	async function addApplication(application: Application) {
 		try {
+			disableButtonsDuringRequests.set(true);
+			await request.startLoading(applicationPostRequest, 0);
 			const response = await fetch('/api/applications', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
 			});
+			await request.endLoading(applicationPostRequest, 1000);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await fetchApplications();
 				notifications.add({
 					message: 'Application created successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -71,8 +84,11 @@ function createApplicationStore() {
 					type: 'alert',
 				});
 				console.error('Failed to create application:', error);
+				return false;
 			}
 		} catch (error) {
+			await request.endLoading(applicationPostRequest);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be created. Please try refreshing the page.',
@@ -80,23 +96,27 @@ function createApplicationStore() {
 				timeout: false,
 			});
 			console.error('Failed to create application:', error);
+			return false;
 		}
 	}
 
 	async function editApplication(application: Application) {
 		try {
+			disableButtonsDuringRequests.set(true);
+			await request.startLoading(applicationPostRequest, 0);
 			const response = await fetch(`/api/applications/${application.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(application),
 			});
+			await request.endLoading(applicationPostRequest, 1000);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await fetchApplications();
-				await table.updateState();
 				notifications.add({
 					message: 'Application was edited successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -104,8 +124,11 @@ function createApplicationStore() {
 					type: 'alert',
 				});
 				console.error('Failed to edit application:', error);
+				return false;
 			}
 		} catch (error) {
+			await request.endLoading(applicationPostRequest);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be edited. Please try refreshing the page.',
@@ -113,20 +136,25 @@ function createApplicationStore() {
 				timeout: false,
 			});
 			console.error('Failed to edit application:', error);
+			return false;
 		}
 	}
 
 	async function deleteApplication(id: string) {
 		try {
+			disableButtonsDuringRequests.set(true);
+			await request.startLoading(applicationDeleteRequest, 0);
 			const response = await fetch(`/api/applications/${id}`, {
 				method: 'DELETE',
 			});
+			await request.endLoading(applicationDeleteRequest, 1000);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await fetchApplications();
 				notifications.add({
 					message: 'Application deleted successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -134,8 +162,11 @@ function createApplicationStore() {
 					type: 'alert',
 				});
 				console.error('Failed to delete application:', error);
+				return false;
 			}
 		} catch (error) {
+			await request.endLoading(applicationDeleteRequest);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and application could not be deleted. Please try refreshing the page.',
@@ -143,13 +174,17 @@ function createApplicationStore() {
 				timeout: false,
 			});
 			console.error('Failed to delete application:', error);
+			return false;
 		}
 	}
 
+	/**
+	 * Reset the application store to its initial values.
+	 * `setTimeout` is used to wait for the closing animation to finish
+	 */
 	function resetFields() {
-		// Reset after closing animation is done
 		setTimeout(() => {
-			application.set(getInitialValues());
+			currentApplication.set(getInitialValues());
 			applicationValidationError.set({});
 		}, 120);
 	}
@@ -162,7 +197,7 @@ function createApplicationStore() {
 		add: addApplication,
 		edit: editApplication,
 		delete: deleteApplication,
-		reset: resetFields,
+		resetFields,
 	};
 }
 

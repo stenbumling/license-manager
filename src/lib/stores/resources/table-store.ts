@@ -123,9 +123,10 @@ function createTableController() {
 	}
 
 	async function sendQueryToDatabase(query: string) {
-		request.startLoading(tableFetchRequest);
 		try {
+			await request.startLoading(tableFetchRequest);
 			const response = await fetch(`/api/licenses/query${query}`);
+			await request.endLoading(tableFetchRequest, 1000);
 			if (response.ok) {
 				const licenses = await response.json();
 				licenseStore.set(licenses);
@@ -144,6 +145,7 @@ function createTableController() {
 				console.error(`Failed to fetch licenses with the query "${query}":`, error);
 			}
 		} catch (error) {
+			await request.endLoading(tableFetchRequest);
 			request.setError(tableFetchRequest, {
 				status: 500,
 				type: 'Internal Server Error',
@@ -152,8 +154,6 @@ function createTableController() {
 			});
 			licenseStore.set([]);
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
-		} finally {
-			request.endLoading(tableFetchRequest);
 		}
 	}
 

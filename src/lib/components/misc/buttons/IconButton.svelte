@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { disableButtonsDuringRequests } from '$lib/stores/request-state-store';
 	import type { ComponentType } from 'svelte';
 
 	export let icon: ComponentType;
@@ -6,7 +7,7 @@
 	export let action: (e?: MouseEvent | KeyboardEvent) => void;
 </script>
 
-<button class="icon-button" on:click={action}>
+<button class="icon-button" disabled={$disableButtonsDuringRequests} on:click={action}>
 	<svelte:component this={icon} size={iconSize} fill="white" />
 </button>
 
@@ -33,5 +34,10 @@
 		position: relative;
 		top: 1px;
 		left: 1px;
+	}
+
+	.icon-button:disabled {
+		pointer-events: none;
+		opacity: 0.5;
 	}
 </style>

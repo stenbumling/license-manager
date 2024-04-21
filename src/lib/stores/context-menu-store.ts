@@ -3,7 +3,6 @@ import type { License } from '$lib/stores/resources/license-store';
 import type { ComponentType } from 'svelte';
 import { writable } from 'svelte/store';
 import { notifications } from './notification-store';
-import { licenseStore } from './resources/license-store';
 
 /*
  * This store is responsible for managing the state of context menus for licenses.
@@ -55,7 +54,10 @@ function createContextMenuStore() {
 		}));
 	}
 
-	// Assortment of functions to be called by items in the context menu
+	/*
+	 * Assortment of functions to be called by items in the context menu
+	 */
+
 	function viewLicense(license: License) {
 		contextMenu.close();
 		modal.openViewLicense(license.id);
@@ -69,7 +71,7 @@ function createContextMenuStore() {
 				message: 'License link copied to clipboard',
 				type: 'info',
 				timeout: 5000,
-				dismissible: false,
+				dismissable: false,
 			});
 		} catch (error) {
 			console.error('Failed to copy license link to clipboard:', error);
@@ -88,7 +90,7 @@ function createContextMenuStore() {
 				message: 'License data copied to clipboard',
 				type: 'info',
 				timeout: 5000,
-				dismissible: false,
+				dismissable: false,
 			});
 		} catch (error) {
 			console.error('Failed to copy license data to clipboard:', error);
@@ -99,11 +101,6 @@ function createContextMenuStore() {
 		}
 	}
 
-	async function deleteLicense(license: License) {
-		modal.closeLicense();
-		await licenseStore.delete(license.id);
-	}
-
 	return {
 		subscribe,
 		close: closeMenu,
@@ -112,7 +109,6 @@ function createContextMenuStore() {
 		viewLicense,
 		copyLicenseLink,
 		copyLicenseData,
-		deleteLicense,
 	};
 }
 

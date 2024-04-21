@@ -1,18 +1,26 @@
 <script lang="ts">
 	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { modal } from '$lib/stores/modal-store';
-	import { license, licenseMode } from '$lib/stores/resources/license-store';
+	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
+	import { cleanUpDateString } from '$lib/utils/date-utils';
 </script>
 
 <div class="header-container">
-	<div class="header-content">
-		{#if $license.application.name && $licenseMode === 'view'}
-			<h1 class="title">{$license.application.name}</h1>
-		{:else}
-			<h1 class="title new-license">New license</h1>
+	<div class="header">
+		{#if $licenseMode === 'view' && $currentLicense.updatedAt}
+			<span class="updated-info"
+				>Last updated at {cleanUpDateString($currentLicense.updatedAt)}</span
+			>
 		{/if}
-		<CloseModalButton action={modal.closeLicense} />
+		<div class="close-button">
+			<CloseModalButton action={modal.closeLicense} />
+		</div>
 	</div>
+	{#if $currentLicense.application.name && $licenseMode === 'view'}
+		<h1 class="title">{$currentLicense.application.name}</h1>
+	{:else}
+		<h1 class="title new-license">New license</h1>
+	{/if}
 </div>
 
 <style>
@@ -22,14 +30,25 @@
 		flex-direction: column;
 	}
 
-	.header-content {
-		margin-bottom: 0.4rem;
+	.header {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 0.4rem;
+	}
+
+	.updated-info {
+		color: var(--text-placeholder);
+		font-size: 0.8rem;
+	}
+
+	.close-button {
+		margin-left: auto;
 	}
 
 	.title {
 		margin-bottom: 1rem;
+		margin-top: 0rem;
 		font-size: 2.8rem;
 		font-weight: 500;
 		text-overflow: ellipsis;

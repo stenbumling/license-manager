@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Pulse } from 'svelte-loading-spinners';
+	import { isOnline } from '$lib/stores/network-store'
 	import buttonArrow from '../../../images/icons/button-arrow.svg';
 
 	export let title: string = 'Button title';
@@ -12,6 +13,7 @@
 	tabindex="0"
 	class="button-container"
 	class:pending-request={pendingRequest}
+	class:disabled={!$isOnline}
 	on:click|preventDefault={action}
 	on:keydown={(e) => {
 		if (e.key === 'Enter') {
@@ -92,5 +94,10 @@
 
 	h3 {
 		cursor: pointer;
+	}
+
+	.disabled {
+		pointer-events: none;
+		opacity: 0.2;
 	}
 </style>

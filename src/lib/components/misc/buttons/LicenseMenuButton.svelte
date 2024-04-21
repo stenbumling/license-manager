@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { getElementRect } from '$lib/actions/getElementRect';
-	import { tooltip } from '$lib/actions/tooltip';
 	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
+	import { disableButtonsDuringRequests } from '$lib/stores/request-state-store';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import { v4 as uuidv4 } from 'uuid';
 
@@ -26,6 +26,7 @@
 		tabindex="0"
 		class="menu-button"
 		class:active={$contextMenu.activeId === menuId}
+		class:disabled={$disableButtonsDuringRequests}
 		on:click|stopPropagation|preventDefault={() => {
 			contextMenu.open(menuId);
 		}}
@@ -67,5 +68,14 @@
 
 	.menu-button.active {
 		background-color: #dddddd;
+	}
+
+	.disabled {
+		pointer-events: none;
+		opacity: 0.5;
+
+		&:hover {
+			background-color: transparent;
+		}
 	}
 </style>

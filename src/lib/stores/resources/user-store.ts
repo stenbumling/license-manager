@@ -1,6 +1,5 @@
 import { writable } from 'svelte/store';
 import { notifications } from '../notification-store';
-import { request, userFetchRequest } from '../request-state-store';
 
 export interface User {
 	id: string;
@@ -11,7 +10,6 @@ function createUserStore() {
 	const { subscribe, set, update } = writable<User[]>([]);
 
 	async function fetchUsers() {
-		request.startLoading(userFetchRequest);
 		try {
 			const response = await fetch('/api/users');
 			if (response.ok) {
@@ -33,13 +31,10 @@ function createUserStore() {
 				timeout: false,
 			});
 			console.error('Failed to fetch users:', error);
-		} finally {
-			request.endLoading(userFetchRequest);
 		}
 	}
 
 	async function findOrCreateUser(userName: string) {
-		request.startLoading(userFetchRequest, 500);
 		try {
 			const response = await fetch('/api/users', {
 				method: 'POST',
@@ -72,8 +67,6 @@ function createUserStore() {
 				timeout: false,
 			});
 			console.error('Failed to find or create user:', error);
-		} finally {
-			request.endLoading(userFetchRequest);
 		}
 	}
 

@@ -6,9 +6,8 @@
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
 
-	$: appIsLoading = isLoading && !($tableFetchRequest.error.status === 418);
 	$: isLoading = $tableFetchRequest.isLoading;
-	$: hasError = $tableFetchRequest.error.message && !isLoading;
+	$: hasError = $tableFetchRequest.error?.message && !isLoading;
 	$: hasLicenses = $licenseStore.length > 0 && !isLoading;
 	$: noResults = $licenseStore.length === 0 && !isLoading;
 	$: isSearching = $filterState === 'Search' && !isLoading;
@@ -17,19 +16,19 @@
 
 <div class="table-body-wrapper">
 	<!-- Loading -->
-	{#if appIsLoading}
-		<div class="fallback-container" in:fade={{ duration: 300 }}>
+	{#if isLoading}
+		<div class="fallback-container" in:fade={{ duration: 120 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
 
 		<!-- Errors and no results -->
 	{:else if hasError}
-		<div class="fallback-container" in:fade={{ delay: 200, duration: 300 }}>
-			<h1>{$tableFetchRequest.error.message}</h1>
-			<p>{$tableFetchRequest.error.details}</p>
+		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>
+			<h1>{$tableFetchRequest.error?.message}</h1>
+			<p>{$tableFetchRequest.error?.details}</p>
 		</div>
 	{:else if noResults && isSearching}
-		<div class="fallback-container" in:fade={{ delay: 200, duration: 300 }}>
+		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>
 			{#key $currentSearch}
 				<h1 in:fade={{ duration: 300 }}>
 					Search for <span class="search-query-text">{$currentSearch}</span> returned no results
@@ -37,13 +36,13 @@
 			{/key}
 		</div>
 	{:else if noResults && isAllFilter}
-		<div class="fallback-container" in:fade={{ delay: 200, duration: 300 }}>
+		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>
 			<h1>There are no licenses in the database</h1>
 		</div>
 	{:else if noResults && !isAllFilter}
-		<div class="fallback-container" in:fade={{ delay: 200, duration: 300 }}>
+		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>
 			{#key $filterState}
-				<h1 in:fade={{ delay: 200, duration: 300 }}>
+				<h1 in:fade={{ delay: 100, duration: 120 }}>
 					No licenses are {$filterState}
 				</h1>
 			{/key}

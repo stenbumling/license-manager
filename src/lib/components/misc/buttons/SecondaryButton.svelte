@@ -1,26 +1,28 @@
 <script lang="ts">
+	import { disableButtonsDuringRequests } from '$lib/stores/request-state-store';
+
 	export let title: string = 'Button title';
 	export let action: (e: MouseEvent | KeyboardEvent) => void;
+
+	function handleKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Enter') {
+			action(e);
+		}
+	}
 </script>
 
 <div
 	role="button"
 	tabindex="0"
+	class:disabled={$disableButtonsDuringRequests}
 	class="button-container"
 	on:click|preventDefault={action}
-	on:keydown={(e) => {
-		if (e.key === 'Enter') {
-			action(e);
-		}
-	}}
+	on:keydown={handleKeyDown}
 >
 	<div class="button-content">
 		<h3 class="button-title">{title}</h3>
 	</div>
-	<div
-		class="button-animated-hover"
-		style:background={`linear-gradient(to right, var(--deep-purple) 100%, transparent 100%`}
-	/>
+	<div class="button-animated-hover" />
 </div>
 
 <style>
@@ -47,6 +49,11 @@
 		height: 100%;
 		width: 0;
 		transition: width 0.25s ease;
+		background: linear-gradient(to right, var(--deep-purple) 100%, transparent 100%);
+	}
+
+	.button-container:hover {
+		border: 1px solid var(--deep-purple);
 	}
 
 	.button-container:hover .button-title {
@@ -78,5 +85,10 @@
 		position: relative;
 		top: 1px;
 		left: 1px;
+	}
+
+	.disabled {
+		pointer-events: none;
+		opacity: 0.5;
 	}
 </style>

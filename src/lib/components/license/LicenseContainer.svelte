@@ -13,22 +13,28 @@
 	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { applicationModalMode, modal } from '$lib/stores/modal-store';
-	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
-	import { applicationStore } from '$lib/stores/resources/application-store';
-	import { license, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
-	import { userStore } from '$lib/stores/resources/user-store';
+	import {
+		licenseDeleteRequest,
+		licenseFetchRequest,
+		licensePostRequest,
+	} from '$lib/stores/request-state-store';
+	import { currentLicense, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
+	import { table } from '$lib/stores/resources/table-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
-	import { onMount } from 'svelte';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
 	import WarningModal from '../misc/WarningModal.svelte';
 	import CloseModalButton from '../misc/buttons/CloseButton.svelte';
 
 	let showWarningModal = false;
+	$: hasStartedRequest = $licenseFetchRequest.pendingRequests > 0 && !isLoading;
+	$: isLoading = $licenseFetchRequest.isLoading;
+	$: hasError = $licenseFetchRequest.error?.message && !isLoading;
+	$: hasLicense = $currentLicense.id && !isLoading;
 
 	const contextMenuItems: ContextMenuItem[] = [
 		{
@@ -39,12 +45,12 @@
 		{
 			label: 'Copy link',
 			icon: CopyLink,
-			action: () => contextMenu.copyLicenseLink($license),
+			action: () => contextMenu.copyLicenseLink($currentLicense),
 		},
 		{
 			label: 'Copy license data',
 			icon: Copy,
-			action: () => contextMenu.copyLicenseData($license),
+			action: () => contextMenu.copyLicenseData($currentLicense),
 		},
 		{
 			label: 'Delete license',
@@ -54,93 +60,111 @@
 		},
 	];
 
-	onMount(async () => {
-		await userStore.fetch();
-		await applicationStore.fetch();
-	});
+	async function handleLicense() {
+		const isValid = await validateLicense($currentLicense);
+		if (isValid) {
+			let success = false;
+			switch ($licenseMode) {
+				case 'view':
+					success = await licenseStore.updateLicense($currentLicense);
+					break;
+				case 'add':
+					success = await licenseStore.add($currentLicense);
+					break;
+			}
+			if (success) {
+				modal.closeLicense();
+				table.updateState();
+				licenseStore.updateCounts();
+			}
+		}
+	}
 
 	function handleWarningModal() {
 		contextMenu.close();
 		showWarningModal = true;
 	}
 
-	async function handleLicense() {
-		const isValid = await validateLicense($license);
-		if (isValid) {
-			if ($licenseMode === 'view') {
-				await licenseStore.updateLicense($license);
-			} else if ($licenseMode === 'add') {
-				await licenseStore.add($license);
-			}
-			if ($licensePostRequest.error.message) {
-				return;
-			}
+	async function handleDelete() {
+		const success = await licenseStore.delete($currentLicense.id);
+		if (success) {
 			modal.closeLicense();
-		} else {
-			return;
+			licenseStore.updateCounts();
+			table.updateState();
 		}
+		showWarningModal = false;
 	}
 </script>
 
 <div class="license-container">
 	<!-- Loading -->
-	{#if $licenseFetchRequest.isLoading}
-		<div class="fallback-container">
-			<Circle color="var(--deep-purple)" />
-		</div>
-
-		<!-- Error fallback -->
-	{:else if $licenseFetchRequest.error.message}
+	{#if hasStartedRequest}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
 				<CloseModalButton action={modal.closeLicense} />
 			</div>
-			<h1>{$licenseFetchRequest.error.status}</h1>
+			<!-- Prevents default state being active if loading spinner has a delay-->
+		</div>
+	{:else if isLoading}
+		<div class="fallback-container">
+			<div class="fallback-container-close-button">
+				<CloseModalButton action={modal.closeLicense} />
+			</div>
+			<Circle color="var(--deep-purple)" />
+		</div>
+
+		<!-- Error fallback -->
+	{:else if hasError}
+		<div class="fallback-container">
+			<div class="fallback-container-close-button">
+				<CloseModalButton action={modal.closeLicense} />
+			</div>
+			<h1>{$licenseFetchRequest.error?.status}</h1>
 			<div class="fallback-error-details">
-				<h2>{$licenseFetchRequest.error.message}</h2>
-				<p>{$licenseFetchRequest.error.details}</p>
+				<h2>{$licenseFetchRequest.error?.message}</h2>
+				<p>{$licenseFetchRequest.error?.details}</p>
 			</div>
 		</div>
-	{:else}
+	{:else if hasLicense}
 		<!-- License header -->
-		<div in:fade={{ duration: 300 }}>
+		<div in:fade={{ duration: 120 }}>
 			<LicenseHeader />
 		</div>
 
 		<!-- License fields -->
-		<div tabIndex="-1" class="fields-grid" use:scrollShadow in:fade={{ duration: 300 }}>
+		<div tabIndex="-1" class="fields-grid" use:scrollShadow in:fade={{ duration: 120 }}>
 			<ApplicationSelection />
 			<AssignedUsers />
 			<ExpirationField />
 			<SelectField
-				bind:value={$license.category}
+				bind:value={$currentLicense.category}
 				label="Category"
 				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 				defaultOption="Uncategorized"
 				errorMessage={$licenseValidationErrors.category}
 			/>
 			<SelectField
-				bind:value={$license.status}
+				bind:value={$currentLicense.status}
 				label="Status"
 				options={['Active', 'Inactive', 'Expired']}
 				defaultOption="Active"
 				errorMessage={$licenseValidationErrors.status}
 			/>
 			<TextField
-				bind:value={$license.contactPerson}
+				bind:value={$currentLicense.contactPerson}
 				label="Contact person"
 				errorMessage={$licenseValidationErrors.contactPerson}
 			>
 				<TextField
 					slot="secondary"
-					bind:value={$license.additionalContactInfo}
+					bind:value={$currentLicense.additionalContactInfo}
 					label="Additional contact information"
 					type="secondary"
 					errorMessage={$licenseValidationErrors.additionalContactInfo}
 				/>
 			</TextField>
 			<TextAreaField
-				bind:value={$license.comment}
+				bind:value={$currentLicense.comment}
 				label="Comment"
 				errorMessage={$licenseValidationErrors.comment}
 			/>
@@ -169,8 +193,9 @@
 {#if showWarningModal}
 	<WarningModal
 		warningText="Warning! This will delete the license and all its data. Are you sure?"
-		onConfirm={() => contextMenu.deleteLicense($license)}
+		onConfirm={handleDelete}
 		onCancel={() => (showWarningModal = false)}
+		requestState={licenseDeleteRequest}
 	/>
 {/if}
 

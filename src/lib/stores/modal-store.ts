@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { writable } from 'svelte/store';
 import { contextMenu } from './context-menu-store';
+import { licenseFetchRequest, request } from './request-state-store';
 import { applicationStore } from './resources/application-store';
 import { licenseMode, licenseStore } from './resources/license-store';
 
@@ -39,8 +40,8 @@ function createModalController() {
 		if (validateLicenseId(licenseId)) {
 			await goto(`?modal=view&id=${licenseId}`);
 			licenseMode.set('view');
-			await licenseStore.fetch(licenseId);
 			showLicenseModal.set(true);
+			await licenseStore.fetch(licenseId);
 		} else {
 			await goto('/');
 			closeAllModals();
@@ -48,6 +49,7 @@ function createModalController() {
 	}
 
 	async function openAddLicense() {
+		request.setError(licenseFetchRequest, null);
 		await goto(`?modal=add`);
 		licenseMode.set('add');
 		showLicenseModal.set(true);
@@ -61,7 +63,7 @@ function createModalController() {
 
 	function closeApplicationModal() {
 		applicationModalMode.set('closed');
-		applicationStore.reset();
+		applicationStore.resetFields();
 	}
 
 	function closeAssignedUsers() {

@@ -1,16 +1,16 @@
 <script lang="ts">
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
-	import { license, licenseMode } from '$lib/stores/resources/license-store';
+	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import { fade, slide } from 'svelte/transition';
 
 	let label: string = '';
-	$: costValue = calculateCost($license.renewalInterval, $license.cost);
-	$: label = $license.autoRenewal ? 'Renewal date' : 'Expiration date';
-	$: daysLeft = getRelativeDate($license.expirationDate);
-	$: if (!$license.autoRenewal) $license.renewalInterval = 'None';
+	$: costValue = calculateCost($currentLicense.renewalInterval, $currentLicense.cost);
+	$: label = $currentLicense.autoRenewal ? 'Renewal date' : 'Expiration date';
+	$: daysLeft = getRelativeDate($currentLicense.expirationDate);
+	$: if (!$currentLicense.autoRenewal) $currentLicense.renewalInterval = 'None';
 
 	// Calculate cost based on renewal interval
 	function calculateCost(renewalInterval: string, cost: number): string {
@@ -40,7 +40,7 @@
 			type="date"
 			required
 			name="applications"
-			bind:value={$license.expirationDate}
+			bind:value={$currentLicense.expirationDate}
 		/>
 
 		<!-- Renewal checkbox -->
@@ -50,10 +50,10 @@
 				id="renewal"
 				name="renewal"
 				value="renewal"
-				bind:checked={$license.autoRenewal}
+				bind:checked={$currentLicense.autoRenewal}
 				on:keydown={(e) => {
 					if (e.key === 'Enter') {
-						$license.autoRenewal = !$license.autoRenewal;
+						$currentLicense.autoRenewal = !$currentLicense.autoRenewal;
 					}
 				}}
 			/>
@@ -71,7 +71,7 @@
 	<!-- Cost input field -->
 	<div class="cost-field">
 		<TextField
-			bind:value={$license.cost}
+			bind:value={$currentLicense.cost}
 			number
 			label="Cost"
 			secondaryText={`${costValue}`}
@@ -82,10 +82,10 @@
 	</div>
 
 	<!-- Initially hidden autorenewal select field -->
-	{#if $license.autoRenewal}
+	{#if $currentLicense.autoRenewal}
 		<div transition:slide={{ duration: 80 }} class="interval-field">
 			<SelectField
-				bind:value={$license.renewalInterval}
+				bind:value={$currentLicense.renewalInterval}
 				label="Renewal interval"
 				options={['None', 'Monthly', 'Annually']}
 				defaultOption="None"

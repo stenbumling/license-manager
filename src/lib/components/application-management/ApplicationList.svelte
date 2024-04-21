@@ -5,36 +5,51 @@
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { Circle } from 'svelte-loading-spinners';
-	import { fade } from 'svelte/transition';
+	import { fade, slide } from 'svelte/transition';
 	import ApplicationItem from './ApplicationListItem.svelte';
+
+	$: hasStartedRequest = $applicationFetchRequest.pendingRequests > 0 && !isLoading;
+	$: isLoading = $applicationFetchRequest.isLoading;
+	$: hasError = $applicationFetchRequest.error?.message;
+	$: noResults = $applicationStore.length === 0;
+	$: hasApplications = $applicationStore.length > 0;
 </script>
 
 <div class="application-list-container">
 	<h2>List of applications</h2>
 
 	<!-- Loading -->
-	{#if $applicationFetchRequest.isLoading}
-		<div class="fallback-container" in:fade={{ duration: 300 }}>
+	{#if hasStartedRequest}
+		<div class="fallback-container" in:fade={{ duration: 120 }}>
+			<!-- Prevents default state being active if loading spinner has a delay -->
+		</div>
+	{:else if isLoading}
+		<div class="fallback-container" in:fade={{ duration: 120 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
 
 		<!-- Errors and no results -->
-	{:else if $applicationFetchRequest.error.message}
-		<div class="fallback-container" in:fade={{ duration: 300 }}>
-			<h2>{$applicationFetchRequest.error.message}</h2>
+	{:else if hasError}
+		<div class="fallback-container" in:fade={{ duration: 120 }}>
+			<h2>{$applicationFetchRequest.error?.message}</h2>
 		</div>
-	{:else if $applicationStore.length === 0}
-		<div class="fallback-container" in:fade={{ duration: 300 }}>
+	{:else if noResults}
+		<div class="fallback-container" in:fade={{ duration: 120 }}>
 			<h3>No applications added yet</h3>
 		</div>
-	{:else}
-		<!-- Render application items -->
-		<div class="application-list" use:scrollShadow in:fade={{ duration: 200 }}>
+	{/if}
+
+	<!-- Render application items -->
+	{#if hasApplications && !hasError && !isLoading && !hasStartedRequest}
+		<div class="application-list" use:scrollShadow>
 			{#each $applicationStore as applicationItem}
-				<ApplicationItem {applicationItem} />
+				<div transition:slide={{ duration: 120 }}>
+					<ApplicationItem {applicationItem} />
+				</div>
 			{/each}
 		</div>
 	{/if}
+
 	<div class="button-container">
 		<PrimaryButton title="Add new application" action={() => applicationModalMode.set('add')} />
 	</div>

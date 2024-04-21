@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { license } from '$lib/stores/resources/license-store';
+	import { currentLicense } from '$lib/stores/resources/license-store';
 	import type { User } from '$lib/stores/resources/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
 
 	export let user: User;
 
 	function handleRemoveUser(user: User) {
-		$license.users = $license.users.filter((u) => u.id !== user.id);
+		$currentLicense.users = $currentLicense.users.filter((u) => u.id !== user.id);
 	}
 </script>
 

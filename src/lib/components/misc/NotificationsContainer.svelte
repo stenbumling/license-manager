@@ -8,7 +8,7 @@
 		{#each $notifications as notification (notification.id)}
 			<Notification
 				type={notification.type}
-				dismissible={notification.dismissible}
+				dismissable={notification.dismissable}
 				on:dismiss={() => notifications.dismiss(notification.id)}
 				>{notification.message}
 			</Notification>

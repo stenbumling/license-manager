@@ -4,8 +4,13 @@ import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 import { notifications } from '../notification-store';
-import { licenseFetchRequest, licensePostRequest, request } from '../request-state-store';
-import { table } from './table-store';
+import {
+	disableButtonsDuringRequests,
+	licenseDeleteRequest,
+	licenseFetchRequest,
+	licensePostRequest,
+	request,
+} from '../request-state-store';
 
 function getInitialValues() {
 	return {
@@ -27,6 +32,7 @@ function getInitialValues() {
 		contactPerson: '',
 		additionalContactInfo: '',
 		comment: '',
+		updatedAt: '',
 	};
 }
 
@@ -52,6 +58,7 @@ export interface License {
 	contactPerson: string;
 	additionalContactInfo: string;
 	comment: string;
+	updatedAt: string;
 }
 
 export interface LicenseCounts {
@@ -62,7 +69,7 @@ export interface LicenseCounts {
 	expired: number;
 }
 
-export const license = writable<License>(getInitialValues());
+export const currentLicense = writable<License>(getInitialValues());
 export const licenseMode = writable<'add' | 'view'>('add');
 export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
 
@@ -70,18 +77,20 @@ function createLicenseStore() {
 	const { subscribe, set, update } = writable<License[]>([]);
 
 	async function getLicenseById(id: string) {
-		request.startLoading(licenseFetchRequest);
 		try {
+			await request.startLoading(licenseFetchRequest);
 			const response = await fetch(`/api/licenses/${id}`);
+			await request.endLoading(licenseFetchRequest, 1000);
 			if (response.ok) {
 				const fetchedLicense = await response.json();
-				license.set(fetchedLicense);
+				currentLicense.set(fetchedLicense);
 			} else {
 				const error: App.Error = await response.json();
 				request.setError(licenseFetchRequest, error);
 				console.error('Failed to fetch license:', error);
 			}
 		} catch (error) {
+			await request.endLoading(licenseFetchRequest);
 			request.setError(licenseFetchRequest, {
 				status: 500,
 				type: 'Internal Server Error',
@@ -89,8 +98,6 @@ function createLicenseStore() {
 				details: 'Please try refreshing the page. If the problem persists, contact support.',
 			});
 			console.error('Failed to fetch license:', error);
-		} finally {
-			request.endLoading(licenseFetchRequest);
 		}
 	}
 
@@ -120,20 +127,22 @@ function createLicenseStore() {
 	}
 
 	async function addLicense(license: License) {
-		request.startLoading(licensePostRequest);
 		try {
+			disableButtonsDuringRequests.set(true);
+			await request.startLoading(licensePostRequest, 0);
 			const response = await fetch('/api/licenses', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(license),
 			});
+			await request.endLoading(licensePostRequest, 1000);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await updateLicenseCounts();
-				await table.updateState();
 				notifications.add({
 					message: 'License created successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
@@ -141,8 +150,11 @@ function createLicenseStore() {
 					type: 'alert',
 				});
 				console.error('Failed to create license:', error);
+				return false;
 			}
 		} catch (error) {
+			await request.endLoading(licensePostRequest);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be created. Please try refreshing the page.',
@@ -150,15 +162,15 @@ function createLicenseStore() {
 				timeout: false,
 			});
 			console.error('Failed to create license:', error);
-		} finally {
-			request.endLoading(licensePostRequest);
+			return false;
 		}
 	}
 
 	async function updateLicense(updatedLicense: License) {
-		request.startLoading(licensePostRequest);
 		const currentLicense = get(licenseStore).find((l) => l.id === updatedLicense.id);
 		try {
+			disableButtonsDuringRequests.set(true);
+			await request.startLoading(licensePostRequest, 0);
 			const response = await fetch(`/api/licenses/${updatedLicense.id}`, {
 				method: 'PUT',
 				headers: { 'Content-Type': 'application/json' },
@@ -167,23 +179,26 @@ function createLicenseStore() {
 					currentLicense: currentLicense,
 				}),
 			});
+			await request.endLoading(licensePostRequest, 1000);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await updateLicenseCounts();
-				await table.updateState();
 				notifications.add({
 					message: 'License updated successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
 					message: error.message,
 					type: 'alert',
 				});
-
 				console.error('Failed to update license:', error);
+				return false;
 			}
 		} catch (error) {
+			await request.endLoading(licensePostRequest);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be updated. Please try refreshing the page.',
@@ -191,33 +206,37 @@ function createLicenseStore() {
 				timeout: false,
 			});
 			console.error('Failed to update license:', error);
-		} finally {
-			request.endLoading(licensePostRequest);
+			return false;
 		}
 	}
 
 	async function deleteLicense(id: string) {
 		try {
+			disableButtonsDuringRequests.set(true);
+			await request.startLoading(licenseDeleteRequest, 0);
 			const response = await fetch(`/api/licenses/${id}`, {
 				method: 'DELETE',
 			});
+			await request.endLoading(licenseDeleteRequest, 1000);
+			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
-				await updateLicenseCounts();
-				await table.updateState();
 				notifications.add({
 					message: 'License deleted successfully',
 					type: 'success',
 				});
+				return true;
 			} else {
 				const error: App.Error = await response.json();
 				notifications.add({
 					message: error.message,
 					type: 'alert',
 				});
-
 				console.error('Failed to delete license:', error);
+				return false;
 			}
 		} catch (error) {
+			await request.endLoading(licenseDeleteRequest);
+			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
 					'A server error has occured and license could not be deleted. Please try refreshing the page.',
@@ -225,13 +244,17 @@ function createLicenseStore() {
 				timeout: false,
 			});
 			console.error('Failed to delete license:', error);
+			return false;
 		}
 	}
 
+	/**
+	 * Reset the license store to its initial values.
+	 * `setTimeout` is used to wait for the closing animation to finish
+	 */
 	function resetFields() {
-		// Reset after closing animation is done
 		setTimeout(() => {
-			license.set(getInitialValues());
+			currentLicense.set(getInitialValues());
 			licenseValidationErrors.set({});
 		}, 120);
 	}
@@ -245,7 +268,7 @@ function createLicenseStore() {
 		delete: deleteLicense,
 		updateLicense: updateLicense,
 		updateCounts: updateLicenseCounts,
-		resetFields: resetFields,
+		resetFields,
 	};
 }
 

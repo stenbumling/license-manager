@@ -2,18 +2,29 @@
 	import { tooltip } from '$lib/actions/tooltip';
 	import IconButton from '$lib/components/misc/buttons/IconButton.svelte';
 	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
-	import { license, licenseMode } from '$lib/stores/resources/license-store';
+	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
+	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+
+	onMount(async () => {
+		await applicationStore.fetch();
+	});
+
+	$: isLoading = $applicationFetchRequest.pendingRequests > 0 || $applicationFetchRequest.isLoading;
+	$: hasError = $applicationFetchRequest.error?.message;
+	$: noResults = $applicationStore.length === 0 && !isLoading;
+	$: hasApplications = $applicationStore.length > 0 && !isLoading && !hasError && !noResults;
 
 	function handleApplicationChange(e: Event) {
 		const target = e.target as HTMLSelectElement;
 		const selectedAppId = target.value;
 		const foundApp = $applicationStore.find((app) => app.id === selectedAppId);
-		$license.application.name = foundApp ? foundApp.name : '';
-		$license.application.link = foundApp ? foundApp.link : '';
+		$currentLicense.application.name = foundApp ? foundApp.name : '';
+		$currentLicense.application.link = foundApp ? foundApp.link : '';
 	}
 </script>
 
@@ -22,15 +33,32 @@
 	<div class="application-selection-row">
 		<select
 			required
+			disabled={!hasApplications}
 			name="applications"
 			class:select-add-mode={$licenseMode === 'add'}
-			bind:value={$license.applicationId}
+			bind:value={$currentLicense.applicationId}
 			on:change={handleApplicationChange}
 		>
-			<option disabled selected hidden value="">Select a application</option>
-			{#each $applicationStore as application}
-				<option value={application.id}>{application.name}</option>
-			{/each}
+			{#if isLoading}
+				<option disabled selected value={$currentLicense.applicationId}>Loading...</option>
+			{:else if hasError}
+				<option disabled selected value={$currentLicense.applicationId}
+					>Error loading applications</option
+				>
+			{:else if noResults}
+				<option disabled selected value={$currentLicense.applicationId}
+					>No applications added yet</option
+				>
+			{:else if hasApplications}
+				{#if $licenseMode === 'add'}
+					<option disabled selected value="">Select an application</option>
+				{/if}
+				{#each $applicationStore as application}
+					<option selected={application.id === $currentLicense.applicationId} value={application.id}
+						>{application.name}</option
+					>
+				{/each}
+			{/if}
 		</select>
 		<div
 			use:tooltip={{
@@ -50,11 +78,11 @@
 			<span class="warning-text" transition:fade={{ duration: 120 }}
 				>{$licenseValidationErrors.applicationId}</span
 			>
-		{:else if $license.application.link}
-			<a class="application-link" href={$license.application.link} target="_blank"
-				>{$license.application.link.length > 100
-					? $license.application.link.slice(0, 100) + '...'
-					: $license.application.link}</a
+		{:else if $currentLicense.application.link && !isLoading && !hasError && !noResults}
+			<a class="application-link" href={$currentLicense.application.link} target="_blank"
+				>{$currentLicense.application.link.length > 100
+					? $currentLicense.application.link.slice(0, 100) + '...'
+					: $currentLicense.application.link}</a
 			>
 		{/if}
 	</p>
@@ -150,12 +178,12 @@
 		color: gray;
 	}
 
-	option[value=''][disabled] {
-		display: none;
-	}
-
 	option {
 		font-style: normal;
 		color: black;
+	}
+
+	option[value=''][disabled] {
+		display: none;
 	}
 </style>
