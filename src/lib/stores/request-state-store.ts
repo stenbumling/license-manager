@@ -103,7 +103,7 @@ function createRequestStateController() {
 		});
 	}
 
-	function setError(request: Writable<RequestState>, error: App.Error) {
+	function setError(request: Writable<RequestState>, error: App.Error | null) {
 		request.update((state) => ({
 			...state,
 			error: error,

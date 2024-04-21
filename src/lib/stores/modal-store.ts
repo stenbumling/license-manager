@@ -1,6 +1,7 @@
 import { goto } from '$app/navigation';
 import { writable } from 'svelte/store';
 import { contextMenu } from './context-menu-store';
+import { licenseFetchRequest, request } from './request-state-store';
 import { applicationStore } from './resources/application-store';
 import { licenseMode, licenseStore } from './resources/license-store';
 
@@ -33,7 +34,6 @@ function createModalController() {
 		} else if (url.searchParams.size === 0) {
 			licenseStore.resetFields();
 		}
-
 	}
 
 	async function openViewLicense(licenseId: string) {
@@ -49,6 +49,7 @@ function createModalController() {
 	}
 
 	async function openAddLicense() {
+		request.setError(licenseFetchRequest, null);
 		await goto(`?modal=add`);
 		licenseMode.set('add');
 		showLicenseModal.set(true);
