@@ -5,6 +5,7 @@ import { fetchedUsers, foundUser } from '../../../mocks/data/user';
 import { server } from '../../../mocks/setup/node';
 import { triggerMockError } from '../../../mocks/utils/handler-helpers';
 import { userStore } from './user-store';
+import { notifications } from '../notification-store';
 
 describe('User Store', () => {
 	describe('fetchUsers', () => {
@@ -26,6 +27,7 @@ describe('User Store', () => {
 
 			const users = get(userStore);
 			expect(users.length).toBe(0);
+			expect(get(notifications).length).not.toBe(0);
 		});
 	});
 
@@ -35,6 +37,7 @@ describe('User Store', () => {
 			const users = get(userStore);
 
 			expect(users.some((user) => user.name === 'Namn Namnsson')).toBe(true);
+			expect(get(notifications).length).not.toBe(0);
 		});
 		it('should successfully find an existing user to the server without creating duplicates', async () => {
 			server.use(
@@ -63,6 +66,7 @@ describe('User Store', () => {
 
 			const users = get(userStore);
 			expect(users.length).toBe(0);
+			expect(get(notifications).length).not.toBe(0);
 		});
 	});
 
@@ -77,6 +81,7 @@ describe('User Store', () => {
 			const users = get(userStore);
 			expect(users.length).toBe(4);
 			expect(users.some((user) => user.id === 'test-id')).toBe(false);
+			expect(get(notifications).length).not.toBe(0);
 		});
 		it('should not update store if server request fails and display an error message', async () => {
 			server.use(
@@ -94,6 +99,7 @@ describe('User Store', () => {
 			const users = get(userStore);
 			expect(users.length).toBe(5);
 			expect(users.some((user) => user.id === 'test-id')).toBe(true);
+			expect(get(notifications).length).not.toBe(0);
 		});
 	});
 });
