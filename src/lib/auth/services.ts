@@ -22,6 +22,18 @@ export async function authenticateUser(event: RequestEvent) {
 			});
 		}
 	}
+// 	const groupId = 'e8894564-860f-4bb7-9c84-db3d045802b7';
+// 	const token = event.cookies.get('accessToken');
+// 	const response = await fetch(
+// 		`https://graph.microsoft.com/v1.0/groups/${groupId}/members?$select=id,displayName`,
+// 		{
+// 			headers: {
+// 				Authorization: `Bearer ${token}`,
+// 			},
+// 		},
+// 	);
+// 	const data = await response.json();
+// 	console.log(data);
 }
 
 /**
@@ -49,6 +61,12 @@ const msalInstanceProvider = (() => {
 
 const cryptoProvider = new CryptoProvider();
 
+const graphApiPermissions = [
+	'https://graph.microsoft.com/User.Read',
+	'https://graph.microsoft.com/GroupMember.Read.All',
+	'https://graph.microsoft.com/User.Read.All',
+];
+
 export async function redirectToAuthCodeUrl(event: RequestEvent) {
 	const msalInstance = msalInstanceProvider();
 	const { verifier, challenge } = await cryptoProvider.generatePkceCodes();
@@ -69,7 +87,8 @@ export async function redirectToAuthCodeUrl(event: RequestEvent) {
 		responseMode: ResponseMode.QUERY,
 		codeChallenge: pkceCodes.challenge,
 		codeChallengeMethod: pkceCodes.challengeMethod,
-		scopes: [],
+		scopes: graphApiPermissions
+		,
 		state,
 	};
 
@@ -91,7 +110,8 @@ export async function getTokens(event: RequestEvent) {
 				const authCodeRequest = {
 					redirectUri: REDIRECT_URI || 'no-redirect-uri-set',
 					code,
-					scopes: [],
+					scopes: graphApiPermissions
+					,
 					codeVerifier: event.cookies.get('pkceVerifier'),
 				};
 				const tokenResponse = await msalInstance.acquireTokenByCode(authCodeRequest);
