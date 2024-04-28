@@ -27,7 +27,7 @@ steps:
   - script: |
       rm -f static/mockServiceWorker.js
     displayName: 'Delete mockServiceWorker.js before build'
-    
+
   - script: |
       npm run build
     displayName: 'npm build'

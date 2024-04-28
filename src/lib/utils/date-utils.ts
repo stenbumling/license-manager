@@ -7,7 +7,7 @@ export function getTodaysDate(): string {
 
 export function cleanUpDateString(unformattedDate: string): string {
 	const date = new Date(unformattedDate);
-	return date.toLocaleString('sv-SE');
+	return date.toLocaleString('sv-SE').slice(0, 16);
 }
 
 export function daysUntil(date: string): number {

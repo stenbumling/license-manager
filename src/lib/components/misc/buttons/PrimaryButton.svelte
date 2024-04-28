@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Pulse } from 'svelte-loading-spinners';
-	import { isOnline } from '$lib/stores/network-store'
+	import { isOnline } from '$lib/stores/network-store';
 	import buttonArrow from '../../../images/icons/button-arrow.svg';
 
 	export let title: string = 'Button title';
