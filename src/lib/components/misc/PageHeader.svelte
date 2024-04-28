@@ -2,7 +2,7 @@
 	import logo from '$lib/images/nexer-logo-white.png';
 
 	function handleClick() {
-		const response = fetch('/api/azure', {
+		const response = fetch('/api/users/sync', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
