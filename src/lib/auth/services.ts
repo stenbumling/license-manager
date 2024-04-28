@@ -1,73 +1,43 @@
-import { ConfidentialClientApplication, CryptoProvider, ResponseMode } from '@azure/msal-node';
+import { CryptoProvider, InteractionRequiredAuthError, ResponseMode } from '@azure/msal-node';
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
-import { cookiesConfig, msalConfig } from './config';
+import { cookiesConfig, graphApiPermissions, msalInstanceProvider } from './config';
 
 const { REDIRECT_URI } = process.env;
 
 /*
  * These service functions are used to handle the authentication flow with Azure AD.
- * See the config.ts file for the configuration of the MSAL library.
+ * Use the config.ts file for configuration of the MSAL library.
  */
-
-export async function authenticateUser(event: RequestEvent) {
-	if (shouldAuthenticate(event)) {
-		const authCodeUrl = await redirectToAuthCodeUrl(event);
-		if (authCodeUrl) {
-			redirect(302, authCodeUrl);
-		} else {
-			error(500, {
-				status: 500,
-				type: 'Authentication Error',
-				message: 'Failed to redirect to authentication page',
-			});
-		}
-	}
-// 	const groupId = 'e8894564-860f-4bb7-9c84-db3d045802b7';
-// 	const token = event.cookies.get('accessToken');
-// 	const response = await fetch(
-// 		`https://graph.microsoft.com/v1.0/groups/${groupId}/members?$select=id,displayName`,
-// 		{
-// 			headers: {
-// 				Authorization: `Bearer ${token}`,
-// 			},
-// 		},
-// 	);
-// 	const data = await response.json();
-// 	console.log(data);
-}
 
 /**
  * Set SKIP_AUTH to 'true' in the env.local file to skip authentication.
  * In production, the SKIP_AUTH variable will not be accessible to the client, so
  * it will always be set to 'false'.
  */
-export function shouldAuthenticate(event: RequestEvent) {
+export async function shouldAuthenticate(event: RequestEvent) {
 	const isSkipAuth = process.env.SKIP_AUTH === 'true';
 	const isCallbackRoute = event.route.id && event.route.id.includes('callback');
-	const isAuthenticated = event.cookies.get('idToken') && event.cookies.get('accessToken');
+	const hasValidToken = await validateToken(event);
 
-	return !isSkipAuth && !isCallbackRoute && !isAuthenticated;
+	return !isSkipAuth && !isCallbackRoute && !hasValidToken;
 }
 
-const msalInstanceProvider = (() => {
-	let msalInstance: ConfidentialClientApplication | null = null;
-	return () => {
-		if (msalInstance === null) {
-			msalInstance = new ConfidentialClientApplication(msalConfig);
-		}
-		return msalInstance;
-	};
-})();
+export async function authenticateUser(event: RequestEvent) {
+	const authCodeUrl = await generateAuthCodeUrl(event);
+	if (authCodeUrl) {
+		redirect(302, authCodeUrl);
+	} else {
+		error(500, {
+			status: 500,
+			type: 'Authentication Error',
+			message: 'Failed to redirect to authentication page',
+		});
+	}
+}
 
 const cryptoProvider = new CryptoProvider();
 
-const graphApiPermissions = [
-	'https://graph.microsoft.com/User.Read',
-	'https://graph.microsoft.com/GroupMember.Read.All',
-	'https://graph.microsoft.com/User.Read.All',
-];
-
-export async function redirectToAuthCodeUrl(event: RequestEvent) {
+export async function generateAuthCodeUrl(event: RequestEvent) {
 	const msalInstance = msalInstanceProvider();
 	const { verifier, challenge } = await cryptoProvider.generatePkceCodes();
 	const pkceCodes = {
@@ -87,14 +57,15 @@ export async function redirectToAuthCodeUrl(event: RequestEvent) {
 		responseMode: ResponseMode.QUERY,
 		codeChallenge: pkceCodes.challenge,
 		codeChallengeMethod: pkceCodes.challengeMethod,
-		scopes: graphApiPermissions
-		,
+		scopes: graphApiPermissions,
 		state,
 	};
 
 	const authCodeUrl = await msalInstance.getAuthCodeUrl(authCodeUrlRequest);
+
 	event.cookies.set('pkceVerifier', verifier, cookiesConfig);
 	event.cookies.set('csrfToken', csrfToken, cookiesConfig);
+
 	return authCodeUrl;
 }
 
@@ -110,16 +81,58 @@ export async function getTokens(event: RequestEvent) {
 				const authCodeRequest = {
 					redirectUri: REDIRECT_URI || 'no-redirect-uri-set',
 					code,
-					scopes: graphApiPermissions
-					,
+					scopes: graphApiPermissions,
 					codeVerifier: event.cookies.get('pkceVerifier'),
 				};
+
 				const tokenResponse = await msalInstance.acquireTokenByCode(authCodeRequest);
+
 				event.cookies.set('accessToken', tokenResponse.accessToken, cookiesConfig);
 				event.cookies.set('idToken', tokenResponse.idToken, cookiesConfig);
-				event.cookies.set('account', JSON.stringify(tokenResponse.account), cookiesConfig);
+				event.cookies.set(
+					'homeAccountId',
+					tokenResponse.account?.homeAccountId ?? '',
+					cookiesConfig,
+				);
+				event.cookies.delete('pkceVerifier', cookiesConfig);
+				event.cookies.delete('csrfToken', cookiesConfig);
+
 				return decodedState.redirectTo;
 			}
+		}
+	}
+}
+
+export async function validateToken(event: RequestEvent) {
+	const homeId = event.cookies.get('homeAccountId');
+	if (!homeId) {
+		return false;
+	}
+
+	const msalInstance = msalInstanceProvider();
+	const account = await msalInstance.getTokenCache().getAccountByHomeId(homeId);
+
+	if (!account) {
+		return false;
+	}
+
+	const silentRequest = {
+		account: account,
+		scopes: graphApiPermissions,
+	};
+
+	try {
+		const tokenResponse = await msalInstance.acquireTokenSilent(silentRequest);
+
+		event.cookies.set('accessToken', tokenResponse.accessToken, cookiesConfig);
+		event.cookies.set('idToken', tokenResponse.idToken, cookiesConfig);
+
+		return true;
+	} catch (err) {
+		if (err instanceof InteractionRequiredAuthError) {
+			return false;
+		} else {
+			throw err;
 		}
 	}
 }

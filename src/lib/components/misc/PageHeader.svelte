@@ -1,5 +1,14 @@
 <script lang="ts">
 	import logo from '$lib/images/nexer-logo-white.png';
+
+	function handleClick() {
+		const response = fetch('/api/azure', {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+	}
 </script>
 
 <header class="header-container">
@@ -7,7 +16,7 @@
 		<a style="line-height:0" href="/" data-sveltekit-reload>
 			<img class="header-logo" src={logo} alt="Nexer Logo" />
 		</a>
-		<h2 class="header-department-name">Örebro</h2>
+		<h2 on:click={handleClick} class="header-department-name">Örebro</h2>
 	</div>
 </header>
 

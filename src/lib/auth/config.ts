@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import { ConfidentialClientApplication } from '@azure/msal-node';
 
 const { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_CLOUD_INSTANCE, AZURE_TENANT_ID } = process.env;
 
@@ -17,8 +18,29 @@ export const msalConfig = {
 	},
 };
 
+export const msalInstanceProvider = (() => {
+	let msalInstance: ConfidentialClientApplication | null = null;
+	return () => {
+		if (msalInstance === null) {
+			msalInstance = new ConfidentialClientApplication(msalConfig);
+		}
+		return msalInstance;
+	};
+})();
+
 export const cookiesConfig = {
 	httpOnly: true,
 	path: '/',
 	secure: !dev,
 };
+
+/**
+ * The permissions required by the application to access the Microsoft Graph API.
+ * They need to be set in the Azure AD application registration.
+ */
+export const graphApiPermissions = [
+	'https://graph.microsoft.com/User.Read',
+	'https://graph.microsoft.com/GroupMember.Read.All',
+	'https://graph.microsoft.com/User.Read.All',
+	'offline_access',
+];

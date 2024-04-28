@@ -1,5 +1,5 @@
 import { building } from '$app/environment';
-import { authenticateUser } from '$lib/auth/services';
+import { authenticateUser, shouldAuthenticate } from '$lib/auth/services';
 import { initDb } from '$lib/server/db';
 import { type Handle, type HandleServerError } from '@sveltejs/kit';
 import {
@@ -16,7 +16,9 @@ if (!building) {
 }
 
 export const handle: Handle = async ({ event, resolve }) => {
-	await authenticateUser(event);
+	if (await shouldAuthenticate(event)) {
+		await authenticateUser(event);
+	}
 
 	// Used to preload fonts (only css and js are preloaded by default otherwise)
 	return await resolve(event, {
