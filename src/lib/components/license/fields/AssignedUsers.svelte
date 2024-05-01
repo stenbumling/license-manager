@@ -4,7 +4,6 @@
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import { userFetchRequest } from '$lib/stores/request-state-store';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
-	import type { User } from '$lib/stores/resources/user-store';
 	import { userStore } from '$lib/stores/resources/user-store';
 	import { receive, send } from '$lib/utils/animation-utils.ts';
 	import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
@@ -18,52 +17,48 @@
 		await userStore.fetch();
 	});
 
-	let userInput = '';
-	let userSuggestions: User[] = [];
-	let inputField: HTMLInputElement;
-	let isInputFieldFocused = false;
+	$: userSuggestions = $userStore.filter((user) => {
+		const assignedUser = $currentLicense.users.find((u) => u.id === user.id);
+		const inactiveUser = user.active === false;
+		return !assignedUser && !inactiveUser;
+	});
 
-	// Renders user suggestions based on the input value and assigned users
-	$: {
-		const assignedUsers = new Set($currentLicense.users.map((user) => user.id));
-		if (userInput.trim()) {
-			userSuggestions = $userStore
-				.filter(
-					(user) =>
-						user.name.toLowerCase().startsWith(userInput.toLowerCase()) &&
-						!assignedUsers.has(user.id),
-				)
-				.sort((a, b) => a.name.localeCompare(b.name));
-		} else if (isInputFieldFocused) {
-			userSuggestions = $userStore
-				.filter((user) => !assignedUsers.has(user.id))
-				.sort((a, b) => a.name.localeCompare(b.name));
-		} else {
-			userSuggestions = [];
-		}
+	let inputField: HTMLInputElement;
+	let inputFieldFocused = false;
+	let userInput = '';
+
+	function handleInput(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
+		const input = event.currentTarget.value.trim().toLowerCase();
+
+		userSuggestions = $userStore.filter((user) => {
+			const userName = user.name.toLowerCase();
+			const userAlreadyAssigned = $currentLicense.users.find((u) => u.id === user.id);
+			const userIsInactive = user.active === false;
+
+			return userName.includes(input) && !userAlreadyAssigned && !userIsInactive;
+		});
+		userValidationErrors.set([]);
 	}
 
-	async function handleAssignUser(addedUserName: string) {
-		const isValid = await validateUser(addedUserName);
-		userSuggestions = [];
-		if (isValid) {
-			try {
-				const foundUser = await userStore.findOrCreateUser(addedUserName);
+	async function handleAssignUser(assignedUsername: string) {
+		const isValid = await validateUser(assignedUsername);
+		const userToAssign = $userStore.find((user) => user.name === assignedUsername);
+		const userAlreadyAssigned = $currentLicense.users.find((u) => u.id === userToAssign?.id);
 
-				const isAlreadyAssigned = $currentLicense.users.some((u) => u.id === foundUser.id);
-
-				if (isAlreadyAssigned) {
-					userValidationErrors.set(['User is already assigned']);
-				} else {
-					$currentLicense.users = [...$currentLicense.users, foundUser];
-					userInput = '';
-					inputField.blur();
-					userValidationErrors.set([]);
-				}
-			} catch (error) {
-				console.error('Failed to add or find user:', error);
-			}
+		if (!isValid) {
+			inputField.blur();
+			return;
+		} else if (!userToAssign) {
+			userValidationErrors.set(['User does not exist']);
+		} else if (userAlreadyAssigned) {
+			userValidationErrors.set(['User is already assigned']);
+			userInput = '';
+		} else {
+			$currentLicense.users = [...$currentLicense.users, userToAssign];
+			userInput = '';
 		}
+
+		inputField.blur();
 	}
 </script>
 
@@ -104,11 +99,12 @@
 		<input
 			class:input-add-mode={$licenseMode === 'add'}
 			type="search"
-			placeholder="Select or add new user"
+			placeholder="Search for a user to assign"
 			bind:value={userInput}
 			bind:this={inputField}
-			on:focus={() => (isInputFieldFocused = true)}
-			on:blur={() => (isInputFieldFocused = false)}
+			on:focus={() => (inputFieldFocused = true)}
+			on:blur={() => (inputFieldFocused = false)}
+			on:input={handleInput}
 			on:keydown={(e) => {
 				if (e.key === 'Enter' && userInput === '') {
 					inputField.blur();
@@ -119,7 +115,7 @@
 		/>
 
 		<!-- User suggestions dropdown -->
-		{#if userSuggestions.length}
+		{#if inputFieldFocused && userSuggestions.length && !$userFetchRequest.pendingRequests}
 			<ul role="menu" class="suggestions-list" in:slide={{ duration: 100 }}>
 				{#each userSuggestions as suggestion}
 					<li

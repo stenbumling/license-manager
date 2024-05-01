@@ -22,7 +22,7 @@ export async function getAzureAdGroupMembers(token: string) {
 		const data = await response.json();
 		return data.value;
 	} else {
-		const err = await response.json();
+		const err: App.Error = await response.json();
 		console.error('Azure AD Error:', err);
 		error(500, {
 			status: 500,

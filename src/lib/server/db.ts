@@ -1,11 +1,11 @@
 import { building } from '$app/environment';
 import { error } from '@sveltejs/kit';
 import {
+	AccessDeniedError,
 	ConnectionError,
 	ConnectionTimedOutError,
 	Sequelize,
 	TimeoutError,
-	AccessDeniedError,
 } from 'sequelize';
 import type { ConnectionConfiguration } from 'tedious';
 
