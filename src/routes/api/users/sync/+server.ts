@@ -1,4 +1,9 @@
-import { getAzureAdGroupMembers, getUsersFromDatabase } from '$lib/server/services/user-services';
+import {
+	getAzureAdGroupMembers,
+	getUsersFromDatabase,
+	syncUserTableWithAzureADGroup,
+	filterUsers,
+} from '$lib/server/services/user-services';
 import { error } from '@sveltejs/kit';
 
 export async function PUT(event) {
@@ -13,18 +18,8 @@ export async function PUT(event) {
 	}
 	const azureAdUsers = await getAzureAdGroupMembers(token);
 	const dbUsers = await getUsersFromDatabase();
-	console.log('Azure AD users', azureAdUsers);
-	console.log('dbUsers', dbUsers);
+	const filteredUsers = filterUsers(azureAdUsers, dbUsers);
+	await syncUserTableWithAzureADGroup(azureAdUsers, filteredUsers);
 
 	return new Response(null, { status: 204 });
 }
-
-// // 1. fetch data from Azure AD
-// // 2. fetch data from my user table
-// 3. compare the two datasets
-//    a) if a user is in Azure AD but not in my user table, create a new user
-//    b) if a user is in my user table but not in Azure AD, delete the user.
-//        If the user is associated with any licenses, flag the user as inactive instead
-//    c) if a user is in both and they differ, update the user's details in my user table
-// 4. update the user table with the new data
-// 5. (optional) return the updated user data
