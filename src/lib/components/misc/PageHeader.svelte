@@ -1,8 +1,9 @@
 <script lang="ts">
 	import logo from '$lib/images/nexer-logo-white.png';
 
-	function handleClick() {
-		const response = fetch('/api/users/sync', {
+	async function handleClick() {
+		// TODO: remove this
+		const response = await fetch('/api/users/sync', {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
