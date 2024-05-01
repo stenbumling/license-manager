@@ -25,7 +25,7 @@
 			class="badge-text-container"
 			use:tooltip={{
 				content:
-					'This user does no longer exist on Azure AD. You can unassign the user, but you cannot reassign them. If this user is still active, please contact your administrator.',
+					'This user does no longer exist in your Azure AD group. You can unassign the user, but you cannot reassign them. If this user is still active, please contact your administrator.',
 				options: { delay: [500, 0] },
 			}}
 		>
