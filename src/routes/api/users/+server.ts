@@ -1,19 +1,9 @@
-import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
+import { getUsersFromDatabase } from '$lib/server/services/user-services';
 import { error, json } from '@sveltejs/kit';
 
 export async function GET() {
-	const users = await User.findAll({
-		attributes: { exclude: ['createdAt'] },
-		include: [
-			{
-				model: License,
-				attributes: ['id'],
-				through: { attributes: [] },
-			},
-		],
-		order: [['name', 'ASC']],
-	});
+	const users = await getUsersFromDatabase();
 	return json(users, { status: 200 });
 }
 
