@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tooltip } from '$lib/actions/tooltip';
 	import { currentLicense } from '$lib/stores/resources/license-store';
 	import type { User } from '$lib/stores/resources/user-store';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
@@ -10,12 +11,29 @@
 	}
 </script>
 
-<div class="badge">
-	<div class="badge-text-container">
-		<span class="badge-text">{user.name}</span>
-	</div>
+<div
+	class="badge"
+	style:background-color={user.active ? `var(--deep-purple)` : '#e0e0e0'}
+	style:color={user.active ? 'white' : '#888888'}
+>
+	{#if user.active === true}
+		<div class="badge-text-container">
+			<span class="badge-text">{user.name}</span>
+		</div>
+	{:else}
+		<div
+			class="badge-text-container"
+			use:tooltip={{
+				content:
+					'This user does no longer exist on Azure AD. You can unassign the user, but you cannot reassign them. If this user is still active, please contact your administrator.',
+				options: { delay: [500, 0] },
+			}}
+		>
+			<span class="badge-text">{user.name}</span>
+		</div>
+	{/if}
 	<button class="badge-delete-button" on:click={() => handleRemoveUser(user)}>
-		<CloseFilled fill="white" size={16} />
+		<CloseFilled fill={user.active ? 'white' : '#888888'} size={16} />
 	</button>
 </div>
 
@@ -23,8 +41,6 @@
 	.badge {
 		display: flex;
 		box-sizing: border-box;
-		background-color: var(--deep-purple);
-		color: white;
 		align-items: center;
 		border-radius: 0.5rem;
 		padding: 0 0.6rem;
@@ -40,10 +56,10 @@
 	}
 
 	.badge-text {
-		color: white;
 		font-size: 0.8rem;
 		white-space: nowrap;
-		padding-top: 1px;
+		padding-top: 2px;
+		margin-left: 2px;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		user-select: none;
@@ -59,7 +75,7 @@
 
 	.badge-delete-button:hover > :global(svg) {
 		transition: fill 0.4s ease;
-		fill: white;
+		opacity: 0.5;
 	}
 
 	.badge-delete-button:focus-within {

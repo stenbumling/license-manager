@@ -1,5 +1,10 @@
 @import url('$lib/styles/fonts.css');
 
+::before,
+::after {
+	text-rendering: geometricprecision;
+}
+
 body,
 html {
 	margin: 0;
