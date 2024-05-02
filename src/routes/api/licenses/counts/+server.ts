@@ -1,12 +1,12 @@
 import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
-import { getFormattedDate } from '$lib/server/utils/date-utils';
+import { getTodaysDateWithOffset } from '$lib/utils/date-utils';
 import { json } from '@sveltejs/kit';
 import { Op } from 'sequelize';
 
 export async function GET() {
-	const tomorrow = getFormattedDate(1);
-	const expirationWarningDate = getFormattedDate(14);
+	const tomorrow = getTodaysDateWithOffset(1);
+	const expirationWarningDate = getTodaysDateWithOffset(14);
 
 	const allCount = License.count();
 	const inUseCount = License.count({

@@ -1,9 +1,9 @@
+import { getTodaysDateWithOffset } from '$lib/utils/date-utils';
+import { error } from '@sveltejs/kit';
 import { Op, type Order } from 'sequelize';
 import { sequelize } from '../db';
-import { error } from '@sveltejs/kit';
 import Application from '../models/application-model';
 import type { Filter, SortBy, SortDirection, WhereOptionsWithSymbols } from '../types/query-types';
-import { getFormattedDate } from '../utils/date-utils';
 
 /*
  * These utility functions are used to construct the WHERE and ORDER BY clauses for
@@ -12,8 +12,8 @@ import { getFormattedDate } from '../utils/date-utils';
 
 export function constructWhereClause(filter: string, search: string): WhereOptionsWithSymbols {
 	const where: WhereOptionsWithSymbols = {};
-	const tomorrow = getFormattedDate(1);
-	const expirationWarningDate = getFormattedDate(14);
+	const tomorrow = getTodaysDateWithOffset(1);
+	const expirationWarningDate = getTodaysDateWithOffset(14);
 
 	// Filter logic
 	switch (filter as Filter) {
