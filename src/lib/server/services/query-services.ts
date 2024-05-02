@@ -6,7 +6,7 @@ import Application from '../models/application-model';
 import type { Filter, SortBy, SortDirection, WhereOptionsWithSymbols } from '../types/query-types';
 
 /*
- * These utility functions are used to construct the WHERE and ORDER BY clauses for
+ * These functions are used to construct the WHERE and ORDER BY clauses for
  * the License model. More specifically, it's used for the GET /api/licenses/query endpoint.
  */
 

@@ -1,18 +1,7 @@
-import { sequelize } from '$lib/server/db.js';
+import { sequelize } from '$lib/server/db';
 import Application from '$lib/server/models/application-model';
-import type { LicenseInstance } from '$lib/server/types/license-types.js';
-import type { UserInstance } from '$lib/server/types/user-types.js';
+import type { LicenseInstance } from '$lib/server/types/license-types';
 import type { Transaction } from 'sequelize';
-
-export async function updateUserAssociations(
-	users: UserInstance[],
-	license: LicenseInstance,
-	transaction: Transaction,
-) {
-	const userIds = users.map((user) => user.id);
-	await license.setUsers(userIds, { transaction });
-	return null;
-}
 
 export async function updateLicenseAssociations(
 	license: LicenseInstance,

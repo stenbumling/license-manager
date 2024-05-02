@@ -1,8 +1,8 @@
 import Application from '$lib/server/models/application-model';
 import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
+import { constructOrderClause, constructWhereClause } from '$lib/server/services/query-services';
 import type { Filter, SortBy, SortDirection } from '$lib/server/types/query-types';
-import { constructOrderClause, constructWhereClause } from '$lib/server/utils/query-utils';
 import { json } from '@sveltejs/kit';
 
 export async function GET({ url }) {

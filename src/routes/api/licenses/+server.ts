@@ -2,10 +2,8 @@ import { sequelize } from '$lib/server/db';
 import Application from '$lib/server/models/application-model';
 import License from '$lib/server/models/license-model';
 import User from '$lib/server/models/user-model';
-import {
-	updateLicenseAssociations,
-	updateUserAssociations,
-} from '$lib/server/utils/associations-utils';
+import { updateLicenseAssociations } from '$lib/server/services/application-services';
+import { updateUserAssociations } from '$lib/server/services/license-services';
 import { json } from '@sveltejs/kit';
 
 export async function GET() {
