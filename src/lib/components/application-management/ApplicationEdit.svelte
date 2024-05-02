@@ -17,7 +17,7 @@
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($currentApplication);
 		if (isValid) {
-			const success = await applicationStore.edit($currentApplication);
+			const success = await applicationStore.update($currentApplication);
 			if (success) {
 				applicationStore.resetFields();
 				applicationModalMode.set('list');
@@ -73,7 +73,7 @@
 	<div class="button-container">
 		<SecondaryButton title={'Cancel'} action={handleCancel} />
 		<PrimaryButton
-			title={'Edit application'}
+			title={'Save changes'}
 			action={handleEdit}
 			pendingRequest={$applicationPostRequest.isLoading}
 		/>
