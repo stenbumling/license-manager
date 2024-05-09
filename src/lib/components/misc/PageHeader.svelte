@@ -2,7 +2,7 @@
 	import logo from '$lib/images/nexer-logo-white.png';
 
 	async function handleClick() {
-		// TODO: remove this
+		// TODO: remove this after adding functionality for periodically syncing users
 		const response = await fetch('/api/users/sync', {
 			method: 'PUT',
 			headers: {
@@ -17,6 +17,8 @@
 		<a style="line-height:0" href="/" data-sveltekit-reload>
 			<img class="header-logo" src={logo} alt="Nexer Logo" />
 		</a>
+		<!-- svelte-ignore a11y-click-events-have-key-events -->
+		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 		<h2 on:click={handleClick} class="header-department-name">Örebro</h2>
 	</div>
 </header>
