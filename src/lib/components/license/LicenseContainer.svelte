@@ -122,7 +122,9 @@
 			<h1>{$licenseFetchRequest.error?.status}</h1>
 			<div class="fallback-error-details">
 				<h2>{$licenseFetchRequest.error?.message}</h2>
-				<p>{$licenseFetchRequest.error?.details}</p>
+				{#if $licenseFetchRequest.error?.details}
+					<p>{$licenseFetchRequest.error.details}</p>
+				{/if}
 			</div>
 		</div>
 	{:else if hasLicense}

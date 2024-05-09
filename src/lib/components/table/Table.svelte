@@ -25,7 +25,9 @@
 	{:else if hasError}
 		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>
 			<h1>{$tableFetchRequest.error?.message}</h1>
-			<p>{$tableFetchRequest.error?.details}</p>
+			{#if $tableFetchRequest.error?.details}
+				<p>{$tableFetchRequest.error.details}</p>
+			{/if}
 		</div>
 	{:else if noResults && isSearching}
 		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>

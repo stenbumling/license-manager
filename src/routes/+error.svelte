@@ -14,9 +14,9 @@
 				The requested web page at
 				<span style="color:var(--deep-purple)">{$page.url.pathname}</span> could not be found.
 			</h2>
-			<p>
-				{$page.error?.details}
-			</p>
+			{#if $page.error?.details}
+				<p>{$page.error.details}</p>
+			{/if}
 		{:else}
 			<h2>{$page.error?.message}</h2>
 			<p>
