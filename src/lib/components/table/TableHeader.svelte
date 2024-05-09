@@ -180,7 +180,7 @@
 	}
 
 	.extra-margin {
-		margin-right: 1rem;
+		margin-right: 5px;
 	}
 
 	.table-header-row {
