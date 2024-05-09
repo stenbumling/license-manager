@@ -139,7 +139,7 @@ function createLicenseStore() {
 			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
 				notifications.add({
-					message: 'License created successfully',
+					message: 'License added successfully',
 					type: 'success',
 				});
 				return true;
@@ -149,7 +149,7 @@ function createLicenseStore() {
 					message: error.message,
 					type: 'alert',
 				});
-				console.error('Failed to create license:', error);
+				console.error('Failed to add license:', error);
 				return false;
 			}
 		} catch (error) {
@@ -157,11 +157,11 @@ function createLicenseStore() {
 			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
-					'A server error has occured and license could not be created. Please try refreshing the page.',
+					'A server error has occured and license could not be added. Please try refreshing the page.',
 				type: 'alert',
 				timeout: false,
 			});
-			console.error('Failed to create license:', error);
+			console.error('Failed to add license:', error);
 			return false;
 		}
 	}

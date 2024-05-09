@@ -39,21 +39,17 @@
 		box-sizing: border-box;
 		align-items: center;
 		border-radius: 0.5rem;
-		padding: 0 0.6rem;
-		margin: 0.2rem 0.4rem 0.2rem 0;
-		height: 36px;
+		padding: 0.5rem 0.6rem;
 		color: white;
 	}
 
 	.badge-text-container {
 		display: flex;
-		height: 20px;
-		margin-right: 0.5rem;
 		max-width: 12rem;
 	}
 
 	.badge-text {
-		font-size: 0.8rem;
+		font-size: 0.85rem;
 		white-space: nowrap;
 		padding-top: 2px;
 		margin-left: 2px;
@@ -74,6 +70,7 @@
 		cursor: pointer;
 		display: flex;
 		height: 100%;
+		margin-left: 0.5rem;
 		align-items: center;
 	}
 

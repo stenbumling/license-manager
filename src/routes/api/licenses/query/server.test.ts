@@ -1,5 +1,5 @@
 import License from '$lib/server/models/license-model';
-import { constructOrderClause, constructWhereClause } from '$lib/server/utils/query-utils';
+import { constructOrderClause, constructWhereClause } from '$lib/server/services/query-services';
 import { describe, expect, it, vi } from 'vitest';
 import { GET } from './+server';
 
