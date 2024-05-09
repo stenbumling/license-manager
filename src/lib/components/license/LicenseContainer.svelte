@@ -18,7 +18,12 @@
 		licenseFetchRequest,
 		licensePostRequest,
 	} from '$lib/stores/request-state-store';
-	import { currentLicense, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
+	import {
+		currentLicense,
+		fetchedLicense,
+		licenseMode,
+		licenseStore,
+	} from '$lib/stores/resources/license-store';
 	import { table } from '$lib/stores/resources/table-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
@@ -31,6 +36,7 @@
 	import CloseModalButton from '../misc/buttons/CloseButton.svelte';
 
 	let showWarningModal = false;
+	let showUnsavedChangesModal = false;
 	$: hasStartedRequest = $licenseFetchRequest.pendingRequests > 0 && !isLoading;
 	$: isLoading = $licenseFetchRequest.isLoading;
 	$: hasError = $licenseFetchRequest.error?.message && !isLoading;
@@ -40,7 +46,7 @@
 		{
 			label: 'Close without saving',
 			icon: CloseLarge,
-			action: () => modal.closeLicense(),
+			action: () => handleUnsavedChangesModal(),
 		},
 		{
 			label: 'Copy link',
@@ -83,6 +89,16 @@
 	function handleWarningModal() {
 		contextMenu.close();
 		showWarningModal = true;
+	}
+
+	function handleUnsavedChangesModal() {
+		contextMenu.close();
+		console.log($currentLicense, $fetchedLicense);
+		if (JSON.stringify($currentLicense) === JSON.stringify($fetchedLicense)) {
+			modal.closeLicense();
+		} else {
+			showUnsavedChangesModal = true;
+		}
 	}
 
 	async function handleDelete() {
@@ -198,6 +214,14 @@
 		onConfirm={handleDelete}
 		onCancel={() => (showWarningModal = false)}
 		requestState={licenseDeleteRequest}
+	/>
+{/if}
+
+{#if showUnsavedChangesModal}
+	<WarningModal
+		warningText="Unsaved changes will be lost. Are you sure you want to close the license?"
+		onConfirm={() => modal.closeLicense()}
+		onCancel={() => (showUnsavedChangesModal = false)}
 	/>
 {/if}
 
