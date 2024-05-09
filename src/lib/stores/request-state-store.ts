@@ -1,4 +1,4 @@
-import { delay } from '$lib/utils/delay';
+import { delay } from '$lib/utils/misc-utils';
 import type { Writable } from 'svelte/store';
 import { get, writable } from 'svelte/store';
 

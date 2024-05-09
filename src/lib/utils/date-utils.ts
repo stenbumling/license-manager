@@ -1,32 +1,37 @@
+/**
+ * Returns a date string in the format 'YYYY-MM-DD'.
+ * It will return the current date by default, but you can pass an offset in days to get a date in the past or future.
+ @param offsetDays - The number of days to offset the current date by.
+*/
+export function getTodaysDateWithOffset(offsetDays = 0) {
+	const date = new Date();
+	date.setUTCHours(0, 0, 0, 0);
+	date.setUTCDate(date.getUTCDate() + offsetDays);
+	return date.toISOString().split('T')[0];
+}
+
+/**
+ * Returns a date string in the format 'YYYY-MM-DD HH:MM',
+ * and transforms it to Swedish locale.
+ * @param unformattedDate - The date string to format.
+ */
+export function getDateWithHoursAndMinutes(unformattedDate: string): string {
+	const date = new Date(unformattedDate);
+	return date.toLocaleString('sv-SE').slice(0, 16);
+}
+
 type DateStatus = 'ok' | 'warning' | 'alert' | 'invalid';
 
-export function getTodaysDate(): string {
-	const currentDate = new Date().toISOString().split('T')[0];
-	return currentDate;
-}
-
-export function cleanUpDateString(unformattedDate: string): string {
-	const date = new Date(unformattedDate);
-	return date.toLocaleString('sv-SE');
-}
-
-export function daysUntil(date: string): number {
-	const today = new Date();
-	today.setHours(0, 0, 0, 0);
-
-	const targetDate = new Date(date);
-	targetDate.setHours(0, 0, 0, 0);
-
-	const timeDiff = targetDate.getTime() - today.getTime();
-	const diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
-	return diffDays;
-}
-
+/**
+ * Returns a string with a relative date, e.g. 'today', 'tomorrow', 'yesterday', 'In 5 days', '5 days ago'.
+ * It also returns a status string that can be used to style the date.
+ * @param date - The date string to compare to.
+ */
 export function getRelativeDate(date: string): {
 	text: string;
 	status: DateStatus;
 } {
-	const diffDays = daysUntil(date);
+	const diffDays = getDiffDays(date);
 	let text = 'No date selected';
 	let status: DateStatus = 'ok';
 
@@ -53,4 +58,21 @@ export function getRelativeDate(date: string): {
 	}
 
 	return { text, status };
+}
+
+/**
+ * Returns a number representing the difference in days between the current date and the target date.
+ * @param date
+ * @returns
+ */
+export function getDiffDays(date: string): number {
+	const today = new Date();
+	today.setHours(0, 0, 0, 0);
+
+	const targetDate = new Date(date);
+	targetDate.setHours(0, 0, 0, 0);
+
+	const timeDiff = targetDate.getTime() - today.getTime();
+	const diffDays = Math.floor(timeDiff / (1000 * 3600 * 24));
+	return diffDays;
 }

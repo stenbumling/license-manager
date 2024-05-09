@@ -33,7 +33,12 @@
 	<h2 style="margin-bottom:1.6rem;">Adding new application</h2>
 	<div class="input-container">
 		<h3 style="margin-bottom:0.5rem;">Name<span class="required">*</span></h3>
-		<input bind:value={$currentApplication.name} type="text" placeholder="Application name" required />
+		<input
+			bind:value={$currentApplication.name}
+			type="text"
+			placeholder="Application name"
+			required
+		/>
 		<p class="warning-text">
 			{#if $applicationValidationError.name}
 				<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>

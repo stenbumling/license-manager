@@ -2,14 +2,14 @@
 	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { modal } from '$lib/stores/modal-store';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
-	import { cleanUpDateString } from '$lib/utils/date-utils';
+	import { getDateWithHoursAndMinutes } from '$lib/utils/date-utils';
 </script>
 
 <div class="header-container">
 	<div class="header">
 		{#if $licenseMode === 'view' && $currentLicense.updatedAt}
 			<span class="updated-info"
-				>Last updated at {cleanUpDateString($currentLicense.updatedAt)}</span
+				>Last updated at {getDateWithHoursAndMinutes($currentLicense.updatedAt)}</span
 			>
 		{/if}
 		<div class="close-button">

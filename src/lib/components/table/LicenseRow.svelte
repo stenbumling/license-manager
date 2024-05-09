@@ -6,6 +6,7 @@
 	import { modal } from '$lib/stores/modal-store';
 	import { licenseDeleteRequest } from '$lib/stores/request-state-store';
 	import { licenseStore, type License } from '$lib/stores/resources/license-store';
+	import { table } from '$lib/stores/resources/table-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
@@ -62,7 +63,11 @@
 	}
 
 	async function handleDelete() {
-		await licenseStore.delete(license.id);
+		const success = await licenseStore.delete(license.id);
+		if (success) {
+			licenseStore.updateCounts();
+			table.updateState();
+		}
 		showWarningModal = false;
 	}
 </script>

@@ -19,6 +19,11 @@ const User = sequelize.define<UserInstance>('user', {
 			len: [1, 100],
 		},
 	},
+	active: {
+		type: DataTypes.BOOLEAN,
+		allowNull: false,
+		defaultValue: true,
+	},
 	createdAt: {
 		type: DataTypes.DATE,
 		allowNull: false,

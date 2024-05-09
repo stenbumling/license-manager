@@ -2,7 +2,7 @@ import License from '$lib/server/models/license-model';
 import {
 	updateLicenseAssociations,
 	updateUserAssociations,
-} from '$lib/server/utils/associations-utils';
+} from '$lib/server/services/license-services';
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
 import { GET, POST } from './+server';

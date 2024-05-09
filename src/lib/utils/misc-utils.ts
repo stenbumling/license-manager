@@ -4,8 +4,8 @@
  * animations.
  *
  * Usage: await delay(x);
+ * @param ms - The number of milliseconds to pause execution for.
  */
-
 export async function delay(ms: number) {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 }

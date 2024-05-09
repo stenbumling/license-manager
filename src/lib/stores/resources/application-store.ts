@@ -29,7 +29,7 @@ export interface Application {
 export const currentApplication = writable<Application>(getInitialValues());
 
 function createApplicationStore() {
-	const { subscribe, set, update } = writable<Application[]>([]);
+	const { subscribe, set } = writable<Application[]>([]);
 
 	async function fetchApplications() {
 		try {
@@ -73,7 +73,7 @@ function createApplicationStore() {
 			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
 				notifications.add({
-					message: 'Application created successfully',
+					message: 'Application added successfully',
 					type: 'success',
 				});
 				return true;
@@ -83,7 +83,7 @@ function createApplicationStore() {
 					message: error.message,
 					type: 'alert',
 				});
-				console.error('Failed to create application:', error);
+				console.error('Failed to add application:', error);
 				return false;
 			}
 		} catch (error) {
@@ -91,16 +91,16 @@ function createApplicationStore() {
 			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
-					'A server error has occured and application could not be created. Please try refreshing the page.',
+					'A server error has occured and application could not be added. Please try refreshing the page.',
 				type: 'alert',
 				timeout: false,
 			});
-			console.error('Failed to create application:', error);
+			console.error('Failed to add application:', error);
 			return false;
 		}
 	}
 
-	async function editApplication(application: Application) {
+	async function updateApplication(application: Application) {
 		try {
 			disableButtonsDuringRequests.set(true);
 			await request.startLoading(applicationPostRequest, 0);
@@ -113,7 +113,7 @@ function createApplicationStore() {
 			disableButtonsDuringRequests.set(false);
 			if (response.ok) {
 				notifications.add({
-					message: 'Application was edited successfully',
+					message: 'Application was updated successfully',
 					type: 'success',
 				});
 				return true;
@@ -123,7 +123,7 @@ function createApplicationStore() {
 					message: error.message,
 					type: 'alert',
 				});
-				console.error('Failed to edit application:', error);
+				console.error('Failed to update application:', error);
 				return false;
 			}
 		} catch (error) {
@@ -131,11 +131,11 @@ function createApplicationStore() {
 			disableButtonsDuringRequests.set(false);
 			notifications.add({
 				message:
-					'A server error has occured and application could not be edited. Please try refreshing the page.',
+					'A server error has occured and application could not be updated. Please try refreshing the page.',
 				type: 'alert',
 				timeout: false,
 			});
-			console.error('Failed to edit application:', error);
+			console.error('Failed to update application:', error);
 			return false;
 		}
 	}
@@ -192,10 +192,9 @@ function createApplicationStore() {
 	return {
 		subscribe,
 		set,
-		update,
 		fetch: fetchApplications,
 		add: addApplication,
-		edit: editApplication,
+		update: updateApplication,
 		delete: deleteApplication,
 		resetFields,
 	};
