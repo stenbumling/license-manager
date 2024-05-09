@@ -70,6 +70,7 @@ export interface LicenseCounts {
 }
 
 export const currentLicense = writable<License>(getInitialValues());
+export const fetchedLicense = writable<License | null>(null);
 export const licenseMode = writable<'add' | 'view'>('add');
 export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
 
@@ -82,8 +83,9 @@ function createLicenseStore() {
 			const response = await fetch(`/api/licenses/${id}`);
 			await request.endLoading(licenseFetchRequest, 1000);
 			if (response.ok) {
-				const fetchedLicense = await response.json();
-				currentLicense.set(fetchedLicense);
+				const license = await response.json();
+				currentLicense.set(license);
+				fetchedLicense.set(JSON.parse(JSON.stringify(license)));
 			} else {
 				const error: App.Error = await response.json();
 				request.setError(licenseFetchRequest, error);

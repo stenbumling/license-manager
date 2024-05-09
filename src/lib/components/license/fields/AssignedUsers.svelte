@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { clickOutside } from '$lib/actions/clickOutside';
 	import AssignedUsersModal from '$lib/components/license/fields/AssignedUsersModal.svelte';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
@@ -100,10 +101,10 @@
 			class:input-add-mode={$licenseMode === 'add'}
 			type="search"
 			placeholder="Search for a user to assign"
+			use:clickOutside={() => (inputFieldFocused = false)}
 			bind:value={userInput}
 			bind:this={inputField}
 			on:focus={() => (inputFieldFocused = true)}
-			on:blur={() => (inputFieldFocused = false)}
 			on:input={handleInput}
 			on:keydown={(e) => {
 				if (e.key === 'Enter' && userInput === '') {
@@ -116,7 +117,12 @@
 
 		<!-- User suggestions dropdown -->
 		{#if inputFieldFocused && userSuggestions.length && !$userFetchRequest.pendingRequests}
-			<ul role="menu" class="suggestions-list" in:slide={{ duration: 100 }}>
+			<ul
+				role="menu"
+				class="suggestions-list"
+				on:mousedown|preventDefault
+				in:slide={{ duration: 100 }}
+			>
 				{#each userSuggestions as suggestion}
 					<li
 						role="menuitem"

@@ -18,7 +18,12 @@
 		licenseFetchRequest,
 		licensePostRequest,
 	} from '$lib/stores/request-state-store';
-	import { currentLicense, licenseMode, licenseStore } from '$lib/stores/resources/license-store';
+	import {
+		currentLicense,
+		fetchedLicense,
+		licenseMode,
+		licenseStore,
+	} from '$lib/stores/resources/license-store';
 	import { table } from '$lib/stores/resources/table-store';
 	import { licenseValidationErrors, validateLicense } from '$lib/validations/license-validation';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
@@ -31,6 +36,7 @@
 	import CloseModalButton from '../misc/buttons/CloseButton.svelte';
 
 	let showWarningModal = false;
+	let showUnsavedChangesModal = false;
 	$: hasStartedRequest = $licenseFetchRequest.pendingRequests > 0 && !isLoading;
 	$: isLoading = $licenseFetchRequest.isLoading;
 	$: hasError = $licenseFetchRequest.error?.message && !isLoading;
@@ -40,7 +46,7 @@
 		{
 			label: 'Close without saving',
 			icon: CloseLarge,
-			action: () => modal.closeLicense(),
+			action: () => handleUnsavedChangesModal(),
 		},
 		{
 			label: 'Copy link',
@@ -85,6 +91,16 @@
 		showWarningModal = true;
 	}
 
+	function handleUnsavedChangesModal() {
+		contextMenu.close();
+		console.log($currentLicense, $fetchedLicense);
+		if (JSON.stringify($currentLicense) === JSON.stringify($fetchedLicense)) {
+			modal.closeLicense();
+		} else {
+			showUnsavedChangesModal = true;
+		}
+	}
+
 	async function handleDelete() {
 		const success = await licenseStore.delete($currentLicense.id);
 		if (success) {
@@ -122,7 +138,9 @@
 			<h1>{$licenseFetchRequest.error?.status}</h1>
 			<div class="fallback-error-details">
 				<h2>{$licenseFetchRequest.error?.message}</h2>
-				<p>{$licenseFetchRequest.error?.details}</p>
+				{#if $licenseFetchRequest.error?.details}
+					<p>{$licenseFetchRequest.error.details}</p>
+				{/if}
 			</div>
 		</div>
 	{:else if hasLicense}
@@ -199,6 +217,14 @@
 	/>
 {/if}
 
+{#if showUnsavedChangesModal}
+	<WarningModal
+		warningText="Unsaved changes will be lost. Are you sure you want to close the license?"
+		onConfirm={() => modal.closeLicense()}
+		onCancel={() => (showUnsavedChangesModal = false)}
+	/>
+{/if}
+
 <style>
 	.license-container {
 		width: 100%;
@@ -212,7 +238,7 @@
 		max-width: 100rem;
 		height: auto;
 		margin: 0 0 2rem 0;
-		padding: 4rem 1rem 0 0;
+		padding: 4rem 10px 0 0;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-auto-rows: min-content;
@@ -255,6 +281,12 @@
 	@media (max-width: 1400px) {
 		.fields-grid {
 			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (max-width: 800px) {
+		.fields-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>

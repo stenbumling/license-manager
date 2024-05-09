@@ -24,7 +24,7 @@ export interface RequestState {
 	error: App.Error | null;
 }
 
-function getInitialStateValues(defaultLoadingState = false) {
+export function getInitialStateValues(defaultLoadingState = false) {
 	return {
 		isLoading: defaultLoadingState,
 		pendingRequests: 0,

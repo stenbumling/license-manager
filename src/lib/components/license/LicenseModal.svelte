@@ -32,10 +32,4 @@
 		align-self: center;
 		background-color: white;
 	}
-
-	@media (max-width: 1000px) {
-		.modal-window {
-			width: 50vh;
-		}
-	}
 </style>
