@@ -54,6 +54,13 @@
 		background-color: white;
 	}
 
+	@media (max-width: 800px) {
+		.modal-window {
+			width: 80vw;
+			max-width: 100vw;
+		}
+	}
+
 	.modal-header {
 		margin: 0 0 3rem 0;
 		display: flex;
