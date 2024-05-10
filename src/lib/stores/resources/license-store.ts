@@ -12,7 +12,7 @@ import {
 	request,
 } from '../request-state-store';
 
-function getInitialValues() {
+export function getInitialValues() {
 	return {
 		id: uuidv4(),
 		application: {

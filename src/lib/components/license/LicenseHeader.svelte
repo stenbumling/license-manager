@@ -5,6 +5,9 @@
 	import { getDateWithHoursAndMinutes } from '$lib/utils/date-utils';
 	import WarningModal from '../misc/WarningModal.svelte';
 
+	if ($licenseMode === 'add') {
+		fetchedLicense.set(JSON.parse(JSON.stringify($currentLicense)));
+	}
 	let showUnsavedChangesModal = false;
 
 	function handleCloseModal() {
