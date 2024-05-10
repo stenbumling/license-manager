@@ -1,4 +1,11 @@
 import type { ComponentType } from 'svelte';
+import type { FilterReadableName } from './query-types';
+
+export interface DashboardFilter {
+	title: FilterReadableName;
+	amount: number;
+	color: string;
+}
 
 export interface ContextMenuState {
 	position: { top: number; left: number } | null;
@@ -11,8 +18,6 @@ export interface ContextMenuItem {
 	icon?: ComponentType;
 	class?: 'warning' | 'alert';
 }
-
-export type ApplicationModalMode = 'closed' | 'list' | 'add' | 'edit';
 
 export interface NewNotification {
 	message: string;

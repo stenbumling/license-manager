@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Pulse } from 'svelte-loading-spinners';
+	import buttonArrow from '$lib/images/icons/button-arrow.svg';
 	import { isOnline } from '$lib/stores/network-store';
-	import buttonArrow from '../../../images/icons/button-arrow.svg';
+	import { Pulse } from 'svelte-loading-spinners';
 
 	export let title: string = 'Button title';
 	export let action: (e: MouseEvent | KeyboardEvent) => void;

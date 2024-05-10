@@ -2,8 +2,9 @@
 	import FilterButton from '$lib/components/dashboard/FilterButton.svelte';
 	import SearchBar from '$lib/components/dashboard/SearchBar.svelte';
 	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
-	import { licenseCounts, licenseStore } from '$lib/stores/resources/license-store';
 	import { modal } from '$lib/stores/modal-store';
+	import { licenseCounts, licenseStore } from '$lib/stores/resources/license-store';
+	import type { DashboardFilter } from '$lib/types/misc-types';
 	import { onMount } from 'svelte';
 
 	function handleClick(e: MouseEvent | KeyboardEvent) {
@@ -14,6 +15,7 @@
 		modal.openAddLicense();
 	}
 
+	let filters: DashboardFilter[];
 	$: filters = [
 		{
 			title: 'All',

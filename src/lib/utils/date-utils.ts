@@ -17,7 +17,7 @@ export function getTodaysDateWithOffset(offsetDays: number = 0) {
  * and transforms it to Swedish locale.
  * @param unformattedDate - The date string to format.
  */
-export function getDateWithHoursAndMinutes(unformattedDate: string) {
+export function getDateWithHoursAndMinutes(unformattedDate: Date) {
 	const date = new Date(unformattedDate);
 	return date.toLocaleString('sv-SE').slice(0, 16);
 }

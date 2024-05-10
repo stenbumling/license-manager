@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { getElementRect } from '$lib/actions/getElementRect';
 	import ContextMenu from '$lib/components/misc/ContextMenu.svelte';
-	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { disableButtonsDuringRequests } from '$lib/stores/request-state-store';
+	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import OverflowMenuHorizontal from 'carbon-icons-svelte/lib/OverflowMenuHorizontal.svelte';
 	import { v4 as uuidv4 } from 'uuid';
 

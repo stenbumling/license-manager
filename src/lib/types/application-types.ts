@@ -15,3 +15,5 @@ export interface ApplicationData extends ApplicationAttributes {
 }
 
 export interface ApplicationInstance extends Model<ApplicationAttributes>, ApplicationAttributes {}
+
+export type ApplicationModalMode = 'closed' | 'list' | 'add' | 'edit';

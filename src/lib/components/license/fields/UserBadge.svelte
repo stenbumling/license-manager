@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
 	import { currentLicense } from '$lib/stores/resources/license-store';
-	import type { User } from '$lib/stores/resources/user-store';
+	import type { UserData } from '$lib/types/user-types';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
 	import WarningFilled from 'carbon-icons-svelte/lib/WarningFilled.svelte';
 
-	export let user: User;
+	export let user: UserData;
 
-	function handleRemoveUser(user: User) {
+	function handleRemoveUser(user: UserData) {
 		$currentLicense.users = $currentLicense.users.filter((u) => u.id !== user.id);
 	}
 </script>

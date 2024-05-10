@@ -1,5 +1,6 @@
 import { goto } from '$app/navigation';
-import type { ApplicationModalMode } from '$lib/types/misc-types';
+import type { ApplicationModalMode } from '$lib/types/application-types';
+import type { LicenseModalMode } from '$lib/types/license-types';
 import { writable } from 'svelte/store';
 import { contextMenu } from './context-menu-store';
 import { licenseFetchRequest, request } from './request-state-store';
@@ -18,7 +19,7 @@ function createModalController() {
 
 	async function handleBrowserHistoryChange() {
 		const url = new URL(window.location.href);
-		const mode = url.searchParams.get('modal');
+		const mode = url.searchParams.get('modal') as LicenseModalMode;
 		const licenseId = url.searchParams.get('id');
 
 		closeAllModals();

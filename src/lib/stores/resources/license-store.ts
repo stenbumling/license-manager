@@ -1,5 +1,5 @@
 import { getApplicationDefaultValue } from '$lib/stores/resources/application-store';
-import type { LicenseCounts, LicenseData } from '$lib/types/license-types';
+import type { LicenseCounts, LicenseData, LicenseModalMode } from '$lib/types/license-types';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -43,7 +43,7 @@ export function getLicenseCountsDefaultValue(): LicenseCounts {
 export const currentLicense = writable<LicenseData>(getLicenseDefaultValue());
 export const fetchedLicense = writable<LicenseData | null>(null);
 export const licenseCounts = writable<LicenseCounts>(getLicenseCountsDefaultValue());
-export const licenseMode = writable<'add' | 'view'>('add');
+export const licenseMode = writable<LicenseModalMode>('add');
 
 function createLicenseStore() {
 	const { subscribe, set, update } = writable<LicenseData[]>([]);

@@ -19,7 +19,7 @@ export async function PUT({ params, request }) {
 
 export async function DELETE({ params }) {
 	const id = params.id;
-	
+
 	await deleteLicense(id);
 	return new Response(null, { status: 204 });
 }

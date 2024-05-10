@@ -2,9 +2,9 @@
 	import { clickOutside } from '$lib/actions/clickOutside';
 	import { focusTrap } from '$lib/actions/focusTrap';
 	import { getElementRect } from '$lib/actions/getElementRect';
-	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { isOnline } from '$lib/stores/network-store';
+	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import { style } from 'svelte-body';
 	import { fly } from 'svelte/transition';
 

@@ -41,3 +41,5 @@ export interface LicenseCounts {
 	nearExpiration: number;
 	expired: number;
 }
+
+export type LicenseModalMode = 'add' | 'view';

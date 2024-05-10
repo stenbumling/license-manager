@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { focusTrap } from '$lib/actions/focusTrap';
-	import type { RequestState } from '$lib/stores/request-state-store';
-	import { getInitialStateValues } from '$lib/stores/request-state-store';
+	import { getRequestStateDefaultValues } from '$lib/stores/request-state-store';
+	import type { RequestState } from '$lib/types/misc-types';
 	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAlt.svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
@@ -11,7 +11,9 @@
 	export let warningText = 'Are you sure you want to do this?';
 	export let onConfirm: () => void;
 	export let onCancel: () => void;
-	export let requestState: Writable<RequestState> = writable<RequestState>(getInitialStateValues());
+	export let requestState: Writable<RequestState> = writable<RequestState>(
+		getRequestStateDefaultValues(),
+	);
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
