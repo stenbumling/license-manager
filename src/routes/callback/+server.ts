@@ -1,4 +1,4 @@
-import { getTokens } from '$lib/auth/services';
+import { getTokens } from '$lib/server/auth/services';
 import { error, redirect } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 

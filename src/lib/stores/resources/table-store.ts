@@ -19,6 +19,7 @@ function getSortStateDefaultValue(): Record<SortColumn, SortDirection> {
 		contactPerson: 'DEFAULT',
 		users: 'DEFAULT',
 		expirationDate: 'DEFAULT',
+		createdAt: 'DEFAULT',
 	};
 }
 

@@ -1,9 +1,11 @@
+import type { DateStatus } from '$lib/types/query-types';
+
 /**
  * Returns a date string in the format 'YYYY-MM-DD'.
  * It will return the current date by default, but you can pass an offset in days to get a date in the past or future.
  @param offsetDays - The number of days to offset the current date by.
 */
-export function getTodaysDateWithOffset(offsetDays = 0) {
+export function getTodaysDateWithOffset(offsetDays: number = 0) {
 	const date = new Date();
 	date.setUTCHours(0, 0, 0, 0);
 	date.setUTCDate(date.getUTCDate() + offsetDays);
@@ -15,12 +17,10 @@ export function getTodaysDateWithOffset(offsetDays = 0) {
  * and transforms it to Swedish locale.
  * @param unformattedDate - The date string to format.
  */
-export function getDateWithHoursAndMinutes(unformattedDate: string): string {
+export function getDateWithHoursAndMinutes(unformattedDate: string) {
 	const date = new Date(unformattedDate);
 	return date.toLocaleString('sv-SE').slice(0, 16);
 }
-
-type DateStatus = 'ok' | 'warning' | 'alert' | 'invalid';
 
 /**
  * Returns a string with a relative date, e.g. 'today', 'tomorrow', 'yesterday', 'In 5 days', '5 days ago'.
@@ -65,7 +65,7 @@ export function getRelativeDate(date: string): {
  * @param date
  * @returns
  */
-export function getDiffDays(date: string): number {
+export function getDiffDays(date: string) {
 	const today = new Date();
 	today.setHours(0, 0, 0, 0);
 

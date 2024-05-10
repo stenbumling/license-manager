@@ -1,7 +1,8 @@
-import type { License } from '$lib/stores/resources/license-store';
+import type { LicenseData } from '$lib/types/license-types';
 import moment from 'moment';
 import { writable } from 'svelte/store';
 import { z } from 'zod';
+import type { LicenseValidationErrors } from '../types/validation-types';
 
 export const licenseSchema = z.object({
 	id: z.string().uuid({ message: 'Invalid license ID' }),
@@ -48,19 +49,7 @@ export const licenseSchema = z.object({
 
 export const licenseValidationErrors = writable<LicenseValidationErrors>({});
 
-interface LicenseValidationErrors {
-	applicationId?: { message: string };
-	expirationDate?: { message: string };
-	cost?: { message: string };
-	renewalInterval?: { message: string };
-	category?: { message: string };
-	status?: { message: string };
-	contactPerson?: { message: string };
-	additionalContactInfo?: { message: string };
-	comment?: { message: string };
-}
-
-export async function validateLicense(license: License): Promise<boolean> {
+export async function validateLicense(license: LicenseData): Promise<boolean> {
 	try {
 		licenseSchema.parse(license);
 		licenseValidationErrors.set({});
