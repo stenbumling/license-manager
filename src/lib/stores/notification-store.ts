@@ -1,3 +1,4 @@
+import type { NewNotification, Notification } from '$lib/types/misc-types';
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -6,17 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
  * The container for all pushed notifications is placed inside the
  * root +layout.svelte page.
  */
-
-interface NewNotification {
-	message: string;
-	type: 'success' | 'info' | 'warning' | 'alert';
-	dismissable?: boolean;
-	timeout?: number | false;
-}
-
-interface Notification extends NewNotification {
-	id: string;
-}
 
 function createNotificationStore() {
 	const { subscribe, update } = writable<Notification[]>([]);

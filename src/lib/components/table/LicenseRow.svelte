@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
-	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { modal } from '$lib/stores/modal-store';
 	import { licenseDeleteRequest } from '$lib/stores/request-state-store';
-	import { licenseStore, type License } from '$lib/stores/resources/license-store';
+	import { licenseStore } from '$lib/stores/resources/license-store';
 	import { table } from '$lib/stores/resources/table-store';
+	import type { LicenseData } from '$lib/types/license-types';
+	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
@@ -15,7 +16,7 @@
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
 	import WarningModal from '../misc/WarningModal.svelte';
 
-	export let license: License;
+	export let license: LicenseData;
 	export let index: number;
 
 	let hovered = false;
@@ -55,7 +56,7 @@
 		},
 	];
 
-	function handleView(license: License, e: MouseEvent | KeyboardEvent) {
+	function handleView(license: LicenseData, e: MouseEvent | KeyboardEvent) {
 		contextMenu.close();
 		if (e.metaKey || e.ctrlKey) return;
 		e.preventDefault();

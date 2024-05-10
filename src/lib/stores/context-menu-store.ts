@@ -1,6 +1,6 @@
 import { modal } from '$lib/stores/modal-store';
-import type { License } from '$lib/stores/resources/license-store';
-import type { ComponentType } from 'svelte';
+import type { LicenseData } from '$lib/types/license-types';
+import type { ContextMenuState } from '$lib/types/misc-types';
 import { writable } from 'svelte/store';
 import { notifications } from './notification-store';
 
@@ -10,25 +10,15 @@ import { notifications } from './notification-store';
  * It also provides a set of common functions to be called by items in the context menu.
  */
 
-type ContextMenuState = {
-	position: { top: number; left: number } | null;
-	activeId: string | null;
-};
-
-const initialState: ContextMenuState = {
-	position: null,
-	activeId: null,
-};
-
-export interface ContextMenuItem {
-	label: string;
-	action: () => void;
-	icon?: ComponentType;
-	class?: 'warning' | 'alert';
+function getContextMenuStateDefaultValue(): ContextMenuState {
+	return {
+		position: null,
+		activeId: null,
+	};
 }
 
 function createContextMenuStore() {
-	const { subscribe, set, update } = writable<ContextMenuState>(initialState);
+	const { subscribe, set, update } = writable<ContextMenuState>(getContextMenuStateDefaultValue());
 
 	function setId(id: string) {
 		update((state) => ({
@@ -38,7 +28,7 @@ function createContextMenuStore() {
 	}
 
 	function closeMenu() {
-		set(initialState);
+		set(getContextMenuStateDefaultValue());
 	}
 
 	function setPosition(referenceElementRect: DOMRect, contextMenuRect: DOMRect) {
@@ -58,12 +48,12 @@ function createContextMenuStore() {
 	 * Assortment of functions to be called by items in the context menu
 	 */
 
-	function viewLicense(license: License) {
+	function viewLicense(license: LicenseData) {
 		contextMenu.close();
 		modal.openViewLicense(license.id);
 	}
 
-	async function copyLicenseLink(license: License) {
+	async function copyLicenseLink(license: LicenseData) {
 		contextMenu.close();
 		try {
 			await navigator.clipboard.writeText(`${window.location.origin}?modal=view&id=${license.id}`);
@@ -82,7 +72,7 @@ function createContextMenuStore() {
 		}
 	}
 
-	async function copyLicenseData(license: License) {
+	async function copyLicenseData(license: LicenseData) {
 		contextMenu.close();
 		try {
 			await navigator.clipboard.writeText(JSON.stringify(license, null, 2));

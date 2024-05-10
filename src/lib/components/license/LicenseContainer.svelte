@@ -10,7 +10,7 @@
 	import TextField from '$lib/components/license/fields/TextField.svelte';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
-	import type { ContextMenuItem } from '$lib/stores/context-menu-store';
+	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import { contextMenu } from '$lib/stores/context-menu-store';
 	import { applicationModalMode, modal } from '$lib/stores/modal-store';
 	import {

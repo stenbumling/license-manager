@@ -1,4 +1,5 @@
 import { goto } from '$app/navigation';
+import type { ApplicationModalMode } from '$lib/types/misc-types';
 import { writable } from 'svelte/store';
 import { contextMenu } from './context-menu-store';
 import { licenseFetchRequest, request } from './request-state-store';
@@ -6,8 +7,8 @@ import { applicationStore } from './resources/application-store';
 import { licenseMode, licenseStore } from './resources/license-store';
 
 export const showLicenseModal = writable(false);
-export const applicationModalMode = writable<'closed' | 'list' | 'add' | 'edit'>('closed');
 export const showAssignedUsersModal = writable(false);
+export const applicationModalMode = writable<ApplicationModalMode>('closed');
 
 function createModalController() {
 	function validateLicenseId(uuid: string) {
