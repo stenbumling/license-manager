@@ -75,6 +75,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		margin-bottom: 1rem;
+		gap: 0.4rem 0.4rem;
 	}
 
 	h3 {
