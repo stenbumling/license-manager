@@ -11,15 +11,15 @@ export interface LicenseAttributes {
 	applicationId: string;
 	expirationDate: string;
 	autoRenewal: boolean;
-	cost: string;
+	cost: number;
 	renewalInterval: string;
 	category: string;
 	status: string;
 	contactPerson: string;
 	additionalContactInfo: string;
 	comment: string;
-	createdAt?: string;
-	updatedAt?: string;
+	createdAt?: Date;
+	updatedAt?: Date;
 }
 
 export interface LicenseData extends LicenseAttributes {

@@ -1,6 +1,6 @@
 import type {
-	Filter,
-	SortBy,
+	FilterQuery,
+	SortColumn,
 	SortDirection,
 	WhereOptionsWithSymbols,
 } from '$lib/types/query-types';
@@ -15,13 +15,13 @@ import ApplicationModel from '../models/application-model';
  * the License model. More specifically, it's used for the GET /api/licenses/query endpoint.
  */
 
-export function constructWhereClause(filter: string, search: string): WhereOptionsWithSymbols {
+export function constructWhereClause(filter: FilterQuery, search: string): WhereOptionsWithSymbols {
 	const where: WhereOptionsWithSymbols = {};
 	const tomorrow = getTodaysDateWithOffset(1);
 	const expirationWarningDate = getTodaysDateWithOffset(14);
 
 	// Filter logic
-	switch (filter as Filter) {
+	switch (filter) {
 		case 'all':
 			break;
 		case 'assigned':
@@ -66,10 +66,10 @@ export function constructWhereClause(filter: string, search: string): WhereOptio
 	return where;
 }
 
-export function constructOrderClause(sortBy: SortBy, sortDirection: SortDirection) {
+export function constructOrderClause(sortColumn: SortColumn, sortDirection: SortDirection) {
 	let order: Order;
 
-	switch (sortBy) {
+	switch (sortColumn) {
 		case 'application':
 			order = [[{ model: ApplicationModel, as: 'application' }, 'name', sortDirection]];
 			break;
@@ -94,7 +94,7 @@ export function constructOrderClause(sortBy: SortBy, sortDirection: SortDirectio
 			order = [['expirationDate', sortDirection]];
 			break;
 		default:
-			order = [[sortBy, sortDirection]];
+			order = [[sortColumn, sortDirection]];
 			break;
 	}
 

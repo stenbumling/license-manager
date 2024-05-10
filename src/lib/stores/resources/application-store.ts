@@ -1,3 +1,4 @@
+import type { ApplicationData } from '$lib/types/application-types';
 import { applicationValidationError } from '$lib/validations/application-validation';
 import { writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -10,7 +11,7 @@ import {
 	request,
 } from '../request-state-store';
 
-export function getApplicationDefaultValues() {
+export function getApplicationDefaultValue(): ApplicationData {
 	return {
 		id: uuidv4(),
 		name: '',
@@ -19,17 +20,10 @@ export function getApplicationDefaultValues() {
 	};
 }
 
-export interface Application {
-	id: string;
-	name: string;
-	link: string;
-	licenseAssociations: number;
-}
-
-export const currentApplication = writable<Application>(getApplicationDefaultValues());
+export const currentApplication = writable<ApplicationData>(getApplicationDefaultValue());
 
 function createApplicationStore() {
-	const { subscribe, set } = writable<Application[]>([]);
+	const { subscribe, set } = writable<ApplicationData[]>([]);
 
 	async function fetchApplications() {
 		try {
@@ -37,7 +31,7 @@ function createApplicationStore() {
 			const response = await fetch('/api/applications');
 			await request.endLoading(applicationFetchRequest, 1000);
 			if (response.ok) {
-				const applications = await response.json();
+				const applications: ApplicationData[] = await response.json();
 				set(applications);
 			} else {
 				const error: App.Error = await response.json();
@@ -60,7 +54,7 @@ function createApplicationStore() {
 		}
 	}
 
-	async function addApplication(application: Application) {
+	async function addApplication(application: ApplicationData) {
 		try {
 			disableButtonsDuringRequests.set(true);
 			await request.startLoading(applicationPostRequest, 0);
@@ -100,7 +94,7 @@ function createApplicationStore() {
 		}
 	}
 
-	async function updateApplication(application: Application) {
+	async function updateApplication(application: ApplicationData) {
 		try {
 			disableButtonsDuringRequests.set(true);
 			await request.startLoading(applicationPostRequest, 0);
@@ -184,7 +178,7 @@ function createApplicationStore() {
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			currentApplication.set(getApplicationDefaultValues());
+			currentApplication.set(getApplicationDefaultValue());
 			applicationValidationError.set({});
 		}, 120);
 	}

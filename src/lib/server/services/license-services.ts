@@ -1,5 +1,5 @@
 import type { LicenseCounts, LicenseData, LicenseInstance } from '$lib/types/license-types';
-import type { Filter, SortBy, SortDirection } from '$lib/types/query-types';
+import type { FilterQuery, SortColumn, SortDirection } from '$lib/types/query-types';
 import type { UserData } from '$lib/types/user-types';
 import { getTodaysDateWithOffset } from '$lib/utils/date-utils';
 import { error } from '@sveltejs/kit';
@@ -13,16 +13,16 @@ import { updateLicenseAssociations } from '../services/application-services';
 import { constructOrderClause, constructWhereClause } from '../services/query-services';
 
 export async function fetchLicensesByQuery(
-	filter: Filter,
+	filter: FilterQuery,
 	search: string,
-	sortBy: SortBy,
+	sortColumn: SortColumn,
 	sortDirection: SortDirection,
 ): Promise<LicenseInstance[]> {
 	// Selects licenses based on the filter and search query parameters
 	const where = constructWhereClause(filter, search);
 
 	// Sorts the licenses based on the sortBy and sortDirection query parameters
-	const order = constructOrderClause(sortBy, sortDirection);
+	const order = constructOrderClause(sortColumn, sortDirection);
 
 	const licenses = await LicenseModel.findAll({
 		where,

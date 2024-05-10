@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { filterState, searchQuery, table } from '$lib/stores/resources/table-store';
+	import type { FilterReadableName } from '$lib/types/query-types';
 	import { searchQueryValidationError } from '$lib/validations/search-query-validation';
 	import { quintOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
 	export let filter: {
-		title: string;
+		title: FilterReadableName;
 		amount: number;
 		color: string;
 	};

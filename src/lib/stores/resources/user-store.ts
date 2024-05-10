@@ -1,15 +1,10 @@
+import type { UserData } from '$lib/types/user-types';
 import { writable } from 'svelte/store';
 import { notifications } from '../notification-store';
 import { request, userFetchRequest } from '../request-state-store';
 
-export interface User {
-	id: string;
-	name: string;
-	active: boolean;
-}
-
 function createUserStore() {
-	const { subscribe, set, update } = writable<User[]>([]);
+	const { subscribe, set, update } = writable<UserData[]>([]);
 
 	async function fetchUsers() {
 		try {
@@ -17,7 +12,7 @@ function createUserStore() {
 			const response = await fetch('/api/users');
 			await request.endLoading(userFetchRequest, 1000);
 			if (response.ok) {
-				const users = await response.json();
+				const users: UserData[] = await response.json();
 				update(() => users);
 			} else {
 				const error: App.Error = await response.json();

@@ -1,8 +1,5 @@
-import {
-	getApplicationDefaultValues,
-	type Application,
-} from '$lib/stores/resources/application-store';
-import type { User } from '$lib/stores/resources/user-store';
+import { getApplicationDefaultValue } from '$lib/stores/resources/application-store';
+import type { LicenseCounts, LicenseData } from '$lib/types/license-types';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
@@ -15,12 +12,10 @@ import {
 	request,
 } from '../request-state-store';
 
-export function getLicenseDefaultValues() {
+export function getLicenseDefaultValue(): LicenseData {
 	return {
 		id: uuidv4(),
-		application: getApplicationDefaultValues(),
 		applicationId: '',
-		users: [],
 		expirationDate: '',
 		autoRenewal: false,
 		cost: 0,
@@ -30,50 +25,28 @@ export function getLicenseDefaultValues() {
 		contactPerson: '',
 		additionalContactInfo: '',
 		comment: '',
-		updatedAt: '',
+		users: [],
+		application: getApplicationDefaultValue(),
 	};
 }
 
-const initialLicenseCounts = {
-	all: 0,
-	inUse: 0,
-	unassigned: 0,
-	nearExpiration: 0,
-	expired: 0,
-};
-
-export interface License {
-	id: string;
-	applicationId: string;
-	expirationDate: string;
-	autoRenewal: boolean;
-	cost: number;
-	renewalInterval: string;
-	category: string;
-	status: string;
-	contactPerson: string;
-	additionalContactInfo: string;
-	comment: string;
-	updatedAt: string;
-	users: User[];
-	application: Application;
+export function getLicenseCountsDefaultValue(): LicenseCounts {
+	return {
+		all: 0,
+		inUse: 0,
+		unassigned: 0,
+		nearExpiration: 0,
+		expired: 0,
+	};
 }
 
-export interface LicenseCounts {
-	all: number;
-	inUse: number;
-	unassigned: number;
-	nearExpiration: number;
-	expired: number;
-}
-
-export const currentLicense = writable<License>(getLicenseDefaultValues());
-export const fetchedLicense = writable<License | null>(null);
+export const currentLicense = writable<LicenseData>(getLicenseDefaultValue());
+export const fetchedLicense = writable<LicenseData | null>(null);
+export const licenseCounts = writable<LicenseCounts>(getLicenseCountsDefaultValue());
 export const licenseMode = writable<'add' | 'view'>('add');
-export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
 
 function createLicenseStore() {
-	const { subscribe, set, update } = writable<License[]>([]);
+	const { subscribe, set, update } = writable<LicenseData[]>([]);
 
 	async function getLicenseById(id: string) {
 		try {
@@ -81,7 +54,7 @@ function createLicenseStore() {
 			const response = await fetch(`/api/licenses/${id}`);
 			await request.endLoading(licenseFetchRequest, 1000);
 			if (response.ok) {
-				const license = await response.json();
+				const license: LicenseData = await response.json();
 				currentLicense.set(license);
 				fetchedLicense.set(JSON.parse(JSON.stringify(license)));
 			} else {
@@ -105,7 +78,7 @@ function createLicenseStore() {
 		try {
 			const response = await fetch('/api/licenses/counts');
 			if (response.ok) {
-				const counts = await response.json();
+				const counts: LicenseCounts = await response.json();
 				licenseCounts.set(counts);
 			} else {
 				const error: App.Error = await response.json();
@@ -126,7 +99,7 @@ function createLicenseStore() {
 		}
 	}
 
-	async function addLicense(license: License) {
+	async function addLicense(license: LicenseData) {
 		try {
 			disableButtonsDuringRequests.set(true);
 			await request.startLoading(licensePostRequest, 0);
@@ -166,7 +139,7 @@ function createLicenseStore() {
 		}
 	}
 
-	async function updateLicense(updatedLicense: License) {
+	async function updateLicense(updatedLicense: LicenseData) {
 		const currentLicense = get(licenseStore).find((l) => l.id === updatedLicense.id);
 		try {
 			disableButtonsDuringRequests.set(true);
@@ -254,7 +227,7 @@ function createLicenseStore() {
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			currentLicense.set(getLicenseDefaultValues());
+			currentLicense.set(getLicenseDefaultValue());
 			licenseValidationErrors.set({});
 		}, 120);
 	}
