@@ -3,13 +3,14 @@ import type {
 	BelongsToManySetAssociationsMixin,
 	Model,
 } from 'sequelize';
-import type { UserInstance } from './user-types';
+import type { ApplicationAttributes } from './application-types';
+import type { UserData, UserInstance } from './user-types';
 
 export interface LicenseAttributes {
-	id?: string;
+	id: string;
 	applicationId: string;
-	autoRenewal: boolean;
 	expirationDate: string;
+	autoRenewal: boolean;
 	cost: string;
 	renewalInterval: string;
 	category: string;
@@ -17,15 +18,26 @@ export interface LicenseAttributes {
 	contactPerson: string;
 	additionalContactInfo: string;
 	comment: string;
-	updatedAt: string;
-	createdAt: string;
-	users?: UserInstance[];
+	createdAt?: string;
+	updatedAt?: string;
+}
+
+export interface LicenseData extends LicenseAttributes {
+	users: UserData[];
+	application: ApplicationAttributes;
 }
 
 export interface LicenseInstance extends Model<LicenseAttributes>, LicenseAttributes {
-
 	addUser: (user: UserInstance) => Promise<void>;
 	removeUser: (user: UserInstance) => Promise<void>;
 	getUsers: BelongsToManyGetAssociationsMixin<UserInstance>;
 	setUsers: BelongsToManySetAssociationsMixin<UserInstance, UserInstance['id']>;
+}
+
+export interface LicenseCounts {
+	all: number;
+	inUse: number;
+	unassigned: number;
+	nearExpiration: number;
+	expired: number;
 }

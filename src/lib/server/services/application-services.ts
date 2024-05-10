@@ -1,17 +1,17 @@
-import { sequelize } from '$lib/server/db';
-import Application from '$lib/server/models/application-model';
-import type { LicenseInstance } from '$lib/server/types/license-types';
+import type { ApplicationData } from '$lib/types/application-types';
 import { error } from '@sveltejs/kit';
 import type { Transaction } from 'sequelize';
+import { sequelize } from '../db';
+import ApplicationModel from '../models/application-model';
 
 export async function fetchAllApplications() {
-	return Application.findAll({
+	return ApplicationModel.findAll({
 		attributes: { exclude: ['createdAt'] },
 		order: [['createdAt', 'DESC']],
 	});
 }
 
-export async function createApplication(app: { name: string; link: string }) {
+export async function createApplication(app: ApplicationData) {
 	if (!app.name) {
 		error(400, {
 			status: 400,
@@ -19,16 +19,12 @@ export async function createApplication(app: { name: string; link: string }) {
 			message: 'A valid application name is required.',
 		});
 	}
-	const { dataValues } = await Application.create(app);
-	return dataValues;
+	await ApplicationModel.create(app);
 }
 
-export async function updateApplication(
-	id: string,
-	app: { name: string; link: string },
-	updatedAt: string,
-) {
-	const [affectedRows] = await Application.update(app, {
+export async function updateApplication(id: string, app: ApplicationData) {
+	const { updatedAt } = app;
+	const [affectedRows] = await ApplicationModel.update(app, {
 		where: { id, updatedAt },
 	});
 
@@ -44,7 +40,7 @@ export async function updateApplication(
 }
 
 export async function deleteApplication(id: string) {
-	const app = await Application.findByPk(id);
+	const app = await ApplicationModel.findByPk(id);
 	if (!app) {
 		error(404, {
 			status: 404,
@@ -66,18 +62,17 @@ export async function deleteApplication(id: string) {
 }
 
 export async function updateLicenseAssociations(
-	license: LicenseInstance,
+	appId: string,
 	transaction: Transaction,
-	change: '+' | '-' = '+',
+	operator: '+' | '-' = '+',
 ) {
-	await Application.update(
+	await ApplicationModel.update(
 		{
-			licenseAssociations: sequelize.literal(`licenseAssociations ${change} 1`),
+			licenseAssociations: sequelize.literal(`licenseAssociations ${operator} 1`),
 		},
 		{
-			where: { id: license.applicationId },
+			where: { id: appId },
 			transaction,
 		},
 	);
-	return null;
 }

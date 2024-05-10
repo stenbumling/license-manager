@@ -1,8 +1,8 @@
 import {
+	filterUsersForUserSync,
 	getAzureAdGroupMembers,
 	getUsersFromDatabase,
-	syncUserTableWithAzureADGroup,
-	filterUsers,
+	syncUserTableWithAzureAdGroup,
 } from '$lib/server/services/user-services';
 import { error } from '@sveltejs/kit';
 
@@ -18,8 +18,8 @@ export async function PUT(event) {
 	}
 	const azureAdUsers = await getAzureAdGroupMembers(token);
 	const dbUsers = await getUsersFromDatabase();
-	const filteredUsers = filterUsers(azureAdUsers, dbUsers);
-	await syncUserTableWithAzureADGroup(azureAdUsers, filteredUsers);
+	const filteredUsers = filterUsersForUserSync(azureAdUsers, dbUsers);
+	await syncUserTableWithAzureAdGroup(azureAdUsers, filteredUsers);
 
 	return new Response(null, { status: 204 });
 }

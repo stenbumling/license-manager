@@ -1,4 +1,7 @@
-import { type Application } from '$lib/stores/resources/application-store';
+import {
+	getApplicationDefaultValues,
+	type Application,
+} from '$lib/stores/resources/application-store';
 import type { User } from '$lib/stores/resources/user-store';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
@@ -12,15 +15,10 @@ import {
 	request,
 } from '../request-state-store';
 
-export function getInitialValues() {
+export function getLicenseDefaultValues() {
 	return {
 		id: uuidv4(),
-		application: {
-			id: uuidv4(),
-			name: '',
-			link: '',
-			licenseAssociations: 0,
-		},
+		application: getApplicationDefaultValues(),
 		applicationId: '',
 		users: [],
 		expirationDate: '',
@@ -46,9 +44,7 @@ const initialLicenseCounts = {
 
 export interface License {
 	id: string;
-	application: Application;
 	applicationId: string;
-	users: User[];
 	expirationDate: string;
 	autoRenewal: boolean;
 	cost: number;
@@ -59,6 +55,8 @@ export interface License {
 	additionalContactInfo: string;
 	comment: string;
 	updatedAt: string;
+	users: User[];
+	application: Application;
 }
 
 export interface LicenseCounts {
@@ -69,7 +67,7 @@ export interface LicenseCounts {
 	expired: number;
 }
 
-export const currentLicense = writable<License>(getInitialValues());
+export const currentLicense = writable<License>(getLicenseDefaultValues());
 export const fetchedLicense = writable<License | null>(null);
 export const licenseMode = writable<'add' | 'view'>('add');
 export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
@@ -256,7 +254,7 @@ function createLicenseStore() {
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			currentLicense.set(getInitialValues());
+			currentLicense.set(getLicenseDefaultValues());
 			licenseValidationErrors.set({});
 		}, 120);
 	}

@@ -1,7 +1,5 @@
-import {
-	createApplication,
-	fetchAllApplications,
-} from '$lib/server/services/application-services.js';
+import { createApplication, fetchAllApplications } from '$lib/server/services/application-services';
+import type { ApplicationData } from '$lib/types/application-types';
 import { json } from '@sveltejs/kit';
 
 export async function GET() {
@@ -10,7 +8,8 @@ export async function GET() {
 }
 
 export async function POST({ request }) {
-	const app = await request.json();
-	const addedApp = await createApplication(app);
-	return json(addedApp, { status: 201 });
+	const app: ApplicationData = await request.json();
+
+	await createApplication(app);
+	return new Response(null, { status: 201 });
 }

@@ -10,7 +10,7 @@ import {
 	request,
 } from '../request-state-store';
 
-function getInitialValues() {
+export function getApplicationDefaultValues() {
 	return {
 		id: uuidv4(),
 		name: '',
@@ -26,7 +26,7 @@ export interface Application {
 	licenseAssociations: number;
 }
 
-export const currentApplication = writable<Application>(getInitialValues());
+export const currentApplication = writable<Application>(getApplicationDefaultValues());
 
 function createApplicationStore() {
 	const { subscribe, set } = writable<Application[]>([]);
@@ -184,7 +184,7 @@ function createApplicationStore() {
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			currentApplication.set(getInitialValues());
+			currentApplication.set(getApplicationDefaultValues());
 			applicationValidationError.set({});
 		}, 120);
 	}

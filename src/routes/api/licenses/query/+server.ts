@@ -1,5 +1,5 @@
 import { fetchLicensesByQuery } from '$lib/server/services/license-services';
-import type { Filter, SortBy, SortDirection } from '$lib/server/types/query-types';
+import type { Filter, SortBy, SortDirection } from '$lib/types/query-types';
 import { json } from '@sveltejs/kit';
 
 export async function GET({ url }) {

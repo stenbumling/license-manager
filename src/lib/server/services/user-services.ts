@@ -1,10 +1,10 @@
-import License from '$lib/server/models/license-model';
-import User from '$lib/server/models/user-model';
+import LicenseModel from '$lib/server/models/license-model';
+import UserModel from '$lib/server/models/user-model';
+import type { AzureAdGroupUser, FilteredUsersForUserSync, UserData } from '$lib/types/user-types';
 import { error } from '@sveltejs/kit';
 import { sequelize } from '../db';
-import type { AzureAdGroupUser, UserAttributes } from '../types/user-types';
 
-export async function getAzureAdGroupMembers(token: string) {
+export async function getAzureAdGroupMembers(token: string): Promise<AzureAdGroupUser[]> {
 	const { AZURE_AD_GROUP_ID } = process.env;
 	if (!AZURE_AD_GROUP_ID) {
 		throw new Error('AZURE_AD_GROUP_ID is not set in the environment variables');
@@ -32,44 +32,39 @@ export async function getAzureAdGroupMembers(token: string) {
 	}
 }
 
-export async function getUsersFromDatabase() {
-	const userInstances = await User.findAll({
+export async function getUsersFromDatabase(): Promise<UserData[]> {
+	const userInstances = await UserModel.findAll({
 		attributes: { exclude: ['createdAt'] },
 		include: [
 			{
-				model: License,
+				model: LicenseModel,
 				attributes: ['id'],
 				through: { attributes: [] },
 			},
 		],
 		order: [['name', 'ASC']],
 	});
-	const users = userInstances.map((user) => user.toJSON());
-	return users;
+	return userInstances.map((user) => user.toJSON());
 }
 
-export async function syncUserTableWithAzureADGroup(
+export async function syncUserTableWithAzureAdGroup(
 	azureAdGroupUsers: AzureAdGroupUser[],
-	dbUsers: {
-		toAdd: AzureAdGroupUser[];
-		toDelete: UserAttributes[];
-		toFlagAsInactive: UserAttributes[];
-		toUpdate: UserAttributes[];
-	},
+	dbUsers: FilteredUsersForUserSync,
 ) {
 	const transaction = await sequelize.transaction();
 	try {
 		if (dbUsers.toAdd.length > 0) {
-			await User.bulkCreate(
+			await UserModel.bulkCreate(
 				dbUsers.toAdd.map((user) => ({
 					id: user.id,
 					name: user.displayName,
+					active: true,
 				})),
 				{ transaction },
 			);
 		}
 		if (dbUsers.toDelete.length > 0) {
-			await User.destroy({
+			await UserModel.destroy({
 				where: {
 					id: dbUsers.toDelete.map((user) => user.id!),
 				},
@@ -79,7 +74,7 @@ export async function syncUserTableWithAzureADGroup(
 		if (dbUsers.toFlagAsInactive.length > 0) {
 			await Promise.all(
 				dbUsers.toFlagAsInactive.map(async (user) => {
-					return User.update({ active: false }, { where: { id: user.id }, transaction });
+					return UserModel.update({ active: false }, { where: { id: user.id }, transaction });
 				}),
 			);
 		}
@@ -88,7 +83,7 @@ export async function syncUserTableWithAzureADGroup(
 				dbUsers.toUpdate.map(async (user) => {
 					const azureAdUser = azureAdGroupUsers.find((u) => u.id === user.id);
 					if (azureAdUser?.displayName !== user.name) {
-						return User.update(
+						return UserModel.update(
 							{ name: azureAdUser?.displayName },
 							{ where: { id: user.id }, transaction },
 						);
@@ -104,11 +99,14 @@ export async function syncUserTableWithAzureADGroup(
 }
 
 /**
- * Used with syncUserTableWithAzureADGroup to determine which users need to be added, deleted, flagged, or updated.
+ * Used with syncUserTableWithAzureAdGroup to determine which users need to be added, deleted, flagged, or updated.
  * @param azureAdGroupUsers
  * @param dbUsers
  */
-export function filterUsers(azureAdGroupUsers: AzureAdGroupUser[], dbUsers: UserAttributes[]) {
+export function filterUsersForUserSync(
+	azureAdGroupUsers: AzureAdGroupUser[],
+	dbUsers: UserData[],
+): FilteredUsersForUserSync {
 	const azureAdUserIds = azureAdGroupUsers.map((user) => user.id);
 	const dbUserIds = dbUsers.map((user) => user.id);
 
@@ -123,11 +121,10 @@ export function filterUsers(azureAdGroupUsers: AzureAdGroupUser[], dbUsers: User
 	);
 	const toUpdate = dbUsers.filter((user) => user.id && azureAdUserIds.includes(user.id));
 
-	const filteredUsers = {
+	return {
 		toAdd,
 		toDelete,
 		toFlagAsInactive,
 		toUpdate,
 	};
-	return filteredUsers;
 }

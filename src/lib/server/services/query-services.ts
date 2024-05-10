@@ -1,9 +1,14 @@
+import type {
+	Filter,
+	SortBy,
+	SortDirection,
+	WhereOptionsWithSymbols,
+} from '$lib/types/query-types';
 import { getTodaysDateWithOffset } from '$lib/utils/date-utils';
 import { error } from '@sveltejs/kit';
 import { Op, type Order } from 'sequelize';
 import { sequelize } from '../db';
-import Application from '../models/application-model';
-import type { Filter, SortBy, SortDirection, WhereOptionsWithSymbols } from '../types/query-types';
+import ApplicationModel from '../models/application-model';
 
 /*
  * These functions are used to construct the WHERE and ORDER BY clauses for
@@ -66,7 +71,7 @@ export function constructOrderClause(sortBy: SortBy, sortDirection: SortDirectio
 
 	switch (sortBy) {
 		case 'application':
-			order = [[{ model: Application, as: 'application' }, 'name', sortDirection]];
+			order = [[{ model: ApplicationModel, as: 'application' }, 'name', sortDirection]];
 			break;
 		case 'contactPerson':
 			order = [['contactPerson', sortDirection]];

@@ -1,8 +1,8 @@
+import type { LicenseInstance } from '$lib/types/license-types';
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db';
-import type { LicenseInstance } from '../types/license-types';
 
-const License = sequelize.define<LicenseInstance>('license', {
+const LicenseModel = sequelize.define<LicenseInstance>('license', {
 	id: {
 		type: DataTypes.UUID,
 		defaultValue: DataTypes.UUIDV4,
@@ -96,4 +96,4 @@ const License = sequelize.define<LicenseInstance>('license', {
 	},
 });
 
-export default License;
+export default LicenseModel;

@@ -3,10 +3,10 @@ import {
 	updateLicenseAssociations,
 	updateUserAssociations,
 } from '$lib/server/services/license-services';
-import type { LicenseInstance } from '$lib/server/types/license-types';
 import type { Model } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
+import type { LicenseInstance } from '../../../../lib/types/license-types';
 import { DELETE, GET, PUT } from './+server';
 
 describe('GET /licenses/:id', () => {
