@@ -29,6 +29,7 @@
 	let userInput = '';
 
 	function handleInput(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
+		inputFieldFocused = true;
 		const input = event.currentTarget.value.trim().toLowerCase();
 
 		userSuggestions = $userStore.filter((user) => {
@@ -42,12 +43,14 @@
 	}
 
 	async function handleAssignUser(assignedUsername: string) {
-		const isValid = await validateUser(assignedUsername);
-		const userToAssign = $userStore.find((user) => user.name === assignedUsername);
+		const userWithLowerCase = assignedUsername.trim().toLowerCase();
+		const isValid = await validateUser(userWithLowerCase);
+		const userToAssign = $userStore.find(
+			(user) => user.name.trim().toLowerCase() === userWithLowerCase,
+		);
 		const userAlreadyAssigned = $currentLicense.users.find((u) => u.id === userToAssign?.id);
 
 		if (!isValid) {
-			inputField.blur();
 			return;
 		} else if (!userToAssign) {
 			userValidationErrors.set(['User does not exist']);
@@ -58,8 +61,7 @@
 			$currentLicense.users = [...$currentLicense.users, userToAssign];
 			userInput = '';
 		}
-
-		inputField.blur();
+		inputFieldFocused = false;
 	}
 </script>
 
@@ -104,11 +106,14 @@
 			use:clickOutside={() => (inputFieldFocused = false)}
 			bind:value={userInput}
 			bind:this={inputField}
+			on:click={() => (inputFieldFocused = true)}
 			on:focus={() => (inputFieldFocused = true)}
 			on:input={handleInput}
 			on:keydown={(e) => {
 				if (e.key === 'Enter' && userInput === '') {
-					inputField.blur();
+					inputFieldFocused = false;
+				} else if (e.key === 'Tab') {
+					inputFieldFocused = false;
 				} else if (e.key === 'Enter') {
 					handleAssignUser(userInput);
 				}
@@ -128,7 +133,10 @@
 						role="menuitem"
 						tabindex="-1"
 						on:mousedown|preventDefault
-						on:mouseup={() => handleAssignUser(suggestion.name)}
+						on:mouseup={() => {
+							handleAssignUser(suggestion.name);
+							inputField.blur();
+						}}
 					>
 						{suggestion.name}
 					</li>
