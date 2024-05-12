@@ -1,16 +1,17 @@
-import { applicationValidationError } from '$lib/validations/application-validation';
-import { writable } from 'svelte/store';
-import { v4 as uuidv4 } from 'uuid';
-import { notifications } from '../notification-store';
+import { notifications } from '$lib/stores/notification-store';
 import {
 	applicationDeleteRequest,
 	applicationFetchRequest,
 	applicationPostRequest,
 	disableButtonsDuringRequests,
 	request,
-} from '../request-state-store';
+} from '$lib/stores/request-state-store';
+import type { ApplicationData } from '$lib/types/application-types';
+import { applicationValidationError } from '$lib/validations/application-validation';
+import { writable } from 'svelte/store';
+import { v4 as uuidv4 } from 'uuid';
 
-function getInitialValues() {
+export function getApplicationDefaultValue(): ApplicationData {
 	return {
 		id: uuidv4(),
 		name: '',
@@ -19,17 +20,11 @@ function getInitialValues() {
 	};
 }
 
-export interface Application {
-	id: string;
-	name: string;
-	link: string;
-	licenseAssociations: number;
-}
-
-export const currentApplication = writable<Application>(getInitialValues());
+export const currentApplication = writable<ApplicationData>(getApplicationDefaultValue());
+export const applicationToDelete = writable<string | null>(null);
 
 function createApplicationStore() {
-	const { subscribe, set } = writable<Application[]>([]);
+	const { subscribe, set } = writable<ApplicationData[]>([]);
 
 	async function fetchApplications() {
 		try {
@@ -37,7 +32,7 @@ function createApplicationStore() {
 			const response = await fetch('/api/applications');
 			await request.endLoading(applicationFetchRequest, 1000);
 			if (response.ok) {
-				const applications = await response.json();
+				const applications: ApplicationData[] = await response.json();
 				set(applications);
 			} else {
 				const error: App.Error = await response.json();
@@ -60,7 +55,7 @@ function createApplicationStore() {
 		}
 	}
 
-	async function addApplication(application: Application) {
+	async function addApplication(application: ApplicationData) {
 		try {
 			disableButtonsDuringRequests.set(true);
 			await request.startLoading(applicationPostRequest, 0);
@@ -100,7 +95,7 @@ function createApplicationStore() {
 		}
 	}
 
-	async function updateApplication(application: Application) {
+	async function updateApplication(application: ApplicationData) {
 		try {
 			disableButtonsDuringRequests.set(true);
 			await request.startLoading(applicationPostRequest, 0);
@@ -138,6 +133,12 @@ function createApplicationStore() {
 			console.error('Failed to update application:', error);
 			return false;
 		}
+	}
+
+	async function handleApplicationDeletion(id: string | null) {
+		if (!id) return;
+		const success = await deleteApplication(id);
+		if (success) applicationStore.fetch();
 	}
 
 	async function deleteApplication(id: string) {
@@ -184,7 +185,7 @@ function createApplicationStore() {
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			currentApplication.set(getInitialValues());
+			currentApplication.set(getApplicationDefaultValue());
 			applicationValidationError.set({});
 		}, 120);
 	}
@@ -195,7 +196,7 @@ function createApplicationStore() {
 		fetch: fetchApplications,
 		add: addApplication,
 		update: updateApplication,
-		delete: deleteApplication,
+		delete: handleApplicationDeletion,
 		resetFields,
 	};
 }

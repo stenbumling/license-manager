@@ -1,5 +1,6 @@
-import type { Application } from '$lib/stores/resources/application-store';
 import { applicationStore } from '$lib/stores/resources/application-store';
+import type { ApplicationData } from '$lib/types/application-types';
+import type { ApplicationValidationError } from '$lib/types/validation-types';
 import { get, writable } from 'svelte/store';
 import { z } from 'zod';
 
@@ -31,12 +32,7 @@ export const applicationSchema = z.object({
 
 export const applicationValidationError = writable<ApplicationValidationError>({});
 
-interface ApplicationValidationError {
-	name?: { message: string };
-	link?: { message: string };
-}
-
-export async function validateApplication(application: Application): Promise<boolean> {
+export async function validateApplication(application: ApplicationData): Promise<boolean> {
 	try {
 		appId = application.id;
 		applicationSchema.parse(application);

@@ -1,8 +1,8 @@
-import Application from './application-model';
-import License from './license-model';
-import User from './user-model';
+import ApplicationModel from '$lib/server/models/application-model';
+import LicenseModel from '$lib/server/models/license-model';
+import UserModel from '$lib/server/models/user-model';
 
-Application.hasMany(License);
-License.belongsTo(Application, { as: 'application' });
-User.belongsToMany(License, { through: 'UserLicense' });
-License.belongsToMany(User, { through: 'UserLicense' });
+ApplicationModel.hasMany(LicenseModel);
+LicenseModel.belongsTo(ApplicationModel, { as: 'application' });
+UserModel.belongsToMany(LicenseModel, { through: 'UserLicense' });
+LicenseModel.belongsToMany(UserModel, { through: 'UserLicense' });

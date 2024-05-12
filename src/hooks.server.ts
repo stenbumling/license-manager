@@ -1,5 +1,5 @@
 import { building } from '$app/environment';
-import { authenticateUser, shouldAuthenticate } from '$lib/auth/services';
+import { authenticateUser, shouldAuthenticate } from '$lib/server/auth/services';
 import { initDb } from '$lib/server/db';
 import { type Handle, type HandleServerError } from '@sveltejs/kit';
 import {

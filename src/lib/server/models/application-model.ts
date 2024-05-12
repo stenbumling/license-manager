@@ -1,7 +1,8 @@
+import { sequelize } from '$lib/server/db';
+import type { ApplicationInstance } from '$lib/types/application-types';
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db';
 
-const Application = sequelize.define('application', {
+const ApplicationModel = sequelize.define<ApplicationInstance>('application', {
 	id: {
 		type: DataTypes.UUID,
 		defaultValue: DataTypes.UUIDV4,
@@ -53,4 +54,4 @@ const Application = sequelize.define('application', {
 	},
 });
 
-export default Application;
+export default ApplicationModel;

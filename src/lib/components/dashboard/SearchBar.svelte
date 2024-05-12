@@ -6,8 +6,6 @@
 	} from '$lib/validations/search-query-validation';
 	import Search from 'carbon-icons-svelte/lib/Search.svelte';
 
-	let inputField: HTMLInputElement;
-
 	async function handleSearch(e: KeyboardEvent) {
 		if (e.key === 'Enter') {
 			const isValid = await validateSearchQuery($searchQuery);
@@ -26,7 +24,6 @@
 
 <input
 	bind:value={$searchQuery}
-	bind:this={inputField}
 	type="search"
 	class={`search-field ${isError ? 'error' : ''} ${isActiveSearch ? 'active' : ''}`}
 	placeholder="Search"

@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { applicationModalMode } from '$lib/stores/modal-store';
+	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
+	import SecondaryButton from '$lib/components/misc/buttons/SecondaryButton.svelte';
+	import { applicationModalView } from '$lib/stores/modal-store';
 	import { applicationPostRequest } from '$lib/stores/request-state-store';
 	import { applicationStore, currentApplication } from '$lib/stores/resources/application-store';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
@@ -8,8 +10,6 @@
 		validateApplication,
 	} from '$lib/validations/application-validation';
 	import { fade } from 'svelte/transition';
-	import PrimaryButton from '../misc/buttons/PrimaryButton.svelte';
-	import SecondaryButton from '../misc/buttons/SecondaryButton.svelte';
 
 	const oldAppName = $currentApplication.name;
 
@@ -20,7 +20,7 @@
 			const success = await applicationStore.update($currentApplication);
 			if (success) {
 				applicationStore.resetFields();
-				applicationModalMode.set('list');
+				applicationModalView.set('list');
 				updateApplicationNameInLicenseModalHeader();
 				applicationStore.fetch();
 			}
@@ -38,7 +38,7 @@
 
 	function handleCancel() {
 		applicationStore.resetFields();
-		applicationModalMode.set('list');
+		applicationModalView.set('list');
 	}
 </script>
 

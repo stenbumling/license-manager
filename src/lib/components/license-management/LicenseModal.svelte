@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { focusTrap } from '$lib/actions/focusTrap';
-	import LicenseContainer from '$lib/components/license/LicenseContainer.svelte';
+	import LicenseContainer from '$lib/components/license-management/LicenseContainer.svelte';
 	import { fade } from 'svelte/transition';
 </script>
 

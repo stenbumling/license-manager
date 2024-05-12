@@ -92,6 +92,6 @@ export async function initDb() {
 }
 
 async function syncDbModels() {
-	await import('./models/model-associations');
+	await import('$lib/server/models/model-associations');
 	await sequelize.sync();
 }

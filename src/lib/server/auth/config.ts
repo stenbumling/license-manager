@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { ConfidentialClientApplication } from '@azure/msal-node';
+import { ConfidentialClientApplication, type Configuration } from '@azure/msal-node';
 
 const { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_CLOUD_INSTANCE, AZURE_TENANT_ID } = process.env;
 
@@ -8,7 +8,7 @@ const { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_CLOUD_INSTANCE, AZURE_TENANT
  * Client ID, Tenant ID, and Client Secret should be set in the environment variables.
  * The client secret in particular should be kept in a key vault or other secure location.
  */
-export const msalConfig = {
+export const msalConfig: Configuration = {
 	auth: {
 		clientId: AZURE_CLIENT_ID || 'no-client-id-set',
 		authority:

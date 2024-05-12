@@ -1,28 +1,23 @@
-import { type Application } from '$lib/stores/resources/application-store';
-import type { User } from '$lib/stores/resources/user-store';
-import { licenseValidationErrors } from '$lib/validations/license-validation';
-import { get, writable } from 'svelte/store';
-import { v4 as uuidv4 } from 'uuid';
-import { notifications } from '../notification-store';
+import { modal } from '$lib/stores/modal-store';
+import { notifications } from '$lib/stores/notification-store';
 import {
 	disableButtonsDuringRequests,
 	licenseDeleteRequest,
 	licenseFetchRequest,
 	licensePostRequest,
 	request,
-} from '../request-state-store';
+} from '$lib/stores/request-state-store';
+import { getApplicationDefaultValue } from '$lib/stores/resources/application-store';
+import { table } from '$lib/stores/resources/table-store';
+import type { LicenseCounts, LicenseData, LicenseModalMode } from '$lib/types/license-types';
+import { licenseValidationErrors } from '$lib/validations/license-validation';
+import { get, writable } from 'svelte/store';
+import { v4 as uuidv4 } from 'uuid';
 
-function getInitialValues() {
+export function getLicenseDefaultValue(): LicenseData {
 	return {
 		id: uuidv4(),
-		application: {
-			id: uuidv4(),
-			name: '',
-			link: '',
-			licenseAssociations: 0,
-		},
 		applicationId: '',
-		users: [],
 		expirationDate: '',
 		autoRenewal: false,
 		cost: 0,
@@ -32,50 +27,29 @@ function getInitialValues() {
 		contactPerson: '',
 		additionalContactInfo: '',
 		comment: '',
-		updatedAt: '',
+		users: [],
+		application: getApplicationDefaultValue(),
 	};
 }
 
-const initialLicenseCounts = {
-	all: 0,
-	inUse: 0,
-	unassigned: 0,
-	nearExpiration: 0,
-	expired: 0,
-};
-
-export interface License {
-	id: string;
-	application: Application;
-	applicationId: string;
-	users: User[];
-	expirationDate: string;
-	autoRenewal: boolean;
-	cost: number;
-	renewalInterval: string;
-	category: string;
-	status: string;
-	contactPerson: string;
-	additionalContactInfo: string;
-	comment: string;
-	updatedAt: string;
+export function getLicenseCountsDefaultValue(): LicenseCounts {
+	return {
+		all: 0,
+		inUse: 0,
+		unassigned: 0,
+		nearExpiration: 0,
+		expired: 0,
+	};
 }
 
-export interface LicenseCounts {
-	all: number;
-	inUse: number;
-	unassigned: number;
-	nearExpiration: number;
-	expired: number;
-}
-
-export const currentLicense = writable<License>(getInitialValues());
-export const fetchedLicense = writable<License | null>(null);
-export const licenseMode = writable<'add' | 'view'>('add');
-export const licenseCounts = writable<LicenseCounts>(initialLicenseCounts);
+export const currentLicense = writable<LicenseData>(getLicenseDefaultValue());
+export const fetchedLicense = writable<LicenseData | null>(null);
+export const licenseToDelete = writable<string | null>(null);
+export const licenseCounts = writable<LicenseCounts>(getLicenseCountsDefaultValue());
+export const licenseMode = writable<LicenseModalMode>('add');
 
 function createLicenseStore() {
-	const { subscribe, set, update } = writable<License[]>([]);
+	const { subscribe, set, update } = writable<LicenseData[]>([]);
 
 	async function getLicenseById(id: string) {
 		try {
@@ -83,7 +57,7 @@ function createLicenseStore() {
 			const response = await fetch(`/api/licenses/${id}`);
 			await request.endLoading(licenseFetchRequest, 1000);
 			if (response.ok) {
-				const license = await response.json();
+				const license: LicenseData = await response.json();
 				currentLicense.set(license);
 				fetchedLicense.set(JSON.parse(JSON.stringify(license)));
 			} else {
@@ -107,7 +81,7 @@ function createLicenseStore() {
 		try {
 			const response = await fetch('/api/licenses/counts');
 			if (response.ok) {
-				const counts = await response.json();
+				const counts: LicenseCounts = await response.json();
 				licenseCounts.set(counts);
 			} else {
 				const error: App.Error = await response.json();
@@ -128,7 +102,7 @@ function createLicenseStore() {
 		}
 	}
 
-	async function addLicense(license: License) {
+	async function addLicense(license: LicenseData) {
 		try {
 			disableButtonsDuringRequests.set(true);
 			await request.startLoading(licensePostRequest, 0);
@@ -168,7 +142,7 @@ function createLicenseStore() {
 		}
 	}
 
-	async function updateLicense(updatedLicense: License) {
+	async function updateLicense(updatedLicense: LicenseData) {
 		const currentLicense = get(licenseStore).find((l) => l.id === updatedLicense.id);
 		try {
 			disableButtonsDuringRequests.set(true);
@@ -209,6 +183,16 @@ function createLicenseStore() {
 			});
 			console.error('Failed to update license:', error);
 			return false;
+		}
+	}
+
+	async function handleLicenseDeletion(id: string | null) {
+		if (!id) return;
+		const success = await deleteLicense(id);
+		if (success) {
+			modal.closeLicense();
+			licenseStore.updateCounts();
+			table.updateState();
 		}
 	}
 
@@ -256,7 +240,7 @@ function createLicenseStore() {
 	 */
 	function resetFields() {
 		setTimeout(() => {
-			currentLicense.set(getInitialValues());
+			currentLicense.set(getLicenseDefaultValue());
 			licenseValidationErrors.set({});
 		}, 120);
 	}
@@ -267,7 +251,7 @@ function createLicenseStore() {
 		update,
 		fetch: getLicenseById,
 		add: addLicense,
-		delete: deleteLicense,
+		delete: handleLicenseDeletion,
 		updateLicense: updateLicense,
 		updateCounts: updateLicenseCounts,
 		resetFields,

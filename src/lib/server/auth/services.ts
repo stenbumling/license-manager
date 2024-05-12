@@ -1,6 +1,12 @@
-import { CryptoProvider, InteractionRequiredAuthError, ResponseMode } from '@azure/msal-node';
+import { cookiesConfig, graphApiPermissions, msalInstanceProvider } from '$lib/server/auth/config';
+import {
+	CryptoProvider,
+	InteractionRequiredAuthError,
+	ResponseMode,
+	type AuthorizationCodeRequest,
+	type AuthorizationUrlRequest,
+} from '@azure/msal-node';
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
-import { cookiesConfig, graphApiPermissions, msalInstanceProvider } from './config';
 
 const { REDIRECT_URI } = process.env;
 
@@ -52,7 +58,7 @@ export async function generateAuthCodeUrl(event: RequestEvent) {
 			redirectTo: event.url.pathname,
 		}),
 	);
-	const authCodeUrlRequest = {
+	const authCodeUrlRequest: AuthorizationUrlRequest = {
 		redirectUri: REDIRECT_URI || 'no-redirect-uri-set',
 		responseMode: ResponseMode.QUERY,
 		codeChallenge: pkceCodes.challenge,
@@ -73,12 +79,14 @@ export async function getTokens(event: RequestEvent) {
 	const msalInstance = msalInstanceProvider();
 	const state = event.url.searchParams.get('state');
 	if (state) {
-		const decodedState = JSON.parse(cryptoProvider.base64Decode(state));
+		const decodedState: { csrfToken: string; redirectTo: string } = JSON.parse(
+			cryptoProvider.base64Decode(state),
+		);
 		const csrfToken = event.cookies.get('csrfToken');
 		if (decodedState.csrfToken === csrfToken) {
 			const code = event.url.searchParams.get('code');
 			if (code) {
-				const authCodeRequest = {
+				const authCodeRequest: AuthorizationCodeRequest = {
 					redirectUri: REDIRECT_URI || 'no-redirect-uri-set',
 					code,
 					scopes: graphApiPermissions,

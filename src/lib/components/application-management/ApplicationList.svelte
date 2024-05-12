@@ -1,12 +1,12 @@
 <script>
 	import { scrollShadow } from '$lib/actions/scrollShadow';
+	import ApplicationListItem from '$lib/components/application-management/ApplicationListItem.svelte';
 	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
-	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { applicationModalView } from '$lib/stores/modal-store';
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
-	import ApplicationItem from './ApplicationListItem.svelte';
 
 	$: hasStartedRequest = $applicationFetchRequest.pendingRequests > 0 && !isLoading;
 	$: isLoading = $applicationFetchRequest.isLoading;
@@ -44,14 +44,14 @@
 		<div class="application-list" use:scrollShadow>
 			{#each $applicationStore as applicationItem}
 				<div transition:slide={{ duration: 120 }}>
-					<ApplicationItem {applicationItem} />
+					<ApplicationListItem {applicationItem} />
 				</div>
 			{/each}
 		</div>
 	{/if}
 
 	<div class="button-container">
-		<PrimaryButton title="Add new application" action={() => applicationModalMode.set('add')} />
+		<PrimaryButton title="Add new application" action={() => applicationModalView.set('add')} />
 	</div>
 </div>
 

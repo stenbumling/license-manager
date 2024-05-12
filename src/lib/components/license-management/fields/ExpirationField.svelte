@@ -1,6 +1,6 @@
 <script lang="ts">
-	import SelectField from '$lib/components/license/fields/SelectField.svelte';
-	import TextField from '$lib/components/license/fields/TextField.svelte';
+	import SelectField from '$lib/components/license-management/fields/SelectField.svelte';
+	import TextField from '$lib/components/license-management/fields/TextField.svelte';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';

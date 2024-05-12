@@ -1,13 +1,17 @@
 import { goto } from '$app/navigation';
+import { contextMenu } from '$lib/stores/context-menu-store';
+import { licenseFetchRequest, request } from '$lib/stores/request-state-store';
+import { applicationStore, applicationToDelete } from '$lib/stores/resources/application-store';
+import { licenseMode, licenseStore, licenseToDelete } from '$lib/stores/resources/license-store';
+import type { ApplicationModalMode } from '$lib/types/application-types';
+import type { LicenseModalMode } from '$lib/types/license-types';
+import type { WarningModalMode } from '$lib/types/misc-types';
 import { writable } from 'svelte/store';
-import { contextMenu } from './context-menu-store';
-import { licenseFetchRequest, request } from './request-state-store';
-import { applicationStore } from './resources/application-store';
-import { licenseMode, licenseStore } from './resources/license-store';
 
 export const showLicenseModal = writable(false);
-export const applicationModalMode = writable<'closed' | 'list' | 'add' | 'edit'>('closed');
 export const showAssignedUsersModal = writable(false);
+export const applicationModalView = writable<ApplicationModalMode>('closed');
+export const warningModal = writable<WarningModalMode>('closed');
 
 function createModalController() {
 	function validateLicenseId(uuid: string) {
@@ -17,7 +21,7 @@ function createModalController() {
 
 	async function handleBrowserHistoryChange() {
 		const url = new URL(window.location.href);
-		const mode = url.searchParams.get('modal');
+		const mode = url.searchParams.get('modal') as LicenseModalMode;
 		const licenseId = url.searchParams.get('id');
 
 		closeAllModals();
@@ -62,7 +66,8 @@ function createModalController() {
 	}
 
 	function closeApplicationModal() {
-		applicationModalMode.set('closed');
+		applicationModalView.set('closed');
+		applicationToDelete.set(null);
 		applicationStore.resetFields();
 	}
 
@@ -70,10 +75,16 @@ function createModalController() {
 		showAssignedUsersModal.set(false);
 	}
 
+	function closeWarningModal() {
+		licenseToDelete.set(null);
+		warningModal.set('closed');
+	}
+
 	function closeAllModals() {
 		contextMenu.close();
 		closeApplicationModal();
 		closeAssignedUsers();
+		closeWarningModal();
 		showLicenseModal.set(false);
 	}
 

@@ -1,39 +1,39 @@
 import { sequelize } from '$lib/server/db';
-import Application from '$lib/server/models/application-model';
-import License from '$lib/server/models/license-model';
-import User from '$lib/server/models/user-model';
+import ApplicationModel from '$lib/server/models/application-model';
+import LicenseModel from '$lib/server/models/license-model';
+import UserModel from '$lib/server/models/user-model';
 import { updateLicenseAssociations } from '$lib/server/services/application-services';
 import { constructOrderClause, constructWhereClause } from '$lib/server/services/query-services';
-import type { LicenseInstance } from '$lib/server/types/license-types';
-import type { Filter, SortBy, SortDirection } from '$lib/server/types/query-types';
-import type { UserInstance } from '$lib/server/types/user-types';
+import type { LicenseCounts, LicenseData, LicenseInstance } from '$lib/types/license-types';
+import type { FilterQuery, SortColumn, SortDirection } from '$lib/types/query-types';
+import type { UserData } from '$lib/types/user-types';
 import { getTodaysDateWithOffset } from '$lib/utils/date-utils';
 import { error } from '@sveltejs/kit';
 import type { Transaction } from 'sequelize';
 import { Op } from 'sequelize';
 
 export async function fetchLicensesByQuery(
-	filter: Filter,
+	filter: FilterQuery,
 	search: string,
-	sortBy: SortBy,
+	sortColumn: SortColumn,
 	sortDirection: SortDirection,
-) {
+): Promise<LicenseInstance[]> {
 	// Selects licenses based on the filter and search query parameters
 	const where = constructWhereClause(filter, search);
 
 	// Sorts the licenses based on the sortBy and sortDirection query parameters
-	const order = constructOrderClause(sortBy, sortDirection);
+	const order = constructOrderClause(sortColumn, sortDirection);
 
-	const licenses = await License.findAll({
+	const licenses = await LicenseModel.findAll({
 		where,
 		include: [
 			{
-				model: Application,
+				model: ApplicationModel,
 				as: 'application',
 				attributes: { exclude: ['createdAt'] },
 			},
 			{
-				model: User,
+				model: UserModel,
 				attributes: { exclude: ['createdAt'] },
 				through: { attributes: [] },
 			},
@@ -43,15 +43,15 @@ export async function fetchLicensesByQuery(
 	return licenses;
 }
 
-export async function getLicenseCounts() {
+export async function getLicenseCounts(): Promise<LicenseCounts> {
 	const tomorrow = getTodaysDateWithOffset(1);
 	const expirationWarningDate = getTodaysDateWithOffset(14);
 
-	const allCount = License.count();
-	const inUseCount = License.count({
+	const allCount = LicenseModel.count();
+	const inUseCount = LicenseModel.count({
 		include: [
 			{
-				model: User,
+				model: UserModel,
 				attributes: [],
 				through: { attributes: [] },
 				required: true,
@@ -60,18 +60,18 @@ export async function getLicenseCounts() {
 		distinct: true,
 		col: 'id',
 	});
-	const unassignedCount = License.count({
+	const unassignedCount = LicenseModel.count({
 		where: { '$Users.id$': { [Op.is]: null } },
 		include: [
 			{
-				model: User,
+				model: UserModel,
 				attributes: [],
 				through: { attributes: [] },
 				required: false,
 			},
 		],
 	});
-	const nearExpirationCount = License.count({
+	const nearExpirationCount = LicenseModel.count({
 		where: {
 			expirationDate: {
 				[Op.and]: {
@@ -81,7 +81,7 @@ export async function getLicenseCounts() {
 			},
 		},
 	});
-	const expiredCount = License.count({
+	const expiredCount = LicenseModel.count({
 		where: { expirationDate: { [Op.lt]: tomorrow } },
 	});
 
@@ -95,15 +95,15 @@ export async function getLicenseCounts() {
 }
 
 export async function getLicense(licenseId: string) {
-	const license = await License.findByPk(licenseId, {
+	const license = await LicenseModel.findByPk(licenseId, {
 		include: [
 			{
-				model: Application,
+				model: ApplicationModel,
 				as: 'application',
 				attributes: { exclude: ['createdAt'] },
 			},
 			{
-				model: User,
+				model: UserModel,
 				attributes: { exclude: ['createdAt'] },
 				through: { attributes: [] },
 			},
@@ -122,16 +122,17 @@ export async function getLicense(licenseId: string) {
 	return license;
 }
 
-export async function createLicense(license: LicenseInstance, users: UserInstance[]) {
+export async function createLicense(license: LicenseData) {
 	const transaction = await sequelize.transaction();
 	try {
-		const createdLicense = await License.create(license, { transaction });
+		const { users } = license;
+		const createdLicense = await LicenseModel.create(license, { transaction });
 
-		if (users && Array.isArray(users) && createdLicense) {
+		if (users && createdLicense) {
 			await updateUserAssociations(users, createdLicense, transaction);
 		}
 
-		await updateLicenseAssociations(createdLicense, transaction, '+');
+		await updateLicenseAssociations(createdLicense.applicationId, transaction, '+');
 
 		await transaction.commit();
 	} catch (error) {
@@ -142,15 +143,15 @@ export async function createLicense(license: LicenseInstance, users: UserInstanc
 
 export async function updateLicense(
 	licenseId: string,
-	data: { updatedLicense: LicenseInstance; currentLicense: LicenseInstance },
+	data: { updatedLicense: LicenseData; currentLicense: LicenseData },
 ) {
 	const transaction = await sequelize.transaction();
 	try {
 		const { users, updatedAt, ...updatedLicenseData } = data.updatedLicense;
-		const { currentLicense: currentLicenseData } = data;
+		const { ...currentLicenseData } = data.currentLicense;
 
 		// Update the license data if it has not been modified since it was last retrieved
-		const [affectedRows] = await License.update(updatedLicenseData, {
+		const [affectedRows] = await LicenseModel.update(updatedLicenseData, {
 			where: {
 				id: licenseId,
 				updatedAt,
@@ -167,14 +168,14 @@ export async function updateLicense(
 			});
 		}
 
-		if (users && Array.isArray(users)) {
-			const fetchedLicense = await License.findByPk(licenseId, { transaction });
+		if (users) {
+			const fetchedLicense = await LicenseModel.findByPk(licenseId, { transaction });
 			if (fetchedLicense) await updateUserAssociations(users, fetchedLicense, transaction);
 		}
 
 		if (currentLicenseData.applicationId !== updatedLicenseData.applicationId) {
-			await updateLicenseAssociations(currentLicenseData as LicenseInstance, transaction, '-');
-			await updateLicenseAssociations(updatedLicenseData as LicenseInstance, transaction, '+');
+			await updateLicenseAssociations(currentLicenseData.applicationId, transaction, '-');
+			await updateLicenseAssociations(updatedLicenseData.applicationId, transaction, '+');
 		}
 
 		await transaction.commit();
@@ -185,7 +186,7 @@ export async function updateLicense(
 }
 
 export async function updateUserAssociations(
-	users: UserInstance[],
+	users: UserData[],
 	license: LicenseInstance,
 	transaction: Transaction,
 ) {
@@ -197,7 +198,7 @@ export async function updateUserAssociations(
 export async function deleteLicense(licenseId: string) {
 	const transaction = await sequelize.transaction();
 	try {
-		const license = await License.findByPk(licenseId, { transaction });
+		const license = await LicenseModel.findByPk(licenseId, { transaction });
 		if (!license) {
 			error(404, {
 				status: 404,
@@ -208,7 +209,7 @@ export async function deleteLicense(licenseId: string) {
 			});
 		}
 
-		await updateLicenseAssociations(license, transaction, '-');
+		await updateLicenseAssociations(license.applicationId, transaction, '-');
 
 		await license.destroy({ transaction });
 

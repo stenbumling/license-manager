@@ -1,7 +1,9 @@
+import { notifications } from '$lib/stores/notification-store';
+import { request, tableFetchRequest } from '$lib/stores/request-state-store';
+import { licenseStore } from '$lib/stores/resources/license-store';
+import type { LicenseData } from '$lib/types/license-types';
+import type { FilterReadableName, SortColumn, SortDirection } from '$lib/types/query-types';
 import { get, writable } from 'svelte/store';
-import { notifications } from '../notification-store';
-import { request, tableFetchRequest } from '../request-state-store';
-import { licenseStore } from './license-store';
 
 /*
  * This store is responsible for managing the state of the license table. That
@@ -11,26 +13,31 @@ import { licenseStore } from './license-store';
  * to fetch the licenses that match the current state of the table.
  */
 
+function getSortStateDefaultValue(): Record<SortColumn, SortDirection> {
+	return {
+		application: 'DEFAULT',
+		contactPerson: 'DEFAULT',
+		users: 'DEFAULT',
+		expirationDate: 'DEFAULT',
+		createdAt: 'DEFAULT',
+	};
+}
+
 // Stores for managing queries and state of the table
-export const searchQuery = writable('');
-export const filterState = writable('All');
-export const sortState = writable<Record<string, 'ASC' | 'DESC' | 'DEFAULT'>>({
-	application: 'DEFAULT',
-	contactPerson: 'DEFAULT',
-	users: 'DEFAULT',
-	expirationDate: 'DEFAULT',
-});
+export const searchQuery = writable<string>('');
+export const filterState = writable<FilterReadableName>('All');
+export const sortState = writable<Record<SortColumn, SortDirection>>(getSortStateDefaultValue());
 
 // Used to render the search query in the table if no results are found
-export const currentSearch = writable('');
+export const currentSearch = writable<string>('');
 
 function createTableController() {
-	async function updateFilterState(filter: string) {
+	async function updateFilterState(filter: FilterReadableName) {
 		filterState.set(filter);
 		await updateTableState();
 	}
 
-	async function updateSortState(column: string) {
+	async function updateSortState(column: SortColumn) {
 		sortState.update((currentState) => {
 			updateSortOrder(column, currentState);
 			return currentState;
@@ -39,16 +46,29 @@ function createTableController() {
 	}
 
 	async function updateTableState() {
-		const { sortColumn, sortOrder } = getSortState();
-		const query = constructFilterQuery(get(filterState), get(searchQuery), sortOrder, sortColumn);
+		const { sortColumn, sortDirection } = getSortState();
+		const query = constructFilterQuery(
+			get(filterState),
+			get(searchQuery),
+			sortDirection,
+			sortColumn,
+		);
 		await sendQueryToDatabase(query);
 	}
 
 	function getSortState() {
 		const sortStateValue = get(sortState);
-		const sortColumn = Object.keys(sortStateValue).find((key) => sortStateValue[key] !== 'DEFAULT');
-		const sortOrder = sortColumn ? sortStateValue[sortColumn] : 'DEFAULT';
-		return { sortColumn, sortOrder };
+		let sortColumn: SortColumn | undefined = undefined;
+		let sortDirection: SortDirection = 'DEFAULT';
+
+		for (const key in sortStateValue) {
+			if (sortStateValue[key as SortColumn] !== 'DEFAULT') {
+				sortColumn = key as SortColumn;
+				sortDirection = sortStateValue[sortColumn];
+				break;
+			}
+		}
+		return { sortColumn, sortDirection };
 	}
 
 	function updateSortOrder(
@@ -73,7 +93,7 @@ function createTableController() {
 	}
 
 	function constructFilterQuery(
-		filterName: string,
+		filterName: FilterReadableName,
 		searchQueryParam: string,
 		sortOrder: 'ASC' | 'DESC' | 'DEFAULT',
 		sortColumn?: string,
@@ -88,7 +108,7 @@ function createTableController() {
 		return query;
 	}
 
-	function determineBaseQuery(filterName: string, searchQueryParam: string): string {
+	function determineBaseQuery(filterName: FilterReadableName, searchQueryParam: string) {
 		switch (filterName) {
 			case 'All':
 				return '?filter=all';
@@ -109,26 +129,13 @@ function createTableController() {
 		}
 	}
 
-	async function resetTableState() {
-		filterState.set('All');
-		sortState.set({
-			application: 'DEFAULT',
-			contactPerson: 'DEFAULT',
-			users: 'DEFAULT',
-			expirationDate: 'DEFAULT',
-		});
-		searchQuery.set('');
-		currentSearch.set('');
-		await updateTableState();
-	}
-
 	async function sendQueryToDatabase(query: string) {
 		try {
 			await request.startLoading(tableFetchRequest);
 			const response = await fetch(`/api/licenses/query${query}`);
 			await request.endLoading(tableFetchRequest, 1000);
 			if (response.ok) {
-				const licenses = await response.json();
+				const licenses: LicenseData[] = await response.json();
 				licenseStore.set(licenses);
 			} else {
 				const error: App.Error = await response.json();
@@ -155,6 +162,14 @@ function createTableController() {
 			licenseStore.set([]);
 			console.error(`Failed to fetch licenses with the query "${query}":`, error);
 		}
+	}
+
+	async function resetTableState() {
+		filterState.set('All');
+		sortState.set(getSortStateDefaultValue());
+		searchQuery.set('');
+		currentSearch.set('');
+		await updateTableState();
 	}
 
 	return {

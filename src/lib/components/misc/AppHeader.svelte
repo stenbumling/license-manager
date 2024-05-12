@@ -1,8 +1,8 @@
 <script lang="ts">
 	import logo from '$lib/images/nexer-logo-white.png';
 
+	// TODO: remove this after adding functionality for periodically syncing users
 	async function handleClick() {
-		// TODO: remove this after adding functionality for periodically syncing users
 		const response = await fetch('/api/users/sync', {
 			method: 'PUT',
 			headers: {

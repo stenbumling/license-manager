@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
 import { GET, POST } from './+server';
-import Application from '$lib/server/models/application-model';
+import ApplicationModel from '$lib/server/models/application-model';
 
 describe('GET /applications/', () => {
-	vi.mocked(Application.findAll).mockResolvedValue([]);
+	vi.mocked(ApplicationModel.findAll).mockResolvedValue([]);
 
 	it('should return 200 and fetched data on successful fetch', async () => {
 		const response = await GET();
@@ -16,7 +16,7 @@ describe('GET /applications/', () => {
 });
 
 describe('POST /applications/', () => {
-	vi.mocked(Application.create).mockResolvedValue({
+	vi.mocked(ApplicationModel.create).mockResolvedValue({
 		dataValues: {
 			id: uuidv4(),
 			licenseAssociations: 0,

@@ -1,3 +1,4 @@
+import type { RequestState } from '$lib/types/misc-types';
 import { delay } from '$lib/utils/misc-utils';
 import type { Writable } from 'svelte/store';
 import { get, writable } from 'svelte/store';
@@ -15,16 +16,7 @@ import { get, writable } from 'svelte/store';
  * with, for a more cohesive state management.
  */
 
-export interface RequestState {
-	isLoading: boolean;
-	pendingRequests: number;
-	startTime: number;
-	delayTimer: NodeJS.Timeout | undefined;
-	delay: number;
-	error: App.Error | null;
-}
-
-export function getInitialStateValues(defaultLoadingState = false) {
+export function getRequestStateDefaultValues(defaultLoadingState = false) {
 	return {
 		isLoading: defaultLoadingState,
 		pendingRequests: 0,
@@ -36,14 +28,14 @@ export function getInitialStateValues(defaultLoadingState = false) {
 }
 
 // Stores for different types of requests.
-export const tableFetchRequest = writable<RequestState>(getInitialStateValues(true));
-export const licenseFetchRequest = writable<RequestState>(getInitialStateValues());
-export const licensePostRequest = writable<RequestState>(getInitialStateValues());
-export const licenseDeleteRequest = writable<RequestState>(getInitialStateValues());
-export const userFetchRequest = writable<RequestState>(getInitialStateValues());
-export const applicationFetchRequest = writable<RequestState>(getInitialStateValues());
-export const applicationPostRequest = writable<RequestState>(getInitialStateValues());
-export const applicationDeleteRequest = writable<RequestState>(getInitialStateValues());
+export const tableFetchRequest = writable<RequestState>(getRequestStateDefaultValues(true));
+export const licenseFetchRequest = writable<RequestState>(getRequestStateDefaultValues());
+export const licensePostRequest = writable<RequestState>(getRequestStateDefaultValues());
+export const licenseDeleteRequest = writable<RequestState>(getRequestStateDefaultValues());
+export const userFetchRequest = writable<RequestState>(getRequestStateDefaultValues());
+export const applicationFetchRequest = writable<RequestState>(getRequestStateDefaultValues());
+export const applicationPostRequest = writable<RequestState>(getRequestStateDefaultValues());
+export const applicationDeleteRequest = writable<RequestState>(getRequestStateDefaultValues());
 
 export const disableButtonsDuringRequests = writable<boolean>(false);
 

@@ -9,9 +9,9 @@ export const userSchema = z
 
 export const userValidationErrors = writable<string[]>([]);
 
-export async function validateUser(user: string): Promise<boolean> {
+export async function validateUser(userName: string): Promise<boolean> {
 	try {
-		userSchema.parse(user);
+		userSchema.parse(userName);
 		userValidationErrors.set([]);
 		return true;
 	} catch (error) {

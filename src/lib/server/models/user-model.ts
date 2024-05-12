@@ -1,8 +1,8 @@
+import { sequelize } from '$lib/server/db';
+import type { UserInstance } from '$lib/types/user-types';
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db';
-import type { UserInstance } from '../types/user-types';
 
-const User = sequelize.define<UserInstance>('user', {
+const UserModel = sequelize.define<UserInstance>('user', {
 	id: {
 		type: DataTypes.UUID,
 		defaultValue: DataTypes.UUIDV4,
@@ -40,4 +40,4 @@ const User = sequelize.define<UserInstance>('user', {
 	},
 });
 
-export default User;
+export default UserModel;

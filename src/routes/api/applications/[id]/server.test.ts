@@ -1,4 +1,4 @@
-import Application from '$lib/server/models/application-model';
+import ApplicationModel from '$lib/server/models/application-model';
 import type { Model } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
@@ -6,7 +6,7 @@ import { DELETE, PUT } from './+server';
 
 describe('PUT /applications/:id', () => {
 	it('should return 204 on successful update', async () => {
-		vi.mocked(Application.update).mockResolvedValue([1]);
+		vi.mocked(ApplicationModel.update).mockResolvedValue([1]);
 
 		const response = await PUT({
 			params: { id: uuidv4() },
@@ -21,7 +21,7 @@ describe('PUT /applications/:id', () => {
 		expect(response.status).toBe(204);
 	});
 	it('should return 409 if the application was modified since last retrieved', async () => {
-		vi.mocked(Application.update).mockResolvedValue([0]);
+		vi.mocked(ApplicationModel.update).mockResolvedValue([0]);
 
 		try {
 			await PUT({
@@ -49,7 +49,7 @@ describe('PUT /applications/:id', () => {
 describe('DELETE /applications/:id', () => {
 	it('should return 204 on successful deletion', async () => {
 		const mockDestroy = vi.fn();
-		vi.mocked(Application.findByPk).mockResolvedValue({
+		vi.mocked(ApplicationModel.findByPk).mockResolvedValue({
 			destroy: mockDestroy,
 			dataValues: { licenseAssociations: 0 },
 		} as unknown as Model);
@@ -61,7 +61,7 @@ describe('DELETE /applications/:id', () => {
 	});
 
 	it('should return 404 when application is not found', async () => {
-		vi.mocked(Application.findByPk).mockResolvedValue(null);
+		vi.mocked(ApplicationModel.findByPk).mockResolvedValue(null);
 
 		try {
 			await DELETE({ params: { id: uuidv4() } });
@@ -78,7 +78,7 @@ describe('DELETE /applications/:id', () => {
 	});
 
 	it('should return 409 when there are licenses associated with the application', async () => {
-		vi.mocked(Application.findByPk).mockResolvedValue({
+		vi.mocked(ApplicationModel.findByPk).mockResolvedValue({
 			dataValues: { licenseAssociations: 1 },
 		} as unknown as Model);
 

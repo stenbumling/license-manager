@@ -1,14 +1,11 @@
 <script lang="ts">
 	import { filterState, searchQuery, table } from '$lib/stores/resources/table-store';
+	import type { DashboardFilter } from '$lib/types/misc-types';
 	import { searchQueryValidationError } from '$lib/validations/search-query-validation';
 	import { quintOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
-	export let filter: {
-		title: string;
-		amount: number;
-		color: string;
-	};
+	export let filter: DashboardFilter;
 
 	function handleClick() {
 		searchQuery.set('');

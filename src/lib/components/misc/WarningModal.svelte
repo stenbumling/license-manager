@@ -1,28 +1,40 @@
 <script lang="ts">
 	import { focusTrap } from '$lib/actions/focusTrap';
-	import type { RequestState } from '$lib/stores/request-state-store';
-	import { getInitialStateValues } from '$lib/stores/request-state-store';
-	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAlt.svelte';
+	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
+	import SecondaryButton from '$lib/components/misc/buttons/SecondaryButton.svelte';
+	import { warningModal } from '$lib/stores/modal-store';
+	import { getRequestStateDefaultValues } from '$lib/stores/request-state-store';
+	import type { RequestState } from '$lib/types/misc-types';
+	import WarningAlt from 'carbon-icons-svelte/lib/WarningAlt.svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
-	import PrimaryButton from './buttons/PrimaryButton.svelte';
-	import SecondaryButton from './buttons/SecondaryButton.svelte';
 
 	export let warningText = 'Are you sure you want to do this?';
-	export let onConfirm: () => void;
-	export let onCancel: () => void;
-	export let requestState: Writable<RequestState> = writable<RequestState>(getInitialStateValues());
+	export let onConfirm: () => Promise<void> | void;
+	export let onCancel: () => void = () => warningModal.set('closed');
+	export let requestState: Writable<RequestState> = writable<RequestState>(
+		getRequestStateDefaultValues(),
+	);
+
+	async function handleConfirm() {
+		await onConfirm();
+		warningModal.set('closed');
+	}
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
-			<WarningAltFilled fill="red" size={32} />
+			<WarningAlt fill="red" size={32} />
 			<h2 class="modal-title">{warningText}</h2>
 		</div>
 		<div class="button-container">
 			<SecondaryButton title="Cancel" action={onCancel} />
-			<PrimaryButton title="Confirm" action={onConfirm} pendingRequest={$requestState.isLoading} />
+			<PrimaryButton
+				title="Confirm"
+				action={handleConfirm}
+				pendingRequest={$requestState.isLoading}
+			/>
 		</div>
 	</dialog>
 </div>

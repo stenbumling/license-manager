@@ -1,18 +1,15 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
-	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { applicationModalView, warningModal } from '$lib/stores/modal-store';
 	import { isOnline } from '$lib/stores/network-store';
-	import { applicationDeleteRequest } from '$lib/stores/request-state-store';
-	import type { Application } from '$lib/stores/resources/application-store';
-	import { applicationStore, currentApplication } from '$lib/stores/resources/application-store';
+	import { applicationToDelete, currentApplication } from '$lib/stores/resources/application-store';
 	import { currentLicense } from '$lib/stores/resources/license-store';
-	import SettingsEdit from 'carbon-icons-svelte/lib/Settings.svelte';
+	import type { ApplicationData } from '$lib/types/application-types';
+	import Settings from 'carbon-icons-svelte/lib/Settings.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { slide } from 'svelte/transition';
-	import WarningModal from '../misc/WarningModal.svelte';
 
-	export let applicationItem: Application;
-	let showWarningModal = false;
+	export let applicationItem: ApplicationData;
 	let trashcanTooltip = '';
 	let isTrashcanDisabled = false;
 
@@ -28,21 +25,21 @@
 			trashcanTooltip = `${applicationItem.name} is currently selected and cannot be deleted. Try unselecting it before deleting`;
 			isTrashcanDisabled = true;
 		} else {
-			trashcanTooltip = 'Click to delete this application';
+			trashcanTooltip = '';
 			isTrashcanDisabled = false;
 		}
 	}
 
 	function handleEdit() {
-		const appCopy = JSON.parse(JSON.stringify(applicationItem));
+		const appCopy: ApplicationData = JSON.parse(JSON.stringify(applicationItem));
 		currentApplication.set(appCopy);
-		applicationModalMode.set('edit');
+		applicationModalView.set('edit');
 	}
 
-	async function handleDelete() {
-		const success = await applicationStore.delete(applicationItem.id);
-		if (success) applicationStore.fetch();
-		showWarningModal = false;
+	async function handleDeletionWarningModal() {
+		if (isTrashcanDisabled) return;
+		applicationToDelete.set(applicationItem.id);
+		warningModal.set('application-deletion');
 	}
 </script>
 
@@ -58,7 +55,7 @@
 	</p>
 	<div class="button-container">
 		<button class="edit-icon" on:click={handleEdit}>
-			<SettingsEdit size={24} fill="black" />
+			<Settings size={24} fill="black" />
 		</button>
 		<button
 			class="trashcan-icon"
@@ -67,21 +64,12 @@
 				content: trashcanTooltip,
 				options: { delay: [500, 0], offset: [0, 10] },
 			}}
-			on:click={() => (isTrashcanDisabled ? null : (showWarningModal = true))}
+			on:click={handleDeletionWarningModal}
 		>
 			<TrashCan size={24} fill={isTrashcanDisabled ? '#cccccc' : 'red'} />
 		</button>
 	</div>
 </div>
-
-{#if showWarningModal}
-	<WarningModal
-		warningText="Warning! This will delete the application. Are you sure?"
-		onConfirm={handleDelete}
-		onCancel={() => (showWarningModal = false)}
-		requestState={applicationDeleteRequest}
-	/>
-{/if}
 
 <style>
 	.application-item {
