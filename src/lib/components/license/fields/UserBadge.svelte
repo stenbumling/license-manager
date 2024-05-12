@@ -1,15 +1,11 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
-	import { currentLicense } from '$lib/stores/resources/license-store';
+	import { userStore } from '$lib/stores/resources/user-store';
 	import type { UserData } from '$lib/types/user-types';
 	import CloseFilled from 'carbon-icons-svelte/lib/CloseFilled.svelte';
 	import WarningFilled from 'carbon-icons-svelte/lib/WarningFilled.svelte';
 
 	export let user: UserData;
-
-	function handleRemoveUser(user: UserData) {
-		$currentLicense.users = $currentLicense.users.filter((u) => u.id !== user.id);
-	}
 </script>
 
 <div class="badge" style:background-color={user.active ? `var(--deep-purple)` : '#d32d2d'}>
@@ -28,7 +24,7 @@
 	<div class="badge-text-container">
 		<span class="badge-text">{user.name}</span>
 	</div>
-	<button class="badge-delete-button" on:click={() => handleRemoveUser(user)}>
+	<button class="badge-delete-button" on:click={() => userStore.unassignUser(user)}>
 		<CloseFilled fill="white" size={16} />
 	</button>
 </div>
