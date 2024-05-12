@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
-	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
-	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelectionField.svelte';
-	import AssignedUsers from '$lib/components/license/fields/AssignedUsersField.svelte';
-	import ExpirationField from '$lib/components/license/fields/ExpirationField.svelte';
-	import SelectField from '$lib/components/license/fields/SelectField.svelte';
-	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
-	import TextField from '$lib/components/license/fields/TextField.svelte';
+	import LicenseHeader from '$lib/components/license-management/LicenseHeader.svelte';
+	import ApplicationSelection from '$lib/components/license-management/fields/ApplicationSelectionField.svelte';
+	import AssignedUsers from '$lib/components/license-management/fields/AssignedUsersField.svelte';
+	import ExpirationField from '$lib/components/license-management/fields/ExpirationField.svelte';
+	import SelectField from '$lib/components/license-management/fields/SelectField.svelte';
+	import TextAreaField from '$lib/components/license-management/fields/TextAreaField.svelte';
+	import TextField from '$lib/components/license-management/fields/TextField.svelte';
 	import WarningModal from '$lib/components/misc/WarningModal.svelte';
 	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
