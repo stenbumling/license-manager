@@ -2,6 +2,7 @@
 	import { focusTrap } from '$lib/actions/focusTrap';
 	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/components/misc/buttons/SecondaryButton.svelte';
+	import { warningModal } from '$lib/stores/modal-store';
 	import { getRequestStateDefaultValues } from '$lib/stores/request-state-store';
 	import type { RequestState } from '$lib/types/misc-types';
 	import WarningAlt from 'carbon-icons-svelte/lib/WarningAlt.svelte';
@@ -9,11 +10,16 @@
 	import { fade } from 'svelte/transition';
 
 	export let warningText = 'Are you sure you want to do this?';
-	export let onConfirm: () => void;
-	export let onCancel: () => void;
+	export let onConfirm: () => Promise<void> | void;
+	export let onCancel: () => void = () => warningModal.set('closed');
 	export let requestState: Writable<RequestState> = writable<RequestState>(
 		getRequestStateDefaultValues(),
 	);
+
+	async function handleConfirm() {
+		await onConfirm();
+		warningModal.set('closed');
+	}
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
@@ -24,7 +30,11 @@
 		</div>
 		<div class="button-container">
 			<SecondaryButton title="Cancel" action={onCancel} />
-			<PrimaryButton title="Confirm" action={onConfirm} pendingRequest={$requestState.isLoading} />
+			<PrimaryButton
+				title="Confirm"
+				action={handleConfirm}
+				pendingRequest={$requestState.isLoading}
+			/>
 		</div>
 	</dialog>
 </div>

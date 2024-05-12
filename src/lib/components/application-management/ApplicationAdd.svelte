@@ -1,7 +1,7 @@
 <script lang="ts">
 	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
 	import SecondaryButton from '$lib/components/misc/buttons/SecondaryButton.svelte';
-	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { applicationModalView } from '$lib/stores/modal-store';
 	import { applicationPostRequest } from '$lib/stores/request-state-store';
 	import { applicationStore, currentApplication } from '$lib/stores/resources/application-store';
 	import {
@@ -17,7 +17,7 @@
 			const success = await applicationStore.add($currentApplication);
 			if (success) {
 				applicationStore.resetFields();
-				applicationModalMode.set('list');
+				applicationModalView.set('list');
 				applicationStore.fetch();
 			}
 		}
@@ -25,7 +25,7 @@
 
 	function handleCancel() {
 		applicationStore.resetFields();
-		applicationModalMode.set('list');
+		applicationModalView.set('list');
 	}
 </script>
 

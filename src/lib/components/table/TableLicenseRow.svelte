@@ -2,10 +2,8 @@
 	import { tooltip } from '$lib/actions/tooltip';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { modal } from '$lib/stores/modal-store';
-	import { licenseDeleteRequest } from '$lib/stores/request-state-store';
-	import { licenseStore } from '$lib/stores/resources/license-store';
-	import { table } from '$lib/stores/resources/table-store';
+	import { modal, warningModal } from '$lib/stores/modal-store';
+	import { licenseToDelete } from '$lib/stores/resources/license-store';
 	import type { LicenseData } from '$lib/types/license-types';
 	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import { getRelativeDate } from '$lib/utils/date-utils';
@@ -14,13 +12,11 @@
 	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import ViewFilled from 'carbon-icons-svelte/lib/ViewFilled.svelte';
-	import WarningModal from '../misc/WarningModal.svelte';
 
 	export let license: LicenseData;
 	export let index: number;
 
 	let hovered = false;
-	let showWarningModal = false;
 
 	$: status = license.status;
 	$: applicationName = license.application.name;
@@ -48,10 +44,7 @@
 		{
 			label: 'Delete license',
 			icon: TrashCan,
-			action: () => {
-				contextMenu.close();
-				showWarningModal = true;
-			},
+			action: () => handleDeletionWarningModal(),
 			class: 'alert',
 		},
 	];
@@ -63,13 +56,10 @@
 		modal.openViewLicense(license.id);
 	}
 
-	async function handleDelete() {
-		const success = await licenseStore.delete(license.id);
-		if (success) {
-			licenseStore.updateCounts();
-			table.updateState();
-		}
-		showWarningModal = false;
+	function handleDeletionWarningModal() {
+		contextMenu.close();
+		licenseToDelete.set(license.id);
+		warningModal.set('license-deletion');
 	}
 </script>
 
@@ -164,16 +154,6 @@
 		<LicenseMenuButton items={licenseMenuItems} />
 	</div>
 </div>
-
-<!-- Warning modal -->
-{#if showWarningModal}
-	<WarningModal
-		warningText="Warning! This will delete the license and all its data. Are you sure?"
-		onConfirm={handleDelete}
-		onCancel={() => (showWarningModal = false)}
-		requestState={licenseDeleteRequest}
-	/>
-{/if}
 
 <style>
 	* {

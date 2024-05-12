@@ -4,7 +4,7 @@
 	import ApplicationEdit from '$lib/components/application-management/ApplicationEdit.svelte';
 	import ApplicationList from '$lib/components/application-management/ApplicationList.svelte';
 	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
-	import { applicationModalMode, modal } from '$lib/stores/modal-store';
+	import { applicationModalView, modal } from '$lib/stores/modal-store';
 	import { quintOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
 </script>
@@ -15,15 +15,15 @@
 			<h1 class="modal-title">Application<br />management</h1>
 			<CloseButton action={modal.closeApplication} />
 		</div>
-		{#if $applicationModalMode === 'list'}
+		{#if $applicationModalView === 'list'}
 			<div class="modal-content" in:fly={{ duration: 200, x: -50, easing: quintOut }}>
 				<ApplicationList />
 			</div>
-		{:else if $applicationModalMode === 'add'}
+		{:else if $applicationModalView === 'add'}
 			<div class="modal-content" in:fly={{ duration: 200, x: 50, easing: quintOut }}>
 				<ApplicationAdd />
 			</div>
-		{:else if $applicationModalMode === 'edit'}
+		{:else if $applicationModalView === 'edit'}
 			<div class="modal-content" in:fly={{ duration: 200, x: 50, easing: quintOut }}>
 				<ApplicationEdit />
 			</div>

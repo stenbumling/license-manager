@@ -1,6 +1,12 @@
 import type { FilterReadableName } from '$lib/types/query-types';
 import type { ComponentType } from 'svelte';
 
+export type WarningModalMode =
+	| 'closed'
+	| 'license-deletion'
+	| 'application-deletion'
+	| 'unsaved-license-changes';
+
 export interface DashboardFilter {
 	title: FilterReadableName;
 	amount: number;

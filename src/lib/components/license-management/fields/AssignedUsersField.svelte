@@ -11,7 +11,7 @@
 
 	let inputField: HTMLInputElement;
 	let showUserSuggestions = false;
-	
+
 	onMount(async () => {
 		await userStore.fetch();
 		userSearchInput.set('');

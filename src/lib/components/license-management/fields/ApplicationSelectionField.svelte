@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
 	import IconButton from '$lib/components/misc/buttons/IconButton.svelte';
-	import { applicationModalMode } from '$lib/stores/modal-store';
+	import { applicationModalView } from '$lib/stores/modal-store';
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
 	import { applicationStore } from '$lib/stores/resources/application-store';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
@@ -69,7 +69,7 @@
 			<IconButton
 				icon={SettingsAdjust}
 				iconSize={20}
-				action={() => applicationModalMode.set('list')}
+				action={() => applicationModalView.set('list')}
 			/>
 		</div>
 	</div>

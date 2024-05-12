@@ -8,22 +8,18 @@
 	import SelectField from '$lib/components/license-management/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license-management/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license-management/fields/TextField.svelte';
-	import WarningModal from '$lib/components/misc/WarningModal.svelte';
 	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
 	import { contextMenu } from '$lib/stores/context-menu-store';
-	import { applicationModalMode, modal } from '$lib/stores/modal-store';
-	import {
-		licenseDeleteRequest,
-		licenseFetchRequest,
-		licensePostRequest,
-	} from '$lib/stores/request-state-store';
+	import { applicationModalView, modal, warningModal } from '$lib/stores/modal-store';
+	import { licenseFetchRequest, licensePostRequest } from '$lib/stores/request-state-store';
 	import {
 		currentLicense,
 		fetchedLicense,
 		licenseMode,
 		licenseStore,
+		licenseToDelete,
 	} from '$lib/stores/resources/license-store';
 	import { table } from '$lib/stores/resources/table-store';
 	import type { ContextMenuItem } from '$lib/types/misc-types';
@@ -35,8 +31,6 @@
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
 
-	let showWarningModal = false;
-	let showUnsavedChangesModal = false;
 	$: hasStartedRequest = $licenseFetchRequest.pendingRequests > 0 && !isLoading;
 	$: isLoading = $licenseFetchRequest.isLoading;
 	$: hasError = $licenseFetchRequest.error?.message && !isLoading;
@@ -46,7 +40,7 @@
 		{
 			label: 'Close without saving',
 			icon: CloseLarge,
-			action: () => handleUnsavedChangesModal(),
+			action: () => handleCloseModal(),
 		},
 		{
 			label: 'Copy link',
@@ -61,7 +55,7 @@
 		{
 			label: 'Delete license',
 			icon: TrashCan,
-			action: () => handleWarningModal(),
+			action: () => handleDeletionWarningModal(),
 			class: 'alert',
 		},
 	];
@@ -86,28 +80,19 @@
 		}
 	}
 
-	function handleWarningModal() {
+	function handleDeletionWarningModal() {
 		contextMenu.close();
-		showWarningModal = true;
+		licenseToDelete.set($currentLicense.id);
+		warningModal.set('license-deletion');
 	}
 
-	function handleUnsavedChangesModal() {
+	function handleCloseModal() {
 		contextMenu.close();
 		if (JSON.stringify($currentLicense) === JSON.stringify($fetchedLicense)) {
 			modal.closeLicense();
 		} else {
-			showUnsavedChangesModal = true;
+			warningModal.set('unsaved-license-changes');
 		}
-	}
-
-	async function handleDelete() {
-		const success = await licenseStore.delete($currentLicense.id);
-		if (success) {
-			modal.closeLicense();
-			licenseStore.updateCounts();
-			table.updateState();
-		}
-		showWarningModal = false;
 	}
 </script>
 
@@ -151,6 +136,9 @@
 		<!-- License fields -->
 		<div tabIndex="-1" class="fields-grid" use:scrollShadow in:fade={{ duration: 120 }}>
 			<ApplicationSelection />
+			{#if $applicationModalView !== 'closed'}
+				<ApplicationModal />
+			{/if}
 			<AssignedUsers />
 			<ExpirationField />
 			<SelectField
@@ -200,29 +188,6 @@
 		</div>
 	{/if}
 </div>
-
-<!-- Modals -->
-
-{#if $applicationModalMode !== 'closed'}
-	<ApplicationModal />
-{/if}
-
-{#if showWarningModal}
-	<WarningModal
-		warningText="Warning! This will delete the license and all its data. Are you sure?"
-		onConfirm={handleDelete}
-		onCancel={() => (showWarningModal = false)}
-		requestState={licenseDeleteRequest}
-	/>
-{/if}
-
-{#if showUnsavedChangesModal}
-	<WarningModal
-		warningText="Unsaved changes will be lost. Are you sure you want to close the license?"
-		onConfirm={() => modal.closeLicense()}
-		onCancel={() => (showUnsavedChangesModal = false)}
-	/>
-{/if}
 
 <style>
 	.license-container {

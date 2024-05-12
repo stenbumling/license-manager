@@ -1,20 +1,18 @@
 <script lang="ts">
-	import WarningModal from '$lib/components/misc/WarningModal.svelte';
 	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
-	import { modal } from '$lib/stores/modal-store';
+	import { modal, warningModal } from '$lib/stores/modal-store';
 	import { currentLicense, fetchedLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import { getDateWithHoursAndMinutes } from '$lib/utils/date-utils';
 
 	if ($licenseMode === 'add') {
 		fetchedLicense.set(JSON.parse(JSON.stringify($currentLicense)));
 	}
-	let showUnsavedChangesModal = false;
 
 	function handleCloseModal() {
 		if (JSON.stringify($currentLicense) === JSON.stringify($fetchedLicense)) {
 			modal.closeLicense();
 		} else {
-			showUnsavedChangesModal = true;
+			warningModal.set('unsaved-license-changes');
 		}
 	}
 </script>
@@ -36,14 +34,6 @@
 		<h1 class="title new-license">New license</h1>
 	{/if}
 </div>
-
-{#if showUnsavedChangesModal}
-	<WarningModal
-		warningText="Unsaved changes will be lost. Are you sure you want to close the license?"
-		onConfirm={() => modal.closeLicense()}
-		onCancel={() => (showUnsavedChangesModal = false)}
-	/>
-{/if}
 
 <style>
 	.header-container {

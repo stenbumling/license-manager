@@ -21,6 +21,7 @@ export function getApplicationDefaultValue(): ApplicationData {
 }
 
 export const currentApplication = writable<ApplicationData>(getApplicationDefaultValue());
+export const applicationToDelete = writable<string | null>(null);
 
 function createApplicationStore() {
 	const { subscribe, set } = writable<ApplicationData[]>([]);
@@ -134,6 +135,12 @@ function createApplicationStore() {
 		}
 	}
 
+	async function handleApplicationDeletion(id: string | null) {
+		if (!id) return;
+		const success = await deleteApplication(id);
+		if (success) applicationStore.fetch();
+	}
+
 	async function deleteApplication(id: string) {
 		try {
 			disableButtonsDuringRequests.set(true);
@@ -189,7 +196,7 @@ function createApplicationStore() {
 		fetch: fetchApplications,
 		add: addApplication,
 		update: updateApplication,
-		delete: deleteApplication,
+		delete: handleApplicationDeletion,
 		resetFields,
 	};
 }

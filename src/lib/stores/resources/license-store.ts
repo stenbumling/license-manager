@@ -1,3 +1,4 @@
+import { modal } from '$lib/stores/modal-store';
 import { notifications } from '$lib/stores/notification-store';
 import {
 	disableButtonsDuringRequests,
@@ -7,6 +8,7 @@ import {
 	request,
 } from '$lib/stores/request-state-store';
 import { getApplicationDefaultValue } from '$lib/stores/resources/application-store';
+import { table } from '$lib/stores/resources/table-store';
 import type { LicenseCounts, LicenseData, LicenseModalMode } from '$lib/types/license-types';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
 import { get, writable } from 'svelte/store';
@@ -42,6 +44,7 @@ export function getLicenseCountsDefaultValue(): LicenseCounts {
 
 export const currentLicense = writable<LicenseData>(getLicenseDefaultValue());
 export const fetchedLicense = writable<LicenseData | null>(null);
+export const licenseToDelete = writable<string | null>(null);
 export const licenseCounts = writable<LicenseCounts>(getLicenseCountsDefaultValue());
 export const licenseMode = writable<LicenseModalMode>('add');
 
@@ -183,6 +186,16 @@ function createLicenseStore() {
 		}
 	}
 
+	async function handleLicenseDeletion(id: string | null) {
+		if (!id) return;
+		const success = await deleteLicense(id);
+		if (success) {
+			modal.closeLicense();
+			licenseStore.updateCounts();
+			table.updateState();
+		}
+	}
+
 	async function deleteLicense(id: string) {
 		try {
 			disableButtonsDuringRequests.set(true);
@@ -238,7 +251,7 @@ function createLicenseStore() {
 		update,
 		fetch: getLicenseById,
 		add: addLicense,
-		delete: deleteLicense,
+		delete: handleLicenseDeletion,
 		updateLicense: updateLicense,
 		updateCounts: updateLicenseCounts,
 		resetFields,
