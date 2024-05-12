@@ -1,6 +1,6 @@
 <script lang="ts">
-	import AssignedUsersModal from '$lib/components/license/fields/AssignedUsersModal.svelte';
-	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
+	import AssignedUsersModal from '$lib/components/user-management/AssignedUsersModal.svelte';
+	import UserBadge from '$lib/components/user-management/UserBadge.svelte';
 	import { showAssignedUsersModal } from '$lib/stores/modal-store';
 	import { userFetchRequest } from '$lib/stores/request-state-store';
 	import { currentLicense } from '$lib/stores/resources/license-store';

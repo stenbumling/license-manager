@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { clickOutside } from '$lib/actions/clickOutside';
-	import UserBadgeContainer from '$lib/components/license/fields/UserBadgeContainer.svelte';
-	import UserSuggestionsDropdown from '$lib/components/license/fields/UserSuggestionsDropdown.svelte';
+	import UserBadgeContainer from '$lib/components/user-management/UserBadgeContainer.svelte';
+	import UserSuggestionsDropdown from '$lib/components/user-management/UserSuggestionsDropdown.svelte';
 	import { userFetchRequest } from '$lib/stores/request-state-store';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import { userSearchInput, userStore, userSuggestions } from '$lib/stores/resources/user-store';

@@ -2,8 +2,8 @@
 	import { scrollShadow } from '$lib/actions/scrollShadow';
 	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import LicenseHeader from '$lib/components/license/LicenseHeader.svelte';
-	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelection.svelte';
-	import AssignedUsers from '$lib/components/license/fields/AssignedUsers.svelte';
+	import ApplicationSelection from '$lib/components/license/fields/ApplicationSelectionField.svelte';
+	import AssignedUsers from '$lib/components/license/fields/AssignedUsersField.svelte';
 	import ExpirationField from '$lib/components/license/fields/ExpirationField.svelte';
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
