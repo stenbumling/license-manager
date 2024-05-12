@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { scrollShadow } from '$lib/actions/scrollShadow';
+	import LicenseFooter from '$lib/components/license-management/LicenseFooter.svelte';
 	import LicenseHeader from '$lib/components/license-management/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license-management/fields/ApplicationSelectionField.svelte';
 	import AssignedUsers from '$lib/components/license-management/fields/AssignedUsersField.svelte';
@@ -14,7 +15,6 @@
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
-	import LicenseFooter from './LicenseFooter.svelte';
 
 	$: hasStartedRequest = $licenseFetchRequest.pendingRequests > 0;
 	$: isLoading = $licenseFetchRequest.isLoading;
