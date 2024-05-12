@@ -113,7 +113,7 @@
 	select:hover {
 		border: 1px dashed black;
 		cursor: pointer;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;
@@ -122,7 +122,7 @@
 
 	.select-add-mode {
 		border: 1px dashed black;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;
@@ -132,7 +132,7 @@
 	select:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;

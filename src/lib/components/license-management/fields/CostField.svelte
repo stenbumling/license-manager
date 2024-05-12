@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
+	import type { LicenseRenewalOptions } from '$lib/types/license-types';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
@@ -7,6 +8,7 @@
 	export let required: boolean = false;
 	const id = uuidv4();
 
+	$: label = labelChange($currentLicense.renewalInterval);
 	$: costValue = calculateCost($currentLicense.renewalInterval, $currentLicense.cost);
 
 	// Enforce numeric input. Firefox does not prevent non-numeric input on number inputs by default.
@@ -18,8 +20,21 @@
 		}
 	}
 
+	function labelChange(renewalInterval: LicenseRenewalOptions) {
+		switch (renewalInterval) {
+			case 'None':
+				return 'Cost';
+			case 'Monthly':
+				return 'Cost per month';
+			case 'Annually':
+				return 'Annual cost';
+			default:
+				return '';
+		}
+	}
+
 	// Calculate cost based on renewal interval
-	function calculateCost(renewalInterval: string, cost: number): string {
+	function calculateCost(renewalInterval: LicenseRenewalOptions, cost: number): string {
 		switch (renewalInterval) {
 			case 'None':
 				return '';
@@ -35,11 +50,7 @@
 
 <div class="cost-field-container">
 	<h3 class="field-label">
-		<label for={id}
-			>Cost {$currentLicense.renewalInterval !== 'None'
-				? $currentLicense.renewalInterval
-				: ''}</label
-		>
+		<label for={id}>{label}</label>
 		{#if required}
 			<span class="required">*</span>
 		{/if}
@@ -103,7 +114,7 @@
 	.input-container::after {
 		content: 'SEK';
 		position: absolute;
-		top: 1rem;
+		top: 0.9rem;
 		right: 1rem;
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
@@ -123,17 +134,17 @@
 
 	input:hover {
 		border: 1px dashed black;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 	}
 
 	.input-add-mode {
 		border: 1px dashed black;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
-		padding: 0 0 0.1rem 0.5rem;
+		padding: 0 0 0 0.5rem;
 	}
 </style>

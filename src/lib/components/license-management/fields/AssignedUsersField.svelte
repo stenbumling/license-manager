@@ -125,19 +125,19 @@
 	input:hover {
 		border: 1px dashed black;
 		padding-left: 0.5rem;
-		padding-bottom: 0.1rem;
+		padding-bottom: 0.2rem;
 	}
 
 	.input-add-mode {
 		border: 1px dashed black;
 		padding-left: 0.5rem;
-		padding-bottom: 0.1rem;
+		padding-bottom: 0.2rem;
 	}
 
 	input:focus {
 		border: 2px solid var(--light-purple);
 		outline: none;
 		padding-left: 0.43rem;
-		padding-bottom: 0.1rem;
+		padding-bottom: 0.2rem;
 	}
 </style>

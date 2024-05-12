@@ -15,7 +15,6 @@ export const licenseSchema = z.object({
 		.refine((val) => moment(val, 'YYYY-MM-DD', true).isValid(), {
 			message: 'Invalid date format',
 		}),
-	autoRenewal: z.boolean(),
 	cost: z
 		.number({
 			required_error: 'Cost is required',

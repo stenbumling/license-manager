@@ -1,25 +1,51 @@
 <script lang="ts">
-	import SelectField from '$lib/components/license-management/fields/SelectField.svelte';
+	import { tooltip } from '$lib/actions/tooltip';
+	import ToggleButton from '$lib/components/misc/buttons/ToggleButton.svelte';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
+	import type { ToggleButtonItem } from '$lib/types/misc-types';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
-	import { fade, slide } from 'svelte/transition';
+	import Repeat from 'carbon-icons-svelte/lib/Repeat.svelte';
+	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
 	$: daysLeft = getRelativeDate($currentLicense.expirationDate);
-	$: if (!$currentLicense.autoRenewal) $currentLicense.renewalInterval = 'None';
 
 	const id = uuidv4();
+
+	const toggleButtonItems: ToggleButtonItem[] = [
+		{
+			label: 'None',
+			icon: Repeat,
+			action: () => ($currentLicense.renewalInterval = 'Monthly'),
+		},
+		{
+			label: 'Monthly',
+			icon: Repeat,
+			action: () => ($currentLicense.renewalInterval = 'Annually'),
+			class: 'active',
+		},
+		{
+			label: 'Annually',
+			icon: Repeat,
+			action: () => ($currentLicense.renewalInterval = 'None'),
+			class: 'active',
+		},
+	];
+	$: startIndex = toggleButtonItems.findIndex(
+		(item) => item.label === $currentLicense.renewalInterval,
+	);
 </script>
 
 <div class="expiration-date-container">
 	<h3 class="field-label">
-		<label for={id}>{$currentLicense.autoRenewal ? 'Renewal date' : 'Expiration date'}</label>
+		<label for={id}
+			>{$currentLicense.renewalInterval !== 'None' ? 'Renewal date' : 'Expiration date'}</label
+		>
 		<span class="required">*</span>
 	</h3>
 
 	<div class="input-row">
-		<!-- Date input -->
 		<input
 			class="date-picker"
 			class:date-picker-add-mode={$licenseMode === 'add'}
@@ -29,22 +55,13 @@
 			name="expirationDate"
 			bind:value={$currentLicense.expirationDate}
 		/>
-
-		<!-- Renewal checkbox -->
-		<div class="renewal-checkbox">
-			<input
-				type="checkbox"
-				id="renewal"
-				name="renewal"
-				value="renewal"
-				bind:checked={$currentLicense.autoRenewal}
-				on:keydown={(e) => {
-					if (e.key === 'Enter') {
-						$currentLicense.autoRenewal = !$currentLicense.autoRenewal;
-					}
-				}}
-			/>
-			<label for="renewal">Autorenewal</label>
+		<div
+			use:tooltip={{
+				content: 'Toggle to change renewal interval',
+				options: { delay: [200, 0], offset: [0, 15] },
+			}}
+		>
+		<ToggleButton index={startIndex} items={toggleButtonItems} />
 		</div>
 	</div>
 
@@ -57,21 +74,6 @@
 			<span in:fade={{ duration: 120 }}>{daysLeft.text}</span>
 		{/if}
 	</p>
-
-	<!-- Initially hidden autorenewal select field -->
-	{#if $currentLicense.autoRenewal}
-		<div transition:slide={{ duration: 80 }} class="interval-field">
-			<SelectField
-				bind:value={$currentLicense.renewalInterval}
-				label="Renewal interval"
-				options={['None', 'Monthly', 'Annually']}
-				defaultOption="None"
-				required
-				type="secondary"
-				errorMessage={$licenseValidationErrors.renewalInterval}
-			/>
-		</div>
-	{/if}
 </div>
 
 <style>
@@ -97,6 +99,7 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 	}
 
 	.date-picker {
@@ -107,7 +110,8 @@
 		border-bottom: 1px solid var(--text-placeholder);
 		appearance: none;
 		box-sizing: border-box;
-		flex-grow: 1;
+		width: 100%;
+		margin-right: 1.4rem;
 	}
 
 	.date-picker:hover {
@@ -133,45 +137,10 @@
 		appearance: auto;
 	}
 
-	.renewal-checkbox {
-		margin-top: 0.2rem;
-		margin-left: 1rem;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 7rem;
-		font-size: 0.8rem;
-		margin-bottom: 0.2rem;
-		flex-shrink: 0;
-	}
-
 	.helper-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
-	}
-
-	.interval-field {
-		margin-top: 1.4rem;
-		width: 100%;
-	}
-
-	input[type='checkbox'] {
-		width: 1.1rem;
-		height: 1.1rem;
-		cursor: pointer;
-		accent-color: var(--deep-purple);
-		transition: background-color 0.2s ease;
-	}
-
-	input[type='checkbox']:focus-visible {
-		outline: 2px solid var(--light-purple);
-	}
-
-	@media (max-width: 1000px) {
-		.renewal-checkbox {
-			margin-left: 0.6rem;
-		}
 	}
 </style>

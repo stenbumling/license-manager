@@ -137,7 +137,7 @@
 
 		<!-- Renewal cell -->
 		<div role="cell" tabindex="-1" class="cell renewal-cell">
-			{#if license.autoRenewal}
+			{#if license.renewalInterval !== 'None'}
 				<div
 					use:tooltip={{ content: renewalInterval, options: { delay: [500, 0] } }}
 					style="margin-right: 4px; margin-top: 5px;"

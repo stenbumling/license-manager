@@ -126,7 +126,7 @@
 		font-size: 0.75rem;
 		min-height: 2.8rem;
 		width: 90%;
-		margin-left: 1px;
+		margin-left: 2px;
 	}
 
 	.application-link {
@@ -152,14 +152,13 @@
 		background-color: transparent;
 		appearance: none;
 		margin-right: 1.4rem;
-		padding-right: 1rem;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
 	}
 
 	select:hover {
-		padding: 0 2.5rem 0rem 0.3rem;
+		padding: 0 2.5rem 0.1rem 0.5rem;
 		border: 1px dashed black;
 		cursor: pointer;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');
@@ -169,7 +168,7 @@
 	}
 
 	.select-add-mode {
-		padding: 0 2.5rem 0rem 0.3rem;
+		padding: 0 2.5rem 0.1rem 0.5rem;
 		border: 1px dashed black;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;
@@ -178,7 +177,7 @@
 	}
 
 	select:focus {
-		padding: 0 2.5rem 0rem 0.3rem;
+		padding: 0 2.5rem 0.1rem 0.5rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');
