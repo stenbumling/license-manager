@@ -1,11 +1,11 @@
 import { goto } from '$app/navigation';
+import { contextMenu } from '$lib/stores/context-menu-store';
+import { licenseFetchRequest, request } from '$lib/stores/request-state-store';
+import { applicationStore } from '$lib/stores/resources/application-store';
+import { licenseMode, licenseStore } from '$lib/stores/resources/license-store';
 import type { ApplicationModalMode } from '$lib/types/application-types';
 import type { LicenseModalMode } from '$lib/types/license-types';
 import { writable } from 'svelte/store';
-import { contextMenu } from './context-menu-store';
-import { licenseFetchRequest, request } from './request-state-store';
-import { applicationStore } from './resources/application-store';
-import { licenseMode, licenseStore } from './resources/license-store';
 
 export const showLicenseModal = writable(false);
 export const showAssignedUsersModal = writable(false);

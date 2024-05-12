@@ -1,3 +1,4 @@
+import { cookiesConfig, graphApiPermissions, msalInstanceProvider } from '$lib/server/auth/config';
 import {
 	CryptoProvider,
 	InteractionRequiredAuthError,
@@ -6,7 +7,6 @@ import {
 	type AuthorizationUrlRequest,
 } from '@azure/msal-node';
 import { error, redirect, type RequestEvent } from '@sveltejs/kit';
-import { cookiesConfig, graphApiPermissions, msalInstanceProvider } from './config';
 
 const { REDIRECT_URI } = process.env;
 

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { focusTrap } from '$lib/actions/focusTrap';
+	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
+	import SecondaryButton from '$lib/components/misc/buttons/SecondaryButton.svelte';
 	import { getRequestStateDefaultValues } from '$lib/stores/request-state-store';
 	import type { RequestState } from '$lib/types/misc-types';
-	import WarningAltFilled from 'carbon-icons-svelte/lib/WarningAlt.svelte';
+	import WarningAlt from 'carbon-icons-svelte/lib/WarningAlt.svelte';
 	import { writable, type Writable } from 'svelte/store';
 	import { fade } from 'svelte/transition';
-	import PrimaryButton from './buttons/PrimaryButton.svelte';
-	import SecondaryButton from './buttons/SecondaryButton.svelte';
 
 	export let warningText = 'Are you sure you want to do this?';
 	export let onConfirm: () => void;
@@ -19,7 +19,7 @@
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
-			<WarningAltFilled fill="red" size={32} />
+			<WarningAlt fill="red" size={32} />
 			<h2 class="modal-title">{warningText}</h2>
 		</div>
 		<div class="button-container">

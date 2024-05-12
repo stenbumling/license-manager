@@ -1,4 +1,4 @@
-import License from '$lib/server/models/license-model';
+import LicenseModel from '$lib/server/models/license-model';
 import { constructOrderClause, constructWhereClause } from '$lib/server/services/query-services';
 import { describe, expect, it, vi } from 'vitest';
 import { GET } from './+server';
@@ -14,7 +14,7 @@ describe('GET /licenses/query', () => {
 		};
 		vi.mocked(constructWhereClause).mockReturnValue({});
 		vi.mocked(constructOrderClause).mockReturnValue([]);
-		vi.mocked(License.findAll).mockResolvedValue([]);
+		vi.mocked(LicenseModel.findAll).mockResolvedValue([]);
 
 		const response = await GET({ url: mockURL });
 		const body = await response.json();

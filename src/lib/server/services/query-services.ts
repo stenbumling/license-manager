@@ -1,3 +1,5 @@
+import { sequelize } from '$lib/server/db';
+import ApplicationModel from '$lib/server/models/application-model';
 import type {
 	FilterQuery,
 	SortColumn,
@@ -7,8 +9,6 @@ import type {
 import { getTodaysDateWithOffset } from '$lib/utils/date-utils';
 import { error } from '@sveltejs/kit';
 import { Op, type Order } from 'sequelize';
-import { sequelize } from '../db';
-import ApplicationModel from '../models/application-model';
 
 /*
  * These functions are used to construct the WHERE and ORDER BY clauses for

@@ -1,15 +1,15 @@
-import type { ApplicationData } from '$lib/types/application-types';
-import { applicationValidationError } from '$lib/validations/application-validation';
-import { writable } from 'svelte/store';
-import { v4 as uuidv4 } from 'uuid';
-import { notifications } from '../notification-store';
+import { notifications } from '$lib/stores/notification-store';
 import {
 	applicationDeleteRequest,
 	applicationFetchRequest,
 	applicationPostRequest,
 	disableButtonsDuringRequests,
 	request,
-} from '../request-state-store';
+} from '$lib/stores/request-state-store';
+import type { ApplicationData } from '$lib/types/application-types';
+import { applicationValidationError } from '$lib/validations/application-validation';
+import { writable } from 'svelte/store';
+import { v4 as uuidv4 } from 'uuid';
 
 export function getApplicationDefaultValue(): ApplicationData {
 	return {

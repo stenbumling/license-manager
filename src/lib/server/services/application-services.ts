@@ -1,8 +1,8 @@
+import { sequelize } from '$lib/server/db';
+import ApplicationModel from '$lib/server/models/application-model';
 import type { ApplicationData } from '$lib/types/application-types';
 import { error } from '@sveltejs/kit';
 import type { Transaction } from 'sequelize';
-import { sequelize } from '../db';
-import ApplicationModel from '../models/application-model';
 
 export async function fetchAllApplications() {
 	return ApplicationModel.findAll({

@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
+	import WarningModal from '$lib/components/misc/WarningModal.svelte';
 	import { applicationModalMode } from '$lib/stores/modal-store';
 	import { isOnline } from '$lib/stores/network-store';
 	import { applicationDeleteRequest } from '$lib/stores/request-state-store';
 	import { applicationStore, currentApplication } from '$lib/stores/resources/application-store';
 	import { currentLicense } from '$lib/stores/resources/license-store';
 	import type { ApplicationData } from '$lib/types/application-types';
-	import SettingsEdit from 'carbon-icons-svelte/lib/Settings.svelte';
+	import Settings from 'carbon-icons-svelte/lib/Settings.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { slide } from 'svelte/transition';
-	import WarningModal from '../misc/WarningModal.svelte';
 
 	export let applicationItem: ApplicationData;
 	let showWarningModal = false;
@@ -58,7 +58,7 @@
 	</p>
 	<div class="button-container">
 		<button class="edit-icon" on:click={handleEdit}>
-			<SettingsEdit size={24} fill="black" />
+			<Settings size={24} fill="black" />
 		</button>
 		<button
 			class="trashcan-icon"

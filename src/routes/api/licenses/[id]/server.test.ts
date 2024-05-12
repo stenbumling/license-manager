@@ -1,17 +1,15 @@
-import License from '$lib/server/models/license-model';
-import {
-	updateLicenseAssociations,
-	updateUserAssociations,
-} from '$lib/server/services/license-services';
+import LicenseModel from '$lib/server/models/license-model';
+import { updateLicenseAssociations } from '$lib/server/services/application-services';
+import { updateUserAssociations } from '$lib/server/services/license-services';
+import type { LicenseInstance } from '$lib/types/license-types';
 import type { Model } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
-import type { LicenseInstance } from '../../../../lib/types/license-types';
 import { DELETE, GET, PUT } from './+server';
 
 describe('GET /licenses/:id', () => {
 	it('should return 200 on successful fetch', async () => {
-		vi.mocked(License.findByPk).mockResolvedValue({ id: uuidv4() } as LicenseInstance);
+		vi.mocked(LicenseModel.findByPk).mockResolvedValue({ id: uuidv4() } as LicenseInstance);
 
 		const response = await GET({ params: { id: uuidv4() } });
 		const body = await response.json();
@@ -21,7 +19,7 @@ describe('GET /licenses/:id', () => {
 	});
 
 	it('should return 404 when license does not exist', async () => {
-		vi.mocked(License.findByPk).mockResolvedValue(null);
+		vi.mocked(LicenseModel.findByPk).mockResolvedValue(null);
 
 		try {
 			await GET({ params: { id: uuidv4() } });
@@ -40,15 +38,15 @@ describe('GET /licenses/:id', () => {
 
 describe('PUT /licenses/:id', () => {
 	it('should return 204 on successful update', async () => {
-		vi.mocked(License.update).mockResolvedValue([1]);
-		vi.mocked(License.findByPk).mockResolvedValue({ id: uuidv4() } as LicenseInstance);
-		vi.mocked(License.findByPk).mockResolvedValue({
+		vi.mocked(LicenseModel.update).mockResolvedValue([1]);
+		vi.mocked(LicenseModel.findByPk).mockResolvedValue({ id: uuidv4() } as LicenseInstance);
+		vi.mocked(LicenseModel.findByPk).mockResolvedValue({
 			id: uuidv4(),
 			name: 'Test license',
 			setUsers: vi.fn(),
 		} as unknown as Model);
 		vi.mocked(updateUserAssociations).mockResolvedValue(null);
-		vi.mocked(updateLicenseAssociations).mockResolvedValue(null);
+		vi.mocked(updateLicenseAssociations).mockResolvedValue();
 
 		const response = await PUT({
 			params: { id: uuidv4() },
@@ -80,8 +78,8 @@ describe('PUT /licenses/:id', () => {
 	});
 
 	it('should return 409 when license has been modified since last retrieval', async () => {
-		vi.mocked(License.update).mockResolvedValue([0]);
-		vi.mocked(License.findByPk).mockResolvedValue({ id: uuidv4() } as LicenseInstance);
+		vi.mocked(LicenseModel.update).mockResolvedValue([0]);
+		vi.mocked(LicenseModel.findByPk).mockResolvedValue({ id: uuidv4() } as LicenseInstance);
 
 		try {
 			await PUT({
@@ -118,7 +116,7 @@ describe('PUT /licenses/:id', () => {
 
 describe('DELETE /licenses/:id', () => {
 	it('should return 204 on successful deletion', async () => {
-		vi.mocked(License.findByPk).mockResolvedValue({
+		vi.mocked(LicenseModel.findByPk).mockResolvedValue({
 			destroy: vi.fn(),
 		} as unknown as Model);
 
@@ -128,7 +126,7 @@ describe('DELETE /licenses/:id', () => {
 	});
 
 	it('should return 404 when license cannot be found', async () => {
-		vi.mocked(License.findByPk).mockResolvedValue(null);
+		vi.mocked(LicenseModel.findByPk).mockResolvedValue(null);
 
 		try {
 			await DELETE({ params: { id: uuidv4() } });

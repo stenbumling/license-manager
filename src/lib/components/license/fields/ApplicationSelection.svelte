@@ -14,7 +14,7 @@
 		await applicationStore.fetch();
 	});
 
-	$: isLoading = $applicationFetchRequest.pendingRequests > 0 || $applicationFetchRequest.isLoading;
+	$: isLoading = $applicationFetchRequest.isLoading;
 	$: hasError = $applicationFetchRequest.error?.message;
 	$: noResults = $applicationStore.length === 0 && !isLoading;
 	$: hasApplications = $applicationStore.length > 0 && !isLoading && !hasError && !noResults;

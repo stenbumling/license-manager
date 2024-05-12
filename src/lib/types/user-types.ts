@@ -1,5 +1,5 @@
+import type { LicenseAttributes } from '$lib/types/license-types';
 import { Model } from 'sequelize';
-import type { LicenseAttributes } from './license-types';
 
 export interface UserAttributes {
 	id: string;

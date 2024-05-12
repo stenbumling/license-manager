@@ -1,6 +1,6 @@
 <script lang="ts">
 	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
-	import PageHeader from '$lib/components/misc/PageHeader.svelte';
+	import AppHeader from '$lib/components/misc/AppHeader.svelte';
 	import { modal } from '$lib/stores/modal-store';
 	import { network } from '$lib/stores/network-store';
 	import '$lib/styles/app.css';
@@ -18,7 +18,7 @@
 	on:online={network.handleOnline}
 />
 
-<PageHeader />
+<AppHeader />
 <main>
 	<slot />
 </main>

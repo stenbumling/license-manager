@@ -1,9 +1,9 @@
+import { notifications } from '$lib/stores/notification-store';
+import { request, tableFetchRequest } from '$lib/stores/request-state-store';
+import { licenseStore } from '$lib/stores/resources/license-store';
 import type { LicenseData } from '$lib/types/license-types';
 import type { FilterReadableName, SortColumn, SortDirection } from '$lib/types/query-types';
 import { get, writable } from 'svelte/store';
-import { notifications } from '../notification-store';
-import { request, tableFetchRequest } from '../request-state-store';
-import { licenseStore } from './license-store';
 
 /*
  * This store is responsible for managing the state of the license table. That

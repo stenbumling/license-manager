@@ -1,19 +1,19 @@
 <script>
 	import { focusTrap } from '$lib/actions/focusTrap';
-	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
+	import ApplicationAdd from '$lib/components/application-management/ApplicationAdd.svelte';
+	import ApplicationEdit from '$lib/components/application-management/ApplicationEdit.svelte';
+	import ApplicationList from '$lib/components/application-management/ApplicationList.svelte';
+	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { applicationModalMode, modal } from '$lib/stores/modal-store';
 	import { quintOut } from 'svelte/easing';
 	import { fade, fly } from 'svelte/transition';
-	import ApplicationAdd from './ApplicationAdd.svelte';
-	import ApplicationEdit from './ApplicationEdit.svelte';
-	import ApplicationList from './ApplicationList.svelte';
 </script>
 
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
 			<h1 class="modal-title">Application<br />management</h1>
-			<CloseModalButton action={modal.closeApplication} />
+			<CloseButton action={modal.closeApplication} />
 		</div>
 		{#if $applicationModalMode === 'list'}
 			<div class="modal-content" in:fly={{ duration: 200, x: -50, easing: quintOut }}>

@@ -1,5 +1,5 @@
 import { deleteLicense, getLicense, updateLicense } from '$lib/server/services/license-services';
-import type { LicenseData } from '$lib/types/license-types.js';
+import type { LicenseData } from '$lib/types/license-types';
 import { json } from '@sveltejs/kit';
 
 export async function GET({ params }) {

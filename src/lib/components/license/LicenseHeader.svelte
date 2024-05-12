@@ -1,9 +1,9 @@
 <script lang="ts">
-	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
+	import WarningModal from '$lib/components/misc/WarningModal.svelte';
+	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { modal } from '$lib/stores/modal-store';
 	import { currentLicense, fetchedLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import { getDateWithHoursAndMinutes } from '$lib/utils/date-utils';
-	import WarningModal from '../misc/WarningModal.svelte';
 
 	if ($licenseMode === 'add') {
 		fetchedLicense.set(JSON.parse(JSON.stringify($currentLicense)));
@@ -27,7 +27,7 @@
 			>
 		{/if}
 		<div class="close-button">
-			<CloseModalButton action={handleCloseModal} />
+			<CloseButton action={handleCloseModal} />
 		</div>
 	</div>
 	{#if $currentLicense.application.name && $licenseMode === 'view'}

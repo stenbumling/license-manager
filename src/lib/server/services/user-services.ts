@@ -2,7 +2,7 @@ import LicenseModel from '$lib/server/models/license-model';
 import UserModel from '$lib/server/models/user-model';
 import type { AzureAdGroupUser, FilteredUsersForUserSync, UserData } from '$lib/types/user-types';
 import { error } from '@sveltejs/kit';
-import { sequelize } from '../db';
+import { sequelize } from '$lib/server/db';
 
 export async function getAzureAdGroupMembers(token: string): Promise<AzureAdGroupUser[]> {
 	const { AZURE_AD_GROUP_ID } = process.env;

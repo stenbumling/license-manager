@@ -1,5 +1,5 @@
 import { deleteApplication, updateApplication } from '$lib/server/services/application-services';
-import type { ApplicationData } from '$lib/types/application-types.js';
+import type { ApplicationData } from '$lib/types/application-types';
 
 export async function PUT({ params, request }) {
 	const id = params.id;

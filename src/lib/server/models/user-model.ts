@@ -1,6 +1,6 @@
+import { sequelize } from '$lib/server/db';
 import type { UserInstance } from '$lib/types/user-types';
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db';
 
 const UserModel = sequelize.define<UserInstance>('user', {
 	id: {

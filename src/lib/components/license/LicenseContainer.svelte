@@ -8,6 +8,8 @@
 	import SelectField from '$lib/components/license/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license/fields/TextField.svelte';
+	import WarningModal from '$lib/components/misc/WarningModal.svelte';
+	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import LicenseMenuButton from '$lib/components/misc/buttons/LicenseMenuButton.svelte';
 	import PrimaryButton from '$lib/components/misc/buttons/PrimaryButton.svelte';
 	import { contextMenu } from '$lib/stores/context-menu-store';
@@ -32,8 +34,6 @@
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade } from 'svelte/transition';
-	import WarningModal from '../misc/WarningModal.svelte';
-	import CloseModalButton from '../misc/buttons/CloseButton.svelte';
 
 	let showWarningModal = false;
 	let showUnsavedChangesModal = false;
@@ -116,14 +116,14 @@
 	{#if hasStartedRequest}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
-				<CloseModalButton action={modal.closeLicense} />
+				<CloseButton action={modal.closeLicense} />
 			</div>
 			<!-- Prevents default state being active if loading spinner has a delay-->
 		</div>
 	{:else if isLoading}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
-				<CloseModalButton action={modal.closeLicense} />
+				<CloseButton action={modal.closeLicense} />
 			</div>
 			<Circle color="var(--deep-purple)" />
 		</div>
@@ -132,7 +132,7 @@
 	{:else if hasError}
 		<div class="fallback-container">
 			<div class="fallback-container-close-button">
-				<CloseModalButton action={modal.closeLicense} />
+				<CloseButton action={modal.closeLicense} />
 			</div>
 			<h1>{$licenseFetchRequest.error?.status}</h1>
 			<div class="fallback-error-details">

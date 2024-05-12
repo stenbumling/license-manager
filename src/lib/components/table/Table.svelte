@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LicenseRow from '$lib/components/table/LicenseRow.svelte';
+	import TableLicenseRow from '$lib/components/table/TableLicenseRow.svelte';
 	import { tableFetchRequest } from '$lib/stores/request-state-store';
 	import { licenseStore } from '$lib/stores/resources/license-store';
 	import { currentSearch, filterState } from '$lib/stores/resources/table-store';
@@ -56,7 +56,7 @@
 		<div role="rowgroup" in:slide={{ duration: 120 }}>
 			{#each $licenseStore as license, index}
 				<div transition:slide={{ duration: 120 }}>
-					<LicenseRow {license} {index} />
+					<TableLicenseRow {license} {index} />
 				</div>
 			{/each}
 		</div>

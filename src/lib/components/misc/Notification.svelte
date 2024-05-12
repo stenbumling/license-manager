@@ -1,8 +1,8 @@
 <script>
+	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { CheckmarkOutline, Information, Warning, WarningFilled } from 'carbon-icons-svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { fade, slide } from 'svelte/transition';
-	import CloseModalButton from './buttons/CloseButton.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -33,7 +33,7 @@
 
 	<div style:margin-left={dismissable ? '1rem' : '2.9rem'}>
 		{#if dismissable}
-			<CloseModalButton
+			<CloseButton
 				action={handleDismiss}
 				color={type === 'warning' ? 'black' : 'white'}
 				parentType="notification"

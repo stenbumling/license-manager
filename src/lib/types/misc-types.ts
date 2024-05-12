@@ -1,5 +1,5 @@
+import type { FilterReadableName } from '$lib/types/query-types';
 import type { ComponentType } from 'svelte';
-import type { FilterReadableName } from './query-types';
 
 export interface DashboardFilter {
 	title: FilterReadableName;

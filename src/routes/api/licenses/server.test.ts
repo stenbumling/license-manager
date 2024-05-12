@@ -1,33 +1,19 @@
-import License from '$lib/server/models/license-model';
-import {
-	updateLicenseAssociations,
-	updateUserAssociations,
-} from '$lib/server/services/license-services';
+import LicenseModel from '$lib/server/models/license-model';
+import { updateLicenseAssociations } from '$lib/server/services/application-services';
+import { updateUserAssociations } from '$lib/server/services/license-services';
 import { v4 as uuidv4 } from 'uuid';
 import { describe, expect, it, vi } from 'vitest';
-import { GET, POST } from './+server';
-
-describe('GET /licenses', () => {
-	it('should return 200 on successful fetch', async () => {
-		vi.mocked(License.findAll).mockResolvedValue([]);
-
-		const response = await GET();
-		const body = await response.json();
-
-		expect(response.status).toBe(200);
-		expect(body).toEqual([]);
-	});
-});
+import { POST } from './+server';
 
 describe('POST /licenses', () => {
 	it('should return 204 on successful update', async () => {
-		vi.mocked(License.create).mockResolvedValue({
+		vi.mocked(LicenseModel.create).mockResolvedValue({
 			id: uuidv4(),
 			name: 'Test license',
 			setUsers: vi.fn(),
 		});
 		vi.mocked(updateUserAssociations).mockResolvedValue(null);
-		vi.mocked(updateLicenseAssociations).mockResolvedValue(null);
+		vi.mocked(updateLicenseAssociations).mockResolvedValue();
 
 		const response = await POST({
 			request: {

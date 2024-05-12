@@ -1,10 +1,10 @@
-import License from '$lib/server/models/license-model';
+import LicenseModel from '$lib/server/models/license-model';
 import { describe, expect, it, vi } from 'vitest';
 import { GET } from './+server';
 
 describe('GET /licenses/counts', () => {
 	it('should return 200 and data on successful fetch', async () => {
-		vi.mocked(License.count)
+		vi.mocked(LicenseModel.count)
 			.mockResolvedValueOnce(7)
 			.mockResolvedValueOnce(6)
 			.mockResolvedValueOnce(1)

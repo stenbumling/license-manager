@@ -1,3 +1,9 @@
+import { sequelize } from '$lib/server/db';
+import ApplicationModel from '$lib/server/models/application-model';
+import LicenseModel from '$lib/server/models/license-model';
+import UserModel from '$lib/server/models/user-model';
+import { updateLicenseAssociations } from '$lib/server/services/application-services';
+import { constructOrderClause, constructWhereClause } from '$lib/server/services/query-services';
 import type { LicenseCounts, LicenseData, LicenseInstance } from '$lib/types/license-types';
 import type { FilterQuery, SortColumn, SortDirection } from '$lib/types/query-types';
 import type { UserData } from '$lib/types/user-types';
@@ -5,12 +11,6 @@ import { getTodaysDateWithOffset } from '$lib/utils/date-utils';
 import { error } from '@sveltejs/kit';
 import type { Transaction } from 'sequelize';
 import { Op } from 'sequelize';
-import { sequelize } from '../db';
-import ApplicationModel from '../models/application-model';
-import LicenseModel from '../models/license-model';
-import UserModel from '../models/user-model';
-import { updateLicenseAssociations } from '../services/application-services';
-import { constructOrderClause, constructWhereClause } from '../services/query-services';
 
 export async function fetchLicensesByQuery(
 	filter: FilterQuery,

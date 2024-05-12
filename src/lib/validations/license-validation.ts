@@ -1,8 +1,8 @@
 import type { LicenseData } from '$lib/types/license-types';
+import type { LicenseValidationErrors } from '$lib/types/validation-types';
 import moment from 'moment';
 import { writable } from 'svelte/store';
 import { z } from 'zod';
-import type { LicenseValidationErrors } from '../types/validation-types';
 
 export const licenseSchema = z.object({
 	id: z.string().uuid({ message: 'Invalid license ID' }),

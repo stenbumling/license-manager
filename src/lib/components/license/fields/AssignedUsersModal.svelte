@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { focusTrap } from '$lib/actions/focusTrap';
 	import UserBadge from '$lib/components/license/fields/UserBadge.svelte';
-	import CloseModalButton from '$lib/components/misc/buttons/CloseButton.svelte';
+	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { modal } from '$lib/stores/modal-store';
 	import { currentLicense } from '$lib/stores/resources/license-store';
-	import { receive, send } from '$lib/utils/animation-utils.ts';
+	import { receive, send } from '$lib/utils/animation-utils';
 	import { flip } from 'svelte/animate';
 	import { fade } from 'svelte/transition';
 </script>
@@ -14,7 +14,7 @@
 	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
 			<h1 class="modal-title">Assigned<br />users</h1>
-			<CloseModalButton action={modal.closeAssignedUsers} />
+			<CloseButton action={modal.closeAssignedUsers} />
 		</div>
 		<h3>List of assigned users</h3>
 		<div class="badge-container">

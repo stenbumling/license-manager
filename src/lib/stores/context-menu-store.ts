@@ -1,8 +1,8 @@
 import { modal } from '$lib/stores/modal-store';
+import { notifications } from '$lib/stores/notification-store';
 import type { LicenseData } from '$lib/types/license-types';
 import type { ContextMenuState } from '$lib/types/misc-types';
 import { writable } from 'svelte/store';
-import { notifications } from './notification-store';
 
 /*
  * This store is responsible for managing the state of context menus for licenses.

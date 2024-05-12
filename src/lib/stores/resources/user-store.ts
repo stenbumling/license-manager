@@ -1,7 +1,7 @@
+import { notifications } from '$lib/stores/notification-store';
+import { request, userFetchRequest } from '$lib/stores/request-state-store';
 import type { UserData } from '$lib/types/user-types';
 import { writable } from 'svelte/store';
-import { notifications } from '../notification-store';
-import { request, userFetchRequest } from '../request-state-store';
 
 function createUserStore() {
 	const { subscribe, set, update } = writable<UserData[]>([]);

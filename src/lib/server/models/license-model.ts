@@ -1,6 +1,6 @@
+import { sequelize } from '$lib/server/db';
 import type { LicenseInstance } from '$lib/types/license-types';
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db';
 
 const LicenseModel = sequelize.define<LicenseInstance>('license', {
 	id: {

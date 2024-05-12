@@ -1,8 +1,8 @@
 import { applicationStore } from '$lib/stores/resources/application-store';
 import type { ApplicationData } from '$lib/types/application-types';
+import type { ApplicationValidationError } from '$lib/types/validation-types';
 import { get, writable } from 'svelte/store';
 import { z } from 'zod';
-import type { ApplicationValidationError } from '../types/validation-types';
 
 let appId: string | undefined;
 

@@ -1,10 +1,10 @@
+import type { ApplicationAttributes } from '$lib/types/application-types';
+import type { UserData, UserInstance } from '$lib/types/user-types';
 import type {
 	BelongsToManyGetAssociationsMixin,
 	BelongsToManySetAssociationsMixin,
 	Model,
 } from 'sequelize';
-import type { ApplicationAttributes } from './application-types';
-import type { UserData, UserInstance } from './user-types';
 
 export interface LicenseAttributes {
 	id: string;
