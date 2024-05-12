@@ -10,6 +10,9 @@
 	import { v4 as uuidv4 } from 'uuid';
 
 	$: daysLeft = getRelativeDate($currentLicense.expirationDate);
+	$: startIndexForToggleButtonItems = toggleButtonItems.findIndex(
+		(item) => item.label === $currentLicense.renewalInterval,
+	);
 
 	const id = uuidv4();
 
@@ -32,9 +35,6 @@
 			class: 'active',
 		},
 	];
-	$: startIndex = toggleButtonItems.findIndex(
-		(item) => item.label === $currentLicense.renewalInterval,
-	);
 </script>
 
 <div class="expiration-date-container">
@@ -61,7 +61,7 @@
 				options: { delay: [200, 0], offset: [0, 15] },
 			}}
 		>
-		<ToggleButton index={startIndex} items={toggleButtonItems} />
+			<ToggleButton index={startIndexForToggleButtonItems} items={toggleButtonItems} />
 		</div>
 	</div>
 

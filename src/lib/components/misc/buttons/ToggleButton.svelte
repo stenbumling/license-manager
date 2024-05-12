@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { disableButtonsDuringRequests } from '$lib/stores/request-state-store';
-	import { currentLicense } from '$lib/stores/resources/license-store';
 	import type { ToggleButtonItem } from '$lib/types/misc-types';
 
 	export let items: ToggleButtonItem[];

@@ -97,7 +97,7 @@
 		font-size: 0.83rem;
 		border: none;
 		width: 100%;
-		min-height: 6rem;
+		min-height: 12rem;
 		max-height: 18rem;
 		background-color: transparent;
 		border: 1px solid var(--text-placeholder);
