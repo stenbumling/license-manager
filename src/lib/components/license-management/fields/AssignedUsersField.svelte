@@ -8,15 +8,27 @@
 	import { userValidationErrors } from '$lib/validations/user-validation';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { v4 as uuidv4 } from 'uuid';
 
 	let inputField: HTMLInputElement;
 	let showUserSuggestions = false;
+
+	const id = uuidv4();
 
 	onMount(async () => {
 		await userStore.fetch();
 		userSearchInput.set('');
 		userStore.updateUserSuggestions('');
 	});
+
+	function handleKeyDown(event: KeyboardEvent) {
+		if (event.key === 'Tab') {
+			showUserSuggestions = false;
+		} else if (event.key === 'Enter') {
+			if ($userSearchInput) userStore.assignUser($userSearchInput);
+			showUserSuggestions = false;
+		}
+	}
 
 	function handleInput(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
 		showUserSuggestions = true;
@@ -31,9 +43,9 @@
 	}
 </script>
 
-<div class="component-container">
+<div class="assigned-users-field-container">
 	<!-- Assigned users -->
-	<h3 class="label">Assigned users</h3>
+	<h3 class="field-label"><label for={id}>Assigned users</label></h3>
 	{#if $currentLicense.users.length || $userFetchRequest.isLoading}
 		<UserBadgeContainer />
 	{/if}
@@ -41,6 +53,7 @@
 	<!-- User input -->
 	<div class="input-container">
 		<input
+			{id}
 			class:input-add-mode={$licenseMode === 'add'}
 			type="search"
 			placeholder="Search for a user to assign"
@@ -49,14 +62,7 @@
 			use:clickOutside={() => (showUserSuggestions = false)}
 			on:click={() => (showUserSuggestions = true)}
 			on:focus={() => (showUserSuggestions = true)}
-			on:keydown={(e) => {
-				if (e.key === 'Tab') {
-					showUserSuggestions = false;
-				} else if (e.key === 'Enter') {
-					if ($userSearchInput) userStore.assignUser($userSearchInput);
-					showUserSuggestions = false;
-				}
-			}}
+			on:keydown={handleKeyDown}
 			on:input={handleInput}
 		/>
 
@@ -66,16 +72,16 @@
 		{/if}
 
 		<!-- User validation errors -->
-		<p class="secondary-text" class:warning-text={$userValidationErrors}>
+		<p class="helper-text">
 			{#if $userValidationErrors}
-				<span transition:fade={{ duration: 120 }}>{$userValidationErrors}</span>
+				<span class="error-text" transition:fade={{ duration: 120 }}>{$userValidationErrors}</span>
 			{/if}
 		</p>
 	</div>
 </div>
 
 <style>
-	.component-container {
+	.assigned-users-field-container {
 		display: flex;
 		flex-direction: column;
 		min-height: 7rem;
@@ -83,24 +89,24 @@
 		box-sizing: border-box;
 	}
 
-	.label {
+	.field-label {
 		margin-bottom: 0.4rem;
 	}
 
-	.secondary-text {
+	.input-container {
+		position: relative;
+		width: 100%;
+	}
+
+	.helper-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
 	}
 
-	.warning-text {
+	.error-text {
 		color: red;
-	}
-
-	.input-container {
-		position: relative;
-		width: 100%;
 	}
 
 	input {

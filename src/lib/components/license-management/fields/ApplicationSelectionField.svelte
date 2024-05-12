@@ -10,10 +10,13 @@
 	import SettingsAdjust from 'carbon-icons-svelte/lib/SettingsAdjust.svelte';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import { v4 as uuidv4 } from 'uuid';
 
 	onMount(async () => {
 		await applicationStore.fetch();
 	});
+
+	const id = uuidv4();
 
 	$: isLoading = $applicationFetchRequest.isLoading;
 	$: hasError = $applicationFetchRequest.error?.message;
@@ -29,13 +32,16 @@
 	}
 </script>
 
-<div class="application-selection-container">
-	<h3 class="application-selection-label">Application <span class="required">*</span></h3>
-	<div class="application-selection-row">
+<div class="application-selection-field-container">
+	<h3 class="field-label">
+		<label for={id}>Application</label> <span class="required">*</span>
+	</h3>
+
+	<div class="selection-row">
 		<select
+			{id}
 			required
 			disabled={!hasApplications}
-			name="applications"
 			class:select-add-mode={$licenseMode === 'add'}
 			bind:value={$currentLicense.applicationId}
 			on:change={handleApplicationChange}
@@ -61,6 +67,7 @@
 				{/each}
 			{/if}
 		</select>
+
 		<div
 			use:tooltip={{
 				content: 'Manage applications',
@@ -74,9 +81,10 @@
 			/>
 		</div>
 	</div>
-	<p class="application-secondary-text">
+
+	<p class="helper-text">
 		{#if $licenseValidationErrors.applicationId}
-			<span class="warning-text" transition:fade={{ duration: 120 }}
+			<span class="error-text" transition:fade={{ duration: 120 }}
 				>{$licenseValidationErrors.applicationId}</span
 			>
 		{:else if $currentLicense.application.link && !isLoading && !hasError && !noResults}
@@ -94,7 +102,7 @@
 {/if}
 
 <style>
-	.application-selection-container {
+	.application-selection-field-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -103,18 +111,18 @@
 		overflow-wrap: break-word;
 	}
 
-	.application-selection-label {
+	.field-label {
 		margin-bottom: 0.4rem;
 	}
 
-	.application-selection-row {
+	.selection-row {
 		width: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 	}
 
-	.application-secondary-text {
+	.helper-text {
 		font-size: 0.75rem;
 		min-height: 2.8rem;
 		width: 90%;
@@ -130,7 +138,7 @@
 	}
 
 	.required,
-	.warning-text {
+	.error-text {
 		color: red;
 	}
 
@@ -154,7 +162,7 @@
 		padding: 0 2.5rem 0rem 0.3rem;
 		border: 1px dashed black;
 		cursor: pointer;
-		background-image: url('../../../images/icons/dropdown-arrow.svg');
+		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;
 		background-position: right 10px center;
@@ -163,7 +171,7 @@
 	.select-add-mode {
 		padding: 0 2.5rem 0rem 0.3rem;
 		border: 1px dashed black;
-		background-image: url('../../../images/icons/dropdown-arrow.svg');
+		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;
 		background-position: right 10px center;
@@ -173,7 +181,7 @@
 		padding: 0 2.5rem 0rem 0.3rem;
 		border: 2px solid var(--light-purple);
 		outline: none;
-		background-image: url('../../../images/icons/dropdown-arrow.svg');
+		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;
 		background-repeat: no-repeat;
 		background-position: right 10px center;

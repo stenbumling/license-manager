@@ -1,45 +1,32 @@
 <script lang="ts">
 	import SelectField from '$lib/components/license-management/fields/SelectField.svelte';
-	import TextField from '$lib/components/license-management/fields/TextField.svelte';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import { getRelativeDate } from '$lib/utils/date-utils';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
 	import { fade, slide } from 'svelte/transition';
+	import { v4 as uuidv4 } from 'uuid';
 
-	let label: string = '';
-	$: costValue = calculateCost($currentLicense.renewalInterval, $currentLicense.cost);
-	$: label = $currentLicense.autoRenewal ? 'Renewal date' : 'Expiration date';
 	$: daysLeft = getRelativeDate($currentLicense.expirationDate);
 	$: if (!$currentLicense.autoRenewal) $currentLicense.renewalInterval = 'None';
 
-	// Calculate cost based on renewal interval
-	function calculateCost(renewalInterval: string, cost: number): string {
-		switch (renewalInterval) {
-			case 'None':
-				return '';
-			case 'Monthly':
-				return `${Math.floor(cost * 12).toString()} SEK/year`;
-			case 'Annually':
-				return `${Math.floor(cost / 12).toString()} SEK/month`;
-			default:
-				return '';
-		}
-	}
+	const id = uuidv4();
 </script>
 
-<div class="expiration-container">
-	<h3 class="expiration-label">
-		{label}
+<div class="expiration-date-container">
+	<h3 class="field-label">
+		<label for={id}>{$currentLicense.autoRenewal ? 'Renewal date' : 'Expiration date'}</label>
 		<span class="required">*</span>
 	</h3>
-	<div class="expiration-row">
+
+	<div class="input-row">
 		<!-- Date input -->
 		<input
 			class="date-picker"
 			class:date-picker-add-mode={$licenseMode === 'add'}
 			type="date"
 			required
-			name="applications"
+			{id}
+			name="expirationDate"
 			bind:value={$currentLicense.expirationDate}
 		/>
 
@@ -60,26 +47,16 @@
 			<label for="renewal">Autorenewal</label>
 		</div>
 	</div>
-	<p class="secondary-text" class:warning-text={$licenseValidationErrors.expirationDate}>
+
+	<p class="helper-text">
 		{#if $licenseValidationErrors.expirationDate}
-			<span in:fade={{ duration: 120 }}>{$licenseValidationErrors.expirationDate}</span>
+			<span class="error-text" in:fade={{ duration: 120 }}
+				>{$licenseValidationErrors.expirationDate}</span
+			>
 		{:else}
 			<span in:fade={{ duration: 120 }}>{daysLeft.text}</span>
 		{/if}
 	</p>
-
-	<!-- Cost input field -->
-	<div class="cost-field">
-		<TextField
-			bind:value={$currentLicense.cost}
-			number
-			label="Cost"
-			secondaryText={`${costValue}`}
-			type="secondary"
-			placeholder="Enter cost of license"
-			errorMessage={$licenseValidationErrors.cost}
-		/>
-	</div>
 
 	<!-- Initially hidden autorenewal select field -->
 	{#if $currentLicense.autoRenewal}
@@ -98,7 +75,7 @@
 </div>
 
 <style>
-	.expiration-container {
+	.expiration-date-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -107,15 +84,16 @@
 		overflow-wrap: break-word;
 	}
 
-	.expiration-label {
+	.field-label {
 		margin-bottom: 0.4rem;
 	}
 
-	.required {
+	.required,
+	.error-text {
 		color: red;
 	}
 
-	.expiration-row {
+	.input-row {
 		width: 100%;
 		display: flex;
 		align-items: center;
@@ -167,20 +145,11 @@
 		flex-shrink: 0;
 	}
 
-	.secondary-text {
+	.helper-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
-	}
-
-	.warning-text {
-		color: red;
-	}
-
-	.cost-field {
-		margin-top: 1.4rem;
-		width: 100%;
 	}
 
 	.interval-field {
