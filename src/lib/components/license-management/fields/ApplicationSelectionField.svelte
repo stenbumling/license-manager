@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { tooltip } from '$lib/actions/tooltip';
+	import ApplicationModal from '$lib/components/application-management/ApplicationModal.svelte';
 	import IconButton from '$lib/components/misc/buttons/IconButton.svelte';
 	import { applicationModalView } from '$lib/stores/modal-store';
 	import { applicationFetchRequest } from '$lib/stores/request-state-store';
@@ -87,6 +88,10 @@
 		{/if}
 	</p>
 </div>
+
+{#if $applicationModalView !== 'closed'}
+	<ApplicationModal />
+{/if}
 
 <style>
 	.application-selection-container {
