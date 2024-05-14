@@ -1,5 +1,5 @@
 <script lang="ts">
-	import AppHeader from '$lib/components/misc/AppHeader.svelte';
+	import AppHeader from '$lib/components/AppHeader.svelte';
 	import NotificationsContainer from '$lib/components/misc/NotificationsContainer.svelte';
 	import WarningModal from '$lib/components/misc/WarningModal.svelte';
 	import { modal, warningModal } from '$lib/stores/modal-store';
