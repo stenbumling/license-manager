@@ -15,7 +15,7 @@ export const sequelize = (() => {
 			dialect: 'mssql',
 		});
 	} else {
-		const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = checkEnvVariables();
+		const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = validateEnvVariables();
 
 		return new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
 			host: DB_HOST,
@@ -29,7 +29,7 @@ export const sequelize = (() => {
 	}
 })();
 
-function checkEnvVariables() {
+function validateEnvVariables() {
 	const { DB_HOST, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
 	if (!DB_HOST || !DB_NAME || !DB_USER || !DB_PASSWORD) {
 		console.error(
