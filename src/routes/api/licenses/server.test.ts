@@ -12,8 +12,10 @@ describe('POST /licenses', () => {
 			name: 'Test license',
 			setUsers: vi.fn(),
 		});
-		vi.mocked(updateUserAssociations).mockResolvedValue(null);
-		vi.mocked(updateLicenseAssociations).mockResolvedValue();
+		const mockedUpdateUserAssocations = vi.fn(updateUserAssociations);
+		const mockedUpdateLicenseAssociations = vi.fn(updateLicenseAssociations);
+		vi.mocked(mockedUpdateUserAssocations).mockResolvedValue(null);
+		vi.mocked(mockedUpdateLicenseAssociations).mockResolvedValue();
 
 		const response = await POST({
 			request: {

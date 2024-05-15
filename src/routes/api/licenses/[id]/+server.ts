@@ -6,6 +6,7 @@ export async function GET({ params }) {
 	const id = params.id;
 
 	const license = await getLicense(id);
+	console.log(license);
 	return json(license, { status: 200 });
 }
 

@@ -31,6 +31,7 @@ function setupMocks() {
 				commit: vi.fn(),
 				rollback: vi.fn(),
 			}),
+			literal: sequelize.literal.bind(sequelize),
 		};
 		return {
 			sequelize: mockSequelizeInstance,
@@ -39,7 +40,6 @@ function setupMocks() {
 	vi.mock('./src/lib/server/models/license-model');
 	vi.mock('./src/lib/server/models/application-model');
 	vi.mock('./src/lib/server/models/user-model');
-	vi.mock('./src/lib/server/models/model-associaions');
-	vi.mock('./src/lib/server/utils/query-utils');
-	vi.mock('./src/lib/server/utils/associations-utils');
+	vi.mock('./src/lib/server/models/model-associations');
+	vi.mock('./src/lib/server/services/query-services');
 }

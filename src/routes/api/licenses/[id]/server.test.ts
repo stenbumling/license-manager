@@ -45,8 +45,10 @@ describe('PUT /licenses/:id', () => {
 			name: 'Test license',
 			setUsers: vi.fn(),
 		} as unknown as Model);
-		vi.mocked(updateUserAssociations).mockResolvedValue(null);
-		vi.mocked(updateLicenseAssociations).mockResolvedValue();
+		const mockedUpdateUserAssocations = vi.fn(updateUserAssociations);
+		const mockedUpdateLicenseAssociations = vi.fn(updateLicenseAssociations);
+		vi.mocked(mockedUpdateUserAssocations).mockResolvedValue(null);
+		vi.mocked(mockedUpdateLicenseAssociations).mockResolvedValue();
 
 		const response = await PUT({
 			params: { id: uuidv4() },
@@ -116,6 +118,8 @@ describe('PUT /licenses/:id', () => {
 
 describe('DELETE /licenses/:id', () => {
 	it('should return 204 on successful deletion', async () => {
+		const mockedUpdateLicenseAssociations = vi.fn(updateLicenseAssociations);
+		vi.mocked(mockedUpdateLicenseAssociations).mockResolvedValue();
 		vi.mocked(LicenseModel.findByPk).mockResolvedValue({
 			destroy: vi.fn(),
 		} as unknown as Model);
