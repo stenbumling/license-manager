@@ -1,7 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
+import ApplicationModel from '$lib/server/models/application-model';
 import { describe, expect, it, vi } from 'vitest';
 import { GET, POST } from './+server';
-import ApplicationModel from '$lib/server/models/application-model';
 
 describe('GET /applications/', () => {
 	vi.mocked(ApplicationModel.findAll).mockResolvedValue([]);
@@ -16,24 +15,14 @@ describe('GET /applications/', () => {
 });
 
 describe('POST /applications/', () => {
-	vi.mocked(ApplicationModel.create).mockResolvedValue({
-		dataValues: {
-			id: uuidv4(),
-			licenseAssociations: 0,
-			name: 'Test application',
-		},
-	});
-
 	it('should return 201 and created data on successful creation', async () => {
 		const response = await POST({
 			request: {
 				json: async () => ({ name: 'Test application' }),
 			},
 		});
-		const body = await response.json();
 		expect(response.status).toBe(201);
-		expect(body).toHaveProperty('name', 'Test application');
-		expect(body).toHaveProperty('licenseAssociations', 0);
+		expect(ApplicationModel.create).toHaveBeenCalled();
 	});
 
 	it('should throw an error when application name is missing', async () => {

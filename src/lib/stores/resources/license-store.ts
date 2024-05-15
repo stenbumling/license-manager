@@ -19,7 +19,6 @@ export function getLicenseDefaultValue(): LicenseData {
 		id: uuidv4(),
 		applicationId: '',
 		expirationDate: '',
-		autoRenewal: false,
 		cost: 0,
 		renewalInterval: 'None',
 		category: 'Uncategorized',

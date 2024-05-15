@@ -25,11 +25,6 @@ const LicenseModel = sequelize.define<LicenseInstance>('license', {
 			isDate: true,
 		},
 	},
-	autoRenewal: {
-		type: DataTypes.BOOLEAN,
-		defaultValue: false,
-		allowNull: false,
-	},
 	cost: {
 		type: DataTypes.INTEGER,
 		allowNull: false,

@@ -4,7 +4,8 @@
 	import LicenseHeader from '$lib/components/license-management/LicenseHeader.svelte';
 	import ApplicationSelection from '$lib/components/license-management/fields/ApplicationSelectionField.svelte';
 	import AssignedUsers from '$lib/components/license-management/fields/AssignedUsersField.svelte';
-	import ExpirationField from '$lib/components/license-management/fields/ExpirationField.svelte';
+	import CostField from '$lib/components/license-management/fields/CostField.svelte';
+	import ExpirationField from '$lib/components/license-management/fields/ExpirationDateField.svelte';
 	import SelectField from '$lib/components/license-management/fields/SelectField.svelte';
 	import TextAreaField from '$lib/components/license-management/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license-management/fields/TextField.svelte';
@@ -66,6 +67,7 @@
 				defaultOption="Active"
 				errorMessage={$licenseValidationErrors.status}
 			/>
+			<CostField />
 			<TextField
 				bind:value={$currentLicense.contactPerson}
 				label="Contact person"
@@ -108,7 +110,7 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-auto-rows: min-content;
-		gap: 1rem 6rem;
+		gap: 3rem 6rem;
 		overflow-y: auto;
 	}
 
@@ -144,6 +146,7 @@
 
 	@media (max-width: 800px) {
 		.fields-grid {
+			gap: 1rem 6rem;
 			grid-template-columns: 1fr;
 		}
 	}

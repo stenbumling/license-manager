@@ -4,13 +4,13 @@
 	import { v4 as uuidv4 } from 'uuid';
 
 	export let label: string = '';
-	export let value: string = '';
-	export let secondaryText: string = '';
+	export let value: string;
+	export let helperText: string = '';
 	export let placeholder: string = 'Enter some text';
 	export let required: boolean = false;
 	export let autocomplete: string = 'off';
 	export let type: 'primary' | 'secondary' = 'primary';
-	export let errorMessage: { message: string } | undefined;
+	export let errorMessage: { message: string } | undefined = undefined;
 
 	const id = uuidv4();
 	let textarea: HTMLTextAreaElement;
@@ -21,30 +21,33 @@
 	}
 </script>
 
-<div class="textarea-container">
-	<h3 class={type === 'primary' ? 'primary-textarea-label' : 'secondary-textarea-label'} {id}>
-		{label}
+<div class="textarea-field-container">
+	<h3 class={type === 'primary' ? 'primary-field-label' : 'secondary-field-label'}>
+		<label for={id}>{label}</label>
 		{#if required}
 			<span class="required">*</span>
 		{/if}
 	</h3>
+
 	<textarea
 		bind:value
 		bind:this={textarea}
 		class:textarea-add-mode={$licenseMode === 'add'}
+		{id}
 		{required}
 		{placeholder}
 		{autocomplete}
 		on:blur={scrollToTop}
-		aria-labelledby={id}
 	/>
-	<p class="secondary-text" class:warning-text={errorMessage}>
+
+	<p class="helper-text">
 		{#if errorMessage}
-			<span in:fade={{ duration: 120 }}>{errorMessage}</span>
-		{:else if secondaryText}
-			<span in:fade={{ duration: 120 }}>{secondaryText}</span>
+			<span class="error-text" in:fade={{ duration: 120 }}>{errorMessage}</span>
+		{:else if helperText}
+			<span in:fade={{ duration: 120 }}>{helperText}</span>
 		{/if}
 	</p>
+
 	{#if $$slots.secondary}
 		<div class="slotted-field">
 			<slot name="secondary" />
@@ -53,7 +56,7 @@
 </div>
 
 <style>
-	.textarea-container {
+	.textarea-field-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
@@ -63,34 +66,30 @@
 		margin-bottom: 2.6rem;
 	}
 
-	.primary-textarea-label {
+	.primary-field-label {
 		margin-bottom: 0.4rem;
 	}
 
-	.secondary-textarea-label {
+	.secondary-field-label {
 		margin-bottom: 0.4rem;
 		font-size: 0.75rem;
 		color: #888888;
 	}
 
-	.secondary-text {
+	.helper-text {
 		font-size: 0.75rem;
 		color: var(--text-placeholder);
 		height: 2.8rem;
 		margin-left: 1px;
 	}
 
+	.required,
+	.error-text {
+		color: red;
+	}
+
 	.slotted-field {
-		margin-top: 1.4rem;
 		width: 100%;
-	}
-
-	.warning-text {
-		color: red;
-	}
-
-	.required {
-		color: red;
 	}
 
 	textarea {
@@ -98,7 +97,7 @@
 		font-size: 0.83rem;
 		border: none;
 		width: 100%;
-		min-height: 6rem;
+		min-height: 12rem;
 		max-height: 18rem;
 		background-color: transparent;
 		border: 1px solid var(--text-placeholder);

@@ -25,6 +25,13 @@ export interface ContextMenuItem {
 	class?: 'warning' | 'alert';
 }
 
+export interface ToggleButtonItem {
+	label: string;
+	action: () => void;
+	icon?: ComponentType;
+	class?: 'active';
+}
+
 export interface NewNotification {
 	message: string;
 	type: 'success' | 'info' | 'warning' | 'alert';

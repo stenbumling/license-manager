@@ -10,11 +10,10 @@ export interface LicenseAttributes {
 	id: string;
 	applicationId: string;
 	expirationDate: string;
-	autoRenewal: boolean;
 	cost: number;
-	renewalInterval: string;
+	renewalInterval: LicenseRenewalOptions;
 	category: string;
-	status: string;
+	status: LicenseStatus;
 	contactPerson: string;
 	additionalContactInfo: string;
 	comment: string;
@@ -43,3 +42,7 @@ export interface LicenseCounts {
 }
 
 export type LicenseModalMode = 'add' | 'view';
+
+export type LicenseStatus = 'Active' | 'Inactive' | 'Expired';
+
+export type LicenseRenewalOptions = 'None' | 'Monthly' | 'Annually';
