@@ -22,7 +22,7 @@ The server uses [Sequelize v6](https://sequelize.org/) to interact with the data
 
 - Before you begin, ensure you have **Node.js (v18.13 or later)** and **npm** installed. You can download Node.js from [nodejs.org](https://nodejs.org/).
 
-- You will also need access to a MSSQL database to store the application data in. For configuration of the database, follow the [installation instructions](#installation-and-setup).
+- You will also need to install SQL Sever on your local development environment, which you can download from [microsoft.com](https://www.microsoft.com/en-us/sql-server/sql-server-downloads). This means you also need a MSSQL database to store the application data in. For configuration of the database, follow the [installation instructions](#installation-and-setup).
 
 ### Recommended
 
