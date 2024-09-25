@@ -21,7 +21,7 @@ export async function fetchLicensesByQuery(
 	// Selects licenses based on the filter and search query parameters
 	const where = constructWhereClause(filter, search);
 
-	// Sorts the licenses based on the sortBy and sortDirection query parameters
+	// Sorts the licenses based on the sortColumn and sortDirection query parameters
 	const order = constructOrderClause(sortColumn, sortDirection);
 
 	const licenses = await LicenseModel.findAll({

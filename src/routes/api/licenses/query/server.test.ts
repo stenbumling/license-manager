@@ -8,7 +8,7 @@ describe('GET /licenses/query', () => {
 		const mockURL = {
 			searchParams: new URLSearchParams({
 				filter: 'unassigned',
-				sortBy: 'contactPerson',
+				sortColumn: 'contactPerson',
 				sortDirection: 'ASC',
 			}),
 		};

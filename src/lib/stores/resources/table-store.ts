@@ -101,7 +101,7 @@ function createTableController() {
 		let query = determineBaseQuery(filterName, searchQueryParam);
 
 		if (sortColumn && sortOrder !== 'DEFAULT') {
-			const sortQuery = `sortBy=${sortColumn}&sortDirection=${sortOrder}`;
+			const sortQuery = `sortColumn=${sortColumn}&sortDirection=${sortOrder}`;
 			query += (query ? '&' : '?') + sortQuery;
 		}
 
