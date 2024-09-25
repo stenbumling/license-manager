@@ -44,7 +44,6 @@
 	];
 
 	async function handleLicense() {
-		console.log($currentLicense.renewalInterval)
 		const isValid = await validateLicense($currentLicense);
 		if (isValid) {
 			let success = false;
