@@ -1,6 +1,6 @@
-# Nexer Örebro license manager (for internal use)
+# Nexer Örebro license manager
 
-This is a simple CRUD application for managing licenses – in particular for the Örebro office of Nexer Group. Its purpose is to keep track of all our licenses so that they can make better decisions on how to allocate them.
+This is a CRUD application for managing licenses – in particular for the Örebro office of Nexer Group. Its purpose is to keep track of all our licenses so that they can make better decisions on how to allocate them.
 
 ## Tech stack
 
@@ -33,7 +33,7 @@ While not strictly necessary, if you're using Visual Studio Code, it is recommen
 1. Clone the repository (You might have to generate Git credentials in Azure DevOps first)
 
 ```
-git clone https://sigmaorebro@dev.azure.com/sigmaorebro/LIA-%20intern%20licens%20hantering/_git/license-manager-nexer-orebro
+git clone <link to repository>
 cd license-manager-nexer-orebro
 ```
 
