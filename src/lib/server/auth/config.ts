@@ -37,7 +37,7 @@ export const cookiesConfig = {
 /**
  * The permissions required by the application for access.
  * They need to be set in the Azure AD application registration.
- * 
+ *
  * 1. Go to the Azure Portal
  * 2. Go to Azure Active Directory
  * 3. Go to App registrations
@@ -46,7 +46,7 @@ export const cookiesConfig = {
  * 6. Add permissions
  * 7. Select Microsoft Graph
  * 8. Add the permissions below
- * 
+ *
  * Note: Some permissions require admin consent.
  */
 export const graphApiPermissions = [
