@@ -17,10 +17,10 @@
 
 	// Sets the value to the default option if the value is empty and the default option is valid
 	$: value = !value && defaultOption && options.includes(defaultOption) ? defaultOption : value;
-	$: selectStyle = value ? '' : 'unselected';
+	$: selectionStyle = value ? '' : 'unselected';
 </script>
 
-<div class="select-field-container">
+<div class="selection-field-container">
 	<h3 class={type === 'primary' ? 'primary-field-label' : 'secondary-field-label'}>
 		<label for={id}>{label}</label>
 		{#if required}
@@ -29,7 +29,7 @@
 	</h3>
 
 	<select
-		class={selectStyle}
+		class={selectionStyle}
 		class:select-add-mode={$licenseMode === 'add'}
 		bind:value
 		{required}
@@ -57,7 +57,7 @@
 </div>
 
 <style>
-	.select-field-container {
+	.selection-field-container {
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;

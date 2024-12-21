@@ -6,7 +6,7 @@
 	import AssignedUsers from '$lib/components/license-management/fields/AssignedUsersField.svelte';
 	import CostField from '$lib/components/license-management/fields/CostField.svelte';
 	import ExpirationField from '$lib/components/license-management/fields/ExpirationDateField.svelte';
-	import SelectField from '$lib/components/license-management/fields/SelectField.svelte';
+	import SelectionField from '$lib/components/license-management/fields/SelectionField.svelte';
 	import TextAreaField from '$lib/components/license-management/fields/TextAreaField.svelte';
 	import TextField from '$lib/components/license-management/fields/TextField.svelte';
 	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
@@ -53,14 +53,14 @@
 			<ApplicationSelection />
 			<AssignedUsers />
 			<ExpirationField />
-			<SelectField
+			<SelectionField
 				bind:value={$currentLicense.category}
 				label="Category"
 				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 				defaultOption="Uncategorized"
 				errorMessage={$licenseValidationErrors.category}
 			/>
-			<SelectField
+			<SelectionField
 				bind:value={$currentLicense.status}
 				label="Status"
 				options={['Active', 'Inactive', 'Expired']}
