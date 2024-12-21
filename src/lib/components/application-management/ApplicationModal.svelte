@@ -1,8 +1,8 @@
 <script>
 	import { focusTrap } from '$lib/actions/focusTrap';
-	import ApplicationAdd from '$lib/components/application-management/ApplicationAdd.svelte';
-	import ApplicationEdit from '$lib/components/application-management/ApplicationEdit.svelte';
-	import ApplicationList from '$lib/components/application-management/ApplicationList.svelte';
+	import ApplicationAddPage from '$lib/components/application-management/ApplicationAddPage.svelte';
+	import ApplicationEditPage from '$lib/components/application-management/ApplicationEditPage.svelte';
+	import ApplicationListPage from '$lib/components/application-management/ApplicationListPage.svelte';
 	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
 	import { applicationModalView, modal } from '$lib/stores/modal-store';
 	import { quintOut } from 'svelte/easing';
@@ -17,15 +17,15 @@
 		</div>
 		{#if $applicationModalView === 'list'}
 			<div class="modal-content" in:fly={{ duration: 200, x: -50, easing: quintOut }}>
-				<ApplicationList />
+				<ApplicationListPage />
 			</div>
 		{:else if $applicationModalView === 'add'}
 			<div class="modal-content" in:fly={{ duration: 200, x: 50, easing: quintOut }}>
-				<ApplicationAdd />
+				<ApplicationAddPage />
 			</div>
 		{:else if $applicationModalView === 'edit'}
 			<div class="modal-content" in:fly={{ duration: 200, x: 50, easing: quintOut }}>
-				<ApplicationEdit />
+				<ApplicationEditPage />
 			</div>
 		{/if}
 	</dialog>
