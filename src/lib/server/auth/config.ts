@@ -35,13 +35,23 @@ export const cookiesConfig = {
 };
 
 /**
- * The permissions required by the application to access the app.
+ * The permissions required by the application for access.
  * They need to be set in the Azure AD application registration.
+ * 
+ * 1. Go to the Azure Portal
+ * 2. Go to Azure Active Directory
+ * 3. Go to App registrations
+ * 4. Find the app registration for this app
+ * 5. Go to API permissions
+ * 6. Add permissions
+ * 7. Select Microsoft Graph
+ * 8. Add the permissions below
+ * 
+ * Note: Some permissions require admin consent.
  */
 export const graphApiPermissions = [
-	'https://graph.microsoft.com/User.Read',
-	// TODO: Add the permissions below when admin has consented to them
-	// 'https://graph.microsoft.com/GroupMember.Read.All',
-	// 'https://graph.microsoft.com/User.Read.All',
-	'offline_access',
+	'https://graph.microsoft.com/User.Read', // Required for logging into the app
+	'https://graph.microsoft.com/GroupMember.Read.All', // Required for accessing group members
+	'https://graph.microsoft.com/User.Read.All', // Required for accessing all users in the tenant
+	'offline_access', // Required for refresh tokens
 ];
