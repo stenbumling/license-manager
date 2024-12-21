@@ -3,7 +3,9 @@
 		<a style="line-height:0" href="/" data-sveltekit-reload>
 			<h1 class="header-title">License manager</h1>
 		</a>
-		<h2 class="header-subtitle">Demo</h2>
+		<div class="header-subtitle-badge">
+			<h2 class="header-subtitle">Demo version</h2>
+		</div>
 	</div>
 </header>
 
@@ -29,11 +31,18 @@
 		margin: 0;
 	}
 
+	.header-subtitle-badge {
+		display: flex;
+		background-color: var(--deep-purple);
+		border-radius: 6px;
+		padding: 3px 0.8rem;
+	}
+
 	.header-subtitle {
 		display: flex;
-		font-size: 1rem;
+		font-size: 0.9rem;
 		margin: 0;
-		color: var(--light-purple);
+		color: #e0beff;
 	}
 
 	@media (max-height: 850px) {
@@ -49,8 +58,13 @@
 			font-size: 1.25rem;
 		}
 
+		.header-subtitle-badge {
+			background-color: black;
+		}
+
 		.header-subtitle {
 			font-size: 0.7rem;
+			color: var(--light-purple);
 		}
 	}
 </style>
