@@ -13,7 +13,7 @@
 
 	const oldAppName = $currentApplication.name;
 
-	async function handleEdit(e?: MouseEvent | KeyboardEvent) {
+	async function handleEditApplication(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($currentApplication);
 		if (isValid) {
@@ -74,7 +74,7 @@
 		<SecondaryButton title={'Cancel'} action={handleCancel} />
 		<PrimaryButton
 			title={'Save changes'}
-			action={handleEdit}
+			action={handleEditApplication}
 			pendingRequest={$applicationPostRequest.isLoading}
 		/>
 	</div>

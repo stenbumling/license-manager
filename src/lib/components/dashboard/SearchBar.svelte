@@ -6,7 +6,7 @@
 	} from '$lib/validations/search-query-validation';
 	import Search from 'carbon-icons-svelte/lib/Search.svelte';
 
-	async function handleSearch(e: KeyboardEvent) {
+	async function handleSearchQuery(e: KeyboardEvent) {
 		if (e.key === 'Enter') {
 			const isValid = await validateSearchQuery($searchQuery);
 			if (isValid) {
@@ -28,7 +28,7 @@
 	class={`search-field ${isError ? 'error' : ''} ${isActiveSearch ? 'active' : ''}`}
 	placeholder="Search"
 	maxlength="50"
-	on:keydown={handleSearch}
+	on:keydown={handleSearchQuery}
 />
 <div class="search-icon">
 	<Search size={20} fill="black" aria-label="Search" />

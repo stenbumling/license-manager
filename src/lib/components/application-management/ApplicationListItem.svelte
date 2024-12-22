@@ -13,6 +13,7 @@
 	let trashCanTooltip = '';
 	let isTrashCanDisabled = false;
 
+	// Changes the tooltip and trash can icon color based on the application's state
 	$: {
 		if (!$isOnline) {
 			trashCanTooltip =
@@ -30,7 +31,7 @@
 		}
 	}
 
-	function handleEdit() {
+	function handleOpenEditPage() {
 		const appCopy: ApplicationData = JSON.parse(JSON.stringify(applicationItem));
 		currentApplication.set(appCopy);
 		applicationModalView.set('edit');
@@ -54,7 +55,7 @@
 		{applicationItem.name}
 	</p>
 	<div class="button-container">
-		<button class="edit-icon" on:click={handleEdit}>
+		<button class="edit-icon" on:click={handleOpenEditPage}>
 			<Settings size={24} fill="black" />
 		</button>
 		<button

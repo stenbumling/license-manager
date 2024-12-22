@@ -23,7 +23,7 @@
 		{
 			label: 'Close without saving',
 			icon: CloseLarge,
-			action: () => handleCloseModal(),
+			action: () => handleUnsavedChangesWarningModal(),
 		},
 		{
 			label: 'Copy link',
@@ -69,7 +69,7 @@
 		warningModal.set('license-deletion');
 	}
 
-	function handleCloseModal() {
+	function handleUnsavedChangesWarningModal() {
 		contextMenu.close();
 		if (JSON.stringify($currentLicense) === JSON.stringify($fetchedLicense)) {
 			modal.closeLicense();

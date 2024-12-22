@@ -10,7 +10,7 @@
 	} from '$lib/validations/application-validation';
 	import { fade } from 'svelte/transition';
 
-	async function handleAdd(e?: MouseEvent | KeyboardEvent) {
+	async function handleAddApplication(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($currentApplication);
 		if (isValid) {
@@ -61,7 +61,7 @@
 		<SecondaryButton title={'Cancel'} action={handleCancel} />
 		<PrimaryButton
 			title={'Add application'}
-			action={handleAdd}
+			action={handleAddApplication}
 			pendingRequest={$applicationPostRequest.isLoading}
 		/>
 	</div>

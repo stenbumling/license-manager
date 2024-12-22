@@ -8,10 +8,10 @@
 	export let required: boolean = false;
 	const id = uuidv4();
 
-	$: label = labelChange($currentLicense.renewalInterval);
+	$: label = fieldLabelChange($currentLicense.renewalInterval);
 	$: costValue = calculateCost($currentLicense.renewalInterval, $currentLicense.cost);
 
-	// Enforce numeric input. Firefox does not prevent non-numeric input on number inputs by default.
+	/** Enforce numeric input. Firefox does not prevent non-numeric input on number inputs by default. */
 	function enforceNumeric(event: KeyboardEvent) {
 		const validKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'Delete', 'End', 'Home'];
 
@@ -20,7 +20,7 @@
 		}
 	}
 
-	function labelChange(renewalInterval: LicenseRenewalOptions) {
+	function fieldLabelChange(renewalInterval: LicenseRenewalOptions) {
 		switch (renewalInterval) {
 			case 'None':
 				return 'Cost';
@@ -33,7 +33,6 @@
 		}
 	}
 
-	// Calculate cost based on renewal interval
 	function calculateCost(renewalInterval: LicenseRenewalOptions, cost: number): string {
 		switch (renewalInterval) {
 			case 'None':
