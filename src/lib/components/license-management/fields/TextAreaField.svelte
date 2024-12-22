@@ -62,7 +62,6 @@
 		box-sizing: border-box;
 		word-break: break-word;
 		overflow-wrap: break-word;
-		margin-bottom: 2.6rem;
 	}
 
 	.primary-field-label {

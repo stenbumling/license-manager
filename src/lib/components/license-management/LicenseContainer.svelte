@@ -106,11 +106,11 @@
 		max-width: 100rem;
 		height: auto;
 		margin: 0 0 2rem 0;
-		padding: 4rem 10px 0 0;
+		padding: 4rem 1rem 0 0;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-auto-rows: min-content;
-		gap: 3rem 6rem;
+		gap: 2rem 6rem;
 		overflow-y: auto;
 	}
 
