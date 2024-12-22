@@ -67,7 +67,10 @@
 			}}
 			on:click={handleDeletionWarningModal}
 		>
-			<TrashCan size={24} fill={isTrashCanDisabled ? '#cccccc' : 'red'} />
+			<TrashCan
+				size={24}
+				fill={isTrashCanDisabled ? 'var(--color-disabled)' : 'var(--color-alert-dark)'}
+			/>
 		</button>
 	</div>
 </div>
@@ -108,7 +111,7 @@
 
 	.deletable:hover {
 		cursor: pointer;
-		background-color: #ffefef;
+		background-color: rgba(255, 0, 0, 0.1);
 	}
 
 	.deletable:active {
@@ -119,7 +122,7 @@
 
 	.edit-icon:hover {
 		cursor: pointer;
-		background-color: #f0f0f0;
+		background-color: rgba(0, 0, 0, 0.1);
 		& > * {
 			transform: rotate(25deg);
 			transition: all 0.1s ease-in-out;

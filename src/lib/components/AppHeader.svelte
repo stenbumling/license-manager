@@ -15,7 +15,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: black;
+		background-color: var(--color-deep-black);
 	}
 	.header-content {
 		width: 100%;
@@ -27,13 +27,13 @@
 	}
 
 	.header-title {
-		color: #ffffff;
+		color: var(--color-white);
 		margin: 0;
 	}
 
 	.header-subtitle-badge {
 		display: flex;
-		background-color: var(--deep-purple);
+		background-color: var(--color-deep-purple);
 		border-radius: 6px;
 		padding: 3px 0.8rem;
 	}
@@ -59,12 +59,12 @@
 		}
 
 		.header-subtitle-badge {
-			background-color: black;
+			background-color: var(--color-deep-black);
 		}
 
 		.header-subtitle {
 			font-size: 0.7rem;
-			color: var(--light-purple);
+			color: var(--color-light-purple);
 		}
 	}
 </style>

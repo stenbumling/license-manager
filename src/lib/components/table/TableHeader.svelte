@@ -48,7 +48,7 @@
 			<!-- Sort direction symbol -->
 			{#if $sortState['application'] === 'ASC'}
 				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
-					<CaretUp size={24} fill="#5a1ea0" />
+					<CaretUp size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 			{#if $sortState['application'] === 'DESC'}
@@ -57,7 +57,7 @@
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
-					<CaretDown size={24} fill="#5a1ea0" />
+					<CaretDown size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 		</div>
@@ -83,7 +83,7 @@
 			<!-- Sort direction symbol -->
 			{#if $sortState['contactPerson'] === 'ASC'}
 				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
-					<CaretUp size={24} fill="#5a1ea0" />
+					<CaretUp size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 			{#if $sortState['contactPerson'] === 'DESC'}
@@ -92,7 +92,7 @@
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
-					<CaretDown size={24} fill="#5a1ea0" />
+					<CaretDown size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 		</div>
@@ -116,7 +116,7 @@
 			<!-- Sort direction symbol -->
 			{#if $sortState['users'] === 'ASC'}
 				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
-					<CaretUp size={24} fill="#5a1ea0" />
+					<CaretUp size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 			{#if $sortState['users'] === 'DESC'}
@@ -125,7 +125,7 @@
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
-					<CaretDown size={24} fill="#5a1ea0" />
+					<CaretDown size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 		</div>
@@ -135,7 +135,7 @@
 			<!-- Sort direction symbol -->
 			{#if $sortState['expirationDate'] === 'ASC'}
 				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
-					<CaretUp size={24} fill="#5a1ea0" />
+					<CaretUp size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 			{#if $sortState['expirationDate'] === 'DESC'}
@@ -144,7 +144,7 @@
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
-					<CaretDown size={24} fill="#5a1ea0" />
+					<CaretDown size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 
@@ -209,7 +209,7 @@
 	}
 
 	.column-label:hover {
-		background-color: #eeeeee;
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 
 	.column-label:active {

@@ -18,7 +18,7 @@
 	.view-all-button {
 		display: flex;
 		box-sizing: border-box;
-		background-color: var(--deep-purple);
+		background-color: var(--color-deep-purple);
 		align-items: center;
 		border-radius: 0.5rem;
 		padding: 0.55rem 0.8rem;
@@ -34,7 +34,7 @@
 	}
 
 	.view-all-button:hover {
-		background-color: var(--light-purple);
+		background-color: var(--color-light-purple);
 	}
 
 	.view-all-button-text {

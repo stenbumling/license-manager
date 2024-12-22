@@ -63,7 +63,7 @@
 	}
 
 	.menu-button:hover {
-		background-color: #eeeeee;
+		background-color: rgba(0, 0, 0, 0.05);
 	}
 
 	.menu-button:active {
@@ -73,7 +73,7 @@
 	}
 
 	.menu-button.active {
-		background-color: #dddddd;
+		background-color: rgba(0, 0, 0, 0.1);
 	}
 
 	.disabled {

@@ -60,7 +60,7 @@
 		display: flex;
 		flex-direction: column;
 		align-self: center;
-		background-color: white;
+		background-color: var(--color-white);
 	}
 
 	.modal-header {

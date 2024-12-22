@@ -100,13 +100,13 @@
 
 	.helper-text {
 		font-size: 0.75rem;
-		color: var(--text-placeholder);
+		color: var(--color-helpertext);
 		height: 2.8rem;
 		margin-left: 1px;
 	}
 
 	.error-text {
-		color: red;
+		color: var(--color-alert-dark);
 	}
 
 	input {
@@ -117,7 +117,7 @@
 		min-height: 3rem;
 		height: 3rem;
 		background-color: transparent;
-		border-bottom: 1px solid var(--text-placeholder);
+		border-bottom: 1px solid var(--color-placeholder-text);
 		box-sizing: border-box;
 		appearance: none;
 	}
@@ -135,7 +135,7 @@
 	}
 
 	input:focus {
-		border: 2px solid var(--light-purple);
+		border: 2px solid var(--color-light-purple);
 		outline: none;
 		padding-left: 0.43rem;
 		padding-bottom: 0.2rem;

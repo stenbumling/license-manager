@@ -21,24 +21,25 @@
 <style>
 	.suggestions-list {
 		list-style-type: none;
-		padding: 0;
+		padding: 0 0.2rem 0 0.5rem;
 		margin-top: 0;
 		position: absolute;
 		background-color: white;
 		box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 		z-index: 100;
 		width: 100%;
-		border: 1px solid var(--text-placeholder);
+		border: 1px solid var(--color-placeholder-text);
 		box-sizing: border-box;
 		max-height: 14rem;
 		overflow-y: auto;
 	}
 	.suggestions-list li {
-		padding: 8px 16px;
+		padding: 8px 12px;
 		cursor: pointer;
 	}
 
 	.suggestions-list li:hover {
-		background-color: #f0f0f0;
+		background-color: rgba(0, 0, 0, 0.05);
+		border-radius: 6px;
 	}
 </style>

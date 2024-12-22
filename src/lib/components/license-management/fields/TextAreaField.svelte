@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { tooltip } from '$lib/actions/tooltip';
 	import { licenseMode } from '$lib/stores/resources/license-store';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
-	import { tooltip } from '$lib/actions/tooltip';
 
 	export let label: string = '';
 	export let value: string;
@@ -79,14 +79,14 @@
 
 	.helper-text {
 		font-size: 0.75rem;
-		color: var(--text-placeholder);
+		color: var(--color-helpertext);
 		height: 2.8rem;
 		margin-left: 1px;
 	}
 
 	.required,
 	.error-text {
-		color: red;
+		color: var(--color-alert-dark);
 	}
 
 	.slotted-field {
@@ -101,7 +101,7 @@
 		min-height: 12rem;
 		max-height: 18rem;
 		background-color: transparent;
-		border: 1px solid var(--text-placeholder);
+		border: 1px solid var(--color-placeholder-text);
 		box-sizing: border-box;
 		padding-top: 0.9rem;
 		resize: vertical;
@@ -119,7 +119,7 @@
 	}
 
 	textarea:focus {
-		border: 2px solid var(--light-purple);
+		border: 2px solid var(--color-light-purple);
 		outline: none;
 		overflow: auto;
 	}

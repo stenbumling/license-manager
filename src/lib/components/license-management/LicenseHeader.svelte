@@ -37,7 +37,7 @@
 
 <style>
 	.header-container {
-		border-bottom: 1px solid var(--text-placeholder);
+		border-bottom: 1px solid var(--color-placeholder-text);
 		display: flex;
 		flex-direction: column;
 	}
@@ -50,7 +50,7 @@
 	}
 
 	.updated-info {
-		color: var(--text-placeholder);
+		color: var(--color-helpertext);
 		font-size: 0.8rem;
 	}
 
@@ -70,6 +70,6 @@
 	}
 
 	.new-license {
-		color: var(--text-placeholder);
+		color: var(--color-placeholder-text);
 	}
 </style>

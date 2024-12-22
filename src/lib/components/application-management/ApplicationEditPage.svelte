@@ -43,7 +43,7 @@
 </script>
 
 <div class="application-edit-container">
-	<h2 class="title">Editing <span style="color: var(--deep-purple)">{oldAppName}</span></h2>
+	<h2 class="title">Editing <span style="color: var(--color-deep-purple)">{oldAppName}</span></h2>
 	<div class="input-container">
 		<h3 class="input-title">Name<span class="required">*</span></h3>
 		<input
@@ -106,12 +106,12 @@
 
 	.required {
 		margin-left: 0.3rem;
-		color: red;
+		color: var(--color-alert-dark);
 	}
 
 	.warning-text {
 		font-size: 0.75rem;
-		color: red;
+		color: var(--color-alert-dark);
 		margin-bottom: 2rem;
 	}
 
@@ -127,7 +127,7 @@
 		width: 100%;
 		height: 3rem;
 		border: none;
-		border-bottom: 1px solid var(--text-placeholder);
+		border-bottom: 1px solid var(--color-placeholder-text);
 		box-sizing: border-box;
 		background-color: transparent;
 	}
@@ -139,7 +139,7 @@
 
 	input:focus {
 		padding-left: 0.6rem;
-		border: 2px solid var(--light-purple);
+		border: 2px solid var(--color-light-purple);
 		outline: none;
 	}
 </style>

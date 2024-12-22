@@ -82,7 +82,7 @@
 
 	.required,
 	.error-text {
-		color: red;
+		color: var(--color-alert-dark);
 	}
 
 	.unselected {
@@ -92,7 +92,7 @@
 
 	.helper-text {
 		font-size: 0.75rem;
-		color: var(--text-placeholder);
+		color: var(--color-helpertext);
 		height: 2.8rem;
 		margin-left: 1px;
 	}
@@ -107,7 +107,7 @@
 		width: 100%;
 		height: 3rem;
 		background-color: transparent;
-		border-bottom: 1px solid var(--text-placeholder);
+		border-bottom: 1px solid var(--color-placeholder-text);
 		appearance: none;
 		box-sizing: border-box;
 		padding: 0;
@@ -133,7 +133,7 @@
 	}
 
 	select:focus {
-		border: 2px solid var(--light-purple);
+		border: 2px solid var(--color-light-purple);
 		outline: none;
 		padding: 0 0 0 0.5rem;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');

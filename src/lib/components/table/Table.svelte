@@ -18,7 +18,7 @@
 	<!-- Loading -->
 	{#if isLoading}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>
-			<Circle color="var(--deep-purple)" />
+			<Circle color="var(--color-deep-purple)" />
 		</div>
 
 		<!-- Errors and no results -->
@@ -87,7 +87,7 @@
 	}
 
 	.search-query-text {
-		color: var(--deep-purple);
+		color: var(--color-deep-purple);
 	}
 
 	@media (max-width: 1600px) {

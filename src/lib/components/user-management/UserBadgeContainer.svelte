@@ -42,7 +42,7 @@
 	.loading-indicator {
 		display: flex;
 		box-sizing: border-box;
-		background-color: var(--deep-purple);
+		background-color: var(--color-deep-purple);
 		color: white;
 		align-items: center;
 		border-radius: 0.5rem;

@@ -223,7 +223,7 @@
 	}
 
 	.status-icon.expired {
-		background-color: #ff0000;
+		background-color: var(--color-alert-dark);
 	}
 
 	.application-cell {
@@ -245,11 +245,11 @@
 	}
 
 	.expiration-cell > .warning-text {
-		color: #ff9736;
+		color: var(--color-warning-dark);
 	}
 
 	.expiration-cell > .alert-text {
-		color: #ff0000;
+		color: var(--color-alert-dark);
 	}
 
 	.renewal-cell {

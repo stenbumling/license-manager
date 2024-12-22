@@ -72,12 +72,12 @@
 
 	.required,
 	.error-text {
-		color: red;
+		color: var(--color-alert-dark);
 	}
 
 	.helper-text {
 		font-size: 0.75rem;
-		color: var(--text-placeholder);
+		color: var(--color-helpertext);
 		height: 2.8rem;
 		margin-left: 2px;
 	}
@@ -94,7 +94,7 @@
 		min-height: 3rem;
 		height: 3rem;
 		background-color: transparent;
-		border-bottom: 1px solid var(--text-placeholder);
+		border-bottom: 1px solid var(--color-placeholder-text);
 		box-sizing: border-box;
 	}
 
@@ -109,7 +109,7 @@
 	}
 
 	input:focus {
-		border: 2px solid var(--light-purple);
+		border: 2px solid var(--color-light-purple);
 		outline: none;
 		padding: 0 0 0.1rem 0.5rem;
 	}

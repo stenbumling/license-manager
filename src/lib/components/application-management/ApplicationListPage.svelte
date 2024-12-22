@@ -25,7 +25,7 @@
 		</div>
 	{:else if isLoading}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>
-			<Circle color="var(--deep-purple)" />
+			<Circle color="var(--color-deep-purple)" />
 		</div>
 
 		<!-- Errors and no results -->

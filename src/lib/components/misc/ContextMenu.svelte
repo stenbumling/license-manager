@@ -97,7 +97,13 @@
 	}
 
 	li:hover {
-		background-color: #eeeeee;
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+
+	li:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 
 	.context-menu-item-icon {
@@ -110,15 +116,15 @@
 	}
 
 	.alert {
-		color: #ff0000;
+		color: var(--color-alert-dark);
 	}
 
 	.warning {
-		color: #ff9736;
+		color: var(--color-warning-dark);
 	}
 
 	.disabled {
 		pointer-events: none;
-		color: #ccc;
+		color: var(--color-disabled);
 	}
 </style>

@@ -20,27 +20,27 @@
 		{
 			title: 'All',
 			amount: $licenseCounts.all,
-			color: 'var(--filter-blue)',
+			color: '#b6e0ff',
 		},
 		{
 			title: 'In use',
 			amount: $licenseCounts.inUse,
-			color: 'var(--filter-green)',
+			color: '#a1e0ba',
 		},
 		{
 			title: 'Unassigned',
 			amount: $licenseCounts.unassigned,
-			color: 'var(--filter-yellow)',
+			color: '#fff6a9',
 		},
 		{
 			title: 'Near expiration',
 			amount: $licenseCounts.nearExpiration,
-			color: 'var(--warning)',
+			color: 'var(--color-warning)',
 		},
 		{
 			title: 'Expired',
 			amount: $licenseCounts.expired,
-			color: 'var(--alert)',
+			color: 'var(--color-alert)',
 		},
 	];
 
