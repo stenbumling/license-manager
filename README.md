@@ -64,7 +64,7 @@ npm run build
 npm run preview
 ```
 
-This project is using the [`adapter-node`](https://kit.svelte.dev/docs/adapter-node) adapter for building the application as a Node.js server. The chosen adapter doesn't matter for local development, but it is necessary for deploying it as an Azure App Service. If you want to use a different adapter, you can change it in the [`svelte.config.js`](svelte.config.js) file. Check the [documentation for different kind of adapters](https://kit.svelte.dev/docs/adapters) for more information.
+This project is using the [`adapter-node`](https://svelte.dev/docs/kit/adapter-node) adapter for building the application as a Node.js server. The chosen adapter doesn't matter for local development, but this particular adapter is necessary for deploying it on Azure as an Azure App Service. If you want to use a different adapter, you can change it in the [`svelte.config.js`](svelte.config.js) file. Check the [documentation for different kind of adapters](https://svelte.dev/docs/kit/adapters ) for more information.
 
 ## Other useful things to know
 
