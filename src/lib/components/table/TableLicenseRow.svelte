@@ -182,6 +182,12 @@
 		width: 100%;
 	}
 
+	.license-row:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
+	}
+
 	/* Cells */
 
 	.cell {

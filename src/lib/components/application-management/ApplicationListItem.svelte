@@ -111,6 +111,12 @@
 		background-color: #ffefef;
 	}
 
+	.deletable:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
+	}
+
 	.edit-icon:hover {
 		cursor: pointer;
 		background-color: #f0f0f0;
@@ -118,5 +124,11 @@
 			transform: rotate(25deg);
 			transition: all 0.1s ease-in-out;
 		}
+	}
+
+	.edit-icon:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 </style>

@@ -40,7 +40,9 @@
 					}
 				}}
 			>
-				<h3 class="column-label">Application</h3>
+				<h3 class="column-label" class:active={$sortState['application'] !== 'DEFAULT'}>
+					Application
+				</h3>
 			</div>
 
 			<!-- Sort direction symbol -->
@@ -76,7 +78,9 @@
 					}
 				}}
 			>
-				<h3 class="column-label">Contact person</h3>
+				<h3 class="column-label" class:active={$sortState['contactPerson'] !== 'DEFAULT'}>
+					Contact person
+				</h3>
 			</div>
 
 			<!-- Sort direction symbol -->
@@ -112,7 +116,7 @@
 					}
 				}}
 			>
-				<h3 class="column-label">Users</h3>
+				<h3 class="column-label" class:active={$sortState['users'] !== 'DEFAULT'}>Users</h3>
 			</div>
 
 			<!-- Sort direction symbol -->
@@ -167,7 +171,9 @@
 					}
 				}}
 			>
-				<h3 class="column-label">Expires in</h3>
+				<h3 class="column-label" class:active={$sortState['expirationDate'] !== 'DEFAULT'}>
+					Expires in
+				</h3>
 			</div>
 		</div>
 
@@ -208,7 +214,7 @@
 		cursor: pointer;
 		border-radius: 6px;
 		user-select: none;
-		padding: 2px 0.4rem 1px 0.4rem;
+		padding: 0.2rem 0.4rem 0.1rem 0.4rem;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
@@ -216,6 +222,12 @@
 
 	.column-label:hover {
 		background-color: #eeeeee;
+	}
+
+	.column-label:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 
 	/*  Columns */

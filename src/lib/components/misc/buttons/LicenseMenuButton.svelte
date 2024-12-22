@@ -66,6 +66,12 @@
 		background-color: #eeeeee;
 	}
 
+	.menu-button:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
+	}
+
 	.menu-button.active {
 		background-color: #dddddd;
 	}

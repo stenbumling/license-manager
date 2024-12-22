@@ -42,7 +42,9 @@
 	}
 
 	.icon-button:active {
-		transform: scale(0.95);
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 
 	.icon-button:disabled {
