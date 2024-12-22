@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tooltip } from '$lib/actions/tooltip';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import type { LicenseRenewalOptions } from '$lib/types/license-types';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
@@ -51,7 +52,9 @@
 	<h3 class="field-label">
 		<label for={id}>{label}</label>
 		{#if required}
-			<span class="required">*</span>
+			<span class="required" use:tooltip={{ content: 'Required', options: { delay: [500, 0] } }}
+				>*</span
+			>
 		{/if}
 	</h3>
 

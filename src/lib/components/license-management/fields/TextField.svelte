@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tooltip } from '$lib/actions/tooltip';
 	import { licenseMode } from '$lib/stores/resources/license-store';
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
@@ -19,7 +20,9 @@
 	<h3 class={type === 'primary' ? 'primary-field-label' : 'secondary-field-label'}>
 		<label for={id}>{label}</label>
 		{#if required}
-			<span class="required">*</span>
+			<span class="required" use:tooltip={{ content: 'Required', options: { delay: [500, 0] } }}
+				>*</span
+			>
 		{/if}
 	</h3>
 

@@ -42,7 +42,9 @@
 		<label for={id}
 			>{$currentLicense.renewalInterval !== 'None' ? 'Renewal date' : 'Expiration date'}</label
 		>
-		<span class="required">*</span>
+		<span class="required" use:tooltip={{ content: 'Required', options: { delay: [500, 0] } }}
+			>*</span
+		>
 	</h3>
 
 	<div class="input-row">

@@ -34,7 +34,10 @@
 
 <div class="application-selection-field-container">
 	<h3 class="field-label">
-		<label for={id}>Application</label> <span class="required">*</span>
+		<label for={id}>Application</label>
+		<span class="required" use:tooltip={{ content: 'Required', options: { delay: [500, 0] } }}
+			>*</span
+		>
 	</h3>
 
 	<div class="selection-row">
