@@ -5,7 +5,9 @@ import type { UserData } from '$lib/types/user-types';
 import { userValidationErrors, validateUser } from '$lib/validations/user-validation';
 import { get, writable } from 'svelte/store';
 
+/** Stores the search query from the user search input field*/
 export const userSearchInput = writable<string>('');
+/** Stores suggested users based on the search query */
 export const userSuggestions = writable<UserData[]>();
 
 function createUserStore() {

@@ -2,7 +2,7 @@
 	import TableLicenseRow from '$lib/components/table/TableLicenseRow.svelte';
 	import { tableFetchRequest } from '$lib/stores/request-state-store';
 	import { licenseStore } from '$lib/stores/resources/license-store';
-	import { currentSearch, filterState } from '$lib/stores/resources/table-store';
+	import { activeSearchQuery, filterState } from '$lib/stores/resources/table-store';
 	import { Circle } from 'svelte-loading-spinners';
 	import { fade, slide } from 'svelte/transition';
 
@@ -31,9 +31,9 @@
 		</div>
 	{:else if noResults && isSearching}
 		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>
-			{#key $currentSearch}
+			{#key $activeSearchQuery}
 				<h1 in:fade={{ duration: 300 }}>
-					Search for <span class="search-query-text">{$currentSearch}</span> returned no results
+					Search for <span class="search-query-text">{$activeSearchQuery}</span> returned no results
 				</h1>
 			{/key}
 		</div>

@@ -10,11 +10,12 @@ import { getTodaysDateWithOffset } from '$lib/utils/date-utils';
 import { error } from '@sveltejs/kit';
 import { Op, type Order } from 'sequelize';
 
-/*
- * These functions are used to construct the WHERE and ORDER BY clauses for
- * the License model. More specifically, it's used for the GET /api/licenses/query endpoint.
+/**
+ * Constructs the WHERE clause for the License model based on the filter and search query parameters.
+ * @param filter The filter query parameter
+ * @param search The search query parameter
+ * @returns The WHERE clause for the License model
  */
-
 export function constructWhereClause(filter: FilterQuery, search: string): WhereOptionsWithSymbols {
 	const where: WhereOptionsWithSymbols = {};
 	const tomorrow = getTodaysDateWithOffset(1);
@@ -66,6 +67,12 @@ export function constructWhereClause(filter: FilterQuery, search: string): Where
 	return where;
 }
 
+/**
+ * Constructs the ORDER BY clause for the License model based on the sort column and sort direction parameters.
+ * @param sortColumn The sort column query parameter
+ * @param sortDirection The sort direction query parameter
+ * @returns The ORDER BY clause for the License model
+ */
 export function constructOrderClause(sortColumn: SortColumn, sortDirection: SortDirection) {
 	let order: Order;
 

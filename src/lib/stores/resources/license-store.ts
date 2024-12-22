@@ -41,10 +41,15 @@ export function getLicenseCountsDefaultValue(): LicenseCounts {
 	};
 }
 
+/** Stores the data for the current license being viewed or edited */
 export const currentLicense = writable<LicenseData>(getLicenseDefaultValue());
+/** Stores the fetched license data for comparison during updates */
 export const fetchedLicense = writable<LicenseData | null>(null);
+/** Stores the id of the license to delete */
 export const licenseToDelete = writable<string | null>(null);
+/** Stores the license counts for the dashboard */
 export const licenseCounts = writable<LicenseCounts>(getLicenseCountsDefaultValue());
+/** Stores the mode of the license modal (add or edit) */
 export const licenseMode = writable<LicenseModalMode>('add');
 
 function createLicenseStore() {
