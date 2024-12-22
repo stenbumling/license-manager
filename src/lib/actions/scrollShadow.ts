@@ -8,7 +8,7 @@
  * 
  * @param node - The div element to attach the scroll shadow to.
  * 
- * @example ```<div use:scrollShadow></div>```
+ * @example <div use:scrollShadow></div>
  * @see {@link https://svelte.dev/docs/svelte/svelte-action} on how to use Svelte actions.
  */
 export function scrollShadow(node: HTMLDivElement) {

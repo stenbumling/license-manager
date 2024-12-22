@@ -3,7 +3,7 @@
  * @param node - The element to attach the click outside handler to.
  * @param callback - The function to call when a click outside the element occurs.
  * 
- * @example ```<div use:clickOutside={handleClickOutside}></div>```
+ * @example <div use:clickOutside={handleClickOutside}></div>
  * @see {@link https://svelte.dev/docs/svelte/svelte-action} on how to use Svelte actions.
  */
 export function clickOutside(node: HTMLElement, callback: (event: MouseEvent) => void) {

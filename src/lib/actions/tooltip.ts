@@ -16,7 +16,7 @@ interface SvelteAction {
  * This Svelte action adds a tooltip for a given element by utilizing the [tippy.js](https://atomiks.github.io/tippyjs/) library.
  * @param node - The element to attach the tooltip to.
  * @param params - The content of the tooltip and the [options](https://atomiks.github.io/tippyjs/v6/all-props/) to pass to the tippy library.
- * @example ```<div use:tooltip={{ content: 'Tooltip content', options: { placement: 'right' } }}></div>```
+ * @example <div use:tooltip={{ content: 'Tooltip content', options: { placement: 'right' } }}></div>
  * @see {@link https://atomiks.github.io/tippyjs/}
  * @see {@link https://svelte.dev/docs/svelte/svelte-action} on how to use Svelte actions.
  */

@@ -4,7 +4,7 @@
  * @param node - The element to observe.
  * @param arg0 - The callback function that receives the bounding rectangle of the element.
  * 
- * @example ```<div use:getElementRect={callback}></div>```
+ * @example <div use:getElementRect={callback}></div>
  * @see {@link https://svelte.dev/docs/svelte/svelte-action} on how to use Svelte actions.
  */
 export function getElementRect(node: Element, callback: (arg0: DOMRect) => void) {

@@ -1,9 +1,9 @@
 import type { DateStatus } from '$lib/types/query-types';
 
 /**
- * Returns a date string in the format 'YYYY-MM-DD'.
- * It will return the current date by default, but you can pass an offset in days to get a date in the past or future.
+ * Returns todays date in the format 'YYYY-MM-DD'.
  @param offsetDays - The number of days to offset the current date by.
+ @returns A string of todays date in the format 'YYYY-MM-DD'.
 */
 export function getTodaysDateWithOffset(offsetDays: number = 0) {
 	const date = new Date();
@@ -13,9 +13,9 @@ export function getTodaysDateWithOffset(offsetDays: number = 0) {
 }
 
 /**
- * Returns a date string in the format 'YYYY-MM-DD HH:MM',
- * and transforms it to Swedish locale.
- * @param unformattedDate - The date string to format.
+ * Transforms a date object into a string in Swedish locale.
+ * @param unformattedDate - The unformatted date object to format.
+ * @returns A string in the format 'YYYY-MM-DD HH:MM'.
  */
 export function getDateWithHoursAndMinutes(unformattedDate: Date) {
 	const date = new Date(unformattedDate);
@@ -26,6 +26,7 @@ export function getDateWithHoursAndMinutes(unformattedDate: Date) {
  * Returns a string with a relative date, e.g. 'today', 'tomorrow', 'yesterday', 'In 5 days', '5 days ago'.
  * It also returns a status string that can be used to style the date.
  * @param date - The date string to compare to.
+ * @returns An object with a text and a status string.
  */
 export function getRelativeDate(date: string): {
 	text: string;
@@ -62,8 +63,8 @@ export function getRelativeDate(date: string): {
 
 /**
  * Returns a number representing the difference in days between the current date and the target date.
- * @param date
- * @returns
+ * @param date - The target date to compare to.
+ * @returns The difference in days.
  */
 export function getDiffDays(date: string) {
 	const today = new Date();
