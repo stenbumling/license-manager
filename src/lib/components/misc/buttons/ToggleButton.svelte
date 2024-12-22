@@ -30,7 +30,7 @@
 		display: flex;
 		height: 80%;
 		align-items: center;
-		background-color: black;
+		background-color: var(--color-deep-black);
 		border-radius: 6px;
 		cursor: pointer;
 		padding: 8px 16px;
@@ -38,11 +38,13 @@
 	}
 
 	.icon-button:hover {
-		background-color: var(--deep-purple);
+		background-color: var(--color-deep-purple);
 	}
 
 	.icon-button:active {
-		transform: scale(0.95);
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 
 	.icon-button:disabled {
@@ -56,11 +58,11 @@
 	}
 
 	.active {
-		background-color: var(--deep-purple);
+		background-color: var(--color-deep-purple);
 	}
 
 	.text {
-		color: white;
+		color: var(--color-white);
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;

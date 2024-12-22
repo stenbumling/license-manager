@@ -51,7 +51,7 @@
 		display: flex;
 		flex-direction: column;
 		align-self: center;
-		background-color: white;
+		background-color: var(--color-white);
 	}
 
 	@media (max-width: 800px) {

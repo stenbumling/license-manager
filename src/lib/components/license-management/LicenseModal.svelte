@@ -30,6 +30,6 @@
 		border: none;
 		display: flex;
 		align-self: center;
-		background-color: white;
+		background-color: var(--color-white);
 	}
 </style>

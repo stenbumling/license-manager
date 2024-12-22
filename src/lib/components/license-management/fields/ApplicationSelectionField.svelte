@@ -34,7 +34,10 @@
 
 <div class="application-selection-field-container">
 	<h3 class="field-label">
-		<label for={id}>Application</label> <span class="required">*</span>
+		<label for={id}>Application</label>
+		<span class="required" use:tooltip={{ content: 'Required', options: { delay: [500, 0] } }}
+			>*</span
+		>
 	</h3>
 
 	<div class="selection-row">
@@ -130,7 +133,7 @@
 	}
 
 	.application-link {
-		color: var(--deep-purple);
+		color: var(--color-deep-purple);
 
 		&:hover {
 			text-decoration: underline;
@@ -139,14 +142,14 @@
 
 	.required,
 	.error-text {
-		color: red;
+		color: var(--color-alert-dark);
 	}
 
 	select {
 		width: 100%;
 		height: 3rem;
 		border: none;
-		border-bottom: 1px solid var(--text-placeholder);
+		border-bottom: 1px solid var(--color-placeholder-text);
 		box-sizing: border-box;
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		background-color: transparent;
@@ -178,7 +181,7 @@
 
 	select:focus {
 		padding: 0 2.5rem 0.1rem 0.5rem;
-		border: 2px solid var(--light-purple);
+		border: 2px solid var(--color-light-purple);
 		outline: none;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;

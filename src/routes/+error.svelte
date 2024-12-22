@@ -12,7 +12,7 @@
 		{#if $page.status === 404}
 			<h2>
 				The requested web page at
-				<span style="color:var(--deep-purple)">{$page.url.pathname}</span> could not be found.
+				<span style="color:var(--color-deep-purple)">{$page.url.pathname}</span> could not be found.
 			</h2>
 			{#if $page.error?.details}
 				<p>{$page.error.details}</p>

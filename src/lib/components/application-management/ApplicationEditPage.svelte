@@ -43,9 +43,9 @@
 </script>
 
 <div class="application-edit-container">
-	<h2 class="title">Editing <span style="color: var(--deep-purple)">{oldAppName}</span></h2>
+	<h2 class="title">Editing <span style="color: var(--color-deep-purple)">{oldAppName}</span></h2>
 	<div class="input-container">
-		<h3 style="margin-bottom:0.5rem;">Name<span class="required">*</span></h3>
+		<h3 class="input-title">Name<span class="required">*</span></h3>
 		<input
 			bind:value={$currentApplication.name}
 			type="text"
@@ -57,7 +57,7 @@
 				<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>
 			{/if}
 		</p>
-		<h3 style="margin-bottom:0.5rem;">Link to application website</h3>
+		<h3 class="input-title">Link to application website</h3>
 		<input
 			bind:value={$currentApplication.link}
 			type="text"
@@ -89,7 +89,6 @@
 	}
 
 	.title {
-		margin-bottom: 1.6rem;
 		overflow-wrap: break-word;
 	}
 
@@ -98,17 +97,21 @@
 		display: flex;
 		flex-direction: column;
 		overflow-y: auto;
-		margin-bottom: 2rem;
+		margin: 1.6rem 0 2rem 0;
+	}
+
+	.input-title {
+		margin-bottom: 0.5rem;
 	}
 
 	.required {
 		margin-left: 0.3rem;
-		color: red;
+		color: var(--color-alert-dark);
 	}
 
 	.warning-text {
 		font-size: 0.75rem;
-		color: red;
+		color: var(--color-alert-dark);
 		margin-bottom: 2rem;
 	}
 
@@ -124,7 +127,7 @@
 		width: 100%;
 		height: 3rem;
 		border: none;
-		border-bottom: 1px solid var(--text-placeholder);
+		border-bottom: 1px solid var(--color-placeholder-text);
 		box-sizing: border-box;
 		background-color: transparent;
 	}
@@ -136,7 +139,7 @@
 
 	input:focus {
 		padding-left: 0.6rem;
-		border: 2px solid var(--light-purple);
+		border: 2px solid var(--color-light-purple);
 		outline: none;
 	}
 </style>

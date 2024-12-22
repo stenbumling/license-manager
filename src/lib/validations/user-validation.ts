@@ -18,7 +18,7 @@ export async function validateUser(userName: string): Promise<boolean> {
 		if (error instanceof z.ZodError) {
 			userValidationErrors.set(error.flatten().formErrors);
 		} else {
-			console.error('Unexpected error when validating application:', error);
+			console.error('Unexpected error when validating user:', error);
 		}
 		return false;
 	}

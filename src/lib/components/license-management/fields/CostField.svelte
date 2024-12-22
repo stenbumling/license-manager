@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tooltip } from '$lib/actions/tooltip';
 	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import type { LicenseRenewalOptions } from '$lib/types/license-types';
 	import { licenseValidationErrors } from '$lib/validations/license-validation';
@@ -51,7 +52,9 @@
 	<h3 class="field-label">
 		<label for={id}>{label}</label>
 		{#if required}
-			<span class="required">*</span>
+			<span class="required" use:tooltip={{ content: 'Required', options: { delay: [500, 0] } }}
+				>*</span
+			>
 		{/if}
 	</h3>
 
@@ -95,12 +98,12 @@
 
 	.required,
 	.error-text {
-		color: red;
+		color: var(--color-alert-dark);
 	}
 
 	.helper-text {
 		font-size: 0.75rem;
-		color: var(--text-placeholder);
+		color: var(--color-helpertext);
 		height: 2.8rem;
 		margin-left: 1px;
 	}
@@ -116,7 +119,7 @@
 		top: 0.9rem;
 		right: 1rem;
 		font-size: 0.75rem;
-		color: var(--text-placeholder);
+		color: var(--color-helpertext);
 	}
 
 	input {
@@ -127,7 +130,7 @@
 		min-height: 3rem;
 		height: 3rem;
 		background-color: transparent;
-		border-bottom: 1px solid var(--text-placeholder);
+		border-bottom: 1px solid var(--color-placeholder-text);
 		box-sizing: border-box;
 	}
 
@@ -142,7 +145,7 @@
 	}
 
 	input:focus {
-		border: 2px solid var(--light-purple);
+		border: 2px solid var(--color-light-purple);
 		outline: none;
 		padding: 0 0 0 0.5rem;
 	}

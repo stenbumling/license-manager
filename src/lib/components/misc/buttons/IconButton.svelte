@@ -21,13 +21,13 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: black;
+		background-color: var(--color-deep-black);
 		cursor: pointer;
 		transition: background-color 0.2s ease;
 	}
 
 	.icon-button:hover {
-		background-color: var(--deep-purple);
+		background-color: var(--color-deep-purple);
 	}
 
 	.icon-button:active {

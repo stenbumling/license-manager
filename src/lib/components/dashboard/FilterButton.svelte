@@ -86,7 +86,6 @@
 		justify-content: flex-end;
 		min-width: 3rem;
 		font-size: 1.5rem;
-		background-color: green;
 	}
 
 	.filter-amount {

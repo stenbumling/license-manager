@@ -49,15 +49,15 @@
 		height: 100%;
 		width: 0;
 		transition: width 0.25s ease;
-		background: linear-gradient(to right, var(--deep-purple) 100%, transparent 100%);
+		background: linear-gradient(to right, var(--color-deep-purple) 100%, transparent 100%);
 	}
 
 	.button-container:hover {
-		border: 1px solid var(--deep-purple);
+		border: 1px solid var(--color-deep-purple);
 	}
 
 	.button-container:hover .button-title {
-		color: white;
+		color: var(--color-white);
 	}
 
 	.button-container:hover .button-animated-hover {
@@ -74,7 +74,7 @@
 	}
 
 	.button-title {
-		color: rgb(0, 0, 0);
+		color: var(--color-deep-black);
 		margin-top: 2px;
 		overflow: hidden;
 		text-wrap: nowrap;

@@ -60,7 +60,7 @@
 		display: flex;
 		flex-direction: column;
 		align-self: center;
-		background-color: white;
+		background-color: var(--color-white);
 	}
 
 	.modal-header {
@@ -72,7 +72,6 @@
 	}
 
 	.modal-title {
-		margin: 0;
 		text-align: center;
 	}
 
@@ -86,10 +85,6 @@
 	.button-container > :global(*) {
 		flex-grow: 1;
 		width: 50%;
-	}
-
-	h2 {
-		margin-bottom: 0.4rem;
 	}
 
 	@media (max-width: 1000px) {

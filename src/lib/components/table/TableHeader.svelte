@@ -40,25 +40,24 @@
 					}
 				}}
 			>
-				<h3 class="column-label">Application</h3>
+				<h3 class="column-label" class:active={$sortState['application'] !== 'DEFAULT'}>
+					Application
+				</h3>
 			</div>
 
 			<!-- Sort direction symbol -->
 			{#if $sortState['application'] === 'ASC'}
-				<div
-					style="line-height:0.5; margin-bottom: 0px;"
-					in:fly={{ duration: 160, y: 20, easing: quintOut }}
-				>
-					<CaretUp size={24} fill="#5a1ea0" />
+				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
+					<CaretUp size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 			{#if $sortState['application'] === 'DESC'}
 				<div
-					style="line-height:0.5; margin-bottom: 2px;"
+					class="caret-down"
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
-					<CaretDown size={24} fill="#5a1ea0" />
+					<CaretDown size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 		</div>
@@ -76,25 +75,24 @@
 					}
 				}}
 			>
-				<h3 class="column-label">Contact person</h3>
+				<h3 class="column-label" class:active={$sortState['contactPerson'] !== 'DEFAULT'}>
+					Contact person
+				</h3>
 			</div>
 
 			<!-- Sort direction symbol -->
 			{#if $sortState['contactPerson'] === 'ASC'}
-				<div
-					style="line-height:0.5; margin-bottom: 0px;"
-					in:fly={{ duration: 160, y: 20, easing: quintOut }}
-				>
-					<CaretUp size={24} fill="#5a1ea0" />
+				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
+					<CaretUp size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 			{#if $sortState['contactPerson'] === 'DESC'}
 				<div
-					style="line-height:0.5; margin-bottom: 2px;"
+					class="caret-down"
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
-					<CaretDown size={24} fill="#5a1ea0" />
+					<CaretDown size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 		</div>
@@ -112,25 +110,22 @@
 					}
 				}}
 			>
-				<h3 class="column-label">Users</h3>
+				<h3 class="column-label" class:active={$sortState['users'] !== 'DEFAULT'}>Users</h3>
 			</div>
 
 			<!-- Sort direction symbol -->
 			{#if $sortState['users'] === 'ASC'}
-				<div
-					style="line-height:0.5; margin-bottom: 0px;"
-					in:fly={{ duration: 160, y: 20, easing: quintOut }}
-				>
-					<CaretUp size={24} fill="#5a1ea0" />
+				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
+					<CaretUp size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 			{#if $sortState['users'] === 'DESC'}
 				<div
-					style="line-height:0.5; margin-bottom: 2px;"
+					class="caret-down"
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
-					<CaretDown size={24} fill="#5a1ea0" />
+					<CaretDown size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 		</div>
@@ -139,20 +134,17 @@
 		<div class="expiration-col">
 			<!-- Sort direction symbol -->
 			{#if $sortState['expirationDate'] === 'ASC'}
-				<div
-					style="line-height:0.5; margin-bottom: 0px;"
-					in:fly={{ duration: 160, y: 20, easing: quintOut }}
-				>
-					<CaretUp size={24} fill="#5a1ea0" />
+				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
+					<CaretUp size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 			{#if $sortState['expirationDate'] === 'DESC'}
 				<div
-					style="line-height:0.5; margin-bottom: 2px;"
+					class="caret-down"
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
-					<CaretDown size={24} fill="#5a1ea0" />
+					<CaretDown size={24} fill="var(--color-deep-purple)" />
 				</div>
 			{/if}
 
@@ -167,7 +159,9 @@
 					}
 				}}
 			>
-				<h3 class="column-label">Expires in</h3>
+				<h3 class="column-label" class:active={$sortState['expirationDate'] !== 'DEFAULT'}>
+					Expires in
+				</h3>
 			</div>
 		</div>
 
@@ -208,14 +202,30 @@
 		cursor: pointer;
 		border-radius: 6px;
 		user-select: none;
-		padding: 2px 0.4rem 1px 0.4rem;
+		padding: 0.2rem 0.4rem 0.1rem 0.4rem;
 		text-overflow: ellipsis;
 		white-space: nowrap;
 		overflow: hidden;
 	}
 
 	.column-label:hover {
-		background-color: #eeeeee;
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+
+	.column-label:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
+	}
+
+	.caret-up {
+		line-height: 0.5;
+		margin-bottom: 0px;
+	}
+
+	.caret-down {
+		line-height: 0.5;
+		margin-bottom: 2px;
 	}
 
 	/*  Columns */

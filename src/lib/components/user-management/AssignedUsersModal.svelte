@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { focusTrap } from '$lib/actions/focusTrap';
-	import UserBadge from '$lib/components/user-management/UserBadge.svelte';
 	import CloseButton from '$lib/components/misc/buttons/CloseButton.svelte';
+	import UserBadge from '$lib/components/user-management/UserBadge.svelte';
 	import { modal } from '$lib/stores/modal-store';
 	import { currentLicense } from '$lib/stores/resources/license-store';
 	import { receive, send } from '$lib/utils/animation-utils';
@@ -55,7 +55,7 @@
 		display: flex;
 		flex-direction: column;
 		align-self: center;
-		background-color: white;
+		background-color: var(--color-white);
 	}
 
 	.modal-header {

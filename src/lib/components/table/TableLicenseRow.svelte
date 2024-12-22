@@ -140,7 +140,7 @@
 			{#if license.renewalInterval !== 'None'}
 				<div
 					use:tooltip={{ content: renewalInterval, options: { delay: [500, 0] } }}
-					style="margin-right: 4px; margin-top: 5px;"
+					class="renewal-cell-icon"
 				>
 					<Repeat size={16} />
 				</div>
@@ -182,6 +182,12 @@
 		width: 100%;
 	}
 
+	.license-row:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
+	}
+
 	/* Cells */
 
 	.cell {
@@ -217,7 +223,7 @@
 	}
 
 	.status-icon.expired {
-		background-color: #ff0000;
+		background-color: var(--color-alert-dark);
 	}
 
 	.application-cell {
@@ -239,16 +245,20 @@
 	}
 
 	.expiration-cell > .warning-text {
-		color: #ff9736;
+		color: var(--color-warning-dark);
 	}
 
 	.expiration-cell > .alert-text {
-		color: #ff0000;
+		color: var(--color-alert-dark);
 	}
 
 	.renewal-cell {
 		flex: 0 0 70px;
 		justify-content: center;
+	}
+
+	.renewal-cell-icon {
+		margin: 5px 4px 0 0;
 	}
 
 	.menu-cell {
