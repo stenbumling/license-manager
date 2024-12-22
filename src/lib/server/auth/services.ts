@@ -13,13 +13,13 @@ const { REDIRECT_URI } = process.env;
 /*
  * These service functions are used to handle the authentication flow with Azure AD.
  * Use the `config.ts` file for configuration of the MSAL library.
- * 
+ *
  * See https://www.npmjs.com/package/@azure/msal-node for more information on the MSAL library.
  */
 
 /**
  * Check if the user should be authenticated.
- * 
+ *
  * Set `SKIP_AUTH` to `true` in the `env.local` file to skip authentication.
  * In production, the `SKIP_AUTH` variable will not be accessible to the client, so
  * it should always be set to `false`.

@@ -21,7 +21,7 @@
 			<Circle color="var(--deep-purple)" />
 		</div>
 
-	<!-- Errors and no results -->
+		<!-- Errors and no results -->
 	{:else if hasError}
 		<div class="fallback-container" in:fade={{ delay: 100, duration: 120 }}>
 			<h1>{$tableFetchRequest.error?.message}</h1>

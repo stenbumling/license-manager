@@ -28,7 +28,7 @@
 			<Circle color="var(--deep-purple)" />
 		</div>
 
-	<!-- Errors and no results -->
+		<!-- Errors and no results -->
 	{:else if hasError}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>
 			<h2>{$applicationFetchRequest.error?.message}</h2>

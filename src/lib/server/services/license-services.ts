@@ -18,7 +18,6 @@ export async function fetchLicensesByQuery(
 	sortColumn: SortColumn,
 	sortDirection: SortDirection,
 ): Promise<LicenseInstance[]> {
-
 	/** The WHERE clause for the License model */
 	const where = constructWhereClause(filter, search);
 

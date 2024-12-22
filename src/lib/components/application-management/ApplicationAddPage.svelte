@@ -30,9 +30,9 @@
 </script>
 
 <div class="application-add-container">
-	<h2 style="margin-bottom:1.6rem;">Adding new application</h2>
+	<h2>Adding new application</h2>
 	<div class="input-container">
-		<h3 style="margin-bottom:0.5rem;">Name<span class="required">*</span></h3>
+		<h3 class="input-title">Name<span class="required">*</span></h3>
 		<input
 			bind:value={$currentApplication.name}
 			type="text"
@@ -44,7 +44,7 @@
 				<span transition:fade={{ duration: 120 }}>{$applicationValidationError.name}</span>
 			{/if}
 		</p>
-		<h3 style="margin-bottom:0.5rem;">Link to application website</h3>
+		<h3 class="input-title">Link to application website</h3>
 		<input
 			bind:value={$currentApplication.link}
 			type="text"
@@ -80,7 +80,11 @@
 		display: flex;
 		flex-direction: column;
 		overflow-y: auto;
-		margin-bottom: 2rem;
+		margin: 1.6rem 0 2rem 0;
+	}
+
+	.input-title {
+		margin-bottom: 0.5rem;
 	}
 
 	.required {

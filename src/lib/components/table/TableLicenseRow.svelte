@@ -140,7 +140,7 @@
 			{#if license.renewalInterval !== 'None'}
 				<div
 					use:tooltip={{ content: renewalInterval, options: { delay: [500, 0] } }}
-					style="margin-right: 4px; margin-top: 5px;"
+					class="renewal-cell-icon"
 				>
 					<Repeat size={16} />
 				</div>
@@ -255,6 +255,10 @@
 	.renewal-cell {
 		flex: 0 0 70px;
 		justify-content: center;
+	}
+
+	.renewal-cell-icon {
+		margin: 5px 4px 0 0;
 	}
 
 	.menu-cell {

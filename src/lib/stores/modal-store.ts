@@ -26,7 +26,7 @@ function createModalController() {
 		const licenseId = url.searchParams.get('id');
 
 		closeAllModals();
- 
+
 		if (mode === 'add' && !licenseId) {
 			licenseMode.set(mode);
 			showLicenseModal.set(true);

@@ -4,7 +4,7 @@
  * animations.
  *
  * @param ms - The number of milliseconds to pause execution for.
- * 
+ *
  * @example await delay(x);
  */
 export async function delay(ms: number) {

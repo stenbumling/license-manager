@@ -47,16 +47,13 @@
 
 			<!-- Sort direction symbol -->
 			{#if $sortState['application'] === 'ASC'}
-				<div
-					style="line-height:0.5; margin-bottom: 0px;"
-					in:fly={{ duration: 160, y: 20, easing: quintOut }}
-				>
+				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
 					<CaretUp size={24} fill="#5a1ea0" />
 				</div>
 			{/if}
 			{#if $sortState['application'] === 'DESC'}
 				<div
-					style="line-height:0.5; margin-bottom: 2px;"
+					class="caret-down"
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
@@ -85,16 +82,13 @@
 
 			<!-- Sort direction symbol -->
 			{#if $sortState['contactPerson'] === 'ASC'}
-				<div
-					style="line-height:0.5; margin-bottom: 0px;"
-					in:fly={{ duration: 160, y: 20, easing: quintOut }}
-				>
+				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
 					<CaretUp size={24} fill="#5a1ea0" />
 				</div>
 			{/if}
 			{#if $sortState['contactPerson'] === 'DESC'}
 				<div
-					style="line-height:0.5; margin-bottom: 2px;"
+					class="caret-down"
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
@@ -121,16 +115,13 @@
 
 			<!-- Sort direction symbol -->
 			{#if $sortState['users'] === 'ASC'}
-				<div
-					style="line-height:0.5; margin-bottom: 0px;"
-					in:fly={{ duration: 160, y: 20, easing: quintOut }}
-				>
+				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
 					<CaretUp size={24} fill="#5a1ea0" />
 				</div>
 			{/if}
 			{#if $sortState['users'] === 'DESC'}
 				<div
-					style="line-height:0.5; margin-bottom: 2px;"
+					class="caret-down"
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
@@ -143,16 +134,13 @@
 		<div class="expiration-col">
 			<!-- Sort direction symbol -->
 			{#if $sortState['expirationDate'] === 'ASC'}
-				<div
-					style="line-height:0.5; margin-bottom: 0px;"
-					in:fly={{ duration: 160, y: 20, easing: quintOut }}
-				>
+				<div class="caret-up" in:fly={{ duration: 160, y: 20, easing: quintOut }}>
 					<CaretUp size={24} fill="#5a1ea0" />
 				</div>
 			{/if}
 			{#if $sortState['expirationDate'] === 'DESC'}
 				<div
-					style="line-height:0.5; margin-bottom: 2px;"
+					class="caret-down"
 					in:fly={{ duration: 160, y: -20, easing: quintOut }}
 					out:fly={{ duration: 160, y: 10, easing: quintOut }}
 				>
@@ -228,6 +216,16 @@
 		position: relative;
 		top: 1px;
 		left: 1px;
+	}
+
+	.caret-up {
+		line-height: 0.5;
+		margin-bottom: 0px;
+	}
+
+	.caret-down {
+		line-height: 0.5;
+		margin-bottom: 2px;
 	}
 
 	/*  Columns */

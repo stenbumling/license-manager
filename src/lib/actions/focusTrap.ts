@@ -6,7 +6,7 @@ import { createFocusTrap } from 'focus-trap';
  * wrapper that utilizes the [focus-trap](https://github.com/focus-trap/focus-trap) library.
  * @param node - The element to attach the focus trap to.
  * @param options - The [options](https://github.com/focus-trap/focus-trap?tab=readme-ov-file#usage) to pass to the focus-trap library.
- * 
+ *
  * @example <div use:focusTrap={{ <your options> }}></div>
  * @see {@link https://github.com/focus-trap/focus-trap}
  * @see {@link https://svelte.dev/docs/svelte/svelte-action} on how to use Svelte actions.
