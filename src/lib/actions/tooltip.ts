@@ -2,12 +2,6 @@ import type { Instance, Props } from 'tippy.js';
 import tippy from 'tippy.js';
 import 'tippy.js/dist/tippy.css';
 
-/*
- * This creates a tooltip for a given element. It uses
- * the tippy.js library – read more at https://atomiks.github.io/tippyjs/ on usage
- * and options.
- */
-
 interface TooltipParams {
 	content: string;
 	options?: Partial<Props>;
@@ -18,14 +12,19 @@ interface SvelteAction {
 	destroy: () => void;
 }
 
-export function tooltip(
-	node: HTMLElement,
-	params: { content: string; options?: Partial<Props> },
-): SvelteAction {
+/**
+ * This Svelte action adds a tooltip for a given element by utilizing the [tippy.js](https://atomiks.github.io/tippyjs/) library.
+ * @param node - The element to attach the tooltip to.
+ * @param params - The content of the tooltip and the [options](https://atomiks.github.io/tippyjs/v6/all-props/) to pass to the tippy library.
+ * @example ```<div use:tooltip={{ content: 'Tooltip content', options: { placement: 'right' } }}></div>```
+ * @see {@link https://atomiks.github.io/tippyjs/}
+ * @see {@link https://svelte.dev/docs/svelte/svelte-action} on how to use Svelte actions.
+ */
+export function tooltip(node: HTMLElement, params: TooltipParams): SvelteAction {
 	let instance: Instance | null = null;
 
+	/** If the content is not empty and the instance is not created, create a new instance */
 	function createOrUpdateTooltip() {
-		// If the content is not empty and the instance is not created, create a new instance
 		if (params.content && !instance) {
 			instance = tippy(node, {
 				content: params.content,
