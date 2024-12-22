@@ -18,16 +18,22 @@ import { get, writable } from 'svelte/store';
 
 export function getRequestStateDefaultValues(defaultLoadingState = false) {
 	return {
+		/** Whether the loading spinner should be shown */
 		isLoading: defaultLoadingState,
+		/** The number of requests currently pending */
 		pendingRequests: 0,
+		/** The time the first request was made */
 		startTime: 100,
+		/** The timer for the delay before showing the loading spinner */
 		delayTimer: undefined,
+		/** The minimum time to wait before showing the loading spinner */
 		delay: 0,
+		/** The error object returned from the request */
 		error: null,
 	};
 }
 
-// Stores for different types of requests.
+// Stores information about the state of the requests made in the application
 export const tableFetchRequest = writable<RequestState>(getRequestStateDefaultValues(true));
 export const licenseFetchRequest = writable<RequestState>(getRequestStateDefaultValues());
 export const licensePostRequest = writable<RequestState>(getRequestStateDefaultValues());
@@ -37,13 +43,14 @@ export const applicationFetchRequest = writable<RequestState>(getRequestStateDef
 export const applicationPostRequest = writable<RequestState>(getRequestStateDefaultValues());
 export const applicationDeleteRequest = writable<RequestState>(getRequestStateDefaultValues());
 
+/** Stores the state of the buttons in the application during requests */
 export const disableButtonsDuringRequests = writable<boolean>(false);
 
 function createRequestStateController() {
 	/**
-	 * Set the loading state to true and show the loading spinner after a optional delay
+	 * Set the loading state to true and show the loading spinner after an optional delay
 	 * @param request A request state store to update
-	 * @param {number} [delay] The minimum time to wait before showing the loading spinner
+	 * @param delay The minimum time to wait before showing the loading spinner
 	 */
 	async function setRequestState(request: Writable<RequestState>, delay: number = 200) {
 		request.update((state) => {
@@ -70,7 +77,7 @@ function createRequestStateController() {
 	/**
 	 * Set the loading state to false and remove the loading spinner
 	 * @param request - A request state store to update
-	 * @param {number} [minLoadingTime=0] - The minimum time the loading spinner should be shown, if it was shown
+	 * @param minLoadingTime - The minimum time the loading spinner should be shown, if it was shown
 	 */
 	async function endRequestState(request: Writable<RequestState>, minLoadingTime: number = 0) {
 		const elapsedTime = Date.now() - get(request).startTime;
@@ -95,6 +102,11 @@ function createRequestStateController() {
 		});
 	}
 
+	/**
+	 * Set the error object in the request state so that it can be displayed to the user
+	 * @param request - A request state store to update
+	 * @param error - The error object to set
+	 */
 	function setError(request: Writable<RequestState>, error: App.Error | null) {
 		request.update((state) => ({
 			...state,

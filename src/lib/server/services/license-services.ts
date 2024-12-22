@@ -18,10 +18,11 @@ export async function fetchLicensesByQuery(
 	sortColumn: SortColumn,
 	sortDirection: SortDirection,
 ): Promise<LicenseInstance[]> {
-	// Selects licenses based on the filter and search query parameters
+
+	/** The WHERE clause for the License model */
 	const where = constructWhereClause(filter, search);
 
-	// Sorts the licenses based on the sortColumn and sortDirection query parameters
+	/** The ORDER clause for the License model */
 	const order = constructOrderClause(sortColumn, sortDirection);
 
 	const licenses = await LicenseModel.findAll({

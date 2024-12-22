@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { tooltip } from '$lib/actions/tooltip';
 	import { sortState, table } from '$lib/stores/resources/table-store';
 	import CaretDown from 'carbon-icons-svelte/lib/CaretDown.svelte';
 	import CaretUp from 'carbon-icons-svelte/lib/CaretUp.svelte';
@@ -7,8 +8,7 @@
 	import { quintOut } from 'svelte/easing';
 	import { fly } from 'svelte/transition';
 
-	// Firefox doesn't support scrollbar-width
-	// instead we add a margin to the last column
+	// Firefox doesn't support `scrollbar-width`, so we add a margin to the last column instead
 	let isFirefox = false;
 	if (browser) {
 		isFirefox = navigator.userAgent.includes('Firefox');
@@ -18,7 +18,12 @@
 <div role="rowgroup">
 	<div role="row" class="table-header-row" class:extra-margin={!isFirefox}>
 		<!-- Status column -->
-		<div role="columnheader" tabindex="-1" class="status-col">
+		<div
+			role="columnheader"
+			tabindex="-1"
+			class="status-col"
+			use:tooltip={{ content: 'Status', options: { delay: [1000, 0] } }}
+		>
 			<CircleDash size={20} />
 		</div>
 

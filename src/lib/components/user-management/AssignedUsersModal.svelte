@@ -9,11 +9,10 @@
 	import { fade } from 'svelte/transition';
 </script>
 
-<!-- This modal shows all assigned users when there are more than 8 users -->
 <div class="modal-container" transition:fade={{ duration: 120 }}>
 	<dialog open class="modal-window" use:focusTrap>
 		<div class="modal-header">
-			<h1 class="modal-title">Assigned<br />users</h1>
+			<h1 class="modal-title">Assigned users</h1>
 			<CloseButton action={modal.closeAssignedUsers} />
 		</div>
 		<h3>List of assigned users</h3>

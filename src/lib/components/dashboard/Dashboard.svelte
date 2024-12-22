@@ -7,7 +7,7 @@
 	import type { DashboardFilter } from '$lib/types/misc-types';
 	import { onMount } from 'svelte';
 
-	function handleClick(e: MouseEvent | KeyboardEvent) {
+	function handleOpenAddLicenseModal(e: MouseEvent | KeyboardEvent) {
 		if (e.metaKey || e.ctrlKey) {
 			return;
 		}
@@ -59,7 +59,7 @@
 				<FilterButton {filter} />
 			{/each}
 		</div>
-		<PrimaryButton title="Add new license" action={(e) => handleClick(e)} />
+		<PrimaryButton title="Add new license" action={(e) => handleOpenAddLicenseModal(e)} />
 	</div>
 </div>
 

@@ -10,34 +10,35 @@
 	import { slide } from 'svelte/transition';
 
 	export let applicationItem: ApplicationData;
-	let trashcanTooltip = '';
-	let isTrashcanDisabled = false;
+	let trashCanTooltip = '';
+	let isTrashCanDisabled = false;
 
+	// Changes the tooltip and trash can icon color based on the application's state
 	$: {
 		if (!$isOnline) {
-			trashcanTooltip =
+			trashCanTooltip =
 				"You're currently offline and cannot delete applications. Try again when you're online";
-			isTrashcanDisabled = true;
+			isTrashCanDisabled = true;
 		} else if (applicationItem.licenseAssociations > 0) {
-			trashcanTooltip = `${applicationItem.name} has ${applicationItem.licenseAssociations} license(s) associated with it and cannot be deleted. Delete the associated licenses before trying to delete the application`;
-			isTrashcanDisabled = true;
+			trashCanTooltip = `${applicationItem.name} has ${applicationItem.licenseAssociations} license(s) associated with it and cannot be deleted. Delete the associated licenses before trying to delete the application`;
+			isTrashCanDisabled = true;
 		} else if (applicationItem.name === $currentLicense.application.name) {
-			trashcanTooltip = `${applicationItem.name} is currently selected and cannot be deleted. Try unselecting it before deleting`;
-			isTrashcanDisabled = true;
+			trashCanTooltip = `${applicationItem.name} is currently selected and cannot be deleted. Try unselecting it before deleting`;
+			isTrashCanDisabled = true;
 		} else {
-			trashcanTooltip = '';
-			isTrashcanDisabled = false;
+			trashCanTooltip = '';
+			isTrashCanDisabled = false;
 		}
 	}
 
-	function handleEdit() {
+	function handleOpenEditPage() {
 		const appCopy: ApplicationData = JSON.parse(JSON.stringify(applicationItem));
 		currentApplication.set(appCopy);
 		applicationModalView.set('edit');
 	}
 
 	async function handleDeletionWarningModal() {
-		if (isTrashcanDisabled) return;
+		if (isTrashCanDisabled) return;
 		applicationToDelete.set(applicationItem.id);
 		warningModal.set('application-deletion');
 	}
@@ -54,19 +55,19 @@
 		{applicationItem.name}
 	</p>
 	<div class="button-container">
-		<button class="edit-icon" on:click={handleEdit}>
+		<button class="edit-icon" on:click={handleOpenEditPage}>
 			<Settings size={24} fill="black" />
 		</button>
 		<button
 			class="trashcan-icon"
-			class:deletable={!isTrashcanDisabled}
+			class:deletable={!isTrashCanDisabled}
 			use:tooltip={{
-				content: trashcanTooltip,
+				content: trashCanTooltip,
 				options: { delay: [500, 0], offset: [0, 10] },
 			}}
 			on:click={handleDeletionWarningModal}
 		>
-			<TrashCan size={24} fill={isTrashcanDisabled ? '#cccccc' : 'red'} />
+			<TrashCan size={24} fill={isTrashCanDisabled ? '#cccccc' : 'red'} />
 		</button>
 	</div>
 </div>

@@ -1,25 +1,11 @@
-<script lang="ts">
-	import logo from '$lib/images/nexer-logo-white.png';
-
-	// TODO: remove this after adding functionality for periodically syncing users
-	async function handleClick() {
-		const response = await fetch('/api/users/sync', {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-	}
-</script>
-
 <header class="header-container">
 	<div class="header-content">
 		<a style="line-height:0" href="/" data-sveltekit-reload>
-			<img class="header-logo" src={logo} alt="Nexer Logo" />
+			<h1 class="header-title">License manager</h1>
 		</a>
-		<!-- svelte-ignore a11y-click-events-have-key-events -->
-		<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-		<h2 on:click={handleClick} class="header-department-name">Örebro</h2>
+		<div class="header-subtitle-badge">
+			<h2 class="header-subtitle">Demo version</h2>
+		</div>
 	</div>
 </header>
 
@@ -31,27 +17,32 @@
 		align-items: center;
 		background-color: black;
 	}
-
-	.header-logo {
-		height: 1.6rem;
-	}
-
-	.header-logo:active {
-		transform: scale(0.95);
-	}
 	.header-content {
 		width: 100%;
-		height: 2.4rem;
+		height: 2.8rem;
 		gap: 1.6rem;
 		max-width: 116rem;
 		display: flex;
 		align-items: center;
 	}
 
-	.header-department-name {
+	.header-title {
+		color: #ffffff;
+		margin: 0;
+	}
+
+	.header-subtitle-badge {
 		display: flex;
-		margin-top: 2px;
-		color: #a3a3a3;
+		background-color: var(--deep-purple);
+		border-radius: 6px;
+		padding: 3px 0.8rem;
+	}
+
+	.header-subtitle {
+		display: flex;
+		font-size: 0.9rem;
+		margin: 0;
+		color: #e0beff;
 	}
 
 	@media (max-height: 850px) {
@@ -63,12 +54,17 @@
 			gap: 1rem;
 		}
 
-		.header-logo {
-			height: 1rem;
+		.header-title {
+			font-size: 1.25rem;
 		}
 
-		.header-department-name {
+		.header-subtitle-badge {
+			background-color: black;
+		}
+
+		.header-subtitle {
 			font-size: 0.7rem;
+			color: var(--light-purple);
 		}
 	}
 </style>

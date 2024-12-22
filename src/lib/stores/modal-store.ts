@@ -8,6 +8,7 @@ import type { LicenseModalMode } from '$lib/types/license-types';
 import type { WarningModalMode } from '$lib/types/misc-types';
 import { writable } from 'svelte/store';
 
+// Stores the state of the modals in the application
 export const showLicenseModal = writable(false);
 export const showAssignedUsersModal = writable(false);
 export const applicationModalView = writable<ApplicationModalMode>('closed');
@@ -25,7 +26,7 @@ function createModalController() {
 		const licenseId = url.searchParams.get('id');
 
 		closeAllModals();
-
+ 
 		if (mode === 'add' && !licenseId) {
 			licenseMode.set(mode);
 			showLicenseModal.set(true);

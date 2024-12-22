@@ -23,13 +23,14 @@ function getSortStateDefaultValue(): Record<SortColumn, SortDirection> {
 	};
 }
 
-// Stores for managing queries and state of the table
-export const searchQuery = writable<string>('');
+/** Stores the current filter state of the table */
 export const filterState = writable<FilterReadableName>('All');
+/** Stores the current sort state of the table */
 export const sortState = writable<Record<SortColumn, SortDirection>>(getSortStateDefaultValue());
-
-// Used to render the search query in the table if no results are found
-export const currentSearch = writable<string>('');
+/** Stores the string value of the search input field in the dashboard */
+export const searchQuery = writable<string>('');
+/** Stores the active search query for display purposes */
+export const activeSearchQuery = writable<string>('');
 
 function createTableController() {
 	async function updateFilterState(filter: FilterReadableName) {
@@ -121,7 +122,7 @@ function createTableController() {
 			case 'Expired':
 				return '?filter=expired';
 			case 'Search':
-				currentSearch.set(searchQueryParam);
+				activeSearchQuery.set(searchQueryParam);
 				return searchQueryParam === '' ? '' : `?search=${searchQueryParam}`;
 			default:
 				console.error(`Unknown filter: ${filterName}`);
@@ -168,7 +169,7 @@ function createTableController() {
 		filterState.set('All');
 		sortState.set(getSortStateDefaultValue());
 		searchQuery.set('');
-		currentSearch.set('');
+		activeSearchQuery.set('');
 		await updateTableState();
 	}
 

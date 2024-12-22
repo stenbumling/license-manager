@@ -7,7 +7,7 @@
 
 	export let filter: DashboardFilter;
 
-	function handleClick() {
+	function handleFilterChange() {
 		searchQuery.set('');
 		searchQueryValidationError.set([]);
 		table.filterBy(filter.title);
@@ -18,7 +18,7 @@
 	class="filter-container"
 	class:active={$filterState === filter.title}
 	style:background-color={$filterState === filter.title ? filter.color : ''}
-	on:click|preventDefault={handleClick}
+	on:click|preventDefault={handleFilterChange}
 >
 	<div class="filter-content">
 		<h4 class="filter-title">{filter.title}</h4>

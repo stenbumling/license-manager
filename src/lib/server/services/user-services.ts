@@ -1,8 +1,23 @@
+import { sequelize } from '$lib/server/db';
 import LicenseModel from '$lib/server/models/license-model';
 import UserModel from '$lib/server/models/user-model';
 import type { AzureAdGroupUser, FilteredUsersForUserSync, UserData } from '$lib/types/user-types';
 import { error } from '@sveltejs/kit';
-import { sequelize } from '$lib/server/db';
+
+export async function getUsersFromDatabase(): Promise<UserData[]> {
+	const userInstances = await UserModel.findAll({
+		attributes: { exclude: ['createdAt'] },
+		include: [
+			{
+				model: LicenseModel,
+				attributes: ['id'],
+				through: { attributes: [] },
+			},
+		],
+		order: [['name', 'ASC']],
+	});
+	return userInstances.map((user) => user.toJSON());
+}
 
 export async function getAzureAdGroupMembers(token: string): Promise<AzureAdGroupUser[]> {
 	const { AZURE_AD_GROUP_ID } = process.env;
@@ -32,21 +47,42 @@ export async function getAzureAdGroupMembers(token: string): Promise<AzureAdGrou
 	}
 }
 
-export async function getUsersFromDatabase(): Promise<UserData[]> {
-	const userInstances = await UserModel.findAll({
-		attributes: { exclude: ['createdAt'] },
-		include: [
-			{
-				model: LicenseModel,
-				attributes: ['id'],
-				through: { attributes: [] },
-			},
-		],
-		order: [['name', 'ASC']],
-	});
-	return userInstances.map((user) => user.toJSON());
+/**
+ * Used with `syncUserTableWithAzureAdGroup` to determine which users need to be added, deleted, flagged, or updated.
+ * @param azureAdGroupUsers
+ * @param dbUsers
+ */
+export function filterUsersForUserSync(
+	azureAdGroupUsers: AzureAdGroupUser[],
+	dbUsers: UserData[],
+): FilteredUsersForUserSync {
+	const azureAdUserIds = azureAdGroupUsers.map((user) => user.id);
+	const dbUserIds = dbUsers.map((user) => user.id);
+
+	const toAdd = azureAdGroupUsers.filter((user) => user.id && !dbUserIds.includes(user.id));
+	const toDelete = dbUsers.filter(
+		(user) =>
+			user.id && !azureAdUserIds.includes(user.id) && user.licenses && user.licenses.length === 0,
+	);
+	const toFlagAsInactive = dbUsers.filter(
+		(user) =>
+			user.id && !azureAdUserIds.includes(user.id) && user.licenses && user.licenses.length > 0,
+	);
+	const toUpdate = dbUsers.filter((user) => user.id && azureAdUserIds.includes(user.id));
+
+	return {
+		toAdd,
+		toDelete,
+		toFlagAsInactive,
+		toUpdate,
+	};
 }
 
+/**
+ * Syncs the user table with an Azure AD group by adding, deleting, flagging as inactive, or updating users.
+ * @param azureAdGroupUsers - The users from the Azure AD group
+ * @param dbUsers - The users from the database
+ */
 export async function syncUserTableWithAzureAdGroup(
 	azureAdGroupUsers: AzureAdGroupUser[],
 	dbUsers: FilteredUsersForUserSync,
@@ -96,35 +132,4 @@ export async function syncUserTableWithAzureAdGroup(
 		await transaction.rollback();
 		throw error;
 	}
-}
-
-/**
- * Used with syncUserTableWithAzureAdGroup to determine which users need to be added, deleted, flagged, or updated.
- * @param azureAdGroupUsers
- * @param dbUsers
- */
-export function filterUsersForUserSync(
-	azureAdGroupUsers: AzureAdGroupUser[],
-	dbUsers: UserData[],
-): FilteredUsersForUserSync {
-	const azureAdUserIds = azureAdGroupUsers.map((user) => user.id);
-	const dbUserIds = dbUsers.map((user) => user.id);
-
-	const toAdd = azureAdGroupUsers.filter((user) => user.id && !dbUserIds.includes(user.id));
-	const toDelete = dbUsers.filter(
-		(user) =>
-			user.id && !azureAdUserIds.includes(user.id) && user.licenses && user.licenses.length === 0,
-	);
-	const toFlagAsInactive = dbUsers.filter(
-		(user) =>
-			user.id && !azureAdUserIds.includes(user.id) && user.licenses && user.licenses.length > 0,
-	);
-	const toUpdate = dbUsers.filter((user) => user.id && azureAdUserIds.includes(user.id));
-
-	return {
-		toAdd,
-		toDelete,
-		toFlagAsInactive,
-		toUpdate,
-	};
 }

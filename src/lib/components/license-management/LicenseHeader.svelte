@@ -8,7 +8,7 @@
 		fetchedLicense.set(JSON.parse(JSON.stringify($currentLicense)));
 	}
 
-	function handleCloseModal() {
+	function handleCloseLicenseModal() {
 		if (JSON.stringify($currentLicense) === JSON.stringify($fetchedLicense)) {
 			modal.closeLicense();
 		} else {
@@ -25,7 +25,7 @@
 			>
 		{/if}
 		<div class="close-button">
-			<CloseButton action={handleCloseModal} />
+			<CloseButton action={handleCloseLicenseModal} />
 		</div>
 	</div>
 	{#if $currentLicense.application.name && $licenseMode === 'view'}

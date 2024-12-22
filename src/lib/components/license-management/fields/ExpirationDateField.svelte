@@ -9,7 +9,7 @@
 	import { fade } from 'svelte/transition';
 	import { v4 as uuidv4 } from 'uuid';
 
-	$: daysLeft = getRelativeDate($currentLicense.expirationDate);
+	$: daysLeftUntilExpirationDate = getRelativeDate($currentLicense.expirationDate);
 	$: startIndexForToggleButtonItems = toggleButtonItems.findIndex(
 		(item) => item.label === $currentLicense.renewalInterval,
 	);
@@ -71,7 +71,7 @@
 				>{$licenseValidationErrors.expirationDate}</span
 			>
 		{:else}
-			<span in:fade={{ duration: 120 }}>{daysLeft.text}</span>
+			<span in:fade={{ duration: 120 }}>{daysLeftUntilExpirationDate.text}</span>
 		{/if}
 	</p>
 </div>

@@ -21,14 +21,14 @@
 	<!-- Loading -->
 	{#if hasStartedRequest}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>
-			<!-- Prevents default state being active if loading spinner has a delay -->
+			<!-- This div prevents default state being active if loading spinner has a delay -->
 		</div>
 	{:else if isLoading}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>
 			<Circle color="var(--deep-purple)" />
 		</div>
 
-		<!-- Errors and no results -->
+	<!-- Errors and no results -->
 	{:else if hasError}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>
 			<h2>{$applicationFetchRequest.error?.message}</h2>

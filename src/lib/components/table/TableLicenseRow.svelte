@@ -16,7 +16,7 @@
 	export let license: LicenseData;
 	export let index: number;
 
-	let hovered = false;
+	let isHover = false;
 
 	$: status = license.status;
 	$: applicationName = license.application.name;
@@ -49,7 +49,7 @@
 		},
 	];
 
-	function handleView(license: LicenseData, e: MouseEvent | KeyboardEvent) {
+	function handleViewLicense(license: LicenseData, e: MouseEvent | KeyboardEvent) {
 		contextMenu.close();
 		if (e.metaKey || e.ctrlKey) return;
 		e.preventDefault();
@@ -68,17 +68,17 @@
 	tabindex="-1"
 	class="license-row-container"
 	class:even-row={index % 2 === 1}
-	class:hover={hovered}
+	class:hover={isHover}
 >
 	<a
 		class="license-row"
 		tabindex="0"
 		href={`/?modal=view&id=${license.id}`}
-		on:mouseover={() => (hovered = true)}
-		on:mouseout={() => (hovered = false)}
-		on:focus={() => (hovered = true)}
-		on:blur={() => (hovered = false)}
-		on:click|stopPropagation={(e) => handleView(license, e)}
+		on:mouseover={() => (isHover = true)}
+		on:mouseout={() => (isHover = false)}
+		on:focus={() => (isHover = true)}
+		on:blur={() => (isHover = false)}
+		on:click|stopPropagation={(e) => handleViewLicense(license, e)}
 	>
 		<!-- Icon cell -->
 		<div

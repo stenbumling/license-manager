@@ -4,22 +4,35 @@
 	import { applicationModalView } from '$lib/stores/modal-store';
 	import { applicationPostRequest } from '$lib/stores/request-state-store';
 	import { applicationStore, currentApplication } from '$lib/stores/resources/application-store';
+	import { currentLicense, licenseMode } from '$lib/stores/resources/license-store';
 	import {
 		applicationValidationError,
 		validateApplication,
 	} from '$lib/validations/application-validation';
 	import { fade } from 'svelte/transition';
 
-	async function handleAdd(e?: MouseEvent | KeyboardEvent) {
+	const oldAppName = $currentApplication.name;
+
+	async function handleEditApplication(e?: MouseEvent | KeyboardEvent) {
 		if (e instanceof KeyboardEvent && e.key !== 'Enter') return;
 		const isValid = await validateApplication($currentApplication);
 		if (isValid) {
-			const success = await applicationStore.add($currentApplication);
+			const success = await applicationStore.update($currentApplication);
 			if (success) {
 				applicationStore.resetFields();
 				applicationModalView.set('list');
+				updateApplicationNameInLicenseModalHeader();
 				applicationStore.fetch();
 			}
+		}
+	}
+
+	function updateApplicationNameInLicenseModalHeader() {
+		if ($currentLicense.application.name === oldAppName && $licenseMode === 'view') {
+			currentLicense.set({
+				...$currentLicense,
+				application: { ...$currentLicense.application, name: $currentApplication.name },
+			});
 		}
 	}
 
@@ -29,8 +42,8 @@
 	}
 </script>
 
-<div class="application-add-container">
-	<h2 style="margin-bottom:1.6rem;">Adding new application</h2>
+<div class="application-edit-container">
+	<h2 class="title">Editing <span style="color: var(--deep-purple)">{oldAppName}</span></h2>
 	<div class="input-container">
 		<h3 style="margin-bottom:0.5rem;">Name<span class="required">*</span></h3>
 		<input
@@ -60,19 +73,24 @@
 	<div class="button-container">
 		<SecondaryButton title={'Cancel'} action={handleCancel} />
 		<PrimaryButton
-			title={'Add application'}
-			action={handleAdd}
+			title={'Save changes'}
+			action={handleEditApplication}
 			pendingRequest={$applicationPostRequest.isLoading}
 		/>
 	</div>
 </div>
 
 <style>
-	.application-add-container {
+	.application-edit-container {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
 		max-height: inherit;
+	}
+
+	.title {
+		margin-bottom: 1.6rem;
+		overflow-wrap: break-word;
 	}
 
 	.input-container {

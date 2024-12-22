@@ -1,7 +1,7 @@
 import { quintOut } from 'svelte/easing';
 import { crossfade } from 'svelte/transition';
 
-// Used for animating user badges
+// Used for animating the positions of user badges
 export const [send, receive] = crossfade({
 	duration: (d) => Math.sqrt(d * 200),
 

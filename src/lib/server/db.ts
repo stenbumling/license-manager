@@ -9,6 +9,9 @@ import {
 } from 'sequelize';
 import type { ConnectionConfiguration } from 'tedious';
 
+/**
+ * An instance of the Sequelize class that is used to connect to the database.
+ */
 export const sequelize = (() => {
 	if (building) {
 		return new Sequelize({

@@ -7,6 +7,8 @@ const { AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_CLOUD_INSTANCE, AZURE_TENANT
  * This is used to configure the MSAL library for authentication to Azure AD.
  * Client ID, Tenant ID, and Client Secret should be set in the environment variables.
  * The client secret in particular should be kept in a key vault or other secure location.
+ * 
+ * @see {@link https://www.npmjs.com/package/@azure/msal-node} for more information on the MSAL library.
  */
 export const msalConfig: Configuration = {
 	auth: {
@@ -35,13 +37,25 @@ export const cookiesConfig = {
 };
 
 /**
- * The permissions required by the application to access the app.
+ * The permissions required by the application for access.
  * They need to be set in the Azure AD application registration.
+ *
+ * 1. Go to the Azure Portal
+ * 2. Go to Azure Active Directory
+ * 3. Go to App registrations
+ * 4. Find the app registration for this app
+ * 5. Go to API permissions
+ * 6. Add permissions
+ * 7. Select Microsoft Graph
+ * 8. Add the permissions below
+ *
+ * Note: Some permissions require admin consent.
+ * 
+ * @see {@link https://docs.microsoft.com/en-us/graph/permissions-reference} for more information on Graph permissions.
  */
 export const graphApiPermissions = [
-	'https://graph.microsoft.com/User.Read',
-	// TODO: Add the permissions below when admin has consented to them
-	// 'https://graph.microsoft.com/GroupMember.Read.All',
-	// 'https://graph.microsoft.com/User.Read.All',
-	'offline_access',
+	'https://graph.microsoft.com/User.Read', // Required for logging into the app
+	'https://graph.microsoft.com/GroupMember.Read.All', // Required for accessing group members
+	'https://graph.microsoft.com/User.Read.All', // Required for accessing all users in the tenant
+	'offline_access', // Required for refresh tokens
 ];
