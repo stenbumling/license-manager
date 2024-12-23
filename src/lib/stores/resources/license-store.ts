@@ -8,9 +8,10 @@ import {
 	request,
 } from '$lib/stores/request-state-store';
 import { getApplicationDefaultValue } from '$lib/stores/resources/application-store';
-import { table } from '$lib/stores/resources/table-store';
+import { searchQuery, table } from '$lib/stores/resources/table-store';
 import type { LicenseCounts, LicenseData, LicenseModalMode } from '$lib/types/license-types';
 import { licenseValidationErrors } from '$lib/validations/license-validation';
+import { searchQueryValidationError } from '$lib/validations/search-query-validation';
 import { get, writable } from 'svelte/store';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -58,6 +59,8 @@ function createLicenseStore() {
 	async function getLicenseById(id: string) {
 		try {
 			await request.startLoading(licenseFetchRequest);
+			searchQuery.set('');
+			searchQueryValidationError.set([]);
 			const response = await fetch(`/api/licenses/${id}`);
 			await request.endLoading(licenseFetchRequest, 1000);
 			if (response.ok) {
