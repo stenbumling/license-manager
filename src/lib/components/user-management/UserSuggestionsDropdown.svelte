@@ -21,7 +21,7 @@
 <style>
 	.suggestions-list {
 		list-style-type: none;
-		padding: 0 0.2rem 0 0.5rem;
+		padding: 0.5rem 0.2rem 0.5rem 0.5rem;
 		margin-top: 0;
 		position: absolute;
 		background-color: white;
