@@ -51,7 +51,7 @@
 
 <div class="dashboard-container">
 	<div class="dashboard">
-		<h1>License <br /> manager</h1>
+		<h2>Search</h2>
 		<SearchBar />
 		<h2>Filter</h2>
 		<div class="filter-list">
@@ -74,7 +74,7 @@
 	.dashboard {
 		margin-right: 3rem;
 		margin-top: 2.69rem;
-		padding: 0.4rem 2rem 2rem 2rem;
+		padding: 2rem;
 		border: 1px solid black;
 		display: flex;
 		flex-direction: column;
@@ -84,7 +84,7 @@
 
 	.filter-list {
 		margin-bottom: 2rem;
-		margin-top: 0.5rem;
+		margin-top: 0.6rem;
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;

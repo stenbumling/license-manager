@@ -35,20 +35,13 @@
 </div>
 
 <style>
-	.search-icon {
-		position: relative;
-		top: -35px;
-		left: 14px;
-		width: 20px;
-	}
-
 	.search-field {
 		width: 100%;
 		min-height: 3rem;
+		margin-top: 0.6rem;
 		padding-left: 50px;
 		border: none;
 		border-bottom: 1px solid var(--color-placeholder-text);
-		box-sizing: border-box;
 		font-family: 'FK Grotesk Regular', Arial, Helvetica, sans-serif;
 		background-color: transparent;
 	}
@@ -84,5 +77,12 @@
 		border: 2px solid var(--color-light-purple);
 		outline: none;
 		padding: 0 0 1px 48px;
+	}
+
+	.search-icon {
+		position: relative;
+		top: -35px;
+		left: 14px;
+		width: 20px;
 	}
 </style>
