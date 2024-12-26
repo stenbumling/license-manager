@@ -1,6 +1,6 @@
 <header class="header-container">
 	<div class="header-content">
-		<a style="line-height:0" href="/" data-sveltekit-reload>
+		<a href="/" data-sveltekit-reload>
 			<h1 class="header-title">License manager</h1>
 		</a>
 		<div class="header-subtitle-badge">
@@ -29,6 +29,8 @@
 	.header-title {
 		color: var(--color-white);
 		margin: 0;
+		cursor: pointer;
+		user-select: none;
 	}
 
 	.header-subtitle-badge {
