@@ -35,7 +35,7 @@
 		{#if dismissable}
 			<CloseButton
 				action={handleDismiss}
-				color={type === 'warning' ? 'black' : 'white'}
+				color={type === 'warning' || type === 'success' ? 'black' : 'white'}
 				parentType="notification"
 			/>
 		{/if}
@@ -45,9 +45,9 @@
 <style>
 	article {
 		color: white;
-		padding: 0.75rem 0.5rem 0.75rem 1rem;
-		border-radius: 0.3rem;
-		box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.35);
+		padding: 0.75rem 0.8rem 0.75rem 1rem;
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4), 0px 7px 13px -3px rgba(0, 0, 0, 0.3),
+			0px -3px 0px inset rgba(0, 0, 0, 0.2);
 		display: flex;
 		align-items: center;
 		margin: 0 0 0.8rem 0;
@@ -56,24 +56,25 @@
 	}
 
 	.success {
-		background: rgb(97, 155, 92);
-		border: 2px solid rgba(0, 0, 0, 0.15);
+		background: rgb(106, 230, 116);
+		border: 1px solid rgba(0, 0, 0, 0.15);
+		color: black;
 	}
 
 	.info {
 		background: rgb(92, 92, 92);
-		border: 2px solid rgba(0, 0, 0, 0.15);
+		border: 1px solid rgba(0, 0, 0, 0.15);
 	}
 
 	.warning {
 		background: #f0bf0e;
-		border: 2px solid rgba(0, 0, 0, 0.15);
+		border: 1px solid rgba(0, 0, 0, 0.15);
 		color: black;
 	}
 
 	.alert {
-		background: rgb(203, 55, 55);
-		border: 2px solid rgba(0, 0, 0, 0.15);
+		background: var(--color-alert-dark);
+		border: 1px solid rgba(0, 0, 0, 0.15);
 	}
 
 	.text {

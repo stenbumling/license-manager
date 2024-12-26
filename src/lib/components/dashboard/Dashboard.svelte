@@ -92,6 +92,7 @@
 
 	h2 {
 		margin-bottom: 0.6rem;
+		user-select: none;
 	}
 
 	@media (max-height: 850px) {
