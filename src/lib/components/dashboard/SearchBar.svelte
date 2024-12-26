@@ -28,7 +28,7 @@
 		type="search"
 		class={`${isError ? 'error' : ''} ${isActiveSearch ? 'active-search-query' : ''}`}
 		placeholder="Search for licenses"
-		maxlength="130"
+		maxlength="70"
 		on:keydown={(e) => {
 			if (e.key === 'Enter') handleSearchQuery();
 		}}
