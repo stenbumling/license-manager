@@ -56,7 +56,7 @@
 	}
 
 	.success {
-		background: rgb(106, 230, 116);
+		background: rgb(93, 199, 102);
 		border: 1px solid rgba(0, 0, 0, 0.15);
 		color: black;
 	}
