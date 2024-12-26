@@ -88,6 +88,8 @@
 
 	.search-query-text {
 		color: var(--color-deep-purple);
+		text-decoration: dotted underline 2px;
+		text-underline-position: under;
 	}
 
 	@media (max-width: 1600px) {

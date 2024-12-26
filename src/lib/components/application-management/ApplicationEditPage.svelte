@@ -43,7 +43,7 @@
 </script>
 
 <div class="application-edit-container">
-	<h2 class="title">Editing <span style="color: var(--color-deep-purple)">{oldAppName}</span></h2>
+	<h2 class="title">Editing <span class="app-name">{oldAppName}</span></h2>
 	<div class="input-container">
 		<h3 class="input-title">Name<span class="required">*</span></h3>
 		<input
@@ -90,6 +90,12 @@
 
 	.title {
 		overflow-wrap: break-word;
+	}
+
+	.app-name {
+		color: var(--color-deep-purple);
+		text-decoration: dotted underline 2px;
+		text-underline-position: under;
 	}
 
 	.input-container {

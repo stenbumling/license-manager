@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const searchQuerySchema = z
 	.string({ invalid_type_error: 'Your search query must be a string' })
 	.trim()
-	.max(50, { message: 'Your search query is too long' });
+	.max(70, { message: 'Your search query is too long' });
 
 export const searchQueryValidationError = writable<string[]>([]);
 

@@ -3,6 +3,7 @@ import { request, tableFetchRequest } from '$lib/stores/request-state-store';
 import { licenseStore } from '$lib/stores/resources/license-store';
 import type { LicenseData } from '$lib/types/license-types';
 import type { FilterReadableName, SortColumn, SortDirection } from '$lib/types/query-types';
+import { searchQueryValidationError } from '$lib/validations/search-query-validation';
 import { get, writable } from 'svelte/store';
 
 /*
@@ -170,6 +171,7 @@ function createTableController() {
 		sortState.set(getSortStateDefaultValue());
 		searchQuery.set('');
 		activeSearchQuery.set('');
+		searchQueryValidationError.set([]);
 		await updateTableState();
 	}
 
@@ -177,6 +179,7 @@ function createTableController() {
 		filterBy: updateFilterState,
 		sortBy: updateSortState,
 		updateState: updateTableState,
+		resetState: resetTableState,
 	};
 }
 

@@ -12,7 +12,7 @@
 		{#if $page.status === 404}
 			<h2>
 				The requested web page at
-				<span style="color:var(--color-deep-purple)">{$page.url.pathname}</span> could not be found.
+				<span class="url-pathname">{$page.url.pathname}</span> could not be found.
 			</h2>
 			{#if $page.error?.details}
 				<p>{$page.error.details}</p>
@@ -45,6 +45,12 @@
 	.error-details {
 		max-width: 62ch;
 		word-wrap: break-word;
+	}
+
+	.url-pathname {
+		color: var(--color-deep-purple);
+		text-decoration: dotted underline 2px;
+		text-underline-position: under;
 	}
 
 	@media (max-height: 850px) {
