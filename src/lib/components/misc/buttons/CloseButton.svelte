@@ -33,7 +33,6 @@
 		font-size: 1rem;
 		text-decoration: none;
 		color: black;
-		transition: color 0.25s ease;
 		transition: background-color 0.2s ease;
 		cursor: pointer;
 	}

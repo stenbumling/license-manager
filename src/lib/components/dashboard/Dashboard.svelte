@@ -53,7 +53,7 @@
 	<div class="dashboard">
 		<h2>Search</h2>
 		<SearchBar />
-		<h2>Filter</h2>
+		<h2 style="margin-top:2rem;">Filter</h2>
 		<div class="filter-list">
 			{#each filters as filter}
 				<FilterButton {filter} />
@@ -73,7 +73,7 @@
 
 	.dashboard {
 		margin-right: 3rem;
-		margin-top: 2.69rem;
+		margin-top: 2.8rem;
 		padding: 2rem;
 		border: 1px solid black;
 		display: flex;
@@ -84,10 +84,14 @@
 
 	.filter-list {
 		margin-bottom: 2rem;
-		margin-top: 0.6rem;
+		/* margin-top: 0.6rem; */
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;
+	}
+
+	h2 {
+		margin-bottom: 0.6rem;
 	}
 
 	@media (max-height: 850px) {
