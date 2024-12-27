@@ -21,7 +21,7 @@
 	.header-content {
 		width: 100%;
 		gap: 1.6rem;
-		max-width: 116rem;
+		max-width: 96rem;
 		display: flex;
 		align-items: center;
 	}

@@ -70,7 +70,7 @@
 		align-items: flex-start;
 		margin-right: 3rem;
 	}
-	
+
 	.dashboard {
 		margin-top: 2.8rem;
 		padding: 2rem;
