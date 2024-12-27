@@ -69,6 +69,7 @@
 		border-top: 2px solid black;
 		flex-grow: 1;
 		overflow-y: scroll;
+		min-width: 40rem;
 	}
 
 	.fallback-container {
@@ -77,13 +78,8 @@
 		justify-content: center;
 		text-align: center;
 		flex-direction: column;
-		height: 100%;
-
-		& > * {
-			max-width: 70%;
-			line-height: 1.7;
-			word-wrap: break-word;
-		}
+		height: calc(100% - 4rem);
+		padding: 2rem 2rem;
 	}
 
 	.search-query-text {
@@ -92,9 +88,21 @@
 		text-underline-position: under;
 	}
 
+	h1 {
+		line-height: 1.7;
+		max-width: 40ch;
+		word-wrap: break-word;
+	}
+
 	@media (max-width: 1600px) {
 		h1 {
-			max-width: 30rem;
+			max-width: 30ch;
+		}
+	}
+
+	@media (max-width: 1250px) {
+		h1 {
+			max-width: 24ch;
 		}
 	}
 </style>

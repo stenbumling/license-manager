@@ -11,15 +11,15 @@
 
 <style>
 	.header-container {
-		padding: 1rem 4.9rem 1rem 5.1rem;
+		padding: 0 4.9rem 0 5.1rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		background-color: var(--color-deep-black);
+		height: 4.65rem;
 	}
 	.header-content {
 		width: 100%;
-		height: 2.8rem;
 		gap: 1.6rem;
 		max-width: 116rem;
 		display: flex;
@@ -28,7 +28,6 @@
 
 	.header-title {
 		color: var(--color-white);
-		margin: 0;
 		cursor: pointer;
 		user-select: none;
 	}
@@ -49,11 +48,11 @@
 
 	@media (max-height: 850px) {
 		.header-container {
-			padding: 0.3rem 4.9rem 0.3rem 5.1rem;
+			height: 3.3rem;
 		}
 
 		.header-content {
-			gap: 1rem;
+			gap: 0.8rem;
 		}
 
 		.header-title {
