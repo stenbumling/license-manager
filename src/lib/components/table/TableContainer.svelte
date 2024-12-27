@@ -16,7 +16,7 @@
 
 <style>
 	.table-container {
-		width: 70%;
+		/* width: 70%; */
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
