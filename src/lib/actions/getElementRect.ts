@@ -7,8 +7,12 @@
  * @example <div use:getElementRect={callback}></div>
  * @see {@link https://svelte.dev/docs/svelte/svelte-action} on how to use Svelte actions.
  */
-export function getElementRect(node: Element, callback: (arg0: DOMRect) => void) {
-	/** Observes and returns the bounding rectangle of the given node when it changes */
+export function getElementRect(node: HTMLElement, callback: (arg0: DOMRect) => void) {
+	/**
+	 * The ResizeObserver instance, which observes the element's size and position and
+	 * calls the callback function when they change, for example, when the element is resized
+	 * or moved.
+	 */
 	const observer = new ResizeObserver((entries) => {
 		if (entries[0].target === node) {
 			const rect = entries[0].target.getBoundingClientRect();
@@ -24,10 +28,9 @@ export function getElementRect(node: Element, callback: (arg0: DOMRect) => void)
 
 	observer.observe(node);
 
-	/** The timeout for debouncing the resize event */
 	let debounceTimeout: number | undefined;
 
-	/** Debounces the resize event if too frequent */
+	/** Debounces the resize event if fired too frequent */
 	function debounce(
 		func: (...args: unknown[]) => void,
 		delay: number,
@@ -38,7 +41,7 @@ export function getElementRect(node: Element, callback: (arg0: DOMRect) => void)
 		};
 	}
 
-	/** Debounced resize event */
+	/** Debounced resize event listener */
 	const debouncedResize = debounce(() => {
 		callback(node.getBoundingClientRect());
 	}, 100);

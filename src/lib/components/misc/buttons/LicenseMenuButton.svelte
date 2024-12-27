@@ -10,8 +10,8 @@
 	/*
 	 * This component is a three-dots-button that opens a context menu when clicked.
 	 * Every button recieves a unique id to avoid conflicts with other context menus.
-	 * The buttons position is tracked by getElementRect and the context menu
-	 * is positioned accordingly. The items props is used to pass the menu items to the
+	 * When clicked on, its position is tracked by getElementRect, and the context menu
+	 * will be positioned accordingly. The items props is used to pass menu items to the
 	 * context menu.
 	 */
 
@@ -45,7 +45,7 @@
 	>
 		<OverflowMenuHorizontal size={32} />
 	</button>
-	<!-- This ensures that the context menu is closed when the button is unmounted -->
+
 	{#if $contextMenu.activeId === menuId}
 		<ContextMenu {items} bind:referenceElementRect={menuButtonRect} />
 	{/if}

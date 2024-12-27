@@ -19,6 +19,7 @@ export function getApplicationDefaultValue(): ApplicationData {
 		licenseAssociations: 0,
 	};
 }
+
 /** Stores data for the current application being viewed or edited */
 export const currentApplication = writable<ApplicationData>(getApplicationDefaultValue());
 /** Stores the id of the application to delete */
