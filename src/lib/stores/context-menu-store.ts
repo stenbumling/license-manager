@@ -36,11 +36,22 @@ function createContextMenuStore() {
 			referenceElementRect.bottom > window.innerHeight - contextMenuRect.height - 40
 				? referenceElementRect.bottom - contextMenuRect.height
 				: referenceElementRect.top;
+
 		const left = referenceElementRect.left - contextMenuRect.width - 10;
+
+		const adjustedTop = Math.max(
+			0,
+			Math.min(top, window.innerHeight - contextMenuRect.height - 20),
+		);
+
+		const adjustedLeft = Math.max(
+			0,
+			Math.min(left, window.innerWidth - contextMenuRect.width - 20),
+		);
 
 		update((state) => ({
 			...state,
-			position: { top, left },
+			position: { adjustedTop, adjustedLeft },
 		}));
 	}
 

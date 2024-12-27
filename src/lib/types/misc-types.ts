@@ -14,7 +14,7 @@ export interface DashboardFilter {
 }
 
 export interface ContextMenuState {
-	position: { top: number; left: number } | null;
+	position: { adjustedTop: number; adjustedLeft: number } | null;
 	activeId: string | null;
 }
 
