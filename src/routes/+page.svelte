@@ -17,10 +17,10 @@
 <style>
 	.app-container {
 		display: flex;
-		flex-direction: row;
 		width: 100%;
-		max-width: 120rem;
+		max-width: 100rem;
 		padding: 3rem 3rem;
+		overflow-x: auto;
 	}
 
 	@media (max-height: 850px) {

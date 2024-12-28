@@ -11,49 +11,48 @@
 
 <style>
 	.header-container {
-		padding: 1rem 4.9rem 1rem 5.1rem;
+		padding: 0 4.9rem 0 5.1rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		background-color: var(--color-deep-black);
+		height: 4.65rem;
 	}
 	.header-content {
 		width: 100%;
-		height: 2.8rem;
 		gap: 1.6rem;
-		max-width: 116rem;
+		max-width: 96rem;
 		display: flex;
 		align-items: center;
 	}
 
 	.header-title {
 		color: var(--color-white);
-		margin: 0;
 		cursor: pointer;
 		user-select: none;
 	}
 
 	.header-subtitle-badge {
 		display: flex;
-		background-color: var(--color-deep-purple);
+		background-color: var(--color-white);
 		border-radius: 6px;
-		padding: 3px 0.8rem;
+		padding: 3px 10px;
 	}
 
 	.header-subtitle {
 		display: flex;
-		font-size: 0.9rem;
+		font-size: 0.8rem;
 		margin: 0;
-		color: #e0beff;
+		color: var(--color-deep-black);
 	}
 
 	@media (max-height: 850px) {
 		.header-container {
-			padding: 0.3rem 4.9rem 0.3rem 5.1rem;
+			height: 3.3rem;
 		}
 
 		.header-content {
-			gap: 1rem;
+			gap: 0.8rem;
 		}
 
 		.header-title {
@@ -66,7 +65,7 @@
 
 		.header-subtitle {
 			font-size: 0.7rem;
-			color: var(--color-light-purple);
+			color: #a5a5a5;
 		}
 	}
 </style>

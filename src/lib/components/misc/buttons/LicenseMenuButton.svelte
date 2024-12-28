@@ -10,8 +10,8 @@
 	/*
 	 * This component is a three-dots-button that opens a context menu when clicked.
 	 * Every button recieves a unique id to avoid conflicts with other context menus.
-	 * The buttons position is tracked by getElementRect and the context menu
-	 * is positioned accordingly. The items props is used to pass the menu items to the
+	 * When clicked on, its position is tracked by getElementRect, and the context menu
+	 * will be positioned accordingly. The items props is used to pass menu items to the
 	 * context menu.
 	 */
 
@@ -19,6 +19,13 @@
 	const menuId = uuidv4();
 
 	export let items: ContextMenuItem[];
+
+	function openContextMenu(element: HTMLElement) {
+		getElementRect(element, (rect) => {
+			menuButtonRect = rect;
+		});
+		contextMenu.open(menuId);
+	}
 </script>
 
 <div class="menu-button-container">
@@ -27,21 +34,20 @@
 		class="menu-button"
 		class:active={$contextMenu.activeId === menuId}
 		class:disabled={$disableButtonsDuringRequests}
-		on:click|stopPropagation|preventDefault={() => {
-			contextMenu.open(menuId);
+		on:click|stopPropagation|preventDefault={(e) => {
+			openContextMenu(e.currentTarget);
 		}}
 		on:keydown|stopPropagation={(e) => {
 			if (e.key === 'Enter') {
-				contextMenu.open(menuId);
+				openContextMenu(e.currentTarget);
 			}
 		}}
-		use:getElementRect={(element) => (menuButtonRect = element)}
 	>
 		<OverflowMenuHorizontal size={32} />
 	</button>
-	<!-- This ensures that the context menu is closed when the button is unmounted -->
+
 	{#if $contextMenu.activeId === menuId}
-		<ContextMenu bind:referenceElementRect={menuButtonRect} {items} />
+		<ContextMenu {items} bind:referenceElementRect={menuButtonRect} />
 	{/if}
 </div>
 

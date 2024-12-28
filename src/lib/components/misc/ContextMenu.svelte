@@ -8,16 +8,9 @@
 	import { style } from 'svelte-body';
 	import { fly } from 'svelte/transition';
 
-	/*
-	 * This component is a context menu that is used together with the LicenseMenuButton component.
-	 */
-
 	export let items: ContextMenuItem[];
 	export let referenceElementRect: DOMRect;
 
-	/**
-	 * This function is used to dynamically position the context menu according to the reference element (menu button)
-	 */
 	function renderContextMenu(contextMenuRect: DOMRect) {
 		contextMenu.setPosition(referenceElementRect, contextMenuRect);
 	}
@@ -37,8 +30,8 @@
 		duration: 180,
 		y: '-15%',
 	}}
-	style:top={$contextMenu.position ? `${$contextMenu.position.top}px` : 'auto'}
-	style:left={$contextMenu.position ? `${$contextMenu.position.left}px` : 'auto'}
+	style:top={$contextMenu.position ? `${$contextMenu.position.adjustedTop}px` : 'auto'}
+	style:left={$contextMenu.position ? `${$contextMenu.position.adjustedLeft}px` : 'auto'}
 >
 	<ul>
 		{#each items as item}

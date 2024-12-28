@@ -59,32 +59,27 @@
 				<FilterButton {filter} />
 			{/each}
 		</div>
-		<PrimaryButton title="Add new license" action={(e) => handleOpenAddLicenseModal(e)} />
+		<PrimaryButton title="Add a new license" action={(e) => handleOpenAddLicenseModal(e)} />
 	</div>
 </div>
 
 <style>
 	.dashboard-container {
-		min-width: 28rem;
+		min-width: 25rem;
 		display: flex;
 		align-items: flex-start;
-		flex-direction: column;
+		margin-right: 3rem;
 	}
 
 	.dashboard {
-		margin-right: 3rem;
 		margin-top: 2.8rem;
 		padding: 2rem;
 		border: 1px solid black;
-		display: flex;
-		flex-direction: column;
-		overflow-y: auto;
-		width: 75%;
+		flex-grow: 1;
 	}
 
 	.filter-list {
 		margin-bottom: 2rem;
-		/* margin-top: 0.6rem; */
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-gap: 0.3rem;
@@ -95,13 +90,19 @@
 		user-select: none;
 	}
 
-	@media (max-height: 850px) {
+	@media (max-height: 850px) and (min-width: 1200px) {
 		.filter-list {
 			grid-template-columns: 1fr 1fr;
 		}
 
 		.filter-list > :global(:nth-child(1)) {
 			grid-column: 1 / 3;
+		}
+	}
+
+	@media (max-width: 1200px) {
+		.dashboard-container {
+			min-width: 20rem;
 		}
 	}
 </style>

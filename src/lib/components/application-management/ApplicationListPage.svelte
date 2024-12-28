@@ -51,7 +51,7 @@
 	{/if}
 
 	<div class="button-container">
-		<PrimaryButton title="Add new application" action={() => applicationModalView.set('add')} />
+		<PrimaryButton title="Add a new application" action={() => applicationModalView.set('add')} />
 	</div>
 </div>
 
