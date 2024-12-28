@@ -34,16 +34,16 @@
 
 	.header-subtitle-badge {
 		display: flex;
-		background-color: var(--color-deep-purple);
+		background-color: var(--color-white);
 		border-radius: 6px;
-		padding: 3px 0.8rem;
+		padding: 3px 10px;
 	}
 
 	.header-subtitle {
 		display: flex;
-		font-size: 0.9rem;
+		font-size: 0.8rem;
 		margin: 0;
-		color: #e0beff;
+		color: var(--color-deep-black);
 	}
 
 	@media (max-height: 850px) {
@@ -65,7 +65,7 @@
 
 		.header-subtitle {
 			font-size: 0.7rem;
-			color: var(--color-light-purple);
+			color: #a5a5a5;
 		}
 	}
 </style>
