@@ -212,10 +212,10 @@
 	}
 
 	.status-icon {
-		width: 0.5rem;
-		height: 0.5rem;
+		width: 10px;
+		height: 10px;
 		border-radius: 50%;
-		background-color: #6ae674;
+		background-color: #52c55b;
 	}
 
 	.status-icon.inactive {
@@ -223,7 +223,7 @@
 	}
 
 	.status-icon.expired {
-		background-color: var(--color-alert-dark);
+		background-color: #d34747;
 	}
 
 	.application-cell {
