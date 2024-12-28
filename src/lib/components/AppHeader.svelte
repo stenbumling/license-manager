@@ -30,6 +30,18 @@
 		color: var(--color-white);
 		cursor: pointer;
 		user-select: none;
+		margin: 0;
+		transition: color 0.15s ease;
+	}
+
+	.header-title:hover {
+		color: var(--color-light-purple);
+	}
+
+	.header-title:active {
+		position: relative;
+		top: 1px;
+		left: 1px;
 	}
 
 	.header-subtitle-badge {
