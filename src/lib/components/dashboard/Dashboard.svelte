@@ -59,7 +59,7 @@
 				<FilterButton {filter} />
 			{/each}
 		</div>
-		<PrimaryButton title="Add new license" action={(e) => handleOpenAddLicenseModal(e)} />
+		<PrimaryButton title="Add a new license" action={(e) => handleOpenAddLicenseModal(e)} />
 	</div>
 </div>
 
