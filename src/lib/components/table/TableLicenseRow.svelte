@@ -125,14 +125,16 @@
 
 		<!-- Expiration cell -->
 		<div role="cell" tabindex="-1" class="cell expiration-cell">
-			<p
+			<div
 				use:tooltip={{ content: license.expirationDate, options: { delay: [500, 0] } }}
-				class="cell-text"
-				class:warning-text={expirationDate.status === 'warning'}
-				class:alert-text={expirationDate.status === 'alert'}
+				class="expiration-cell-badge"
+				class:warning-badge={expirationDate.status === 'warning'}
+				class:alert-badge={expirationDate.status === 'alert'}
 			>
-				{expirationDate.text}
-			</p>
+				<p class="cell-text">
+					{expirationDate.text}
+				</p>
+			</div>
 		</div>
 
 		<!-- Renewal cell -->
@@ -203,6 +205,7 @@
 		white-space: nowrap;
 		overflow: hidden;
 		max-width: 300px;
+		margin: 0;
 	}
 
 	.status-cell {
@@ -215,7 +218,7 @@
 		width: 10px;
 		height: 10px;
 		border-radius: 50%;
-		background-color: #52c55b;
+		background-color: #6bd495;
 	}
 
 	.status-icon.inactive {
@@ -223,7 +226,7 @@
 	}
 
 	.status-icon.expired {
-		background-color: #d34747;
+		background-color: #d32d2d;
 	}
 
 	.application-cell {
@@ -244,12 +247,24 @@
 		justify-content: flex-end;
 	}
 
-	.expiration-cell > .warning-text {
-		color: var(--color-warning-dark);
+	.expiration-cell-badge {
+		display: flex;
+		background-color: transparent;
+		border-radius: 6px;
 	}
 
-	.expiration-cell > .alert-text {
-		color: var(--color-alert-dark);
+	.expiration-cell-badge.warning-badge {
+		background-color: #ffc267;
+		padding: 2px 5px;
+	}
+
+	.expiration-cell-badge.alert-badge {
+		background-color: #d32d2d;
+		padding: 2px 5px;
+
+		& > * {
+			color: white;
+		}
 	}
 
 	.renewal-cell {
