@@ -35,7 +35,7 @@
 		{#if dismissable}
 			<CloseButton
 				action={handleDismiss}
-				color={type === 'warning' || type === 'success' ? 'black' : 'white'}
+				color={type === 'warning' ? 'black' : 'white'}
 				parentType="notification"
 			/>
 		{/if}
@@ -45,35 +45,35 @@
 <style>
 	article {
 		color: white;
-		padding: 0.75rem 0.8rem 0.75rem 1rem;
+		padding: 1.05rem 0.8rem 1.15rem 1rem;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4), 0px 7px 13px -3px rgba(0, 0, 0, 0.3),
 			0px -3px 0px inset rgba(0, 0, 0, 0.2);
 		display: flex;
 		align-items: center;
 		margin: 0 0 0.8rem 0;
 		min-height: 2rem;
-		max-width: 23rem;
+		width: 23rem;
 	}
 
 	.success {
-		background: rgb(93, 199, 102);
+		background-color: #20b65c;
 		border: 1px solid rgba(0, 0, 0, 0.15);
-		color: black;
+		color: rgb(255, 255, 255);
 	}
 
 	.info {
-		background: rgb(92, 92, 92);
+		background-color: rgb(92, 92, 92);
 		border: 1px solid rgba(0, 0, 0, 0.15);
 	}
 
 	.warning {
-		background: #f0bf0e;
+		background-color: #f0bf0e;
 		border: 1px solid rgba(0, 0, 0, 0.15);
 		color: black;
 	}
 
 	.alert {
-		background: var(--color-alert-dark);
+		background-color: #d32d2d;
 		border: 1px solid rgba(0, 0, 0, 0.15);
 	}
 
