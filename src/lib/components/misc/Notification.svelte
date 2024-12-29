@@ -31,7 +31,7 @@
 		<slot />
 	</div>
 
-	<div style:margin-left={dismissable ? '1rem' : '2.9rem'}>
+	<div style:margin-left={dismissable ? '1rem' : '0.8rem'}>
 		{#if dismissable}
 			<CloseButton
 				action={handleDismiss}
@@ -45,18 +45,18 @@
 <style>
 	article {
 		color: white;
-		padding: 1.05rem 0.8rem 1.15rem 1rem;
+		padding: 0.95rem 0.8rem 1.05rem 1rem;
 		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4), 0px 7px 13px -3px rgba(0, 0, 0, 0.3),
 			0px -3px 0px inset rgba(0, 0, 0, 0.2);
 		display: flex;
 		align-items: center;
 		margin: 0 0 0.8rem 0;
 		min-height: 2rem;
-		width: 23rem;
+		max-width: 23rem;
 	}
 
 	.success {
-		background-color: #20b65c;
+		background-color: #0c9b45;
 		border: 1px solid rgba(0, 0, 0, 0.15);
 		color: rgb(255, 255, 255);
 	}
