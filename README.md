@@ -1,14 +1,16 @@
-# Nexer Örebro license manager
+# License Manager
 
-This is a CRUD application for managing licenses – in particular for the Örebro office of Nexer Group. Its purpose is to keep track of all our licenses so that they can make better decisions on how to allocate them.
+This is a web application for manually managing ones software licenses – useful for smaller companies or teams that needs an overview of all their active (and inactive) subscriptions. It was initially designed and developed on the request of a consultant company for internal use, as part of an internship.
+
+A live demo of the app can be found [here](https://license-manager-demo.azurewebsites.net/).
 
 ## Tech stack
 
 ### Svelte & SvelteKit
 
-The application is built with [Svelte](https://svelte.dev/) and [SvelteKit](https://kit.svelte.dev/), and it comes with two parts: 1) a client and 2) a Node.js server. The server is mainly responsible for providing a REST API (defined in [`api` route](src/routes/api) folder) for the client to interact with, but also handles authentication, authorization, and more. The application also utilizes TypeScript.
+The application is built with [Svelte and SvelteKit](https://svelte.dev/), and it comes with two parts: 1) a client and 2) a Node.js server. The server is mainly responsible for providing a REST API (defined in [`api` route](src/routes/api) folder) for the client to interact with, but also handles authentication, authorization, and more. The application also utilizes TypeScript.
 
-_To learn more about the Svelte framework, check out [ Sveltes documentation page ](https://svelte.dev/docs/introduction) as well as [SvelteKits documentation page](https://kit.svelte.dev/docs/introduction)._
+_To learn more about the Svelte framework, check out [ Sveltes documentation page ](https://svelte.dev/docs/svelte/overview) as well as [SvelteKits documentation page](https://svelte.dev/docs/kit/introduction)._
 
 ### Sequelize & MSSQL
 
@@ -22,11 +24,11 @@ _For more information about Sequelize and database configuration, see the [offic
 
 - Before you begin, ensure you have **Node.js (v18.13 or later)** and **npm** installed. You can download Node.js from [nodejs.org](https://nodejs.org/).
 
-- You will also need to install SQL Sever on your local development environment, which you can download from [microsoft.com](https://www.microsoft.com/en-us/sql-server/sql-server-downloads). This means you also need a MSSQL database to store the application data in. For configuration of the database, follow the [installation instructions](#installation-and-setup).
+- If you intend to use the preconfigured db, you will also need to install SQL Server on your local development environment, which you can download from [microsoft.com](https://www.microsoft.com/en-us/sql-server/sql-server-downloads). This means you also need a MSSQL database to store the application data in. For configuration of the database, follow the [installation instructions](#installation-and-setup).
 
 ### Recommended
 
-While not strictly necessary, if you're using Visual Studio Code, it is recommended to install the official [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) extension. This will provide you with syntax highlighting, code completion, and other useful features for working with Svelte.
+While not strictly necessary, if you're using Visual Studio Code, it is recommended to install the official [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) extension. This will provide you with syntax highlighting, code completion, and other useful features when working with Svelte.
 
 ## Installation and setup
 
@@ -34,7 +36,7 @@ While not strictly necessary, if you're using Visual Studio Code, it is recommen
 
 ```
 git clone <link to repository>
-cd license-manager-nexer-orebro
+cd license-manager
 ```
 
 2. Install dependencies
