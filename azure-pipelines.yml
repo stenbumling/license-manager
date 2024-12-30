@@ -1,0 +1,49 @@
+trigger:
+  - main
+
+pool:
+  name: SelfHostedPool
+
+variables:
+  azureSubscription: $(azureSubscription)
+  WebAppName: $(WebAppName)
+
+  # This needs to be set during build time, as it will be statically compiled into the app.
+  # It cannot be changed without rebuilding and redeploying the app.
+  SKIP_AUTH: $(SKIP_AUTH)
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install
+    displayName: 'npm install'
+
+  - script: |
+      npm run build
+    displayName: 'npm build'
+
+  - script: |
+      npm prune --production
+    displayName: 'Remove dev dependencies'
+
+  - task: ArchiveFiles@2
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      replaceExistingArchive: true
+
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: '$(azureSubscription)'
+      appType: 'webAppLinux'
+      WebAppName: '$(WebAppName)'
+      packageForLinux: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      RuntimeStack: 'NODE|20-lts'
+      StartupCommand: 'node -r dotenv/config build'
