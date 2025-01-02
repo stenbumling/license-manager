@@ -60,13 +60,6 @@
 				defaultOption="Uncategorized"
 				errorMessage={$licenseValidationErrors.category}
 			/>
-			<SelectionField
-				bind:value={$currentLicense.status}
-				label="Status"
-				options={['Active', 'Inactive', 'Expired']}
-				defaultOption="Active"
-				errorMessage={$licenseValidationErrors.status}
-			/>
 			<CostField />
 			<TextField
 				bind:value={$currentLicense.contactPerson}
