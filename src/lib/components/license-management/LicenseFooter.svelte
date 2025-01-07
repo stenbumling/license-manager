@@ -41,13 +41,13 @@
 			? {
 					label: 'Deactivate license',
 					icon: Asleep,
-					action: () => contextMenu.close(),
+					action: () => handleLicenseStatusWarningModal(),
 					class: 'warning',
 			  }
 			: {
 					label: 'Activate license',
 					icon: Asleep,
-					action: () => contextMenu.close(),
+					action: () => handleLicenseStatusWarningModal(),
 			  },
 		{
 			label: 'Delete license',
@@ -89,6 +89,17 @@
 			modal.closeLicense();
 		} else {
 			warningModal.set('unsaved-license-changes');
+		}
+	}
+
+	function handleLicenseStatusWarningModal() {
+		contextMenu.close();
+		if ($currentLicense.status === 'Active') {
+			warningModal.set('license-deactivation');
+		} else {
+			contextMenu.close();
+			$currentLicense.status = 'Active';
+			handleLicense();
 		}
 	}
 </script>
