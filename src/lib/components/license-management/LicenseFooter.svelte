@@ -14,12 +14,14 @@
 	import { table } from '$lib/stores/resources/table-store';
 	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import { validateLicense } from '$lib/validations/license-validation';
+	import Asleep from 'carbon-icons-svelte/lib/Asleep.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 
-	const contextMenuItems: ContextMenuItem[] = [
+	let contextMenuItems: ContextMenuItem[] = [];
+	$: contextMenuItems = [
 		{
 			label: 'Close without saving',
 			icon: CloseLarge,
@@ -35,6 +37,18 @@
 			icon: Copy,
 			action: () => contextMenu.copyLicenseData($currentLicense),
 		},
+		$currentLicense.status === 'Active'
+			? {
+					label: 'Deactivate license',
+					icon: Asleep,
+					action: () => contextMenu.close(),
+					class: 'warning',
+			  }
+			: {
+					label: 'Activate license',
+					icon: Asleep,
+					action: () => contextMenu.close(),
+			  },
 		{
 			label: 'Delete license',
 			icon: TrashCan,
