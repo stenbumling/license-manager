@@ -43,6 +43,6 @@ export interface LicenseCounts {
 
 export type LicenseModalMode = 'add' | 'view';
 
-export type LicenseStatus = 'Active' | 'Inactive' | 'Expired';
+export type LicenseStatus = 'Active' | 'Inactive';
 
 export type LicenseRenewalOptions = 'None' | 'Monthly' | 'Annually';
