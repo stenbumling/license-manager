@@ -78,8 +78,14 @@
 		pointer-events: auto;
 	}
 
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.3rem;
+	}
+
 	li {
-		padding: 0.5rem 2rem 0.5rem 1rem;
+		padding: 0.3rem 2rem 0.3rem 1rem;
 		height: 2rem;
 		cursor: pointer;
 		border-radius: 6px;
@@ -109,11 +115,23 @@
 	}
 
 	.alert {
-		color: var(--color-alert-dark);
+		color: #ce1f1f;
+		background-color: #fde9e9;
+	}
+
+	.alert:hover {
+		color: white;
+		background-color: #d32d2d;
 	}
 
 	.warning {
-		color: var(--color-warning-dark);
+		color: #9b7a0f;
+		background-color: #fff5cf;
+	}
+
+	.warning:hover {
+		color: black;
+		background-color: #fce57d;
 	}
 
 	.disabled {

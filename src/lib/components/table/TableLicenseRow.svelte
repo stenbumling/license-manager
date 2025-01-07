@@ -87,12 +87,9 @@
 			class="cell status-cell"
 			use:tooltip={{ content: status, options: { delay: [500, 0], offset: [0, -10] } }}
 		>
-			<div
-				class="status-icon"
-				class:inactive={license.status === 'Inactive'}
-				class:expired={license.status === 'Expired'}
-			/>
+			<div class="status-icon" class:inactive={license.status === 'Inactive'} />
 		</div>
+		<!-- class:expired={license.status === 'Expired'} -->
 
 		<!-- Application cell -->
 		<div role="cell" tabindex="-1" class="cell application-cell">
@@ -254,7 +251,7 @@
 	}
 
 	.expiration-cell-badge.warning-badge {
-		background-color: #ffc267;
+		background-color: #fce57d;
 		padding: 2px 5px;
 	}
 
