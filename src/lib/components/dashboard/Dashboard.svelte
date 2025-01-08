@@ -30,7 +30,7 @@
 		{
 			title: 'Unassigned',
 			amount: $licenseCounts.unassigned,
-			color: '#fff6a9',
+			color: '#f3b3da',
 		},
 		{
 			title: 'Near expiration',
