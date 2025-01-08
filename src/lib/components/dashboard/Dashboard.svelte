@@ -99,10 +99,6 @@
 		.filter-list {
 			grid-template-columns: 1fr 1fr;
 		}
-
-		.filter-list > :global(:nth-child(1)) {
-			grid-column: 1 / 3;
-		}
 	}
 
 	@media (max-width: 1200px) {
