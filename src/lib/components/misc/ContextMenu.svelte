@@ -81,7 +81,7 @@
 	ul {
 		display: flex;
 		flex-direction: column;
-		gap: 0.3rem;
+		gap: 0.2rem;
 	}
 
 	li {
@@ -106,7 +106,6 @@
 	}
 
 	.context-menu-item-icon {
-		box-sizing: border-box;
 		display: flex;
 		height: 100%;
 		align-items: center;
@@ -115,18 +114,12 @@
 	}
 
 	.alert {
-		color: #ce1f1f;
-		background-color: #fde9e9;
+		color: #ff0000;
 	}
 
 	.alert:hover {
 		color: white;
 		background-color: #d32d2d;
-	}
-
-	.warning {
-		color: #9b7a0f;
-		background-color: #fff5cf;
 	}
 
 	.warning:hover {
