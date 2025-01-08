@@ -11,7 +11,13 @@ export interface QueryParams {
 	sortDirection: SortDirection;
 }
 
-export type FilterQuery = 'all' | 'assigned' | 'unassigned' | 'inactive' | 'near-expiration' | 'expired';
+export type FilterQuery =
+	| 'all'
+	| 'assigned'
+	| 'unassigned'
+	| 'inactive'
+	| 'near-expiration'
+	| 'expired';
 export type FilterReadableName =
 	| 'All'
 	| 'In use'

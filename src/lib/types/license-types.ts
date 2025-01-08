@@ -37,6 +37,7 @@ export interface LicenseCounts {
 	all: number;
 	inUse: number;
 	unassigned: number;
+	inactive: number;
 	nearExpiration: number;
 	expired: number;
 }

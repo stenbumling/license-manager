@@ -34,7 +34,7 @@
 		},
 		{
 			title: 'Inactive',
-			amount: 0,
+			amount: $licenseCounts.inactive,
 			color: '#d4d4d4',
 		},
 		{
