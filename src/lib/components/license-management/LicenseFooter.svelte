@@ -18,6 +18,7 @@
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
+	import Sun from 'carbon-icons-svelte/lib/Sun.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 
 	let contextMenuItems: ContextMenuItem[] = [];
@@ -46,7 +47,7 @@
 			  }
 			: {
 					label: 'Activate license',
-					icon: Asleep,
+					icon: Sun,
 					action: () => handleLicenseStatusWarningModal(),
 			  },
 		{
