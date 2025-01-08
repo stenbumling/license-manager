@@ -33,6 +33,11 @@
 			color: '#f3b3da',
 		},
 		{
+			title: 'Inactive',
+			amount: 0,
+			color: '#d4d4d4',
+		},
+		{
 			title: 'Near expiration',
 			amount: $licenseCounts.nearExpiration,
 			color: 'var(--color-warning-light)',

@@ -31,6 +31,9 @@ export function constructWhereClause(filter: FilterQuery, search: string): Where
 		case 'unassigned':
 			where['$Users.id$'] = { [Op.is]: null };
 			break;
+		case 'inactive':
+			where.status = 'Inactive';
+			break;
 		case 'near-expiration':
 			where.expirationDate = { [Op.and]: { [Op.gte]: tomorrow, [Op.lte]: expirationWarningDate } };
 			break;
