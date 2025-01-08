@@ -24,7 +24,7 @@
 		padding: 0.5rem 0.2rem 0.5rem 0.5rem;
 		margin-top: 0;
 		position: absolute;
-		background-color: white;
+		background-color: var(--color-white);
 		box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 		z-index: 100;
 		width: 100%;

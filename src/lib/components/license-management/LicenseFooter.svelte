@@ -14,12 +14,15 @@
 	import { table } from '$lib/stores/resources/table-store';
 	import type { ContextMenuItem } from '$lib/types/misc-types';
 	import { validateLicense } from '$lib/validations/license-validation';
+	import Asleep from 'carbon-icons-svelte/lib/Asleep.svelte';
 	import CloseLarge from 'carbon-icons-svelte/lib/CloseLarge.svelte';
 	import Copy from 'carbon-icons-svelte/lib/Copy.svelte';
 	import CopyLink from 'carbon-icons-svelte/lib/CopyLink.svelte';
+	import Sun from 'carbon-icons-svelte/lib/Sun.svelte';
 	import TrashCan from 'carbon-icons-svelte/lib/TrashCan.svelte';
 
-	const contextMenuItems: ContextMenuItem[] = [
+	let contextMenuItems: ContextMenuItem[] = [];
+	$: contextMenuItems = [
 		{
 			label: 'Close without saving',
 			icon: CloseLarge,
@@ -35,6 +38,18 @@
 			icon: Copy,
 			action: () => contextMenu.copyLicenseData($currentLicense),
 		},
+		$currentLicense.status === 'Active'
+			? {
+					label: 'Deactivate license',
+					icon: Asleep,
+					action: () => handleLicenseStatusWarningModal(),
+					class: 'warning',
+			  }
+			: {
+					label: 'Activate license',
+					icon: Sun,
+					action: () => handleLicenseStatusWarningModal(),
+			  },
 		{
 			label: 'Delete license',
 			icon: TrashCan,
@@ -75,6 +90,17 @@
 			modal.closeLicense();
 		} else {
 			warningModal.set('unsaved-license-changes');
+		}
+	}
+
+	function handleLicenseStatusWarningModal() {
+		contextMenu.close();
+		if ($currentLicense.status === 'Active') {
+			warningModal.set('license-deactivation');
+		} else {
+			contextMenu.close();
+			$currentLicense.status = 'Active';
+			handleLicense();
 		}
 	}
 </script>

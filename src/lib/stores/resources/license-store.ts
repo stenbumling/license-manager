@@ -37,6 +37,7 @@ export function getLicenseCountsDefaultValue(): LicenseCounts {
 		all: 0,
 		inUse: 0,
 		unassigned: 0,
+		inactive: 0,
 		nearExpiration: 0,
 		expired: 0,
 	};

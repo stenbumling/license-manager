@@ -87,11 +87,7 @@
 			class="cell status-cell"
 			use:tooltip={{ content: status, options: { delay: [500, 0], offset: [0, -10] } }}
 		>
-			<div
-				class="status-icon"
-				class:inactive={license.status === 'Inactive'}
-				class:expired={license.status === 'Expired'}
-			/>
+			<div class="status-icon" class:inactive={license.status === 'Inactive'} />
 		</div>
 
 		<!-- Application cell -->
@@ -128,8 +124,8 @@
 			<div
 				use:tooltip={{ content: license.expirationDate, options: { delay: [500, 0] } }}
 				class="expiration-cell-badge"
-				class:warning-badge={expirationDate.status === 'warning'}
-				class:alert-badge={expirationDate.status === 'alert'}
+				class:warning={expirationDate.status === 'warning'}
+				class:alert={expirationDate.status === 'alert'}
 			>
 				<p class="cell-text">
 					{expirationDate.text}
@@ -225,10 +221,6 @@
 		background-color: #bfbfbf;
 	}
 
-	.status-icon.expired {
-		background-color: #d32d2d;
-	}
-
 	.application-cell {
 		flex: 2;
 	}
@@ -253,17 +245,17 @@
 		border-radius: 6px;
 	}
 
-	.expiration-cell-badge.warning-badge {
-		background-color: #ffc267;
+	.expiration-cell-badge.warning {
+		background-color: var(--color-warning-light);
 		padding: 2px 5px;
 	}
 
-	.expiration-cell-badge.alert-badge {
-		background-color: #d32d2d;
+	.expiration-cell-badge.alert {
+		background-color: var(--color-alert-dark);
 		padding: 2px 5px;
 
 		& > * {
-			color: white;
+			color: var(--color-white);
 		}
 	}
 

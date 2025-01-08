@@ -133,7 +133,7 @@
 	}
 
 	select:focus {
-		border: 2px solid var(--color-light-purple);
+		border: 2px solid var(--color-secondary-purple);
 		outline: none;
 		padding: 0 0 0 0.5rem;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');

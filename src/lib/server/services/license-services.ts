@@ -71,6 +71,7 @@ export async function getLicenseCounts(): Promise<LicenseCounts> {
 			},
 		],
 	});
+	const inactiveCount = LicenseModel.count({ where: { status: 'Inactive' } });
 	const nearExpirationCount = LicenseModel.count({
 		where: {
 			expirationDate: {
@@ -89,6 +90,7 @@ export async function getLicenseCounts(): Promise<LicenseCounts> {
 		all: await allCount,
 		inUse: await inUseCount,
 		unassigned: await unassignedCount,
+		inactive: await inactiveCount,
 		nearExpiration: await nearExpirationCount,
 		expired: await expiredCount,
 	};

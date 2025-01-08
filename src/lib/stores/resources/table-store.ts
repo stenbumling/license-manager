@@ -118,6 +118,8 @@ function createTableController() {
 				return '?filter=assigned';
 			case 'Unassigned':
 				return '?filter=unassigned';
+			case 'Inactive':
+				return '?filter=inactive';
 			case 'Near expiration':
 				return '?filter=near-expiration';
 			case 'Expired':
@@ -127,7 +129,7 @@ function createTableController() {
 				return searchQueryParam === '' ? '' : `?search=${searchQueryParam}`;
 			default:
 				console.error(`Unknown filter: ${filterName}`);
-				return 'filter=all';
+				return '?filter=all';
 		}
 	}
 

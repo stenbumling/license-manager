@@ -8,7 +8,10 @@
 	export let user: UserData;
 </script>
 
-<div class="badge" style:background-color={user.active ? `var(--color-deep-purple)` : '#d32d2d'}>
+<div
+	class="badge"
+	style:background-color={user.active ? `var(--color-primary-purple)` : `var(--color-alert-dark)`}
+>
 	{#if user.active !== true}
 		<div
 			class="badge-conflict-icon"
@@ -34,7 +37,7 @@
 		align-items: center;
 		border-radius: 0.5rem;
 		padding: 0.35rem 0.6rem;
-		color: white;
+		color: var(--color-white);
 	}
 
 	.badge-text-container {

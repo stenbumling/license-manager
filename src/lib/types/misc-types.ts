@@ -4,6 +4,7 @@ import type { ComponentType } from 'svelte';
 export type WarningModalMode =
 	| 'closed'
 	| 'license-deletion'
+	| 'license-deactivation'
 	| 'application-deletion'
 	| 'unsaved-license-changes';
 

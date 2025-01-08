@@ -30,7 +30,7 @@
 		</div>
 		<div
 			class="button-animated-hover"
-			style:background={`linear-gradient(to right, var(--color-deep-purple) 100%, transparent 100%`}
+			style:background={`linear-gradient(to right, var(--color-primary-purple) 100%, transparent 100%`}
 		/>
 	{/if}
 </div>
@@ -44,7 +44,7 @@
 		display: flex;
 		box-sizing: border-box;
 		color: var(--color-white);
-		background-color: var(--color-deep-black);
+		background-color: var(--color-black);
 		user-select: none;
 		cursor: pointer;
 		align-items: center;
@@ -87,7 +87,7 @@
 	}
 
 	.pending-request {
-		background-color: var(--color-deep-purple);
+		background-color: var(--color-primary-purple);
 		pointer-events: none;
 		border-radius: 6px;
 	}

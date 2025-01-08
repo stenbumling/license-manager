@@ -30,7 +30,7 @@
 		display: flex;
 		height: 80%;
 		align-items: center;
-		background-color: var(--color-deep-black);
+		background-color: var(--color-black);
 		border-radius: 6px;
 		cursor: pointer;
 		padding: 8px 16px;
@@ -38,7 +38,7 @@
 	}
 
 	.icon-button:hover {
-		background-color: var(--color-deep-purple);
+		background-color: var(--color-primary-purple);
 	}
 
 	.icon-button:active {
@@ -58,7 +58,7 @@
 	}
 
 	.active {
-		background-color: var(--color-deep-purple);
+		background-color: var(--color-primary-purple);
 	}
 
 	.text {

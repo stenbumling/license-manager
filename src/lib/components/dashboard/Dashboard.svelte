@@ -30,17 +30,22 @@
 		{
 			title: 'Unassigned',
 			amount: $licenseCounts.unassigned,
-			color: '#fff6a9',
+			color: '#f3b3da',
+		},
+		{
+			title: 'Inactive',
+			amount: $licenseCounts.inactive,
+			color: '#d4d4d4',
 		},
 		{
 			title: 'Near expiration',
 			amount: $licenseCounts.nearExpiration,
-			color: 'var(--color-warning)',
+			color: 'var(--color-warning-light)',
 		},
 		{
 			title: 'Expired',
 			amount: $licenseCounts.expired,
-			color: 'var(--color-alert)',
+			color: 'var(--color-alert-light)',
 		},
 	];
 
@@ -93,10 +98,6 @@
 	@media (max-height: 850px) and (min-width: 1200px) {
 		.filter-list {
 			grid-template-columns: 1fr 1fr;
-		}
-
-		.filter-list > :global(:nth-child(1)) {
-			grid-column: 1 / 3;
 		}
 	}
 

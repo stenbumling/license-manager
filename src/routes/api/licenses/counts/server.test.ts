@@ -9,6 +9,7 @@ describe('GET /licenses/counts', () => {
 			.mockResolvedValueOnce(6)
 			.mockResolvedValueOnce(1)
 			.mockResolvedValueOnce(2)
+			.mockResolvedValueOnce(2)
 			.mockResolvedValueOnce(0);
 
 		const response = await GET();
@@ -19,6 +20,7 @@ describe('GET /licenses/counts', () => {
 			all: 7,
 			inUse: 6,
 			unassigned: 1,
+			inactive: 2,
 			nearExpiration: 2,
 			expired: 0,
 		});

@@ -49,11 +49,11 @@
 		height: 100%;
 		width: 0;
 		transition: width 0.25s ease;
-		background: linear-gradient(to right, var(--color-deep-purple) 100%, transparent 100%);
+		background: linear-gradient(to right, var(--color-primary-purple) 100%, transparent 100%);
 	}
 
 	.button-container:hover {
-		border: 1px solid var(--color-deep-purple);
+		border: 1px solid var(--color-primary-purple);
 	}
 
 	.button-container:hover .button-title {
@@ -74,7 +74,7 @@
 	}
 
 	.button-title {
-		color: var(--color-deep-black);
+		color: var(--color-black);
 		margin-top: 2px;
 		overflow: hidden;
 		text-wrap: nowrap;

@@ -69,7 +69,7 @@
 
 	.context-menu {
 		position: fixed;
-		background: white;
+		background: var(--color-white);
 		border: 1px solid #ccc;
 		border-radius: 4px;
 		padding: 0.5rem;
@@ -78,8 +78,14 @@
 		pointer-events: auto;
 	}
 
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 0.2rem;
+	}
+
 	li {
-		padding: 0.5rem 2rem 0.5rem 1rem;
+		padding: 0.3rem 2rem 0.3rem 1rem;
 		height: 2rem;
 		cursor: pointer;
 		border-radius: 6px;
@@ -100,7 +106,6 @@
 	}
 
 	.context-menu-item-icon {
-		box-sizing: border-box;
 		display: flex;
 		height: 100%;
 		align-items: center;
@@ -109,11 +114,17 @@
 	}
 
 	.alert {
-		color: var(--color-alert-dark);
+		color: #ff0000;
 	}
 
-	.warning {
-		color: var(--color-warning-dark);
+	.alert:hover {
+		color: var(--color-white);
+		background-color: var(--color-alert-dark);
+	}
+
+	.warning:hover {
+		color: var(--color-black);
+		background-color: var(--color-warning-light);
 	}
 
 	.disabled {

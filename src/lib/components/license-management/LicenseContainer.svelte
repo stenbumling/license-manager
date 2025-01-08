@@ -31,7 +31,7 @@
 				<CloseButton action={modal.closeLicense} />
 			</div>
 			{#if isLoading}
-				<Circle color="var(--color-deep-purple)" />
+				<Circle color="var(--color-primary-purple)" />
 			{:else if hasError}
 				<h1>{$licenseFetchRequest.error?.status}</h1>
 				<div class="fallback-error-details">
@@ -59,13 +59,6 @@
 				options={['Development', 'Media', 'Project Management', 'Educational', 'Uncategorized']}
 				defaultOption="Uncategorized"
 				errorMessage={$licenseValidationErrors.category}
-			/>
-			<SelectionField
-				bind:value={$currentLicense.status}
-				label="Status"
-				options={['Active', 'Inactive', 'Expired']}
-				defaultOption="Active"
-				errorMessage={$licenseValidationErrors.status}
 			/>
 			<CostField />
 			<TextField

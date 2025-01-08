@@ -4,11 +4,21 @@
 	import WarningModal from '$lib/components/misc/WarningModal.svelte';
 	import { modal, warningModal } from '$lib/stores/modal-store';
 	import { network } from '$lib/stores/network-store';
-	import { applicationDeleteRequest, licenseDeleteRequest } from '$lib/stores/request-state-store';
+	import {
+		applicationDeleteRequest,
+		licenseDeleteRequest,
+		licensePostRequest,
+	} from '$lib/stores/request-state-store';
 	import { applicationStore, applicationToDelete } from '$lib/stores/resources/application-store';
-	import { licenseStore, licenseToDelete } from '$lib/stores/resources/license-store';
+	import {
+		currentLicense,
+		licenseStore,
+		licenseToDelete,
+	} from '$lib/stores/resources/license-store';
+	import { table } from '$lib/stores/resources/table-store';
 	import '$lib/styles/app.css';
 	import '$lib/styles/vars.css';
+	import { validateLicense } from '$lib/validations/license-validation';
 	import { onMount } from 'svelte';
 
 	onMount(async () => {
@@ -34,6 +44,23 @@
 		warningText="Warning! This will delete the license and all its data. Are you sure?"
 		onConfirm={() => licenseStore.delete($licenseToDelete)}
 		requestState={licenseDeleteRequest}
+	/>
+{:else if $warningModal === 'license-deactivation'}
+	<WarningModal
+		warningText="This will mark the license as inactive. Are you sure?"
+		onConfirm={async () => {
+			$currentLicense.status = 'Inactive';
+			const isValid = await validateLicense($currentLicense);
+			if (isValid) {
+				let success = await licenseStore.updateLicense($currentLicense);
+				if (success) {
+					modal.closeLicense();
+					table.updateState();
+					licenseStore.updateCounts();
+				}
+			}
+		}}
+		requestState={licensePostRequest}
 	/>
 {:else if $warningModal === 'unsaved-license-changes'}
 	<WarningModal

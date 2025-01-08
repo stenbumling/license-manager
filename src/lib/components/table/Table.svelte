@@ -18,7 +18,7 @@
 	<!-- Loading -->
 	{#if isLoading}
 		<div class="fallback-container" in:fade={{ duration: 120 }}>
-			<Circle color="var(--color-deep-purple)" />
+			<Circle color="var(--color-primary-purple)" />
 		</div>
 
 		<!-- Errors and no results -->
@@ -83,7 +83,7 @@
 	}
 
 	.search-query-text {
-		color: var(--color-deep-purple);
+		color: var(--color-primary-purple);
 		text-decoration: dotted underline 2px;
 		text-underline-position: under;
 	}

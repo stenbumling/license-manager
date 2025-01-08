@@ -119,7 +119,7 @@
 	}
 
 	textarea:focus {
-		border: 2px solid var(--color-light-purple);
+		border: 2px solid var(--color-secondary-purple);
 		outline: none;
 		overflow: auto;
 	}

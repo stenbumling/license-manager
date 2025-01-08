@@ -37,12 +37,13 @@ export interface LicenseCounts {
 	all: number;
 	inUse: number;
 	unassigned: number;
+	inactive: number;
 	nearExpiration: number;
 	expired: number;
 }
 
 export type LicenseModalMode = 'add' | 'view';
 
-export type LicenseStatus = 'Active' | 'Inactive' | 'Expired';
+export type LicenseStatus = 'Active' | 'Inactive';
 
 export type LicenseRenewalOptions = 'None' | 'Monthly' | 'Annually';
