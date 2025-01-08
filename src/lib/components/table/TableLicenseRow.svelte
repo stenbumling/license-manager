@@ -222,9 +222,9 @@
 		background-color: #bfbfbf;
 	}
 
-	.status-icon.expired {
-		background-color: #d32d2d;
-	}
+	/* .status-icon.expired {
+		background-color: var(--color-alert-dark);
+	} */
 
 	.application-cell {
 		flex: 2;
@@ -251,12 +251,12 @@
 	}
 
 	.expiration-cell-badge.warning-badge {
-		background-color: #fce57d;
+		background-color: var(--color-warning);
 		padding: 2px 5px;
 	}
 
 	.expiration-cell-badge.alert-badge {
-		background-color: #d32d2d;
+		background-color: var(--color-alert-dark);
 		padding: 2px 5px;
 
 		& > * {

@@ -119,12 +119,12 @@
 
 	.alert:hover {
 		color: white;
-		background-color: #d32d2d;
+		background-color: var(--color-alert-dark);
 	}
 
 	.warning:hover {
 		color: black;
-		background-color: #fce57d;
+		background-color: var(--color-warning);
 	}
 
 	.disabled {

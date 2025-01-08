@@ -67,13 +67,13 @@
 	}
 
 	.warning {
-		background-color: #f0bf0e;
+		background-color: var(--color-warning-dark);
 		border: 1px solid rgba(0, 0, 0, 0.15);
 		color: black;
 	}
 
 	.alert {
-		background-color: #d32d2d;
+		background-color: var(--color-alert-dark);
 		border: 1px solid rgba(0, 0, 0, 0.15);
 	}
 
