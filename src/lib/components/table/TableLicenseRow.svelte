@@ -89,7 +89,6 @@
 		>
 			<div class="status-icon" class:inactive={license.status === 'Inactive'} />
 		</div>
-		<!-- class:expired={license.status === 'Expired'} -->
 
 		<!-- Application cell -->
 		<div role="cell" tabindex="-1" class="cell application-cell">
@@ -125,8 +124,8 @@
 			<div
 				use:tooltip={{ content: license.expirationDate, options: { delay: [500, 0] } }}
 				class="expiration-cell-badge"
-				class:warning-badge={expirationDate.status === 'warning'}
-				class:alert-badge={expirationDate.status === 'alert'}
+				class:warning={expirationDate.status === 'warning'}
+				class:alert={expirationDate.status === 'alert'}
 			>
 				<p class="cell-text">
 					{expirationDate.text}
@@ -222,10 +221,6 @@
 		background-color: #bfbfbf;
 	}
 
-	/* .status-icon.expired {
-		background-color: var(--color-alert-dark);
-	} */
-
 	.application-cell {
 		flex: 2;
 	}
@@ -250,12 +245,12 @@
 		border-radius: 6px;
 	}
 
-	.expiration-cell-badge.warning-badge {
+	.expiration-cell-badge.warning {
 		background-color: var(--color-warning-light);
 		padding: 2px 5px;
 	}
 
-	.expiration-cell-badge.alert-badge {
+	.expiration-cell-badge.alert {
 		background-color: var(--color-alert-dark);
 		padding: 2px 5px;
 
