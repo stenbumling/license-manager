@@ -133,7 +133,7 @@
 	}
 
 	.application-link {
-		color: var(--color-deep-purple);
+		color: var(--color-primary-purple);
 
 		&:hover {
 			text-decoration: underline;
@@ -181,7 +181,7 @@
 
 	select:focus {
 		padding: 0 2.5rem 0.1rem 0.5rem;
-		border: 2px solid var(--color-light-purple);
+		border: 2px solid var(--color-secondary-purple);
 		outline: none;
 		background-image: url('$lib/images/icons/dropdown-arrow.svg');
 		background-size: 1.5rem;

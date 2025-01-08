@@ -93,7 +93,7 @@
 	}
 
 	.app-name {
-		color: var(--color-deep-purple);
+		color: var(--color-primary-purple);
 		text-decoration: dotted underline 2px;
 		text-underline-position: under;
 	}
@@ -145,7 +145,7 @@
 
 	input:focus {
 		padding-left: 0.6rem;
-		border: 2px solid var(--color-light-purple);
+		border: 2px solid var(--color-secondary-purple);
 		outline: none;
 	}
 </style>

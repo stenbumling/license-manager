@@ -15,7 +15,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: var(--color-deep-black);
+		background-color: var(--color-black);
 		height: 4.65rem;
 	}
 	.header-content {
@@ -35,7 +35,7 @@
 	}
 
 	.header-title:hover {
-		color: var(--color-light-purple);
+		color: var(--color-secondary-purple);
 	}
 
 	.header-title:active {
@@ -55,7 +55,7 @@
 		display: flex;
 		font-size: 0.8rem;
 		margin: 0;
-		color: var(--color-deep-black);
+		color: var(--color-black);
 	}
 
 	@media (max-height: 850px) {
@@ -72,7 +72,7 @@
 		}
 
 		.header-subtitle-badge {
-			background-color: var(--color-deep-black);
+			background-color: var(--color-black);
 		}
 
 		.header-subtitle {

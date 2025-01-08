@@ -42,8 +42,8 @@
 	.loading-indicator {
 		display: flex;
 		box-sizing: border-box;
-		background-color: var(--color-deep-purple);
-		color: white;
+		background-color: var(--color-primary-purple);
+		color: var(--color-white);
 		align-items: center;
 		border-radius: 0.5rem;
 		padding: 0 1rem;

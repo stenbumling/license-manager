@@ -35,12 +35,12 @@
 		{
 			title: 'Near expiration',
 			amount: $licenseCounts.nearExpiration,
-			color: 'var(--color-warning)',
+			color: 'var(--color-warning-light)',
 		},
 		{
 			title: 'Expired',
 			amount: $licenseCounts.expired,
-			color: 'var(--color-alert)',
+			color: 'var(--color-alert-light)',
 		},
 	];
 

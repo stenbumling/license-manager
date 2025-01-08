@@ -251,7 +251,7 @@
 	}
 
 	.expiration-cell-badge.warning-badge {
-		background-color: var(--color-warning);
+		background-color: var(--color-warning-light);
 		padding: 2px 5px;
 	}
 
@@ -260,7 +260,7 @@
 		padding: 2px 5px;
 
 		& > * {
-			color: white;
+			color: var(--color-white);
 		}
 	}
 

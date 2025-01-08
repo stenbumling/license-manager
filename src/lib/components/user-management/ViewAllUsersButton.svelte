@@ -18,12 +18,12 @@
 	.view-all-button {
 		display: flex;
 		box-sizing: border-box;
-		background-color: var(--color-deep-purple);
+		background-color: var(--color-primary-purple);
 		align-items: center;
 		border-radius: 0.5rem;
 		padding: 0.55rem 0.8rem;
 		transition: background-color 0.2s ease;
-		color: white;
+		color: var(--color-white);
 		cursor: pointer;
 	}
 
@@ -34,7 +34,7 @@
 	}
 
 	.view-all-button:hover {
-		background-color: var(--color-light-purple);
+		background-color: var(--color-secondary-purple);
 	}
 
 	.view-all-button-text {

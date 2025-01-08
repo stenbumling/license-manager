@@ -122,7 +122,7 @@
 
 	input:focus {
 		padding-left: 0.6rem;
-		border: 2px solid var(--color-light-purple);
+		border: 2px solid var(--color-secondary-purple);
 		outline: none;
 	}
 </style>

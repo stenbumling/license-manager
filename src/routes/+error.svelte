@@ -48,7 +48,7 @@
 	}
 
 	.url-pathname {
-		color: var(--color-deep-purple);
+		color: var(--color-primary-purple);
 		text-decoration: dotted underline 2px;
 		text-underline-position: under;
 	}

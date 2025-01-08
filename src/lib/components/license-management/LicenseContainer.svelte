@@ -31,7 +31,7 @@
 				<CloseButton action={modal.closeLicense} />
 			</div>
 			{#if isLoading}
-				<Circle color="var(--color-deep-purple)" />
+				<Circle color="var(--color-primary-purple)" />
 			{:else if hasError}
 				<h1>{$licenseFetchRequest.error?.status}</h1>
 				<div class="fallback-error-details">

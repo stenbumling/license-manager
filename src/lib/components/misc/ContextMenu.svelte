@@ -69,7 +69,7 @@
 
 	.context-menu {
 		position: fixed;
-		background: white;
+		background: var(--color-white);
 		border: 1px solid #ccc;
 		border-radius: 4px;
 		padding: 0.5rem;
@@ -118,13 +118,13 @@
 	}
 
 	.alert:hover {
-		color: white;
+		color: var(--color-white);
 		background-color: var(--color-alert-dark);
 	}
 
 	.warning:hover {
-		color: black;
-		background-color: var(--color-warning);
+		color: var(--color-black);
+		background-color: var(--color-warning-light);
 	}
 
 	.disabled {

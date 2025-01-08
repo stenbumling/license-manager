@@ -102,7 +102,7 @@ input[type='search']::-webkit-search-results-decoration {
 /* Custom styling for focused elements */
 :focus-visible {
 	outline: none;
-	box-shadow: 0 0 0 3px var(--color-light-purple);
+	box-shadow: 0 0 0 3px var(--color-secondary-purple);
 	border-radius: 4px;
 }
 
@@ -110,7 +110,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
 	outline: none;
-	box-shadow: 0 0 0 0px var(--color-light-purple);
+	box-shadow: 0 0 0 0px var(--color-secondary-purple);
 	border-radius: 4px;
 }
 

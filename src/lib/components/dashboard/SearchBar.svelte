@@ -80,19 +80,19 @@
 	}
 
 	input:focus {
-		border: 2px solid var(--color-light-purple);
+		border: 2px solid var(--color-secondary-purple);
 		border-radius: 5px;
 		padding-left: 17px;
 	}
 
 	.active-search-query {
-		border: 2px solid var(--color-light-purple);
+		border: 2px solid var(--color-secondary-purple);
 		border-radius: 5px;
 		padding-left: 17px;
 	}
 
 	.active-search-query:focus {
-		border: 2px solid var(--color-light-purple);
+		border: 2px solid var(--color-secondary-purple);
 		border-radius: 5px;
 		padding-left: 17px;
 	}
